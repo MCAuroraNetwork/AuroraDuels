@@ -1,0 +1,7 @@
+name: AuroraDuels
+version: '${version}'
+main: club.aurorapvp.AuroraDuels
+api-version: 1.19
+authors: [ Villagers654 ]
+description: A Duels Plugin for the Aurora Network
+website: aurorapvp.club
