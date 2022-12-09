@@ -25,7 +25,12 @@ public class LangHandler {
       }
     }
 
-    Defaults.put("", "");
+    Defaults.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
+    Defaults.put("set-center", "<gradient:#FFAA00:#FF55FF>prefix Click on the center of the arena");
+    Defaults.put("set-pos1-and-pos2",
+        "<gradient:#FFAA00:#FF55FF>prefix Right click on the first position of the arena and left click on the second position");
+    Defaults.put("pos1-set", "<gradient:#FFAA00:#FF55FF>prefix Position 1 set!");
+    Defaults.put("pos2-set", "<gradient:#FFAA00:#FF55FF>prefix Position 2 set!");
 
     for (String path : Defaults.keySet()) {
       if (!getLangFile().contains(path) || getLangFile().getString(path) == null) {

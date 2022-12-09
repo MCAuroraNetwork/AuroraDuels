@@ -54,11 +54,12 @@ public final class AuroraDuels extends JavaPlugin {
       getCommand(command.getName()).setExecutor(new CommandListener());
     }
 
-    getLogger().info("Aurora Kits Loaded");
+    getLogger().info("Aurora Duels Loaded");
   }
 
   @Override
   public void onDisable() {
     // Plugin shutdown logic
+    getLogger().info("Aurora Duels Unloaded");
   }
 }

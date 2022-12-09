@@ -27,10 +27,8 @@ import org.bukkit.Location;
 
 public class SchematicHandler {
 
-  public static void saveArenaSchematic(String arenaName, World world, Location loc1,
-                                        Location loc2) throws WorldEditException, IOException {
-    BlockVector3 pos1 = BlockVector3.at(loc1.getBlockX(), loc1.getBlockY(), loc1.getBlockZ());
-    BlockVector3 pos2 = BlockVector3.at(loc2.getBlockX(), loc2.getBlockY(), loc2.getBlockZ());
+  public static void saveArenaSchematic(String arenaName, World world, BlockVector3 pos1,
+                                        BlockVector3 pos2) throws WorldEditException, IOException {
     EditSession session = WorldEdit.getInstance().newEditSessionBuilder().build();
     File file = new File(DataFolder, "/arena_schematics/" + arenaName + ".schem");
 
@@ -50,11 +48,11 @@ public class SchematicHandler {
     writer.write(clipboard);
   }
 
-  public static void pasteArenaSchematic(String arenaName, Location loc1,
-                                Location loc2) throws IOException, WorldEditException {
+  public static void pasteArenaSchematic(String arenaName, Location loc)
+      throws IOException, WorldEditException {
 
     File file = new File(DataFolder, "/arena_schematics/" + arenaName + ".schem");
-    BlockVector3 center = BlockVector3.at(loc1.getBlockX(), loc1.getBlockY(), loc1.getBlockZ());
+    BlockVector3 center = BlockVector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
     // Loads then pastes schematic
 
