@@ -41,17 +41,14 @@ public class LangHandler {
   }
 
   public static Component getLangComponent(String path) {
-    if (getLangFile().contains(path)) {
-      String pathString = getLangFile().getString(path);
-      for (String placeholder : placeholders.keySet()) {
-        if (pathString.contains(placeholder)) {
-          pathString = pathString.replace(placeholder,
-              placeholders.get(placeholder));
-        }
+    String pathString = getLangFile().getString(path);
+    for (String placeholder : placeholders.keySet()) {
+      if (pathString.contains(placeholder)) {
+        pathString = pathString.replace(placeholder,
+            placeholders.get(placeholder));
       }
-      return deserializeComponent.deserialize(pathString);
     }
-    return null;
+    return deserializeComponent.deserialize(pathString);
   }
 
   public static void saveLangFile() throws IOException {

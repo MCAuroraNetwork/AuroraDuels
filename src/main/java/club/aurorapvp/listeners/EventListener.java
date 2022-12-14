@@ -11,12 +11,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class EventListener implements Listener {
 
+  public static WandUseEvent wandEvent = new WandUseEvent(new EventListener());
+
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (wandActive) {
       if (getWandAction(event.getAction(), event.getItem().getType(),
           event.getClickedBlock().getType()) != 0) {
-        WandUseEvent wandEvent = new WandUseEvent(this);
+        wandEvent = new WandUseEvent(this);
         wandEvent.trigger(event.getAction(), asBlockVector(event.getClickedBlock().getLocation()));
       }
     }
