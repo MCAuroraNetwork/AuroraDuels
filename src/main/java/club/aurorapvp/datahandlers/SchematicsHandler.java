@@ -46,11 +46,9 @@ public class SchematicsHandler {
     writer.write(clipboard);
   }
 
-  public static void resetArenas() {
-    File arenas = new File(DataFolder, "/arenas/");
+  public static void pasteArenaSchematic(File arenaData) {
     Clipboard clipboard;
 
-    for (File arenaData : arenas.listFiles()) {
       World world =
           BukkitAdapter.adapt(
               YamlConfiguration.loadConfiguration(arenaData)
@@ -73,5 +71,4 @@ public class SchematicsHandler {
         throw new RuntimeException(e);
       }
     }
-  }
 }

@@ -8,13 +8,16 @@ import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static club.aurorapvp.AuroraDuels.DataFolder;
 import static club.aurorapvp.config.ConfigHandler.getConfig;
 import static club.aurorapvp.config.LangHandler.getLangComponent;
+import static club.aurorapvp.datahandlers.SchematicsHandler.pasteArenaSchematic;
 import static club.aurorapvp.datahandlers.SchematicsHandler.saveArenaSchematic;
 import static club.aurorapvp.listeners.EventListener.wandEvent;
 import static club.aurorapvp.modules.WandModule.WandModule.wandActions;
@@ -24,7 +27,7 @@ public class ArenaModule {
 
   public static void setupArenaLogic() {
     ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    Runnable clearViolations = SchematicsHandler::resetArenas;
+    Runnable clearViolations = ArenaModule::resetArenas;
     executor.scheduleAtFixedRate(
         clearViolations, 0, getConfig().getInt("arenas.reset.interval"), TimeUnit.MINUTES);
   }
@@ -70,6 +73,12 @@ public class ArenaModule {
       ArenaDataHandler.createArenaData(arenaName, center);
     } catch (WorldEditException | IOException e) {
       throw new RuntimeException(e);
+    }
+  }
+
+  public static void resetArenas() {
+    for (File arenaData : new File(DataFolder, "/arenas/").listFiles()) {
+      pasteArenaSchematic(arenaData);
     }
   }
 }
