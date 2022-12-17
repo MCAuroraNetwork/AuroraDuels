@@ -1,17 +1,12 @@
 package club.aurorapvp.datahandlers;
 
-import static club.aurorapvp.AuroraDuels.DataFolder;
-
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.BuiltInClipboardFormat;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
+import com.sk89q.worldedit.extent.clipboard.io.*;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
@@ -19,13 +14,16 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import org.bukkit.Location;
 
-public class SchematicHandler {
+import static club.aurorapvp.AuroraDuels.DataFolder;
+
+public class SchematicsHandler {
 
   public static void saveArenaSchematic(String arenaName, World world, BlockVector3 pos1,
                                         BlockVector3 pos2) throws WorldEditException, IOException {
@@ -48,24 +46,32 @@ public class SchematicHandler {
     writer.write(clipboard);
   }
 
-  public static void pasteArenaSchematic(String arenaName, Location loc)
-      throws IOException, WorldEditException {
+  public static void resetArenas() {
+    File arenas = new File(DataFolder, "/arenas/");
+    Clipboard clipboard;
 
-    File file = new File(DataFolder, "/arena_schematics/" + arenaName + ".schem");
-    BlockVector3 center = BlockVector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+    for (File arenaData : arenas.listFiles()) {
+      World world =
+          BukkitAdapter.adapt(
+              YamlConfiguration.loadConfiguration(arenaData)
+                  .getLocation("arena.center")
+                  .getWorld());
+      ClipboardFormat format = ClipboardFormats.findByFile(arenaData);
 
-    // Loads then pastes schematic
+      try (ClipboardReader reader = format.getReader(new FileInputStream(arenaData))) {
+        clipboard = reader.read();
 
-    ClipboardFormat format = ClipboardFormats.findByFile(file);
-    ClipboardReader reader = format.getReader(new FileInputStream(file));
-    Clipboard clipboard = reader.read();
-
-    EditSession session = WorldEdit.getInstance().newEditSessionBuilder().build();
-    Operation operation = new ClipboardHolder(clipboard)
-        .createPaste(session)
-        .to(center)
-        .ignoreAirBlocks(false)
-        .build();
-    Operations.complete(operation);
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
+          Operation operation =
+              new ClipboardHolder(clipboard)
+                  .createPaste(editSession)
+                  .to(clipboard.getOrigin())
+                  .build();
+          Operations.complete(operation);
+        }
+      } catch (WorldEditException | IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 }

@@ -13,7 +13,7 @@ public class ArenaDataHandler {
   public static void createArenaData(String arenaName, Location center) {
     YamlConfiguration arenaData = YamlConfiguration.loadConfiguration(new File(DataFolder, "/arenas/" + arenaName));
 
-    arenaData.set("arena.minimum-point", center);
+    arenaData.set("arena.center", center);
 
     try {
       saveArenaData(arenaName);
