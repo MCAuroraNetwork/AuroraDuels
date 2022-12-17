@@ -1,36 +1,46 @@
 package club.aurorapvp.modules;
 
+import club.aurorapvp.datahandlers.ArenaDataHandler;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static club.aurorapvp.AuroraDuels.DataFolder;
+import static club.aurorapvp.config.ConfigHandler.getConfig;
 import static club.aurorapvp.config.LangHandler.getLangComponent;
-import static club.aurorapvp.datahandlers.ArenaDataHandler.saveArenaData;
 import static club.aurorapvp.datahandlers.SchematicHandler.saveArenaSchematic;
 import static club.aurorapvp.listeners.EventListener.wandEvent;
 import static club.aurorapvp.modules.WandModule.WandModule.wandActions;
 import static club.aurorapvp.modules.WandModule.WandModule.wandActive;
 
-import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.BlockVector3;
-import java.io.IOException;
-import org.bukkit.entity.Player;
-
 public class ArenaModule {
   public static void createArena(String arenaName, Player p) throws InterruptedException {
-    BlockVector3 minPoint = null;
     BlockVector3 pos1 = null;
     BlockVector3 pos2 = null;
     boolean posSet = false;
     wandActive = true;
+    Location center;
 
     p.sendMessage(getLangComponent("set-center"));
 
-    while (!posSet) {
-      wandEvent.wait();
-      minPoint = wandActions.values().stream().findFirst().orElse(null);
-      if (minPoint != null) {
-        posSet = true;
-      }
-    }
-    posSet = false;
+    // Sets center value as a Location
+
+    wandEvent.wait();
+    BlockVector3 centerVector = wandActions.values().stream().findFirst().orElse(null);
+    center =
+        new Location(
+            p.getWorld(),
+            centerVector.getBlockX(),
+            centerVector.getBlockY(),
+            centerVector.getBlockZ());
 
     // Sets position 1 and 2 when wand event is fired
 
@@ -50,9 +60,9 @@ public class ArenaModule {
     }
     try {
       saveArenaSchematic(arenaName, BukkitAdapter.adapt(p.getWorld()), pos1, pos2);
-      saveArenaData(arenaName, p.getWorld(), minPoint);
+      ArenaDataHandler.createArenaData(arenaName, center);
     } catch (WorldEditException | IOException e) {
-      throw new RuntimeException();
+      throw new RuntimeException(e);
     }
   }
 }
