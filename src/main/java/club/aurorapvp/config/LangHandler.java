@@ -18,10 +18,10 @@ public class LangHandler {
   private static YamlConfiguration lang;
 
   public static void generateLangDefaults() throws IOException {
-    for (Object path : getLangFile().getKeys(false).toArray()) {
-      if (getLangFile().getString((String) path).startsWith("~") &&
-          getLangFile().getString((String) path).endsWith("~")) {
-        placeholders.put((String) path, getLangFile().getString((String) path).replace("~", ""));
+    for (Object path : getLang().getKeys(false).toArray()) {
+      if (getLang().getString((String) path).startsWith("~") &&
+          getLang().getString((String) path).endsWith("~")) {
+        placeholders.put((String) path, getLang().getString((String) path).replace("~", ""));
       }
     }
 
@@ -33,15 +33,15 @@ public class LangHandler {
     Defaults.put("pos2-set", "<gradient:#FFAA00:#FF55FF>prefix Position 2 set!");
 
     for (String path : Defaults.keySet()) {
-      if (!getLangFile().contains(path) || getLangFile().getString(path) == null) {
-        getLangFile().set(path, Defaults.get(path));
-        getLangFile().save(file);
+      if (!getLang().contains(path) || getLang().getString(path) == null) {
+        getLang().set(path, Defaults.get(path));
+        getLang().save(file);
       }
     }
   }
 
   public static Component getLangComponent(String path) {
-    String pathString = getLangFile().getString(path);
+    String pathString = getLang().getString(path);
     for (String placeholder : placeholders.keySet()) {
       if (pathString.contains(placeholder)) {
         pathString = pathString.replace(placeholder,
@@ -52,10 +52,10 @@ public class LangHandler {
   }
 
   public static void saveLangFile() throws IOException {
-    getLangFile().save(file);
+    getLang().save(file);
   }
 
-  public static YamlConfiguration getLangFile() {
+  public static YamlConfiguration getLang() {
     return lang;
   }
 
