@@ -5,17 +5,11 @@ import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import static club.aurorapvp.AuroraDuels.DataFolder;
-import static club.aurorapvp.AuroraDuels.plugin;
-import static club.aurorapvp.config.ConfigHandler.getConfig;
 import static club.aurorapvp.config.LangHandler.getLangComponent;
 import static club.aurorapvp.datahandlers.ArenaDataHandler.getArenaDataFile;
 import static club.aurorapvp.datahandlers.SchematicsHandler.pasteArenaSchematic;
@@ -33,10 +27,12 @@ public class ArenaModule {
     wandActive = true;
     Location center;
 
+    p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
     p.sendMessage(getLangComponent("set-center"));
 
-
-    wandEvent.wait();
+    synchronized (wandEvent) {
+      wandEvent.wait();
+    }
     BlockVector3 centerVector = wandActions.values().stream().findFirst().orElse(null);
     center =
         new Location(
@@ -48,7 +44,9 @@ public class ArenaModule {
 
     p.sendMessage(getLangComponent("set-pos1-and-pos2"));
     while (!posSet) {
-      wandEvent.wait();
+      synchronized (wandEvent) {
+        wandEvent.wait();
+      }
       if (wandActions.keySet().stream().findFirst().orElse(null).isLeftClick()) {
         pos1 = wandActions.values().stream().findFirst().orElse(null);
         p.sendMessage(getLangComponent("pos1-set"));

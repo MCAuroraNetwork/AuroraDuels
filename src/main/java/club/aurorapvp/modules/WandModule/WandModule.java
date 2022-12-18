@@ -9,7 +9,7 @@ public class WandModule {
   public static boolean wandActive;
   public static LinkedHashMap<Action, BlockVector3> wandActions = new LinkedHashMap<>();
   public static int getWandAction(Action action, Material hand, Material block) {
-    if (hand.equals(Material.WOODEN_HOE) && !block.isAir()) {
+    if (hand.equals(Material.IRON_HOE) && !block.isAir()) {
       if (action.isRightClick()) {
         return 1;
       } else if (action.isLeftClick()) {

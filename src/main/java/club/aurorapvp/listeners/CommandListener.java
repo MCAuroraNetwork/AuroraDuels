@@ -20,7 +20,7 @@ public class CommandListener implements CommandExecutor {
     switch (command.getName()) {
       case "createarena" -> {
         try {
-          createArena(args[0],p);
+          createArena(args[0], p);
         } catch (InterruptedException e) {
           throw new RuntimeException(e);
         }
