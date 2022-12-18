@@ -31,6 +31,9 @@ public class LangHandler {
         "<gradient:#FFAA00:#FF55FF>prefix Right click on the first position of the arena and left click on the second position");
     Defaults.put("pos1-set", "<gradient:#FFAA00:#FF55FF>prefix Position 1 set!");
     Defaults.put("pos2-set", "<gradient:#FFAA00:#FF55FF>prefix Position 2 set!");
+    Defaults.put("arena-reset", "<gradient:#FFAA00:#FF55FF>prefix Arena reset successfully!");
+    Defaults.put("arena-deleted", "<gradient:#FFAA00:#FF55FF>prefix Arena deleted");
+    Defaults.put("arena-does-not-exist", "<gradient:#FFAA00:#FF55FF>prefix Arena does not exist!");
 
     for (String path : Defaults.keySet()) {
       if (!getLang().contains(path) || getLang().getString(path) == null) {

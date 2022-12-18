@@ -1,17 +1,18 @@
 package club.aurorapvp.datahandlers;
 
-import static club.aurorapvp.AuroraDuels.DataFolder;
+import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.bukkit.Location;
-import org.bukkit.configuration.file.YamlConfiguration;
+import static club.aurorapvp.AuroraDuels.DataFolder;
 
 public class ArenaDataHandler {
 
   public static void createArenaData(String arenaName, Location center) {
-    YamlConfiguration arenaData = YamlConfiguration.loadConfiguration(new File(DataFolder, "/arenas/" + arenaName));
+    YamlConfiguration arenaData =
+        YamlConfiguration.loadConfiguration(new File(DataFolder, "/arenas/" + arenaName + ".yml"));
 
     arenaData.set("arena.center", center);
 
@@ -23,7 +24,7 @@ public class ArenaDataHandler {
   }
 
   public static void saveArenaData(String arenaName) throws IOException {
-    File file = new File(DataFolder, "/arenas/" + arenaName);
+    File file = new File(DataFolder, "/arenas/" + arenaName + ".yml");
     YamlConfiguration arenaData = YamlConfiguration.loadConfiguration(file);
 
     if (!file.exists()) {
@@ -32,5 +33,14 @@ public class ArenaDataHandler {
     }
 
     arenaData.save(file);
+  }
+
+  public static File getArenaDataFile(String arenaName) {
+    File file = new File(DataFolder, "/arenas/" + arenaName + ".yml");
+    if (file.exists()) {
+      return file;
+    } else {
+      return null;
+    }
   }
 }

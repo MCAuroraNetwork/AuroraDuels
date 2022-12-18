@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.event.block.Action;
 
 public class WandModule {
-  public static boolean wandActive = false;
+  public static boolean wandActive;
   public static LinkedHashMap<Action, BlockVector3> wandActions = new LinkedHashMap<>();
   public static int getWandAction(Action action, Material hand, Material block) {
     if (hand.equals(Material.WOODEN_HOE) && !block.isAir()) {

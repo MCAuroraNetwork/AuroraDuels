@@ -30,16 +30,12 @@ public class SchematicsHandler {
     EditSession session = WorldEdit.getInstance().newEditSessionBuilder().build();
     File file = new File(DataFolder, "/arena_schematics/" + arenaName + ".schem");
 
-    // Copies region file to clipboard
-
     CuboidRegion region = new CuboidRegion(world, pos1, pos2);
     BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     ForwardExtentCopy forwardExtentCopy =
         new ForwardExtentCopy(session, region, clipboard, region.getMinimumPoint());
 
     Operations.complete(forwardExtentCopy);
-
-    // Writes clipboard to schematic file
 
     ClipboardWriter writer =
         BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(file));

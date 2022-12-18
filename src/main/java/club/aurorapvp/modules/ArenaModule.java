@@ -1,7 +1,6 @@
 package club.aurorapvp.modules;
 
 import club.aurorapvp.datahandlers.ArenaDataHandler;
-import club.aurorapvp.datahandlers.SchematicsHandler;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -15,8 +14,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static club.aurorapvp.AuroraDuels.DataFolder;
+import static club.aurorapvp.AuroraDuels.plugin;
 import static club.aurorapvp.config.ConfigHandler.getConfig;
 import static club.aurorapvp.config.LangHandler.getLangComponent;
+import static club.aurorapvp.datahandlers.ArenaDataHandler.getArenaDataFile;
 import static club.aurorapvp.datahandlers.SchematicsHandler.pasteArenaSchematic;
 import static club.aurorapvp.datahandlers.SchematicsHandler.saveArenaSchematic;
 import static club.aurorapvp.listeners.EventListener.wandEvent;
@@ -27,7 +28,7 @@ public class ArenaModule {
 
   public static void setupArenaLogic() {
     ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    Runnable clearViolations = ArenaModule::resetArenas;
+    Runnable clearViolations = ArenaModule::resetAllArenas;
     executor.scheduleAtFixedRate(
         clearViolations, 0, getConfig().getInt("arenas.reset.interval"), TimeUnit.MINUTES);
   }
@@ -41,7 +42,6 @@ public class ArenaModule {
 
     p.sendMessage(getLangComponent("set-center"));
 
-    // Sets center value as a Location
 
     wandEvent.wait();
     BlockVector3 centerVector = wandActions.values().stream().findFirst().orElse(null);
@@ -52,7 +52,6 @@ public class ArenaModule {
             centerVector.getBlockY(),
             centerVector.getBlockZ());
 
-    // Sets position 1 and 2 when wand event is fired
 
     p.sendMessage(getLangComponent("set-pos1-and-pos2"));
     while (!posSet) {
@@ -76,9 +75,28 @@ public class ArenaModule {
     }
   }
 
-  public static void resetArenas() {
+  public static void resetArena(String arenaName, Player p) {
+    if (getArenaDataFile(arenaName) != null) {
+      pasteArenaSchematic(getArenaDataFile(arenaName));
+      p.sendMessage(getLangComponent("arena-reset"));
+    } else {
+      p.sendMessage(getLangComponent("arena-does-not-exist"));
+    }
+  }
+
+  public static void deleteArena(String arenaName, Player p) {
+    if (getArenaDataFile(arenaName) != null) {
+      getArenaDataFile(arenaName).delete();
+      p.sendMessage(getLangComponent("arena-deleted"));
+    } else {
+      p.sendMessage(getLangComponent("arena-does-not-exist"));
+    }
+  }
+
+  public static void resetAllArenas() {
     for (File arenaData : new File(DataFolder, "/arenas/").listFiles()) {
       pasteArenaSchematic(arenaData);
     }
+    plugin.getLogger().info("All arenas reset");
   }
 }

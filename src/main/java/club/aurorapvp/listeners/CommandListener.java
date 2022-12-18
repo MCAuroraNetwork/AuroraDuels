@@ -6,11 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-
-import static club.aurorapvp.AuroraDuels.DataFolder;
-import static club.aurorapvp.datahandlers.SchematicsHandler.pasteArenaSchematic;
-import static club.aurorapvp.modules.ArenaModule.createArena;
+import static club.aurorapvp.modules.ArenaModule.*;
 
 public class CommandListener implements CommandExecutor {
   private Player p;
@@ -29,8 +25,8 @@ public class CommandListener implements CommandExecutor {
           throw new RuntimeException(e);
         }
       }
-      case "resetarena" ->
-        pasteArenaSchematic(new File(DataFolder, "/arenas/" + args[0] + ".schem"));
+      case "resetarena" -> resetArena(args[0], p);
+      case "deletearena" -> deleteArena(args[0], p);
     }
     return true;
   }
