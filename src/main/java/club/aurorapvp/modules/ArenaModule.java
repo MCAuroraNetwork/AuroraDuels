@@ -26,13 +26,6 @@ import static club.aurorapvp.modules.WandModule.WandModule.wandActive;
 
 public class ArenaModule {
 
-  public static void setupArenaLogic() {
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    Runnable clearViolations = ArenaModule::resetAllArenas;
-    executor.scheduleAtFixedRate(
-        clearViolations, 0, getConfig().getInt("arenas.reset.interval"), TimeUnit.MINUTES);
-  }
-
   public static void createArena(String arenaName, Player p) throws InterruptedException {
     BlockVector3 pos1 = null;
     BlockVector3 pos2 = null;
@@ -91,12 +84,5 @@ public class ArenaModule {
     } else {
       p.sendMessage(getLangComponent("arena-does-not-exist"));
     }
-  }
-
-  public static void resetAllArenas() {
-    for (File arenaData : new File(DataFolder, "/arenas/").listFiles()) {
-      pasteArenaSchematic(arenaData);
-    }
-    plugin.getLogger().info("All arenas reset");
   }
 }

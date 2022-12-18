@@ -4,6 +4,7 @@ import static club.aurorapvp.config.ConfigHandler.generateConfigDefaults;
 import static club.aurorapvp.config.LangHandler.generateLangDefaults;
 import static club.aurorapvp.config.LangHandler.reloadLang;
 
+import club.aurorapvp.config.ConfigHandler;
 import club.aurorapvp.listeners.CommandListener;
 import club.aurorapvp.listeners.EventListener;
 import java.io.File;
@@ -26,15 +27,15 @@ public final class AuroraDuels extends JavaPlugin {
   @Override
   public void onEnable() {
     // Register important variables
-    plugin = Bukkit.getPluginManager().getPlugin("AuroraKits");
-    DataFolder = Bukkit.getServer().getPluginManager().getPlugin("AuroraKits").getDataFolder();
+    plugin = Bukkit.getPluginManager().getPlugin("AuroraDuels");
+    DataFolder = Bukkit.getServer().getPluginManager().getPlugin("AuroraDuels").getDataFolder();
     serializeComponent = PlainTextComponentSerializer.plainText();
     deserializeComponent = MiniMessage.miniMessage();
 
     // Setup configs
     try {
       reloadLang();
-      reloadConfig();
+      ConfigHandler.reloadConfig();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
