@@ -15,15 +15,4 @@ public class Wand {
     wandActive.put("right", false);
     wandActive.put("left", false);
   }
-
-  public static int getWandAction(Action action, Material hand, Material block) {
-    if (hand.equals(Material.IRON_HOE) && !block.isAir()) {
-      if (action.isRightClick()) {
-        return 1;
-      } else if (action.isLeftClick()) {
-        return 2;
-      }
-    }
-    return 0;
-  }
 }

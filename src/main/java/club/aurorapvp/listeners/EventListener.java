@@ -1,6 +1,6 @@
 package club.aurorapvp.listeners;
 
-import club.aurorapvp.wand.WandUseEvent;
+import club.aurorapvp.wand.WandEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -11,7 +11,7 @@ import static club.aurorapvp.wand.Wand.wandActive;
 
 public class EventListener implements Listener {
 
-  public static final WandUseEvent wandEvent = new WandUseEvent(new EventListener());
+  public static final WandEvent wandEvent = new WandEvent(new EventListener());
 
   @EventHandler
   public void onWandUse(PlayerInteractEvent event) {
