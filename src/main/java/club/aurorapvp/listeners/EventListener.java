@@ -1,24 +1,25 @@
 package club.aurorapvp.listeners;
 
-import static club.aurorapvp.modules.WandModule.WandModule.getWandAction;
-import static club.aurorapvp.modules.WandModule.WandModule.wandActive;
-import static com.sk89q.worldedit.bukkit.BukkitAdapter.asBlockVector;
-
-import club.aurorapvp.modules.WandModule.WandUseEvent;
+import club.aurorapvp.wand.WandUseEvent;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import static club.aurorapvp.wand.Wand.wandActive;
 
 public class EventListener implements Listener {
 
   public static final WandUseEvent wandEvent = new WandUseEvent(new EventListener());
 
   @EventHandler
-  public void onPlayerInteract(PlayerInteractEvent event) {
-    if (wandActive) {
-      if (getWandAction(event.getAction(), event.getItem().getType(),
-          event.getClickedBlock().getType()) != 0) {
-        wandEvent.trigger(event.getAction(), asBlockVector(event.getClickedBlock().getLocation()));
+  public void onWandUse(PlayerInteractEvent event) {
+    if (!event.getClickedBlock().getType().isAir() && event.getItem().getType().equals(Material.IRON_HOE)) {
+      if (wandActive.get("right")) {
+        wandEvent.trigger(event.getAction(), BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
+      } else if (wandActive.get("left")) {
+        wandEvent.trigger(event.getAction(), BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
       }
     }
   }

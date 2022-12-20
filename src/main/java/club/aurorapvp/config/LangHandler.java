@@ -28,12 +28,15 @@ public class LangHandler {
     Defaults.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
     Defaults.put("set-center", "<gradient:#FFAA00:#FF55FF>prefix Click on the center of the arena");
     Defaults.put("set-pos1-and-pos2",
-        "<gradient:#FFAA00:#FF55FF>prefix Right click on the first position of the arena and left click on the second position");
+        "<gradient:#FFAA00:#FF55FF>prefix Left click on the first position of the arena and right click on the second position");
+    Defaults.put("set-pos1", "<gradient:#FFAA00:#FF55FF>prefix Left click to set Position 1");
+    Defaults.put("set-pos2", "<gradient:#FFAA00:#FF55FF>prefix Right click to set Position 2");
     Defaults.put("pos1-set", "<gradient:#FFAA00:#FF55FF>prefix Position 1 set!");
     Defaults.put("pos2-set", "<gradient:#FFAA00:#FF55FF>prefix Position 2 set!");
     Defaults.put("arena-reset", "<gradient:#FFAA00:#FF55FF>prefix Arena reset successfully!");
     Defaults.put("arena-deleted", "<gradient:#FFAA00:#FF55FF>prefix Arena deleted");
     Defaults.put("arena-does-not-exist", "<gradient:#FFAA00:#FF55FF>prefix Arena does not exist!");
+    Defaults.put("arena-already-being-created", "<gradient:#FFAA00:#FF55FF>prefix There is already an Arena being created!");
 
     for (String path : Defaults.keySet()) {
       if (!getLang().contains(path) || getLang().getString(path) == null) {

@@ -3,6 +3,7 @@ package club.aurorapvp;
 import static club.aurorapvp.config.ConfigHandler.generateConfigDefaults;
 import static club.aurorapvp.config.LangHandler.generateLangDefaults;
 import static club.aurorapvp.config.LangHandler.reloadLang;
+import static club.aurorapvp.wand.Wand.setupWand;
 
 import club.aurorapvp.config.ConfigHandler;
 import club.aurorapvp.listeners.CommandListener;
@@ -27,6 +28,7 @@ public final class AuroraDuels extends JavaPlugin {
   @Override
   public void onEnable() {
     // Register important variables
+    setupWand();
     plugin = Bukkit.getPluginManager().getPlugin("AuroraDuels");
     DataFolder = Bukkit.getServer().getPluginManager().getPlugin("AuroraDuels").getDataFolder();
     serializeComponent = PlainTextComponentSerializer.plainText();

@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static club.aurorapvp.modules.ArenaModule.*;
+import static club.aurorapvp.modules.Arena.*;
 
 public class CommandListener implements CommandExecutor {
   private Player p;
@@ -18,13 +18,7 @@ public class CommandListener implements CommandExecutor {
     }
 
     switch (command.getName()) {
-      case "createarena" -> {
-        try {
-          createArena(args[0], p);
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-        }
-      }
+      case "createarena" -> startArenaCreation(args[0], p);
       case "resetarena" -> resetArena(args[0], p);
       case "deletearena" -> deleteArena(args[0], p);
     }
