@@ -30,7 +30,7 @@ public final class AuroraDuels extends JavaPlugin {
     // Register important variables
     setupWand();
     plugin = Bukkit.getPluginManager().getPlugin("AuroraDuels");
-    DataFolder = Bukkit.getServer().getPluginManager().getPlugin("AuroraDuels").getDataFolder();
+    DataFolder = plugin.getDataFolder();
     serializeComponent = PlainTextComponentSerializer.plainText();
     deserializeComponent = MiniMessage.miniMessage();
 

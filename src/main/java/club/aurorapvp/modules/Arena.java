@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.io.IOException;
 
+import static club.aurorapvp.AuroraDuels.plugin;
 import static club.aurorapvp.config.LangHandler.getLangComponent;
 import static club.aurorapvp.datahandlers.ArenaDataHandler.getArenaDataFile;
 import static club.aurorapvp.datahandlers.SchematicsHandler.pasteArenaSchematic;
@@ -85,6 +86,11 @@ public class Arena implements WandListener {
         } catch (WorldEditException | IOException e) {
           throw new RuntimeException(e);
         }
+        creationPhase = 0;
+      }
+      default -> {
+        plugin.getLogger().warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
+        creationPhase = 0;
       }
     }
   }
