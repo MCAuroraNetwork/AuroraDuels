@@ -1,14 +1,13 @@
 package club.aurorapvp.config;
 
-import static club.aurorapvp.AuroraDuels.DataFolder;
-import static club.aurorapvp.AuroraDuels.deserializeComponent;
-import static club.aurorapvp.AuroraDuels.plugin;
+import net.kyori.adventure.text.Component;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import net.kyori.adventure.text.Component;
-import org.bukkit.configuration.file.YamlConfiguration;
+
+import static club.aurorapvp.AuroraDuels.*;
 
 public class LangHandler {
   private static final HashMap<String, String> placeholders = new HashMap<>();
@@ -26,7 +25,13 @@ public class LangHandler {
     }
 
     Defaults.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
-    Defaults.put("set-center", "<gradient:#FFAA00:#FF55FF>prefix Click on the center of the arena");
+    Defaults.put(
+        "set-spawn1-and-spawn2",
+        "<gradient:#FFAA00:#FF55FF>prefix Left click on the first spawn point of the arena and right click on the second spawn point");
+    Defaults.put("set-spawn1", "<gradient:#FFAA00:#FF55FF>prefix Left click to set first spawn");
+    Defaults.put("set-spawn2", "<gradient:#FFAA00:#FF55FF>prefix Right click to set second spawn");
+    Defaults.put("spawn1-set", "<gradient:#FFAA00:#FF55FF>prefix First spawn set!");
+    Defaults.put("spawn2-set", "<gradient:#FFAA00:#FF55FF>prefix Second spawn set!");
     Defaults.put("set-pos1-and-pos2",
         "<gradient:#FFAA00:#FF55FF>prefix Left click on the first position of the arena and right click on the second position");
     Defaults.put("set-pos1", "<gradient:#FFAA00:#FF55FF>prefix Left click to set Position 1");
