@@ -1,12 +1,10 @@
 package club.aurorapvp.modules;
 
-import club.aurorapvp.datahandlers.ArenaDataHandler;
-import club.aurorapvp.wand.WandListener;
 import club.aurorapvp.wand.WandEvent;
+import club.aurorapvp.wand.WandListener;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
