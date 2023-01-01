@@ -1,12 +1,10 @@
 package club.aurorapvp;
 
-import static club.aurorapvp.config.Lang.reload;
-import static club.aurorapvp.wand.Wand.setup;
-
 import club.aurorapvp.config.Config;
 import club.aurorapvp.config.Lang;
 import club.aurorapvp.listeners.Commands;
 import club.aurorapvp.listeners.Events;
+import club.aurorapvp.wand.Wand;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +24,7 @@ public final class AuroraDuels extends JavaPlugin {
   @Override
   public void onEnable() {
     // Register important variables
-    setup();
+    Wand.setup();
     PLUGIN = this;
     DATAFOLDER = this.getDataFolder();
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
@@ -34,7 +32,7 @@ public final class AuroraDuels extends JavaPlugin {
 
     // Setup configs
     try {
-      reload();
+      Lang.reload();
       Config.reload();
     } catch (IOException e) {
       throw new RuntimeException(e);

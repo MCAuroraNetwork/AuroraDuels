@@ -8,42 +8,40 @@ import java.util.EventObject;
 import java.util.HashSet;
 import java.util.Set;
 
-import static club.aurorapvp.wand.Wand.actions;
-
 public class WandEvent extends EventObject {
   @Serial private static final long serialVersionUID = 1L;
 
-  private Action wandAction;
-  private BlockVector3 wandVector;
+  private Action action;
+  private BlockVector3 vector;
   private Set<WandListener> listeners = new HashSet<>();
 
   public WandEvent(Object source) {
     super(source);
   }
 
-  public Action getWandAction() {
-    return wandAction;
+  public Action getAction() {
+    return action;
   }
 
-  public BlockVector3 getWandVector() {
-    return wandVector;
+  public BlockVector3 getVector() {
+    return vector;
   }
 
   public void trigger(Action action, BlockVector3 pos) {
-    wandAction = action;
-    wandVector = pos;
-    actions.put(action, pos);
+    this.action = action;
+    vector = pos;
+    Wand.actions.put(action, pos);
 
     for (WandListener listener : listeners) {
       listener.onWandEvent(this);
     }
   }
 
-  public void addWandListener(WandListener listener) {
+  public void addListener(WandListener listener) {
     listeners.add(listener);
   }
 
-  public void removeWandListener(WandListener listener) {
+  public void removeListener(WandListener listener) {
     listeners.remove(listener);
   }
 }
