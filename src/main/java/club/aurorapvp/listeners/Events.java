@@ -1,5 +1,6 @@
 package club.aurorapvp.listeners;
 
+import club.aurorapvp.wand.Wand;
 import club.aurorapvp.wand.WandEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import org.bukkit.Material;
@@ -7,18 +8,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import static club.aurorapvp.wand.Wand.wandActive;
+public class Events implements Listener {
 
-public class EventListener implements Listener {
-
-  public static final WandEvent wandEvent = new WandEvent(new EventListener());
+  public static final WandEvent wandEvent = new WandEvent(new Events());
 
   @EventHandler
   public void onWandUse(PlayerInteractEvent event) {
-    if (!event.getClickedBlock().getType().isAir() && event.getItem().getType().equals(Material.IRON_HOE)) {
-      if (wandActive.get("right")) {
+    if (!event.getClickedBlock().getType().isAir() && event.getPlayer().getInventory().getItemInMainHand().equals(Material.IRON_HOE)) {
+      if (Wand.active.get("right")) {
         wandEvent.trigger(event.getAction(), BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
-      } else if (wandActive.get("left")) {
+      } else if (Wand.active.get("left")) {
         wandEvent.trigger(event.getAction(), BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
       }
     }

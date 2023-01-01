@@ -1,5 +1,10 @@
 package club.aurorapvp.modules;
 
+import club.aurorapvp.AuroraDuels;
+import club.aurorapvp.config.Lang;
+import club.aurorapvp.datahandlers.ArenaData;
+import club.aurorapvp.datahandlers.Schematics;
+import club.aurorapvp.wand.Wand;
 import club.aurorapvp.wand.WandEvent;
 import club.aurorapvp.wand.WandListener;
 import com.sk89q.worldedit.WorldEditException;
@@ -11,14 +16,6 @@ import org.bukkit.entity.Player;
 
 import java.io.IOException;
 
-import static club.aurorapvp.AuroraDuels.plugin;
-import static club.aurorapvp.config.LangHandler.getLangComponent;
-import static club.aurorapvp.datahandlers.ArenaDataHandler.createArenaData;
-import static club.aurorapvp.datahandlers.ArenaDataHandler.getArenaDataFile;
-import static club.aurorapvp.datahandlers.SchematicsHandler.pasteArenaSchematic;
-import static club.aurorapvp.datahandlers.SchematicsHandler.saveArenaSchematic;
-import static club.aurorapvp.wand.Wand.wandActions;
-
 public class Arena implements WandListener {
   private static int creationPhase = 0;
   private static BlockVector3 spawn1 = null;
@@ -29,41 +26,43 @@ public class Arena implements WandListener {
   private static World arenaWorld;
   private static Player p;
 
-  public static void startArenaCreation(String arena, Player player) {
+  public static void startCreation(String arena, Player player) {
     if (creationPhase == 0) {
       p = player;
       arenaName = arena;
+      Wand.active.put("right", true);
+      Wand.active.put("left", true);
 
       creationPhase = 1;
-      createArena(arenaName, p);
+      create(arenaName, p);
     } else {
-      p.sendMessage(getLangComponent("arena-already-being-created"));
+      p.sendMessage(Lang.getComponent("arena-already-being-created"));
     }
   }
 
   @Override
   public void onWandEvent(WandEvent event) {
     if (creationPhase != 0 ) {
-      createArena(arenaName, p);
+      create(arenaName, p);
     }
   }
 
-  public static void createArena(String arenaName, Player p) {
+  public static void create(String arenaName, Player p) {
     switch (creationPhase) {
       case 1 -> {
         p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
-        p.sendMessage(getLangComponent("set-spawn1-and-spawn2"));
+        p.sendMessage(Lang.getComponent("set-spawn1-and-spawn2"));
         creationPhase++;
       }
       case 2 -> {
-        if (wandActions.keySet().stream().findFirst().orElse(null).isLeftClick()) {
-          spawn1 = wandActions.values().stream().findFirst().orElse(null);
-          p.sendMessage(getLangComponent("spawn1-set"));
-          p.sendMessage(getLangComponent("set-spawn2"));
-        } else if (wandActions.keySet().stream().findFirst().orElse(null).isRightClick()) {
-          spawn2 = wandActions.values().stream().findFirst().orElse(null);
-          p.sendMessage(getLangComponent("spawn2-set"));
-          p.sendMessage(getLangComponent("set-spawn1"));
+        if (Wand.actions.keySet().stream().findFirst().orElse(null).isLeftClick()) {
+          spawn1 = Wand.actions.values().stream().findFirst().orElse(null);
+          p.sendMessage(Lang.getComponent("spawn1-set"));
+          p.sendMessage(Lang.getComponent("set-spawn2"));
+        } else if (Wand.actions.keySet().stream().findFirst().orElse(null).isRightClick()) {
+          spawn2 = Wand.actions.values().stream().findFirst().orElse(null);
+          p.sendMessage(Lang.getComponent("spawn2-set"));
+          p.sendMessage(Lang.getComponent("set-spawn1"));
         }
         if (spawn1 != null && spawn2 != null) {
           arenaWorld = p.getWorld();
@@ -71,14 +70,14 @@ public class Arena implements WandListener {
         }
       }
       case 3 -> {
-      if (wandActions.keySet().stream().findFirst().orElse(null).isLeftClick()) {
-        pos1 = wandActions.values().stream().findFirst().orElse(null);
-        p.sendMessage(getLangComponent("pos1-set"));
-        p.sendMessage(getLangComponent("set-pos2"));
-      } else if (wandActions.keySet().stream().findFirst().orElse(null).isRightClick()) {
-        pos2 = wandActions.values().stream().findFirst().orElse(null);
-        p.sendMessage(getLangComponent("pos2-set"));
-        p.sendMessage(getLangComponent("set-pos1"));
+      if (Wand.actions.keySet().stream().findFirst().orElse(null).isLeftClick()) {
+        pos1 = Wand.actions.values().stream().findFirst().orElse(null);
+        p.sendMessage(Lang.getComponent("pos1-set"));
+        p.sendMessage(Lang.getComponent("set-pos2"));
+      } else if (Wand.actions.keySet().stream().findFirst().orElse(null).isRightClick()) {
+        pos2 = Wand.actions.values().stream().findFirst().orElse(null);
+        p.sendMessage(Lang.getComponent("pos2-set"));
+        p.sendMessage(Lang.getComponent("set-pos1"));
       }
       if (pos1 != null && pos2 != null) {
         creationPhase++;
@@ -86,35 +85,35 @@ public class Arena implements WandListener {
     }
       case 4 -> {
         try {
-          saveArenaSchematic(arenaName, BukkitAdapter.adapt(p.getWorld()), pos1, pos2);
-          createArenaData(arenaName, arenaWorld, spawn1, spawn2);
+          Schematics.save(arenaName, BukkitAdapter.adapt(p.getWorld()), pos1, pos2);
+          ArenaData.create(arenaName, arenaWorld, spawn1, spawn2);
         } catch (WorldEditException | IOException e) {
           throw new RuntimeException(e);
         }
         creationPhase = 0;
       }
       default -> {
-        plugin.getLogger().warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
+        AuroraDuels.PLUGIN.getLogger().warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
         creationPhase = 0;
       }
     }
   }
 
-  public static void resetArena(String arenaName, Player p) {
-    if (getArenaDataFile(arenaName) != null) {
-      pasteArenaSchematic(getArenaDataFile(arenaName));
-      p.sendMessage(getLangComponent("arena-reset"));
+  public static void reset(String arenaName, Player p) {
+    if (ArenaData.get(arenaName) != null) {
+      Schematics.paste(ArenaData.get(arenaName));
+      p.sendMessage(Lang.getComponent("arena-reset"));
     } else {
-      p.sendMessage(getLangComponent("arena-does-not-exist"));
+      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
-  public static void deleteArena(String arenaName, Player p) {
-    if (getArenaDataFile(arenaName) != null) {
-      getArenaDataFile(arenaName).delete();
-      p.sendMessage(getLangComponent("arena-deleted"));
+  public static void delete(String arenaName, Player p) {
+    if (ArenaData.get(arenaName) != null) {
+      ArenaData.get(arenaName).delete();
+      p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
-      p.sendMessage(getLangComponent("arena-does-not-exist"));
+      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 }

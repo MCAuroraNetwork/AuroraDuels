@@ -2,7 +2,6 @@ package club.aurorapvp.modules;
 
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Queue {

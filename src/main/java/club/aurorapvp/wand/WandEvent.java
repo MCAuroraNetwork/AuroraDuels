@@ -8,7 +8,7 @@ import java.util.EventObject;
 import java.util.HashSet;
 import java.util.Set;
 
-import static club.aurorapvp.wand.Wand.wandActions;
+import static club.aurorapvp.wand.Wand.actions;
 
 public class WandEvent extends EventObject {
   @Serial private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ public class WandEvent extends EventObject {
   public void trigger(Action action, BlockVector3 pos) {
     wandAction = action;
     wandVector = pos;
-    wandActions.put(action, pos);
+    actions.put(action, pos);
 
     for (WandListener listener : listeners) {
       listener.onWandEvent(this);

@@ -1,5 +1,6 @@
 package club.aurorapvp.datahandlers;
 
+import club.aurorapvp.AuroraDuels;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
@@ -21,14 +22,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static club.aurorapvp.AuroraDuels.DataFolder;
+public class Schematics {
 
-public class SchematicsHandler {
-
-  public static void saveArenaSchematic(String arenaName, World world, BlockVector3 pos1,
-                                        BlockVector3 pos2) throws WorldEditException, IOException {
+  public static void save(String arenaName, World world, BlockVector3 pos1,
+                          BlockVector3 pos2) throws WorldEditException, IOException {
     EditSession session = WorldEdit.getInstance().newEditSessionBuilder().build();
-    File file = new File(DataFolder, "/arena_schematics/" + arenaName + ".schem");
+    File file = new File(AuroraDuels.DATAFOLDER, "/arena_schematics/" + arenaName + ".schem");
 
     CuboidRegion region = new CuboidRegion(world, pos1, pos2);
     BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
@@ -42,7 +41,7 @@ public class SchematicsHandler {
     writer.write(clipboard);
   }
 
-  public static void pasteArenaSchematic(File arenaData) {
+  public static void paste(File arenaData) {
     Clipboard clipboard;
 
       World world =
