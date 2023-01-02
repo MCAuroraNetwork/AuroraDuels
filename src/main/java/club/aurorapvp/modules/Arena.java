@@ -55,27 +55,35 @@ public class Arena implements WandListener {
         creationPhase++;
       }
       case 2 -> {
-        if (Wand.actions.keySet().stream().findFirst().orElse(null).isLeftClick()) {
-          spawn1 = Wand.actions.values().stream().findFirst().orElse(null);
+        if (Wand.actions.lastKey().isLeftClick()) {
+          spawn1 = Wand.actions.get(Wand.actions.lastKey());
           p.sendMessage(Lang.getComponent("spawn1-set"));
-          p.sendMessage(Lang.getComponent("set-spawn2"));
-        } else if (Wand.actions.keySet().stream().findFirst().orElse(null).isRightClick()) {
-          spawn2 = Wand.actions.values().stream().findFirst().orElse(null);
+          if (spawn2 == null) {
+            p.sendMessage(Lang.getComponent("set-spawn2"));
+
+          }
+        } else if (Wand.actions.lastKey().isRightClick()) {
+          spawn2 = Wand.actions.get(Wand.actions.lastKey());
           p.sendMessage(Lang.getComponent("spawn2-set"));
-          p.sendMessage(Lang.getComponent("set-spawn1"));
+          if (spawn1 == null) {
+            p.sendMessage(Lang.getComponent("set-spawn1"));
+
+          }
         }
         if (spawn1 != null && spawn2 != null) {
+          Lang.getComponent("spawns-set");
+          Lang.getComponent("set-pos1-and-pos2");
           arenaWorld = p.getWorld();
           creationPhase++;
         }
       }
       case 3 -> {
-      if (Wand.actions.keySet().stream().findFirst().orElse(null).isLeftClick()) {
-        pos1 = Wand.actions.values().stream().findFirst().orElse(null);
+      if (Wand.actions.lastKey().isLeftClick()) {
+        pos1 = Wand.actions.get(Wand.actions.lastKey());
         p.sendMessage(Lang.getComponent("pos1-set"));
         p.sendMessage(Lang.getComponent("set-pos2"));
-      } else if (Wand.actions.keySet().stream().findFirst().orElse(null).isRightClick()) {
-        pos2 = Wand.actions.values().stream().findFirst().orElse(null);
+      } else if (Wand.actions.lastKey().isRightClick()) {
+        pos2 = Wand.actions.get(Wand.actions.lastKey());
         p.sendMessage(Lang.getComponent("pos2-set"));
         p.sendMessage(Lang.getComponent("set-pos1"));
       }
