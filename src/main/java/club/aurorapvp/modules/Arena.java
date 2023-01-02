@@ -67,7 +67,6 @@ public class Arena implements WandListener {
           p.sendMessage(Lang.getComponent("spawn2-set"));
           if (spawn1 == null) {
             p.sendMessage(Lang.getComponent("set-spawn1"));
-
           }
         }
         if (spawn1 != null && spawn2 != null) {
@@ -81,25 +80,27 @@ public class Arena implements WandListener {
       if (Wand.getLastAction().isLeftClick()) {
         pos1 = Wand.getLastVector();
         p.sendMessage(Lang.getComponent("pos1-set"));
-        p.sendMessage(Lang.getComponent("set-pos2"));
+        if (pos2 == null) {
+          p.sendMessage(Lang.getComponent("set-pos2"));
+        }
       } else if (Wand.getLastAction().isRightClick()) {
         pos2 = Wand.getLastVector();
         p.sendMessage(Lang.getComponent("pos2-set"));
-        p.sendMessage(Lang.getComponent("set-pos1"));
+        if (pos1 == null) {
+          p.sendMessage(Lang.getComponent("set-pos1"));
+        }
       }
       if (pos1 != null && pos2 != null) {
-        creationPhase++;
-      }
-    }
-      case 4 -> {
         try {
           Schematics.save(arenaName, BukkitAdapter.adapt(p.getWorld()), pos1, pos2);
           ArenaData.create(arenaName, arenaWorld, spawn1, spawn2);
+          p.sendMessage(Lang.getComponent("arena-created"));
         } catch (WorldEditException | IOException e) {
           throw new RuntimeException(e);
         }
         creationPhase = 0;
       }
+    }
       default -> {
         AuroraDuels.PLUGIN.getLogger().warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
         creationPhase = 0;
