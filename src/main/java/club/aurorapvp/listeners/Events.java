@@ -1,5 +1,6 @@
 package club.aurorapvp.listeners;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.wand.Wand;
 import club.aurorapvp.wand.WandEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;

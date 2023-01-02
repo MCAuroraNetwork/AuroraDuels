@@ -3,21 +3,22 @@ package club.aurorapvp.wand;
 import com.sk89q.worldedit.math.BlockVector3;
 
 import java.util.HashMap;
-import org.apache.commons.collections4.map.LinkedMap;
+import java.util.LinkedList;
 import org.bukkit.event.block.Action;
 
 public class Wand {
   private static final HashMap<String, Boolean> ACTIVE = new HashMap<>();
-  public static LinkedMap<Action, BlockVector3> actions = new LinkedMap<>();
+  public static LinkedList<Action> actions = new LinkedList<>();
+  public static LinkedList<BlockVector3> vectors = new LinkedList<>();
   public static void setup() {
     ACTIVE.put("right", false);
     ACTIVE.put("left", false);
   }
   public static Action getLastAction() {
-    return Wand.actions.lastKey();
+    return actions.getLast();
   }
   public static BlockVector3 getLastVector() {
-    return Wand.actions.get(Wand.actions.lastKey());
+    return vectors.getLast();
   }
   public static boolean isActive(Action action) {
     return (ACTIVE.get("left") && action.isLeftClick()) || (ACTIVE.get("right") && action.isRightClick());
