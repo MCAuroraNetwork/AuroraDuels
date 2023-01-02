@@ -11,9 +11,9 @@ import java.util.Set;
 public class WandEvent extends EventObject {
   @Serial private static final long serialVersionUID = 1L;
 
-  private Action action;
-  private BlockVector3 vector;
-  private Set<WandListener> listeners = new HashSet<>();
+  private static Action action;
+  private static BlockVector3 vector;
+  private static Set<WandListener> listeners = new HashSet<>();
 
   public WandEvent(Object source) {
     super(source);
@@ -27,17 +27,17 @@ public class WandEvent extends EventObject {
     return vector;
   }
 
-  public void trigger(Action action, BlockVector3 pos) {
-    this.action = action;
-    vector = pos;
-    Wand.actions.put(action, pos);
+  public void trigger(Action action, BlockVector3 vector) {
+    WandEvent.action = action;
+    WandEvent.vector = vector;
+    Wand.actions.put(action, vector);
 
     for (WandListener listener : listeners) {
       listener.onWandEvent(this);
     }
   }
 
-  public void addListener(WandListener listener) {
+  public void registerListener(WandListener listener) {
     listeners.add(listener);
   }
 
