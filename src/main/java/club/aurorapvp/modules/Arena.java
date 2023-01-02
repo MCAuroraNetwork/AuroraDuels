@@ -30,8 +30,8 @@ public class Arena implements WandListener {
     if (creationPhase == 0) {
       Arena.p = p;
       arenaName = arena;
-      Wand.active.put("right", true);
-      Wand.active.put("left", true);
+      Wand.setActive("right", true);
+      Wand.setActive("left", true);
 
       creationPhase = 1;
       run(arenaName, p);
@@ -55,15 +55,15 @@ public class Arena implements WandListener {
         creationPhase++;
       }
       case 2 -> {
-        if (Wand.actions.lastKey().isLeftClick()) {
-          spawn1 = Wand.actions.get(Wand.actions.lastKey());
+        if (Wand.getLastAction().isLeftClick()) {
+          spawn1 = Wand.getLastVector();
           p.sendMessage(Lang.getComponent("spawn1-set"));
           if (spawn2 == null) {
             p.sendMessage(Lang.getComponent("set-spawn2"));
 
           }
-        } else if (Wand.actions.lastKey().isRightClick()) {
-          spawn2 = Wand.actions.get(Wand.actions.lastKey());
+        } else if (Wand.getLastAction().isRightClick()) {
+          spawn2 = Wand.getLastVector();
           p.sendMessage(Lang.getComponent("spawn2-set"));
           if (spawn1 == null) {
             p.sendMessage(Lang.getComponent("set-spawn1"));
@@ -78,12 +78,12 @@ public class Arena implements WandListener {
         }
       }
       case 3 -> {
-      if (Wand.actions.lastKey().isLeftClick()) {
-        pos1 = Wand.actions.get(Wand.actions.lastKey());
+      if (Wand.getLastAction().isLeftClick()) {
+        pos1 = Wand.getLastVector();
         p.sendMessage(Lang.getComponent("pos1-set"));
         p.sendMessage(Lang.getComponent("set-pos2"));
-      } else if (Wand.actions.lastKey().isRightClick()) {
-        pos2 = Wand.actions.get(Wand.actions.lastKey());
+      } else if (Wand.getLastAction().isRightClick()) {
+        pos2 = Wand.getLastVector();
         p.sendMessage(Lang.getComponent("pos2-set"));
         p.sendMessage(Lang.getComponent("set-pos1"));
       }
