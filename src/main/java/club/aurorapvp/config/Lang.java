@@ -26,21 +26,22 @@ public class Lang {
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
     DEFAULTS.put(
         "set-spawn1-and-spawn2",
-        "<gradient:#FFAA00:#FF55FF>prefix Left click on the first spawn point of the arena and right click on the second spawn point");
-    DEFAULTS.put("set-spawn1", "<gradient:#FFAA00:#FF55FF>prefix Left click to set first spawn");
-    DEFAULTS.put("set-spawn2", "<gradient:#FFAA00:#FF55FF>prefix Right click to set second spawn");
-    DEFAULTS.put("spawn1-set", "<gradient:#FFAA00:#FF55FF>prefix First spawn set!");
-    DEFAULTS.put("spawn2-set", "<gradient:#FFAA00:#FF55FF>prefix Second spawn set!");
+        "prefix <gradient:#FFAA00:#FF55FF>Left click on the first spawn point of the arena and right click on the second spawn point");
+    DEFAULTS.put("set-spawn1", "prefix <gradient:#FFAA00:#FF55FF>Left click to set first spawn");
+    DEFAULTS.put("set-spawn2", "prefix <gradient:#FFAA00:#FF55FF>Right click to set second spawn");
+    DEFAULTS.put("spawn1-set", "prefix <gradient:#FFAA00:#FF55FF>First spawn set!");
+    DEFAULTS.put("spawn2-set", "prefix <gradient:#FFAA00:#FF55FF>Second spawn set!");
+    DEFAULTS.put("spawns-set", "prefix <gradient:#FFAA00:#FF55FF>Arena spawnpoints set!");
     DEFAULTS.put("set-pos1-and-pos2",
-        "<gradient:#FFAA00:#FF55FF>prefix Left click on the first position of the arena and right click on the second position");
-    DEFAULTS.put("set-pos1", "<gradient:#FFAA00:#FF55FF>prefix Left click to set Position 1");
-    DEFAULTS.put("set-pos2", "<gradient:#FFAA00:#FF55FF>prefix Right click to set Position 2");
-    DEFAULTS.put("pos1-set", "<gradient:#FFAA00:#FF55FF>prefix Position 1 set!");
-    DEFAULTS.put("pos2-set", "<gradient:#FFAA00:#FF55FF>prefix Position 2 set!");
-    DEFAULTS.put("arena-reset", "<gradient:#FFAA00:#FF55FF>prefix Arena reset successfully!");
-    DEFAULTS.put("arena-deleted", "<gradient:#FFAA00:#FF55FF>prefix Arena deleted");
-    DEFAULTS.put("arena-does-not-exist", "<gradient:#FFAA00:#FF55FF>prefix Arena does not exist!");
-    DEFAULTS.put("arena-already-being-created", "<gradient:#FFAA00:#FF55FF>prefix There is already an Arena being created!");
+        "prefix <gradient:#FFAA00:#FF55FF>Left click on the first position of the arena and right click on the second position");
+    DEFAULTS.put("set-pos1", "prefix <gradient:#FFAA00:#FF55FF>Left click to set Position 1");
+    DEFAULTS.put("set-pos2", "prefix <gradient:#FFAA00:#FF55FF>Right click to set Position 2");
+    DEFAULTS.put("pos1-set", "prefix <gradient:#FFAA00:#FF55FF>Position 1 set!");
+    DEFAULTS.put("pos2-set", "prefix <gradient:#FFAA00:#FF55FF>Position 2 set!");
+    DEFAULTS.put("arena-reset", "prefix <gradient:#FFAA00:#FF55FF>Arena reset successfully!");
+    DEFAULTS.put("arena-deleted", "prefix <gradient:#FFAA00:#FF55FF>Arena deleted");
+    DEFAULTS.put("arena-does-not-exist", "prefix <gradient:#FFAA00:#FF55FF>Arena does not exist!");
+    DEFAULTS.put("arena-already-being-created", "prefix <gradient:#FFAA00:#FF55FF>There is already an Arena being created!");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
