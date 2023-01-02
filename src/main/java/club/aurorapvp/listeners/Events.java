@@ -14,9 +14,7 @@ public class Events implements Listener {
   @EventHandler
   public void onWandUse(PlayerInteractEvent event) {
     if (!event.getClickedBlock().getType().isAir() && event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_HOE)) {
-      if (Wand.active.get("right")) {
-        wandEvent.trigger(event.getAction(), BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
-      } else if (Wand.active.get("left")) {
+      if (Wand.active.get("right") || Wand.active.get("left")) {
         wandEvent.trigger(event.getAction(), BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
       }
     }
