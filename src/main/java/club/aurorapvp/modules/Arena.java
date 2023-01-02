@@ -26,7 +26,7 @@ public class Arena implements WandListener {
   private static World arenaWorld;
   private static Player p;
 
-  public static void startCreation(String arena, Player player) {
+  public static void create(String arena, Player player) {
     if (creationPhase == 0) {
       p = player;
       arenaName = arena;
@@ -34,7 +34,7 @@ public class Arena implements WandListener {
       Wand.active.put("left", true);
 
       creationPhase = 1;
-      create(arenaName, p);
+      run(arenaName, p);
     } else {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
     }
@@ -43,11 +43,11 @@ public class Arena implements WandListener {
   @Override
   public void onWandEvent(WandEvent event) {
     if (creationPhase != 0 ) {
-      create(arenaName, p);
+      run(arenaName, p);
     }
   }
 
-  public static void create(String arenaName, Player p) {
+  private static void run(String arenaName, Player p) {
     switch (creationPhase) {
       case 1 -> {
         p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);

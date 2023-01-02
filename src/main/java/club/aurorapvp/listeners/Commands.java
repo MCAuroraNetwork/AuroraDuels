@@ -20,7 +20,7 @@ public class Commands implements CommandExecutor {
 
     switch (command.getName()) {
       case "duel" -> Queue.enterDuelQueue(p, Bukkit.getPlayer(args[0]));
-      case "createarena" -> Arena.startCreation(args[0], p);
+      case "createarena" -> Arena.create(args[0], p);
       case "resetarena" -> Arena.reset(args[0], p);
       case "deletearena" -> Arena.delete(args[0], p);
     }
