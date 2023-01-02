@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 group = 'AuroraDuels'
@@ -24,7 +25,17 @@ repositories {
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.9'
-    compileOnly 'org.apache.commons:commons-collections4:4.4'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+}
+
+build {
+    dependsOn(shadowJar)
+}
+
+shadowJar {
+    minimize()
+    archiveFileName.set("${project.name}-${project.version}.jar")
+    relocate 'org.apache.commons', 'club.aurorapvp.shaded.org.apache.commons'
 }
 
 def targetJavaVersion = 17

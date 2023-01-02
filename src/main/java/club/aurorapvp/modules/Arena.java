@@ -26,9 +26,9 @@ public class Arena implements WandListener {
   private static World arenaWorld;
   private static Player p;
 
-  public static void create(String arena, Player player) {
+  public static void create(String arena, Player p) {
     if (creationPhase == 0) {
-      p = player;
+      Arena.p = p;
       arenaName = arena;
       Wand.active.put("right", true);
       Wand.active.put("left", true);
@@ -42,7 +42,7 @@ public class Arena implements WandListener {
 
   @Override
   public void onWandEvent(WandEvent event) {
-    if (creationPhase != 0 ) {
+    if (creationPhase != 0) {
       run(arenaName, p);
     }
   }
