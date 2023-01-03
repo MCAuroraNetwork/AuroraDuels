@@ -28,22 +28,10 @@ public class ArenaData {
     }
 
     try {
-      save(arenaName);
+      arenaData.save(file);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  public static void save(String arenaName) throws IOException {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arenaName + ".yml");
-    YamlConfiguration arenaData = YamlConfiguration.loadConfiguration(file);
-
-    if (!file.exists()) {
-      file.getParentFile().mkdirs();
-      file.createNewFile();
-    }
-
-    arenaData.save(file);
   }
 
   public static File get(String arenaName) {
