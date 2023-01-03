@@ -26,7 +26,7 @@ public class Schematics {
 
   public static void save(String arenaName, World world, BlockVector3 pos1,
                           BlockVector3 pos2) throws WorldEditException, IOException {
-    EditSession session = WorldEdit.getInstance().newEditSessionBuilder().build();
+    EditSession session = WorldEdit.getInstance().newEditSession(world);
     File file = new File(AuroraDuels.DATAFOLDER, "/arena_schematics/" + arenaName + ".schem");
 
     CuboidRegion region = new CuboidRegion(world, pos1, pos2);
