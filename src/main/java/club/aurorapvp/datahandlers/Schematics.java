@@ -36,6 +36,11 @@ public class Schematics {
 
     Operations.complete(forwardExtentCopy);
 
+    if (!file.exists()) {
+      file.getParentFile().mkdirs();
+      file.createNewFile();
+    }
+
     ClipboardWriter writer =
         BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(file));
     writer.write(clipboard);
