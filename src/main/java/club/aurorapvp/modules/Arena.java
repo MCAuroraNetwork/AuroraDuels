@@ -99,6 +99,8 @@ public class Arena implements WandListener {
           throw new RuntimeException(e);
         }
         creationPhase = 0;
+        Wand.setActive("right", false);
+        Wand.setActive("left", false);
       }
     }
       default -> {
