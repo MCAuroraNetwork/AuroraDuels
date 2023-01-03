@@ -63,10 +63,6 @@ public class Lang {
     return AuroraDuels.COMPONENT_DESERIALIZER.deserialize(pathString);
   }
 
-  public static void saveLangFile() throws IOException {
-    get().save(FILE);
-  }
-
   public static YamlConfiguration get() {
     return lang;
   }
