@@ -11,14 +11,21 @@ import java.io.IOException;
 
 public class ArenaData {
 
-  public static void create(String arenaName, World arenaWorld, BlockVector3 spawnVector1, BlockVector3 spawnVector2) {
+  public static void create(String arenaName, World arenaWorld, BlockVector3 spawnVector1, BlockVector3 spawnVector2)
+      throws IOException {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arenaName + ".yml");
     YamlConfiguration arenaData =
-        YamlConfiguration.loadConfiguration(new File(AuroraDuels.DATAFOLDER, "/arenas/" + arenaName + ".yml"));
+        YamlConfiguration.loadConfiguration(file);
     Location spawn1 = new Location(arenaWorld, spawnVector1.getBlockX(), spawnVector1.getBlockY(), spawnVector1.getBlockZ());
     Location spawn2 = new Location(arenaWorld, spawnVector2.getBlockX(), spawnVector2.getBlockY(), spawnVector2.getBlockZ());
 
     arenaData.set("arena.spawn.spawn1", spawn1);
     arenaData.set("arena.spawns.spawn2", spawn2);
+
+    if (!file.exists()) {
+      file.getParentFile().mkdirs();
+      file.createNewFile();
+    }
 
     try {
       save(arenaName);
@@ -32,7 +39,7 @@ public class ArenaData {
     YamlConfiguration arenaData = YamlConfiguration.loadConfiguration(file);
 
     if (!file.exists()) {
-      file.mkdirs();
+      file.getParentFile().mkdirs();
       file.createNewFile();
     }
 
