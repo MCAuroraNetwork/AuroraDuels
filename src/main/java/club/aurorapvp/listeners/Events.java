@@ -17,7 +17,7 @@ public class Events implements Listener {
       return;
     }
 
-    if (event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_HOE)) {
+    if (!event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_HOE)) {
       return;
     }
 
