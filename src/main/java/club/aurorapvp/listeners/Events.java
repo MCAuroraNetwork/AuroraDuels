@@ -14,8 +14,8 @@ public class Events implements Listener {
 
   @EventHandler
   public void onWandUse(PlayerInteractEvent event) {
-    if ((event.getClickedBlock() != null &&
-        event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_HOE))) {
+    if (event.getClickedBlock() != null &&
+        event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_HOE)) {
       if (Wand.isActive(event.getAction())) {
         wandEvent.trigger(event.getAction(),
             BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
