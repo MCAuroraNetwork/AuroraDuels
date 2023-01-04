@@ -1,6 +1,5 @@
 package club.aurorapvp.listeners;
 
-import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.wand.Wand;
 import club.aurorapvp.wand.WandEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -14,12 +13,17 @@ public class Events implements Listener {
 
   @EventHandler
   public void onWandUse(PlayerInteractEvent event) {
-    if (event.getClickedBlock() != null &&
-        event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_HOE)) {
-      if (Wand.isActive(event.getAction())) {
-        wandEvent.trigger(event.getAction(),
-            BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
-      }
+    if (event.getClickedBlock() == null) {
+      return;
+    }
+
+    if (event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.IRON_HOE)) {
+      return;
+    }
+
+    if (Wand.isActive(event.getAction())) {
+      wandEvent.trigger(event.getAction(),
+          BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
     }
   }
 }
