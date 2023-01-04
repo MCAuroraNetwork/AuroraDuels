@@ -23,7 +23,8 @@ public class Events implements Listener {
 
     if (Wand.isActive(event.getAction())) {
       wandEvent.trigger(event.getAction(),
-          BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()));
+          BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()),
+          event.getPlayer());
     }
   }
 }
