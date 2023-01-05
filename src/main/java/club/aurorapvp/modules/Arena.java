@@ -27,7 +27,7 @@ public class Arena implements WandListener {
   private static Player p;
 
   public static void create(String arena, Player p) {
-    if (creationPhase == 0) {
+    if (creationPhase == 0 && ArenaData.get(arenaName) == null) {
       Arena.p = p;
       arenaName = arena;
       Wand.setActive("right", true);
@@ -39,8 +39,10 @@ public class Arena implements WandListener {
 
       creationPhase = 1;
       run(arenaName, p);
-    } else {
+    } else if (creationPhase != 0) {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
+    } else if (ArenaData.get(arenaName) != null) {
+      p.sendMessage(Lang.getComponent("arena-already-exists"));
     }
   }
 

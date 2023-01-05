@@ -43,6 +43,7 @@ public class Lang {
     DEFAULTS.put("arena-deleted", "prefix <gradient:#FFAA00:#FF55FF>Arena deleted");
     DEFAULTS.put("arena-does-not-exist", "prefix <gradient:#FFAA00:#FF55FF>Arena does not exist!");
     DEFAULTS.put("arena-already-being-created", "prefix <gradient:#FFAA00:#FF55FF>There is already an Arena being created!");
+    DEFAULTS.put("arena-already-exists", "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
