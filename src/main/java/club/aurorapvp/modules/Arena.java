@@ -32,6 +32,10 @@ public class Arena implements WandListener {
       arenaName = arena;
       Wand.setActive("right", true);
       Wand.setActive("left", true);
+      spawn1 = null;
+      spawn2 = null;
+      pos1 = null;
+      pos2 = null;
 
       creationPhase = 1;
       run(arenaName, p);
