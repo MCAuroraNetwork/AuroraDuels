@@ -1,14 +1,15 @@
 package club.aurorapvp.wand;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.item.type.ItemTypes;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetCooldown;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.Serial;
 import java.util.EventObject;
 import java.util.HashSet;
 import java.util.Set;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
-import org.bukkit.inventory.ItemStack;
 
 public class WandEvent extends EventObject {
   @Serial
@@ -23,12 +24,8 @@ public class WandEvent extends EventObject {
     Wand.actions.add(action);
     Wand.vectors.add(vector);
 
-    // Somewhat hacky method to cause the player to not have action delay and not spam multiple clicks
-    ItemStack item = p.getInventory().getItemInMainHand();
-    Material itemMaterial = item.getType();
-
-    item.setType(Material.AIR);
-    item.setType(itemMaterial);
+    PacketEvents.getAPI().getPlayerManager().sendPacket(p, new WrapperPlayServerSetCooldown(
+        ItemTypes.IRON_HOE, 20));
 
     for (WandListener listener : LISTENERS) {
       listener.onWandEvent(this);
