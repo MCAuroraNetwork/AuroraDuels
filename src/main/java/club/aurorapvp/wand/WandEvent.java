@@ -8,6 +8,7 @@ import java.io.Serial;
 import java.util.EventObject;
 import java.util.HashSet;
 import java.util.Set;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 
@@ -24,8 +25,7 @@ public class WandEvent extends EventObject {
     Wand.actions.add(action);
     Wand.vectors.add(vector);
 
-    PacketEvents.getAPI().getPlayerManager().sendPacket(p, new WrapperPlayServerSetCooldown(
-        ItemTypes.IRON_HOE, 20));
+    p.getPlayer().setCooldown(Material.IRON_HOE, 20);
 
     for (WandListener listener : LISTENERS) {
       listener.onWandEvent(this);

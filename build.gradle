@@ -20,14 +20,9 @@ repositories {
         name = 'worldedit-bukkit'
         url = 'https://maven.enginehub.org/repo/'
     }
-    maven {
-        url = 'https://repo.codemc.io/repository/maven-snapshots/'
-    }
 }
 
 dependencies {
-    implementation 'com.github.retrooper.packetevents:spigot:2.0.0-SNAPSHOT'
-
     compileOnly 'io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.9'
 }
@@ -39,7 +34,6 @@ build {
 shadowJar {
     minimize()
     archiveFileName.set("${project.name}-${project.version}.jar")
-    relocate("io.github.retrooper.packetevents", "club.aurorapvp.shaded.io.github.retrooper.packetevents")
 }
 
 def targetJavaVersion = 17
