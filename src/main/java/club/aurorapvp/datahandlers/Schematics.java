@@ -49,17 +49,19 @@ public class Schematics {
     writer.write(clipboard);
   }
 
-  public static void paste(File arenaData) {
+  public static void paste(String arenaName) {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arenaName + ".schem");
+
     Clipboard clipboard;
 
     World world =
         BukkitAdapter.adapt(
-            YamlConfiguration.loadConfiguration(arenaData)
+            YamlConfiguration.loadConfiguration(file)
                 .getLocation("arena.center")
                 .getWorld());
-    ClipboardFormat format = ClipboardFormats.findByFile(arenaData);
+    ClipboardFormat format = ClipboardFormats.findByFile(file);
 
-    try (ClipboardReader reader = format.getReader(new FileInputStream(arenaData))) {
+    try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
       clipboard = reader.read();
 
       try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {

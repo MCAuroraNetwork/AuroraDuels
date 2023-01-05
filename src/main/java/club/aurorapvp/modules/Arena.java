@@ -118,7 +118,7 @@ public class Arena implements WandListener {
 
   public static void reset(String arenaName, Player p) {
     if (ArenaData.get(arenaName) != null) {
-      Schematics.paste(ArenaData.get(arenaName));
+      Schematics.paste(arenaName);
       p.sendMessage(Lang.getComponent("arena-reset"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
