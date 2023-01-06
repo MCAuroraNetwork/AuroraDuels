@@ -62,15 +62,20 @@ public class Arena implements WandListener {
       case 2 -> {
         if (Wand.getLastAction().isLeftClick()) {
           spawn1 = Wand.getLastVector();
-          p.sendMessage(Lang.getComponent("spawn1-set") +
-              " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " + spawn1.getBlockZ() + ")");
+          p.sendMessage(
+              AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getComponent("spawn1-set") +
+                  " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " +
+                  spawn1.getBlockZ() +
+                  ")"));
           if (spawn2 == null) {
             p.sendMessage(Lang.getComponent("set-spawn2"));
           }
         } else if (Wand.getLastAction().isRightClick()) {
           spawn2 = Wand.getLastVector();
-          p.sendMessage(Lang.getComponent("spawn2-set") +
-              " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " + spawn2.getBlockZ() + ")");
+          p.sendMessage(
+              AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getComponent("spawn2-set") +
+                  " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " +
+                  spawn2.getBlockZ() + ")"));
           if (spawn1 == null) {
             p.sendMessage(Lang.getComponent("set-spawn1"));
           }
@@ -85,15 +90,19 @@ public class Arena implements WandListener {
       case 3 -> {
         if (Wand.getLastAction().isLeftClick()) {
           pos1 = Wand.getLastVector();
-          p.sendMessage(Lang.getComponent("pos1-set") +
-              " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() + ")");
+          p.sendMessage(
+              AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getComponent("pos1-set") +
+                  " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() +
+                  ")"));
           if (pos2 == null) {
             p.sendMessage(Lang.getComponent("set-pos2"));
           }
         } else if (Wand.getLastAction().isRightClick()) {
           pos2 = Wand.getLastVector();
-          p.sendMessage(Lang.getComponent("pos2-set") +
-              " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() + ")");
+          p.sendMessage(
+              AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getComponent("pos2-set") +
+                  " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() +
+                  ")"));
           if (pos1 == null) {
             p.sendMessage(Lang.getComponent("set-pos1"));
           }
