@@ -10,11 +10,10 @@ import club.aurorapvp.wand.WandListener;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
+import java.io.IOException;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-
-import java.io.IOException;
 
 public class Arena implements WandListener {
   private static int creationPhase = 0;
@@ -63,14 +62,15 @@ public class Arena implements WandListener {
       case 2 -> {
         if (Wand.getLastAction().isLeftClick()) {
           spawn1 = Wand.getLastVector();
-          p.sendMessage(Lang.getComponent("spawn1-set"));
+          p.sendMessage(Lang.getComponent("spawn1-set") +
+              " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " + spawn1.getBlockZ() + ")");
           if (spawn2 == null) {
             p.sendMessage(Lang.getComponent("set-spawn2"));
-
           }
         } else if (Wand.getLastAction().isRightClick()) {
           spawn2 = Wand.getLastVector();
-          p.sendMessage(Lang.getComponent("spawn2-set"));
+          p.sendMessage(Lang.getComponent("spawn2-set") +
+              " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " + spawn2.getBlockZ() + ")");
           if (spawn1 == null) {
             p.sendMessage(Lang.getComponent("set-spawn1"));
           }
@@ -83,34 +83,37 @@ public class Arena implements WandListener {
         }
       }
       case 3 -> {
-      if (Wand.getLastAction().isLeftClick()) {
-        pos1 = Wand.getLastVector();
-        p.sendMessage(Lang.getComponent("pos1-set"));
-        if (pos2 == null) {
-          p.sendMessage(Lang.getComponent("set-pos2"));
+        if (Wand.getLastAction().isLeftClick()) {
+          pos1 = Wand.getLastVector();
+          p.sendMessage(Lang.getComponent("pos1-set") +
+              " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() + ")");
+          if (pos2 == null) {
+            p.sendMessage(Lang.getComponent("set-pos2"));
+          }
+        } else if (Wand.getLastAction().isRightClick()) {
+          pos2 = Wand.getLastVector();
+          p.sendMessage(Lang.getComponent("pos2-set") +
+              " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() + ")");
+          if (pos1 == null) {
+            p.sendMessage(Lang.getComponent("set-pos1"));
+          }
         }
-      } else if (Wand.getLastAction().isRightClick()) {
-        pos2 = Wand.getLastVector();
-        p.sendMessage(Lang.getComponent("pos2-set"));
-        if (pos1 == null) {
-          p.sendMessage(Lang.getComponent("set-pos1"));
+        if (pos1 != null && pos2 != null) {
+          try {
+            Schematics.save(arenaName, BukkitAdapter.adapt(p.getWorld()), pos1, pos2);
+            ArenaData.create(arenaName, arenaWorld, spawn1, spawn2);
+            p.sendMessage(Lang.getComponent("arena-created"));
+          } catch (WorldEditException | IOException e) {
+            throw new RuntimeException(e);
+          }
+          creationPhase = 0;
+          Wand.setActive("right", false);
+          Wand.setActive("left", false);
         }
       }
-      if (pos1 != null && pos2 != null) {
-        try {
-          Schematics.save(arenaName, BukkitAdapter.adapt(p.getWorld()), pos1, pos2);
-          ArenaData.create(arenaName, arenaWorld, spawn1, spawn2);
-          p.sendMessage(Lang.getComponent("arena-created"));
-        } catch (WorldEditException | IOException e) {
-          throw new RuntimeException(e);
-        }
-        creationPhase = 0;
-        Wand.setActive("right", false);
-        Wand.setActive("left", false);
-      }
-    }
       default -> {
-        AuroraDuels.PLUGIN.getLogger().warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
+        AuroraDuels.PLUGIN.getLogger()
+            .warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
         creationPhase = 0;
       }
     }
