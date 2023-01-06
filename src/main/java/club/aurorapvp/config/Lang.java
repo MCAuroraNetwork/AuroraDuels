@@ -54,7 +54,14 @@ public class Lang {
   }
 
   public static String getString(String path) {
-    return get().getString(path);
+    String pathString = get().getString(path);
+    for (String placeholder : PLACEHOLDERS.keySet()) {
+      if (pathString.contains(placeholder)) {
+        pathString = pathString.replace(placeholder,
+            PLACEHOLDERS.get(placeholder));
+      }
+    }
+    return get().getString(pathString);
   }
 
   public static Component getComponent(String path) {
