@@ -1,6 +1,7 @@
 package club.aurorapvp.datahandlers;
 
 import club.aurorapvp.AuroraDuels;
+import club.aurorapvp.modules.arena.Arena;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
@@ -51,14 +52,14 @@ public class Schematics {
     }
   }
 
-  public static void paste(String arenaName) {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arenaName + ".schem");
+  public static void paste(Arena arena) {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
 
     Clipboard clipboard;
 
     World world =
         BukkitAdapter.adapt(
-            Bukkit.getWorld(YamlConfiguration.loadConfiguration(ArenaData.get(arenaName))
+            Bukkit.getWorld(YamlConfiguration.loadConfiguration(ArenaData.get(arena))
                 .getString("arena.world")));
     ClipboardFormat format = ClipboardFormats.findByFile(file);
 
@@ -78,8 +79,8 @@ public class Schematics {
     }
   }
 
-  public static File get(String arenaName) {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arenaName + ".schem");
+  public static File get(Arena arena) {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
     if (file.exists()) {
       return file;
     } else {

@@ -1,6 +1,5 @@
 package club.aurorapvp.modules.duels;
 
-import club.aurorapvp.modules.Queue;
 import java.io.Serial;
 import java.util.EventObject;
 import java.util.HashSet;

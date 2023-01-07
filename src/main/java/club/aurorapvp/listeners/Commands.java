@@ -1,8 +1,7 @@
 package club.aurorapvp.listeners;
 
-import club.aurorapvp.modules.Arena;
+import club.aurorapvp.modules.arena.Arena;
 import club.aurorapvp.modules.Queue;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,9 +19,9 @@ public class Commands implements CommandExecutor {
 
     switch (command.getName()) {
       case "duel" -> Queue.enterDuelQueue(p, args[0]);
-      case "createarena" -> Arena.create(args[0], p);
-      case "resetarena" -> Arena.reset(args[0], p);
-      case "deletearena" -> Arena.delete(args[0], p);
+      case "createarena" -> Arena.create(p, new Arena(args[0]));
+      case "resetarena" -> Arena.reset(p, new Arena(args[0]));
+      case "deletearena" -> Arena.delete(p, new Arena(args[0]));
     }
     return true;
   }

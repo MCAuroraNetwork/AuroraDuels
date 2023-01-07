@@ -21,4 +21,8 @@ public class Queue {
             p.sendMessage(Lang.getComponent("unknown-opponent"));
         }
     }
+
+    public static void checkQueue() {
+
+    }
 }

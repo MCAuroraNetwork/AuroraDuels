@@ -1,6 +1,7 @@
 package club.aurorapvp.datahandlers;
 
 import club.aurorapvp.AuroraDuels;
+import club.aurorapvp.modules.arena.Arena;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -35,8 +36,8 @@ public class ArenaData {
     }
   }
 
-  public static File get(String arenaName) {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arenaName + ".yml");
+  public static File get(Arena arena) {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
     if (file.exists()) {
       return file;
     } else {

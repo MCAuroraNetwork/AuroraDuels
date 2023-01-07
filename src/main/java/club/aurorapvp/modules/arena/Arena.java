@@ -1,4 +1,4 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.modules.arena;
 
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.config.Lang;
@@ -10,25 +10,49 @@ import club.aurorapvp.modules.wand.WandListener;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
+import java.io.File;
 import java.io.IOException;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class Arena implements WandListener {
-  private static int creationPhase = 0;
+public class Arena implements WandListener, ArenaInterface {
   private static BlockVector3 spawn1 = null;
   private static BlockVector3 spawn2 = null;
   private static BlockVector3 pos1 = null;
   private static BlockVector3 pos2 = null;
+  private boolean availibility = true;
+  private static int creationPhase = 0;
   private static String arenaName;
   private static World arenaWorld;
   private static Player p;
 
-  public static void create(String arenaName, Player p) {
-    if (creationPhase == 0 && ArenaData.get(arenaName) == null) {
+  public Arena(String arenaName) {
+    Arena.arenaName = arenaName;
+  }
+  @Override
+  public String getName() {
+    return arenaName;
+  }
+
+  @Override
+  public boolean exists() {
+    return (ArenaData.get(this) != null && Schematics.get(this) != null);
+  }
+
+  @Override
+  public boolean inUse() {
+    return availibility;
+  }
+
+  @Override
+  public void setAvailibility(boolean value) {
+    availibility = value;
+  }
+
+  public static void create(Player p, Arena arena) {
+    if (creationPhase == 0 && ArenaData.get(arena) == null) {
       Arena.p = p;
-      Arena.arenaName = arenaName;
       Wand.setActive("right", true);
       Wand.setActive("left", true);
       spawn1 = null;
@@ -37,10 +61,10 @@ public class Arena implements WandListener {
       pos2 = null;
 
       creationPhase = 1;
-      run(arenaName, p);
+      run(p, arenaName);
     } else if (creationPhase != 0) {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
-    } else if (ArenaData.get(arenaName) != null) {
+    } else if (ArenaData.get(arena) != null) {
       p.sendMessage(Lang.getComponent("arena-already-exists"));
     }
   }
@@ -48,11 +72,11 @@ public class Arena implements WandListener {
   @Override
   public void onWandEvent(WandEvent event) {
     if (creationPhase != 0) {
-      run(arenaName, p);
+      run(p, arenaName);
     }
   }
 
-  private static void run(String arenaName, Player p) {
+  private static void run(Player p, String arena) {
     switch (creationPhase) {
       case 1 -> {
         p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
@@ -128,19 +152,19 @@ public class Arena implements WandListener {
     }
   }
 
-  public static void reset(String arenaName, Player p) {
-    if (ArenaData.get(arenaName) != null) {
-      Schematics.paste(arenaName);
+  public static void reset(Player p, Arena arena) {
+    if (arena.exists()) {
+      Schematics.paste(arena);
       p.sendMessage(Lang.getComponent("arena-reset"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
-  public static void delete(String arenaName, Player p) {
-    if (ArenaData.get(arenaName) != null) {
-      ArenaData.get(arenaName).delete();
-      Schematics.get(arenaName).delete();
+  public static void delete(Player p, Arena arena) {
+    if (arena.exists()) {
+      ArenaData.get(arena).delete();
+      Schematics.get(arena).delete();
       p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));

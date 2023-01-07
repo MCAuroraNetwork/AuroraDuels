@@ -4,7 +4,7 @@ import club.aurorapvp.config.Config;
 import club.aurorapvp.config.Lang;
 import club.aurorapvp.listeners.Commands;
 import club.aurorapvp.listeners.Events;
-import club.aurorapvp.modules.Arena;
+import club.aurorapvp.modules.arena.Arena;
 import club.aurorapvp.modules.wand.Wand;
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public final class AuroraDuels extends JavaPlugin {
 
     // Register Listeners
     getServer().getPluginManager().registerEvents(new Events(), this);
-    Events.wandEvent.registerListener(new Arena());
+    Events.wandEvent.registerListener(new Arena(null));
     List<Command> commandList = PluginCommandYamlParser.parse(PLUGIN);
     for (Command command : commandList) {
       Objects.requireNonNull(getCommand(command.getName())).setExecutor(new Commands());
