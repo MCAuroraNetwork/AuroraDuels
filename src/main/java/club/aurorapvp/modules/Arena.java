@@ -81,8 +81,8 @@ public class Arena implements WandListener {
           }
         }
         if (spawn1 != null && spawn2 != null) {
-          Lang.getComponent("spawns-set");
-          Lang.getComponent("set-pos1-and-pos2");
+          p.sendMessage(Lang.getComponent("spawns-set"));
+          p.sendMessage(Lang.getComponent("set-pos1-and-pos2"));
           arenaWorld = p.getWorld();
           creationPhase++;
         }
