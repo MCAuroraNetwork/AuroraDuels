@@ -1,5 +1,6 @@
 package club.aurorapvp.modules.duels;
 
+import club.aurorapvp.modules.arena.Arena;
 import java.io.Serial;
 import java.util.EventObject;
 import java.util.HashSet;
@@ -13,12 +14,13 @@ public class DuelEndEvent extends EventObject {
   public DuelEndEvent(Object source) {
     super(source);
   }
-  public void trigger(Player p1, Player p2) {
+  public void trigger(Player p1, Player p2, Arena arena) {
     Duels.playersInDuel.remove(p1);
     Duels.playersInDuel.remove(p2);
+    arena.setAvailibility(true);
 
     for (DuelEndEventListener listener : LISTENERS) {
-      listener.onDuelsEvent(this);
+      listener.onDuelEndEvent(this);
     }
   }
 
