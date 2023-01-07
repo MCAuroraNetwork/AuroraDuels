@@ -5,6 +5,7 @@ api-version: 1.19
 authors: [ Villagers654 ]
 description: A Duels Plugin for the Aurora Network
 website: aurorapvp.club
+depend: [WorldEdit]
 commands:
   createarena:
     description: Starts the arena creation process
