@@ -13,6 +13,9 @@ commands:
   resetarena:
     description: Resets an arena
     permission: AuroraDuels.admin
+  deletearena:
+    description: Resets an arena
+    permission: AuroraDuels.admin
 permissions:
   AuroraDuels.admin:
     description: Enables use of AuroraDuels admin commands
