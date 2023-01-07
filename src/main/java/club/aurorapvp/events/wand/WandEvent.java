@@ -1,5 +1,6 @@
-package club.aurorapvp.modules.wand;
+package club.aurorapvp.events.wand;
 
+import club.aurorapvp.modules.Wand;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.Serial;
 import java.util.EventObject;

@@ -5,7 +5,7 @@ import club.aurorapvp.config.Lang;
 import club.aurorapvp.listeners.Commands;
 import club.aurorapvp.listeners.Events;
 import club.aurorapvp.modules.arena.Arena;
-import club.aurorapvp.modules.wand.Wand;
+import club.aurorapvp.modules.Wand;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

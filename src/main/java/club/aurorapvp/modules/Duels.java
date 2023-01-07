@@ -1,4 +1,4 @@
-package club.aurorapvp.modules.duels;
+package club.aurorapvp.modules;
 
 import club.aurorapvp.modules.arena.Arena;
 import java.util.ArrayList;

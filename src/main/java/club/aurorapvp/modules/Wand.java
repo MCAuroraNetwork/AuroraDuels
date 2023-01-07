@@ -1,4 +1,4 @@
-package club.aurorapvp.modules.wand;
+package club.aurorapvp.modules;
 
 import com.sk89q.worldedit.math.BlockVector3;
 

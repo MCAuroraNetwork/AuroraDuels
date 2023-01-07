@@ -1,7 +1,7 @@
 package club.aurorapvp.listeners;
 
-import club.aurorapvp.modules.wand.Wand;
-import club.aurorapvp.modules.wand.WandEvent;
+import club.aurorapvp.modules.Wand;
+import club.aurorapvp.events.wand.WandEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

@@ -1,6 +1,7 @@
-package club.aurorapvp.modules.duels;
+package club.aurorapvp.events.duels;
 
 import club.aurorapvp.modules.arena.Arena;
+import club.aurorapvp.modules.Duels;
 import java.io.Serial;
 import java.util.EventObject;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package club.aurorapvp.modules.duels;
+package club.aurorapvp.events.duels;
 
 public interface DuelStartEventListener {
   void onDuelStartEvent(DuelStartEvent event);
