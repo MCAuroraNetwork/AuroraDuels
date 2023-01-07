@@ -44,6 +44,8 @@ public class Lang {
     DEFAULTS.put("arena-does-not-exist", "prefix <gradient:#FFAA00:#FF55FF>Arena does not exist!");
     DEFAULTS.put("arena-already-being-created", "prefix <gradient:#FFAA00:#FF55FF>There is already an Arena being created!");
     DEFAULTS.put("arena-already-exists", "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
+    DEFAULTS.put("pick-opponent", "prefix <gradient:#FFAA00:#FF55FF>Please specify an opponent!");
+    DEFAULTS.put("unknown-opponent", "prefix <gradient:#FFAA00:#FF55FF>Cannot find opponent");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
@@ -53,8 +55,8 @@ public class Lang {
     }
   }
 
-  public static String getString(String path) {
-    String pathString = get().getString(path);
+  public static String getString(String message) {
+    String pathString = get().getString(message);
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
         pathString = pathString.replace(placeholder,
@@ -64,8 +66,8 @@ public class Lang {
     return pathString;
   }
 
-  public static Component getComponent(String path) {
-    String pathString = get().getString(path);
+  public static Component getComponent(String message) {
+    String pathString = get().getString(message);
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
         pathString = pathString.replace(placeholder,
