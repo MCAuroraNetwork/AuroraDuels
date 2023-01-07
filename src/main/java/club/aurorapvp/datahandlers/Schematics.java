@@ -57,7 +57,8 @@ public class Schematics {
 
     World world =
         BukkitAdapter.adapt(
-            Bukkit.getWorld(YamlConfiguration.loadConfiguration(file).getString("arena.world")));
+            Bukkit.getWorld(YamlConfiguration.loadConfiguration(ArenaData.get(arenaName))
+                .getString("arena.world")));
     ClipboardFormat format = ClipboardFormats.findByFile(file);
 
     try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
