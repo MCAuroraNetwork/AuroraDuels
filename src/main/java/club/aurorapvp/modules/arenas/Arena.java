@@ -1,7 +1,7 @@
-package club.aurorapvp.modules.arena;
+package club.aurorapvp.modules.arenas;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.config.Lang;
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.ArenaData;
 import club.aurorapvp.datahandlers.Schematics;
 import club.aurorapvp.modules.Wand;

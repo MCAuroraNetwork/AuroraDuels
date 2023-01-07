@@ -1,6 +1,6 @@
 package club.aurorapvp.events.duels;
 
-import club.aurorapvp.modules.arena.Arena;
+import club.aurorapvp.modules.arenas.Arena;
 import club.aurorapvp.modules.Duels;
 import java.io.Serial;
 import java.util.EventObject;

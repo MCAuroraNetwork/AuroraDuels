@@ -1,7 +1,7 @@
 package club.aurorapvp.datahandlers;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.modules.arena.Arena;
+import club.aurorapvp.modules.arenas.Arena;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Location;
 import org.bukkit.World;

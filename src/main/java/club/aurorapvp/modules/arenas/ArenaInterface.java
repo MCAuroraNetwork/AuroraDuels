@@ -1,4 +1,4 @@
-package club.aurorapvp.modules.arena;
+package club.aurorapvp.modules.arenas;
 
 public interface ArenaInterface {
   String getName();

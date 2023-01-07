@@ -1,6 +1,6 @@
 package club.aurorapvp.listeners;
 
-import club.aurorapvp.modules.arena.Arena;
+import club.aurorapvp.modules.arenas.Arena;
 import club.aurorapvp.modules.Queue;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -1,12 +1,10 @@
 package club.aurorapvp.modules;
 
-import club.aurorapvp.config.Lang;
+import club.aurorapvp.configs.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.LinkedHashMap;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public class Queue {
 

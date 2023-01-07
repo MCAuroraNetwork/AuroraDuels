@@ -1,10 +1,10 @@
 package club.aurorapvp;
 
-import club.aurorapvp.config.Config;
-import club.aurorapvp.config.Lang;
+import club.aurorapvp.configs.Config;
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.listeners.Commands;
 import club.aurorapvp.listeners.Events;
-import club.aurorapvp.modules.arena.Arena;
+import club.aurorapvp.modules.arenas.Arena;
 import club.aurorapvp.modules.Wand;
 import java.io.File;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package club.aurorapvp.datahandlers;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.modules.arena.Arena;
+import club.aurorapvp.modules.arenas.Arena;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
