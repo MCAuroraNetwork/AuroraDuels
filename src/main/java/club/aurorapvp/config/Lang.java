@@ -61,7 +61,7 @@ public class Lang {
             PLACEHOLDERS.get(placeholder));
       }
     }
-    return get().getString(pathString);
+    return pathString;
   }
 
   public static Component getComponent(String path) {
