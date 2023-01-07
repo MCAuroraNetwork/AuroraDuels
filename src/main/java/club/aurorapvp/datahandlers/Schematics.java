@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Schematics {
@@ -56,9 +57,7 @@ public class Schematics {
 
     World world =
         BukkitAdapter.adapt(
-            YamlConfiguration.loadConfiguration(file)
-                .getLocation("arena.center")
-                .getWorld());
+            Bukkit.getWorld(YamlConfiguration.loadConfiguration(file).getString("arena.world")));
     ClipboardFormat format = ClipboardFormats.findByFile(file);
 
     try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
@@ -76,6 +75,7 @@ public class Schematics {
       throw new RuntimeException(e);
     }
   }
+
   public static File get(String arenaName) {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arenaName + ".schem");
     if (file.exists()) {

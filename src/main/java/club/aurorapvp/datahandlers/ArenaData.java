@@ -19,6 +19,7 @@ public class ArenaData {
     Location spawn1 = new Location(arenaWorld, spawnVector1.getBlockX(), spawnVector1.getBlockY(), spawnVector1.getBlockZ());
     Location spawn2 = new Location(arenaWorld, spawnVector2.getBlockX(), spawnVector2.getBlockY(), spawnVector2.getBlockZ());
 
+    arenaData.set("arena.world", arenaWorld.getName());
     arenaData.set("arena.spawns.spawn1", spawn1);
     arenaData.set("arena.spawns.spawn2", spawn2);
 
