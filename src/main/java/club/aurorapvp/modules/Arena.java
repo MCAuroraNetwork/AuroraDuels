@@ -25,10 +25,10 @@ public class Arena implements WandListener {
   private static World arenaWorld;
   private static Player p;
 
-  public static void create(String arena, Player p) {
+  public static void create(String arenaName, Player p) {
     if (creationPhase == 0 && ArenaData.get(arenaName) == null) {
       Arena.p = p;
-      arenaName = arena;
+      Arena.arenaName = arenaName;
       Wand.setActive("right", true);
       Wand.setActive("left", true);
       spawn1 = null;
