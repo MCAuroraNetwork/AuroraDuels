@@ -1,4 +1,4 @@
-package club.aurorapvp.wand;
+package club.aurorapvp.modules.wand;
 
 import java.util.EventListener;
 
