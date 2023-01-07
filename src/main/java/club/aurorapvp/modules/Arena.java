@@ -140,6 +140,7 @@ public class Arena implements WandListener {
   public static void delete(String arenaName, Player p) {
     if (ArenaData.get(arenaName) != null) {
       ArenaData.get(arenaName).delete();
+      Schematics.get(arenaName).delete();
       p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));

@@ -76,4 +76,12 @@ public class Schematics {
       throw new RuntimeException(e);
     }
   }
+  public static File get(String arenaName) {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arenaName + ".schem");
+    if (file.exists()) {
+      return file;
+    } else {
+      return null;
+    }
+  }
 }
