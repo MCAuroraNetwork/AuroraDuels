@@ -9,9 +9,9 @@ commands:
   createarena:
     description: Starts the arena creation process
     permission: AuroraDuels.admin
-resetarena:
-  description: Resets an arena
-  permission: AuroraDuels.admin
+  resetarena:
+    description: Resets an arena
+    permission: AuroraDuels.admin
 permissions:
   AuroraDuels.admin:
     description: Enables use of AuroraDuels admin commands
