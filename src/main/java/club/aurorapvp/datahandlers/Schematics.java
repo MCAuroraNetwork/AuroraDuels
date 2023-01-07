@@ -45,9 +45,10 @@ public class Schematics {
       file.createNewFile();
     }
 
-    ClipboardWriter writer =
-        BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(file));
-    writer.write(clipboard);
+    try (ClipboardWriter writer =
+             BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(file))) {
+      writer.write(clipboard);
+    }
   }
 
   public static void paste(String arenaName) {
