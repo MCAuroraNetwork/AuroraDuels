@@ -4,7 +4,11 @@ import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
@@ -12,6 +16,7 @@ import org.bukkit.entity.Player;
 
 public class Duels {
   public static List<Player> playersInDuel = new ArrayList<>();
+  public static Map<Player, Player> pendingInvites = new HashMap();
   public static List<Arena> arenas = new ArrayList<>();
 
   public static void setup() {
@@ -25,6 +30,32 @@ public class Duels {
     }
   }
 
+  public static void sendDuelRequest(Player sender, Player receiver) {
+    if (receiver != null && !playersInDuel.contains(receiver)) {
+      pendingInvites.put(receiver, sender);
+
+      sender.sendMessage(Lang.getComponent("sent-request"));
+      receiver.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
+          Lang.getString("received-request") + sender.getName() + Lang.getString("use-accept")));
+
+      TimerTask task = new TimerTask() {
+        public void run() {
+          if (pendingInvites.containsKey(receiver)) {
+            pendingInvites.remove(receiver);
+            receiver.sendMessage(Lang.getComponent("request-timed-out"));
+            sender.sendMessage(Lang.getComponent("request-timed-out"));
+          }
+        }
+      };
+      new Timer().schedule(task, 60 * 1000);
+
+    } else if (receiver == null) {
+      sender.sendMessage(Lang.getComponent("unknown-opponent"));
+    } else {
+      sender.sendMessage(Lang.getComponent("player-in-duel"));
+    }
+  }
+
   public static void startDuel(Player p1, Player p2, Arena arena) {
     playersInDuel.add(p1);
     playersInDuel.add(p2);
@@ -32,10 +63,12 @@ public class Duels {
 
     Location spawn1 =
         new Location(arena.getWorld(),
-            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(), arena.getFirstSpawn().getZ());
+            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
+            arena.getFirstSpawn().getZ());
     Location spawn2 =
         new Location(arena.getWorld(),
-            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(), arena.getSecondSpawn().getZ());
+            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
+            arena.getSecondSpawn().getZ());
 
     p1.teleport(spawn1);
     p2.teleport(spawn2);

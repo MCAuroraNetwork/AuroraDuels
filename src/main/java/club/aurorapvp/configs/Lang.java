@@ -44,10 +44,14 @@ public class Lang {
     DEFAULTS.put("arena-does-not-exist", "prefix <gradient:#FFAA00:#FF55FF>Arena does not exist!");
     DEFAULTS.put("arena-already-being-created", "prefix <gradient:#FFAA00:#FF55FF>There is already an Arena being created!");
     DEFAULTS.put("arena-already-exists", "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
-    DEFAULTS.put("pick-opponent", "prefix <gradient:#FFAA00:#FF55FF>Please specify an opponent!");
     DEFAULTS.put("unknown-opponent", "prefix <gradient:#FFAA00:#FF55FF>Cannot find opponent");
+    DEFAULTS.put("player-in-duel", "prefix <gradient:#FFAA00:#FF55FF>That player is in a duel!");
     DEFAULTS.put("duel-started", "prefix <gradient:#FFAA00:#FF55FF>Duel started!");
     DEFAULTS.put("entered-queue", "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
+    DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
+    DEFAULTS.put("received-request", "prefix <gradient:#FFAA00:#FF55FF>You have received a request from  ");
+    DEFAULTS.put("use-accept", " use /duel accept to accept");
+    DEFAULTS.put("request-timed-out", "prefix <gradient:#FFAA00:#FF55FF>Duel request timed out");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
