@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class ArenaData implements ArenaDataInterface {
   private static Arena arena;
-
   public ArenaData(Arena arena) {
     ArenaData.arena = arena;
   }
@@ -27,21 +26,25 @@ public class ArenaData implements ArenaDataInterface {
     }
   }
 
-  public static void create(String arenaName, World arenaWorld, BlockVector3 spawnVector1, BlockVector3 spawnVector2)
-      throws IOException {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arenaName + ".yml");
+  @Override
+  public void create() {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
     YamlConfiguration arenaData =
         YamlConfiguration.loadConfiguration(file);
-    Location spawn1 = new Location(arenaWorld, spawnVector1.getBlockX(), spawnVector1.getBlockY(), spawnVector1.getBlockZ());
-    Location spawn2 = new Location(arenaWorld, spawnVector2.getBlockX(), spawnVector2.getBlockY(), spawnVector2.getBlockZ());
+    Location spawn1 = new Location(arena.getWorld(), arena.getSpawn(1).getBlockX(), arena.getSpawn(1).getBlockY(), arena.getSpawn(1).getBlockZ());
+    Location spawn2 = new Location(arena.getWorld(), arena.getSpawn(2).getBlockX(), arena.getSpawn(2).getBlockY(), arena.getSpawn(2).getBlockZ());
 
-    arenaData.set("arena.world", arenaWorld.getName());
+    arenaData.set("arena.world", arena.getWorld().getName());
     arenaData.set("arena.spawns.spawn1", spawn1);
     arenaData.set("arena.spawns.spawn2", spawn2);
 
     if (!file.exists()) {
-      file.getParentFile().mkdirs();
-      file.createNewFile();
+      try {
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
 
     try {
@@ -54,4 +57,5 @@ public class ArenaData implements ArenaDataInterface {
 
 interface ArenaDataInterface {
   File getFile();
+  void create();
 }

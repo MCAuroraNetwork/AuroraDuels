@@ -27,32 +27,68 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class Schematics {
+public class Schematics implements SchematicsInterface {
 
-  public static void save(String arenaName, World world, BlockVector3 pos1,
-                          BlockVector3 pos2) throws WorldEditException, IOException {
-    EditSession session = WorldEdit.getInstance().newEditSession(world);
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arenaName + ".schem");
+  private static Arena arena;
 
-    CuboidRegion region = new CuboidRegion(world, pos1, pos2);
+  public Schematics(Arena arena) {
+    Schematics.arena = arena;
+  }
+
+  @Override
+  public ClipboardFormat getFormat() {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+    if (file.exists()) {
+      return ClipboardFormats.findByFile(file);
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  public File getFile() {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+    if (file.exists()) {
+      return file;
+    } else {
+      return null;
+    }
+  }
+  @Override
+  public void save() {
+    EditSession session = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+
+    CuboidRegion region = new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getPosition(1), arena.getPosition(2));
     BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     ForwardExtentCopy forwardExtentCopy =
         new ForwardExtentCopy(session, region, clipboard, region.getMinimumPoint());
 
-    Operations.complete(forwardExtentCopy);
+    try {
+      Operations.complete(forwardExtentCopy);
+    } catch (WorldEditException e) {
+      throw new RuntimeException(e);
+    }
 
     if (!file.exists()) {
-      file.getParentFile().mkdirs();
-      file.createNewFile();
+      try {
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
 
     try (ClipboardWriter writer =
              BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(file))) {
       writer.write(clipboard);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
-  public static void paste(Arena arena) {
+  @Override
+  public void paste() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
 
     Clipboard clipboard;
@@ -79,13 +115,11 @@ public class Schematics {
       throw new RuntimeException(e);
     }
   }
+}
 
-  public static File get(Arena arena) {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
-    if (file.exists()) {
-      return file;
-    } else {
-      return null;
-    }
-  }
+interface SchematicsInterface {
+  ClipboardFormat getFormat();
+  File getFile();
+  void save() throws WorldEditException, IOException;
+  void paste();
 }

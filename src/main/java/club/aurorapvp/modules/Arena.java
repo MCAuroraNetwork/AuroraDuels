@@ -7,7 +7,6 @@ import club.aurorapvp.datahandlers.Schematics;
 import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.events.wand.WandListener;
 import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.IOException;
 import org.bukkit.Material;
@@ -28,6 +27,42 @@ public class Arena implements WandListener, ArenaInterface {
   public Arena(String arenaName) {
     Arena.arenaName = arenaName;
   }
+
+  @Override
+  public BlockVector3 getSpawn(int num) {
+    switch (num) {
+      case 1 -> {
+        return spawn1;
+      }
+      case 2 -> {
+        return spawn2;
+      }
+      default -> {
+        return null;
+      }
+    }
+  }
+
+  @Override
+  public BlockVector3 getPosition(int num) {
+    switch (num) {
+      case 1 -> {
+        return pos1;
+      }
+      case 2 -> {
+        return pos2;
+      }
+      default -> {
+        return null;
+      }
+    }
+  }
+
+  @Override
+  public World getWorld() {
+    return arenaWorld;
+  }
+
   @Override
   public String getName() {
     return arenaName;
@@ -35,7 +70,7 @@ public class Arena implements WandListener, ArenaInterface {
 
   @Override
   public boolean exists() {
-    return (this.getData().getFile() != null && Schematics.get(this) != null);
+    return (this.getData().getFile() != null && this.getSchematic().getFormat() != null);
   }
 
   @Override
@@ -53,7 +88,13 @@ public class Arena implements WandListener, ArenaInterface {
     return new ArenaData(this);
   }
 
-  public static void create(Player p, Arena arena) {
+  @Override
+  public Schematics getSchematic() {
+    return new Schematics(this);
+  }
+
+
+  public void create(Player p, Arena arena) {
     if (creationPhase == 0 && !arena.exists()) {
       Arena.p = p;
       Wand.setActive("right", true);
@@ -64,7 +105,7 @@ public class Arena implements WandListener, ArenaInterface {
       pos2 = null;
 
       creationPhase = 1;
-      run(p, arenaName);
+      run(p);
     } else if (creationPhase != 0) {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
     } else if (arena.exists()) {
@@ -75,11 +116,11 @@ public class Arena implements WandListener, ArenaInterface {
   @Override
   public void onWandEvent(WandEvent event) {
     if (creationPhase != 0) {
-      run(p, arenaName);
+      run(p);
     }
   }
 
-  private static void run(Player p, String arena) {
+  private void run(Player p) {
     switch (creationPhase) {
       case 1 -> {
         p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
@@ -135,13 +176,9 @@ public class Arena implements WandListener, ArenaInterface {
           }
         }
         if (pos1 != null && pos2 != null) {
-          try {
-            Schematics.save(arenaName, BukkitAdapter.adapt(p.getWorld()), pos1, pos2);
-            ArenaData.create(arenaName, arenaWorld, spawn1, spawn2);
-            p.sendMessage(Lang.getComponent("arena-created"));
-          } catch (WorldEditException | IOException e) {
-            throw new RuntimeException(e);
-          }
+          new Schematics(this).save();
+          new ArenaData(this).create();
+          p.sendMessage(Lang.getComponent("arena-created"));
           creationPhase = 0;
           Wand.setActive("right", false);
           Wand.setActive("left", false);
@@ -155,9 +192,9 @@ public class Arena implements WandListener, ArenaInterface {
     }
   }
 
-  public static void reset(Player p, Arena arena) {
+  public void reset(Player p, Arena arena) {
     if (arena.exists()) {
-      Schematics.paste(arena);
+      new Schematics(this).save();
       p.sendMessage(Lang.getComponent("arena-reset"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
@@ -167,7 +204,7 @@ public class Arena implements WandListener, ArenaInterface {
   public static void delete(Player p, Arena arena) {
     if (arena.exists()) {
       arena.getData().getFile().delete();
-      Schematics.get(arena).delete();
+      arena.getSchematic().getFile().delete();
       p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
@@ -176,9 +213,13 @@ public class Arena implements WandListener, ArenaInterface {
 }
 
 interface ArenaInterface {
+  BlockVector3 getSpawn(int num);
+  BlockVector3 getPosition(int num);
+  World getWorld();
   String getName();
   boolean exists();
   boolean inUse();
   void setAvailability(boolean value);
   ArenaData getData();
+  Schematics getSchematic();
 }

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Commands implements CommandExecutor {
   private Player p;
+
   @Override
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                            @NotNull String label, @NotNull String[] args) {
@@ -19,8 +20,14 @@ public class Commands implements CommandExecutor {
 
     switch (command.getName()) {
       case "duel" -> Queue.enterDuelQueue(p, args[0]);
-      case "createarena" -> Arena.create(p, new Arena(args[0]));
-      case "resetarena" -> Arena.reset(p, new Arena(args[0]));
+      case "createarena" -> {
+        Arena arena = new Arena(args[0]);
+        arena.create(p, arena);
+      }
+      case "resetarena" -> {
+        Arena arena = new Arena(args[0]);
+        arena.reset(p, arena);
+      }
       case "deletearena" -> Arena.delete(p, new Arena(args[0]));
     }
     return true;
