@@ -2,7 +2,7 @@ package club.aurorapvp.modules.arenas;
 
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
-import club.aurorapvp.datahandlers.ArenaData;
+import club.aurorapvp.datahandlers.arenadata.ArenaData;
 import club.aurorapvp.datahandlers.Schematics;
 import club.aurorapvp.modules.Wand;
 import club.aurorapvp.events.wand.WandEvent;
@@ -20,8 +20,8 @@ public class Arena implements WandListener, ArenaInterface {
   private static BlockVector3 spawn2 = null;
   private static BlockVector3 pos1 = null;
   private static BlockVector3 pos2 = null;
-  private boolean availibility = true;
   private static int creationPhase = 0;
+  private boolean availability = true;
   private static String arenaName;
   private static World arenaWorld;
   private static Player p;
@@ -41,12 +41,17 @@ public class Arena implements WandListener, ArenaInterface {
 
   @Override
   public boolean inUse() {
-    return availibility;
+    return availability;
   }
 
   @Override
-  public void setAvailibility(boolean value) {
-    availibility = value;
+  public void setAvailability(boolean value) {
+    availability = value;
+  }
+
+  @Override
+  public ArenaData getData() {
+    return new ArenaData(this);
   }
 
   public static void create(Player p, Arena arena) {
