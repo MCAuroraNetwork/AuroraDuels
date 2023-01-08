@@ -6,6 +6,7 @@ import club.aurorapvp.listeners.Commands;
 import club.aurorapvp.listeners.Events;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Duels;
+import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public final class AuroraDuels extends JavaPlugin {
     // Register important variables
     Wand.setup();
     Duels.setup();
+    Queue.setup();
     PLUGIN = this;
     DATAFOLDER = this.getDataFolder();
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();

@@ -47,6 +47,7 @@ public class Lang {
     DEFAULTS.put("pick-opponent", "prefix <gradient:#FFAA00:#FF55FF>Please specify an opponent!");
     DEFAULTS.put("unknown-opponent", "prefix <gradient:#FFAA00:#FF55FF>Cannot find opponent");
     DEFAULTS.put("duel-started", "prefix <gradient:#FFAA00:#FF55FF>Duel started!");
+    DEFAULTS.put("entered-queue", "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

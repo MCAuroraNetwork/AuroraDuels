@@ -25,7 +25,7 @@ public class Duels {
     }
   }
 
-  public void startDuel(Player p1, Player p2, Arena arena) {
+  public static void startDuel(Player p1, Player p2, Arena arena) {
     playersInDuel.add(p1);
     playersInDuel.add(p2);
     arena.setAvailability(false);
