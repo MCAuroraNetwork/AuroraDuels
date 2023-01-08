@@ -17,7 +17,7 @@ public class Queue {
     public static void setup() {
         executor.scheduleAtFixedRate(checkQueue, 0, 10, TimeUnit.SECONDS);
     }
-    private static Runnable checkQueue = () -> {
+    private static final Runnable checkQueue = () -> {
         Player p1 = null;
         Player p2 = null;
 
@@ -37,7 +37,7 @@ public class Queue {
         if (Bukkit.getPlayer(opponent) != null) {
             duelQueue.put(p, Bukkit.getPlayer(opponent));
             p.sendMessage(Lang.getComponent("entered-queue"));
-            executor.execute(Queue::checkQueue);
+            executor.execute(checkQueue);
             Bukkit.getPlayer(opponent).sendMessage(Lang.getComponent("entered-queue"));
         } else if (opponent == null) {
             p.sendMessage(Lang.getComponent("pick-opponent"));
