@@ -10,7 +10,22 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class ArenaData {
+public class ArenaData implements ArenaDataInterface {
+  private static Arena arena;
+
+  public ArenaData(Arena arena) {
+    ArenaData.arena = arena;
+  }
+
+  @Override
+  public File getFile() {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
+    if (file.exists()) {
+      return file;
+    } else {
+      return null;
+    }
+  }
 
   public static void create(String arenaName, World arenaWorld, BlockVector3 spawnVector1, BlockVector3 spawnVector2)
       throws IOException {
@@ -35,13 +50,8 @@ public class ArenaData {
       throw new RuntimeException(e);
     }
   }
+}
 
-  public static File get(Arena arena) {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
-    if (file.exists()) {
-      return file;
-    } else {
-      return null;
-    }
-  }
+interface ArenaDataInterface {
+  File getFile();
 }

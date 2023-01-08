@@ -2,7 +2,7 @@ package club.aurorapvp.modules;
 
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
-import club.aurorapvp.datahandlers.arenadata.ArenaData;
+import club.aurorapvp.datahandlers.ArenaData;
 import club.aurorapvp.datahandlers.Schematics;
 import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.events.wand.WandListener;
@@ -35,7 +35,7 @@ public class Arena implements WandListener, ArenaInterface {
 
   @Override
   public boolean exists() {
-    return (ArenaData.get(this) != null && Schematics.get(this) != null);
+    return (this.getData().getFile() != null && Schematics.get(this) != null);
   }
 
   @Override
@@ -54,7 +54,7 @@ public class Arena implements WandListener, ArenaInterface {
   }
 
   public static void create(Player p, Arena arena) {
-    if (creationPhase == 0 && ArenaData.get(arena) == null) {
+    if (creationPhase == 0 && !arena.exists()) {
       Arena.p = p;
       Wand.setActive("right", true);
       Wand.setActive("left", true);
@@ -67,7 +67,7 @@ public class Arena implements WandListener, ArenaInterface {
       run(p, arenaName);
     } else if (creationPhase != 0) {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
-    } else if (ArenaData.get(arena) != null) {
+    } else if (arena.exists()) {
       p.sendMessage(Lang.getComponent("arena-already-exists"));
     }
   }
@@ -166,7 +166,7 @@ public class Arena implements WandListener, ArenaInterface {
 
   public static void delete(Player p, Arena arena) {
     if (arena.exists()) {
-      ArenaData.get(arena).delete();
+      arena.getData().getFile().delete();
       Schematics.get(arena).delete();
       p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {

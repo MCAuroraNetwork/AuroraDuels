@@ -1,7 +1,6 @@
 package club.aurorapvp.datahandlers;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.datahandlers.arenadata.ArenaData;
 import club.aurorapvp.modules.Arena;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -61,7 +60,7 @@ public class Schematics {
     World world =
         BukkitAdapter.adapt(
             Bukkit.getWorld(YamlConfiguration
-                .loadConfiguration(ArenaData.get(arena))
+                .loadConfiguration(arena.getData().getFile())
                 .getString("arena.world")));
     ClipboardFormat format = ClipboardFormats.findByFile(file);
 
