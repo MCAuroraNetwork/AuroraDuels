@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 
 public class Duels {
   public static List<Player> playersInDuel = new ArrayList<>();
-  public static Map<Player, Player> pendingInvites = new HashMap();
+  public static Map<Player, Player> pendingInvites = new HashMap<>();
   public static List<Arena> arenas = new ArrayList<>();
 
   public static void setup() {
