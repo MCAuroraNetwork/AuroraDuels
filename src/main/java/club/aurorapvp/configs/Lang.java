@@ -50,8 +50,11 @@ public class Lang {
     DEFAULTS.put("entered-queue", "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
     DEFAULTS.put("received-request", "prefix <gradient:#FFAA00:#FF55FF>You have received a request from  ");
-    DEFAULTS.put("use-accept", " use /duel accept to accept");
+    DEFAULTS.put("command-help", " use /duel accept to accept, or /duel deny to deny");
     DEFAULTS.put("request-timed-out", "prefix <gradient:#FFAA00:#FF55FF>Duel request timed out");
+    DEFAULTS.put("no-requests", "prefix <gradient:#FFAA00:#FF55FF>No pending requests");
+    DEFAULTS.put("request-denied", "prefix <gradient:#FFAA00:#FF55FF>Duel request denied!");
+    DEFAULTS.put("request-accepted", "prefix <gradient:#FFAA00:#FF55FF>Duel request accepted!");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

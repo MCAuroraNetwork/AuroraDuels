@@ -30,13 +30,39 @@ public class Duels {
     }
   }
 
+  public static void acceptDuelRequest(Player p) {
+    if (pendingInvites.containsKey(p)) {
+      Player opponent = pendingInvites.get(p);
+
+      p.sendMessage(Lang.getComponent("request-accepted"));
+      opponent.sendMessage(Lang.getComponent("request-accepted"));
+      pendingInvites.remove(p);
+
+      Queue.enterDuelQueue(p, opponent);
+    } else {
+      p.sendMessage(Lang.getComponent("no-requests"));
+    }
+  }
+
+  public static void denyDuelRequest(Player p) {
+    if (pendingInvites.containsKey(p)) {
+      Player opponent = pendingInvites.get(p);
+
+      p.sendMessage(Lang.getComponent("request-denied"));
+      opponent.sendMessage(Lang.getComponent("request-denied"));
+      pendingInvites.remove(p);
+    } else {
+      p.sendMessage(Lang.getComponent("no-requests"));
+    }
+  }
+
   public static void sendDuelRequest(Player sender, Player receiver) {
     if (receiver != null && !playersInDuel.contains(receiver)) {
       pendingInvites.put(receiver, sender);
 
       sender.sendMessage(Lang.getComponent("sent-request"));
       receiver.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
-          Lang.getString("received-request") + sender.getName() + Lang.getString("use-accept")));
+          Lang.getString("received-request") + sender.getName() + Lang.getString("command-help")));
 
       TimerTask task = new TimerTask() {
         public void run() {
@@ -57,6 +83,7 @@ public class Duels {
   }
 
   public static void startDuel(Player p1, Player p2, Arena arena) {
+
     playersInDuel.add(p1);
     playersInDuel.add(p2);
     arena.setOccupied(false);

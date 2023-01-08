@@ -23,7 +23,9 @@ public class Commands implements CommandExecutor {
     switch (command.getName()) {
       case "duel" -> {
         if (args[0].equals("accept")) {
-
+          Duels.acceptDuelRequest(p);
+        } else if (args[0].equals("deny")) {
+          Duels.denyDuelRequest(p);
         } else {
           Duels.sendDuelRequest(p, Bukkit.getPlayer(args[0]));
         }
