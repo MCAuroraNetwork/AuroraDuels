@@ -46,6 +46,7 @@ public class Lang {
     DEFAULTS.put("arena-already-exists", "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
     DEFAULTS.put("pick-opponent", "prefix <gradient:#FFAA00:#FF55FF>Please specify an opponent!");
     DEFAULTS.put("unknown-opponent", "prefix <gradient:#FFAA00:#FF55FF>Cannot find opponent");
+    DEFAULTS.put("duel-started", "prefix <gradient:#FFAA00:#FF55FF>Duel started against ");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
