@@ -35,7 +35,7 @@ public class Queue {
   public static void enterDuelQueue(Player p, Player opponent) {
     duelQueue.put(p, opponent);
     p.sendMessage(Lang.getComponent("entered-queue"));
-    executor.execute(checkQueue);
     opponent.sendMessage(Lang.getComponent("entered-queue"));
+    executor.execute(checkQueue);
   }
 }

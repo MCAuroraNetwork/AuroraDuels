@@ -17,7 +17,7 @@ public class Arena implements WandListener, ArenaInterface {
   private static BlockVector3 pos1 = null;
   private static BlockVector3 pos2 = null;
   private static int creationPhase = 0;
-  private boolean availability = true;
+  private boolean availability = false;
   private static String arenaName;
   private static World arenaWorld;
   private static Player p;
