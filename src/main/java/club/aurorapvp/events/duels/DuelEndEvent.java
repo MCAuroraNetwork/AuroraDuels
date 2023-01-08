@@ -18,7 +18,7 @@ public class DuelEndEvent extends EventObject {
   public void trigger(Player p1, Player p2, Arena arena) {
     Duels.playersInDuel.remove(p1);
     Duels.playersInDuel.remove(p2);
-    arena.setOccupied(true);
+    arena.setOccupied(false);
 
     for (DuelEndEventListener listener : LISTENERS) {
       listener.onDuelEndEvent(this);

@@ -18,7 +18,7 @@ public class DuelStartEvent extends EventObject {
   public void trigger(Player p1, Player p2, Arena arena) {
     Duels.playersInDuel.add(p1);
     Duels.playersInDuel.add(p2);
-    arena.setOccupied(false);
+    arena.setOccupied(true);
 
     for (DuelStartEventListener listener : LISTENERS) {
       listener.onDuelStartEvent(this);
