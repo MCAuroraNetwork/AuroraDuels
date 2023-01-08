@@ -6,6 +6,7 @@ import club.aurorapvp.datahandlers.ArenaData;
 import club.aurorapvp.datahandlers.Schematics;
 import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.events.wand.WandListener;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -28,12 +29,20 @@ public class Arena implements WandListener, ArenaInterface {
 
   @Override
   public BlockVector3 getFirstSpawn() {
-    return spawn1;
+    if (spawn1 == null) {
+      return BukkitAdapter.asBlockVector(this.getData().getFirstSpawn());
+    } else {
+      return spawn1;
+    }
   }
 
   @Override
   public BlockVector3 getSecondSpawn() {
-    return spawn2;
+    if (spawn2 == null) {
+      return BukkitAdapter.asBlockVector(this.getData().getSecondSpawn());
+    } else {
+      return spawn2;
+    }
   }
 
   @Override
