@@ -1,10 +1,9 @@
-package club.aurorapvp.modules.arenas;
+package club.aurorapvp.modules;
 
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.arenadata.ArenaData;
 import club.aurorapvp.datahandlers.Schematics;
-import club.aurorapvp.modules.Wand;
 import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.events.wand.WandListener;
 import com.sk89q.worldedit.WorldEditException;
@@ -174,4 +173,12 @@ public class Arena implements WandListener, ArenaInterface {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
+}
+
+interface ArenaInterface {
+  String getName();
+  boolean exists();
+  boolean inUse();
+  void setAvailability(boolean value);
+  ArenaData getData();
 }

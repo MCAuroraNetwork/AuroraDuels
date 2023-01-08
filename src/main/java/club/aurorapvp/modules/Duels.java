@@ -1,6 +1,5 @@
 package club.aurorapvp.modules;
 
-import club.aurorapvp.modules.arenas.Arena;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;

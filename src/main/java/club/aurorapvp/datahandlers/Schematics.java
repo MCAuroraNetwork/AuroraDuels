@@ -1,7 +1,8 @@
 package club.aurorapvp.datahandlers;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.modules.arenas.Arena;
+import club.aurorapvp.datahandlers.arenadata.ArenaData;
+import club.aurorapvp.modules.Arena;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
@@ -59,7 +60,8 @@ public class Schematics {
 
     World world =
         BukkitAdapter.adapt(
-            Bukkit.getWorld(YamlConfiguration.loadConfiguration(ArenaData.get(arena))
+            Bukkit.getWorld(YamlConfiguration
+                .loadConfiguration(ArenaData.get(arena))
                 .getString("arena.world")));
     ClipboardFormat format = ClipboardFormats.findByFile(file);
 
