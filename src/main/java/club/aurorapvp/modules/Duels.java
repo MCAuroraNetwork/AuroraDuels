@@ -23,7 +23,7 @@ public class Duels {
     File dir = new File(AuroraDuels.DATAFOLDER, "/arenas/");
 
     for (File file : dir.listFiles()) {
-      Arena arena = new Arena(file.getName());
+      Arena arena = new Arena(file.getName().replace(".yml", ""));
       if (arena.exists()) {
         arenas.add(arena);
       }
