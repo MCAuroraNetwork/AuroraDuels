@@ -24,10 +24,9 @@ public class Queue {
         for (Player key : duelQueue.keySet()) {
           p1 = key;
           p2 = duelQueue.get(key);
-          break;
+          Duels.startDuel(p1, p2, arena);
+          return;
         }
-        Duels.startDuel(p1, p2, arena);
-        return;
       }
     }
   };
