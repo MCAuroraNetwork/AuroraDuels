@@ -28,13 +28,15 @@ public final class AuroraDuels extends JavaPlugin {
   @Override
   public void onEnable() {
     // Register important variables
-    Wand.setup();
-    Duels.setup();
-    Queue.setup();
     PLUGIN = this;
     DATAFOLDER = this.getDataFolder();
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
     COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
+
+    // Setup classes
+    Wand.setup();
+    Duels.setup();
+    Queue.setup();
 
     // Setup configs
     try {
