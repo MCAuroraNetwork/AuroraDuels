@@ -17,7 +17,7 @@ public class Arena implements WandListener, ArenaInterface {
   private static BlockVector3 pos1 = null;
   private static BlockVector3 pos2 = null;
   private static int creationPhase = 0;
-  private boolean availability = false;
+  private boolean occupancy = false;
   private static String arenaName;
   private static World arenaWorld;
   private static Player p;
@@ -63,12 +63,12 @@ public class Arena implements WandListener, ArenaInterface {
 
   @Override
   public boolean isOccupied() {
-    return availability;
+    return occupancy;
   }
 
   @Override
   public void setOccupied(boolean value) {
-    availability = value;
+    occupancy = value;
   }
 
   @Override
