@@ -28,14 +28,14 @@ public class Duels {
   public static void startDuel(Player p1, Player p2, Arena arena) {
     playersInDuel.add(p1);
     playersInDuel.add(p2);
-    arena.setAvailability(false);
+    arena.setOccupied(false);
 
     Location spawn1 =
         new Location(arena.getWorld(),
-            arena.getSpawn(1).getX(), arena.getSpawn(1).getY(), arena.getSpawn(1).getZ());
+            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(), arena.getFirstSpawn().getZ());
     Location spawn2 =
         new Location(arena.getWorld(),
-            arena.getSpawn(2).getX(), arena.getSpawn(2).getY(), arena.getSpawn(2).getZ());
+            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(), arena.getSecondSpawn().getZ());
 
     p1.teleport(spawn1);
     p2.teleport(spawn2);

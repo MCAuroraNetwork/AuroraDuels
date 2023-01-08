@@ -31,8 +31,8 @@ public class ArenaData implements ArenaDataInterface {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
     YamlConfiguration arenaData =
         YamlConfiguration.loadConfiguration(file);
-    Location spawn1 = new Location(arena.getWorld(), arena.getSpawn(1).getBlockX(), arena.getSpawn(1).getBlockY(), arena.getSpawn(1).getBlockZ());
-    Location spawn2 = new Location(arena.getWorld(), arena.getSpawn(2).getBlockX(), arena.getSpawn(2).getBlockY(), arena.getSpawn(2).getBlockZ());
+    Location spawn1 = new Location(arena.getWorld(), arena.getFirstSpawn().getBlockX(), arena.getFirstSpawn().getBlockY(), arena.getFirstSpawn().getBlockZ());
+    Location spawn2 = new Location(arena.getWorld(), arena.getSecondSpawn().getBlockX(), arena.getSecondSpawn().getBlockY(), arena.getSecondSpawn().getBlockZ());
 
     arenaData.set("arena.world", arena.getWorld().getName());
     arenaData.set("arena.spawns.spawn1", spawn1);

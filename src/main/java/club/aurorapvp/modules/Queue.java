@@ -1,8 +1,6 @@
 package club.aurorapvp.modules;
 
 import club.aurorapvp.configs.Lang;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +20,7 @@ public class Queue {
         Player p2 = null;
 
         for (Arena arena : Duels.arenas) {
-            if (!arena.inUse()) {
+            if (!arena.isOccupied()) {
                 for (Player key : duelQueue.keySet()) {
                     p1 = key;
                     p2 = duelQueue.get(key);

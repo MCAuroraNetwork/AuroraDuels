@@ -6,9 +6,7 @@ import club.aurorapvp.datahandlers.ArenaData;
 import club.aurorapvp.datahandlers.Schematics;
 import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.events.wand.WandListener;
-import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.math.BlockVector3;
-import java.io.IOException;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -29,18 +27,13 @@ public class Arena implements WandListener, ArenaInterface {
   }
 
   @Override
-  public BlockVector3 getSpawn(int num) {
-    switch (num) {
-      case 1 -> {
-        return spawn1;
-      }
-      case 2 -> {
-        return spawn2;
-      }
-      default -> {
-        return null;
-      }
-    }
+  public BlockVector3 getFirstSpawn() {
+    return spawn1;
+  }
+
+  @Override
+  public BlockVector3 getSecondSpawn() {
+    return spawn2;
   }
 
   @Override
@@ -69,12 +62,12 @@ public class Arena implements WandListener, ArenaInterface {
   }
 
   @Override
-  public boolean inUse() {
+  public boolean isOccupied() {
     return availability;
   }
 
   @Override
-  public void setAvailability(boolean value) {
+  public void setOccupied(boolean value) {
     availability = value;
   }
 
@@ -206,14 +199,15 @@ public class Arena implements WandListener, ArenaInterface {
 }
 
 interface ArenaInterface {
-  BlockVector3 getSpawn(int num);
+  BlockVector3 getFirstSpawn();
+  BlockVector3 getSecondSpawn();
   BlockVector3 getFirstPosition();
   BlockVector3 getSecondPosition();
   World getWorld();
   String getName();
   boolean exists();
-  boolean inUse();
-  void setAvailability(boolean value);
+  boolean isOccupied();
+  void setOccupied(boolean value);
   ArenaData getData();
   Schematics getSchematic();
 }
