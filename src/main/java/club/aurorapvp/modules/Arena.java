@@ -103,9 +103,10 @@ public class Arena implements WandListener, ArenaInterface {
       spawn2 = null;
       pos1 = null;
       pos2 = null;
-
       creationPhase = 1;
-      run(p);
+
+      p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
+      p.sendMessage(Lang.getComponent("set-spawn1-and-spawn2"));
     } else if (creationPhase != 0) {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
     } else if (arena.exists()) {
@@ -116,80 +117,75 @@ public class Arena implements WandListener, ArenaInterface {
   @Override
   public void onWandEvent(WandEvent event) {
     if (creationPhase != 0) {
-      run(p);
+      switch (creationPhase) {
+        case 1 -> setSpawns(p);
+        case 2 -> setCorners(p);
+        default -> {
+          AuroraDuels.PLUGIN.getLogger()
+              .warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
+          creationPhase = 0;
+        }
+      }
     }
   }
 
-  private void run(Player p) {
-    switch (creationPhase) {
-      case 1 -> {
-        p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
-        p.sendMessage(Lang.getComponent("set-spawn1-and-spawn2"));
-        creationPhase++;
+  public void setSpawns(Player p) {
+    if (Wand.getLastAction().isLeftClick()) {
+      spawn1 = Wand.getLastVector();
+      p.sendMessage(
+          AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("spawn1-set") +
+              " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " +
+              spawn1.getBlockZ() +
+              ")"));
+      if (spawn2 == null) {
+        p.sendMessage(Lang.getComponent("set-spawn2"));
       }
-      case 2 -> {
-        if (Wand.getLastAction().isLeftClick()) {
-          spawn1 = Wand.getLastVector();
-          p.sendMessage(
-              AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("spawn1-set") +
-                  " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " +
-                  spawn1.getBlockZ() +
-                  ")"));
-          if (spawn2 == null) {
-            p.sendMessage(Lang.getComponent("set-spawn2"));
-          }
-        } else if (Wand.getLastAction().isRightClick()) {
-          spawn2 = Wand.getLastVector();
-          p.sendMessage(
-              AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("spawn2-set") +
-                  " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " +
-                  spawn2.getBlockZ() + ")"));
-          if (spawn1 == null) {
-            p.sendMessage(Lang.getComponent("set-spawn1"));
-          }
-        }
-        if (spawn1 != null && spawn2 != null) {
-          p.sendMessage(Lang.getComponent("spawns-set"));
-          p.sendMessage(Lang.getComponent("set-pos1-and-pos2"));
-          arenaWorld = p.getWorld();
-          creationPhase++;
-        }
+    } else if (Wand.getLastAction().isRightClick()) {
+      spawn2 = Wand.getLastVector();
+      p.sendMessage(
+          AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("spawn2-set") +
+              " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " +
+              spawn2.getBlockZ() + ")"));
+      if (spawn1 == null) {
+        p.sendMessage(Lang.getComponent("set-spawn1"));
       }
-      case 3 -> {
-        if (Wand.getLastAction().isLeftClick()) {
-          pos1 = Wand.getLastVector();
-          p.sendMessage(
-              AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("pos1-set") +
-                  " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() +
-                  ")"));
-          if (pos2 == null) {
-            p.sendMessage(Lang.getComponent("set-pos2"));
-          }
-        } else if (Wand.getLastAction().isRightClick()) {
-          pos2 = Wand.getLastVector();
-          p.sendMessage(
-              AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("pos2-set") +
-                  " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() +
-                  ")"));
-          if (pos1 == null) {
-            p.sendMessage(Lang.getComponent("set-pos1"));
-          }
-        }
-        if (pos1 != null && pos2 != null) {
-          new Schematics(this).save();
-          new ArenaData(this).create();
-          p.sendMessage(Lang.getComponent("arena-created"));
-          creationPhase = 0;
-          Wand.setActive("right", false);
-          Wand.setActive("left", false);
-          Duels.arenas.add(this);
-        }
+    }
+    if (spawn1 != null && spawn2 != null) {
+      p.sendMessage(Lang.getComponent("spawns-set"));
+      p.sendMessage(Lang.getComponent("set-pos1-and-pos2"));
+      arenaWorld = p.getWorld();
+      creationPhase++;
+    }
+  }
+
+  public void setCorners(Player p) {
+    if (Wand.getLastAction().isLeftClick()) {
+      pos1 = Wand.getLastVector();
+      p.sendMessage(
+          AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("pos1-set") +
+              " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() +
+              ")"));
+      if (pos2 == null) {
+        p.sendMessage(Lang.getComponent("set-pos2"));
       }
-      default -> {
-        AuroraDuels.PLUGIN.getLogger()
-            .warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
-        creationPhase = 0;
+    } else if (Wand.getLastAction().isRightClick()) {
+      pos2 = Wand.getLastVector();
+      p.sendMessage(
+          AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("pos2-set") +
+              " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() +
+              ")"));
+      if (pos1 == null) {
+        p.sendMessage(Lang.getComponent("set-pos1"));
       }
+    }
+    if (pos1 != null && pos2 != null) {
+      new Schematics(this).save();
+      new ArenaData(this).create();
+      p.sendMessage(Lang.getComponent("arena-created"));
+      creationPhase = 0;
+      Wand.setActive("right", false);
+      Wand.setActive("left", false);
+      Duels.arenas.add(this);
     }
   }
 
