@@ -44,18 +44,13 @@ public class Arena implements WandListener, ArenaInterface {
   }
 
   @Override
-  public BlockVector3 getPosition(int num) {
-    switch (num) {
-      case 1 -> {
-        return pos1;
-      }
-      case 2 -> {
-        return pos2;
-      }
-      default -> {
-        return null;
-      }
-    }
+  public BlockVector3 getFirstPosition() {
+    return pos1;
+  }
+
+  @Override
+  public BlockVector3 getSecondPosition() {
+    return pos2;
   }
 
   @Override
@@ -212,7 +207,8 @@ public class Arena implements WandListener, ArenaInterface {
 
 interface ArenaInterface {
   BlockVector3 getSpawn(int num);
-  BlockVector3 getPosition(int num);
+  BlockVector3 getFirstPosition();
+  BlockVector3 getSecondPosition();
   World getWorld();
   String getName();
   boolean exists();

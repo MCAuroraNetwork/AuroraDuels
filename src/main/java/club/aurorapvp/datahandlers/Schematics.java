@@ -59,7 +59,7 @@ public class Schematics implements SchematicsInterface {
     EditSession session = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
 
-    CuboidRegion region = new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getPosition(1), arena.getPosition(2));
+    CuboidRegion region = new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getFirstPosition(), arena.getSecondPosition());
     BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     ForwardExtentCopy forwardExtentCopy =
         new ForwardExtentCopy(session, region, clipboard, region.getMinimumPoint());
