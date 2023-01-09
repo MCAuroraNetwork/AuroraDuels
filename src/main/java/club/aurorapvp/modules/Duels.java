@@ -96,8 +96,8 @@ public class Duels {
             arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
-    p1.teleport(spawn1);
-    p2.teleport(spawn2);
+    p1.teleportAsync(spawn1);
+    p2.teleportAsync(spawn2);
 
     final Title title1 =
         Title.title(Lang.getComponent("duel-started"), Component.text("Opponent: " + p2.getName()));
