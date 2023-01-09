@@ -56,6 +56,10 @@ public class Duels {
     }
   }
 
+  public static boolean inDuel(Player p) {
+    return playersInDuel.contains(p);
+  }
+
   public static void sendDuelRequest(Player sender, Player receiver) {
     if (receiver != null && !playersInDuel.contains(receiver)) {
       pendingInvites.put(receiver, sender);

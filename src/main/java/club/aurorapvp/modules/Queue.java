@@ -1,6 +1,5 @@
 package club.aurorapvp.modules;
 
-import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import java.util.LinkedHashMap;
 import java.util.concurrent.Executors;
@@ -21,7 +20,9 @@ public class Queue {
       if (!arena.isOccupied()) {
         for (Player p1 : duelQueue.keySet()) {
           Player p2 = duelQueue.get(p1);
-          Duels.startDuel(p1, p2, arena);
+          if (!Duels.inDuel(p1) && Duels.inDuel(p2)) {
+            Duels.startDuel(p1, p2, arena);
+          }
           return;
         }
       }
