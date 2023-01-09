@@ -1,8 +1,7 @@
 package club.aurorapvp.listeners;
 
 import club.aurorapvp.modules.Arena;
-import club.aurorapvp.modules.Duels;
-import club.aurorapvp.modules.Queue;
+import club.aurorapvp.modules.Duel;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,11 +22,11 @@ public class Commands implements CommandExecutor {
     switch (command.getName()) {
       case "duel" -> {
         if (args[0].equals("accept")) {
-          Duels.acceptDuelRequest(p);
+          Duel.acceptDuelRequest(p);
         } else if (args[0].equals("deny")) {
-          Duels.denyDuelRequest(p);
+          Duel.denyDuelRequest(p);
         } else {
-          Duels.sendDuelRequest(p, Bukkit.getPlayer(args[0]));
+          Duel.sendDuelRequest(p, Bukkit.getPlayer(args[0]));
         }
       }
       case "createarena" -> {

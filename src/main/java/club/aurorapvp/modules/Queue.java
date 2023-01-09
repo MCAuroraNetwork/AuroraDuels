@@ -16,12 +16,12 @@ public class Queue {
   }
 
   private static final Runnable checkQueue = () -> {
-    for (Arena arena : Duels.arenas) {
+    for (Arena arena : Duel.arenas) {
       if (!arena.isOccupied()) {
         for (Player p1 : duelQueue.keySet()) {
           Player p2 = duelQueue.get(p1);
-          if (!Duels.inDuel(p1) && Duels.inDuel(p2)) {
-            Duels.startDuel(p1, p2, arena);
+          if (!Duel.inDuel(p1) && Duel.inDuel(p2)) {
+            Duel.startDuel(p1, p2, arena);
           }
           return;
         }

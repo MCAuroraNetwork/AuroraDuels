@@ -1,8 +1,9 @@
 package club.aurorapvp.modules;
 
+import static org.bukkit.Bukkit.getServer;
+
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
-import club.aurorapvp.events.duels.DuelStartEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,19 +13,38 @@ import java.util.Timer;
 import java.util.TimerTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class Duels {
-  public static List<Player> playersInDuel = new ArrayList<>();
+public class Duel {
   public static Map<Player, Player> pendingInvites = new HashMap<>();
   public static List<Arena> arenas = new ArrayList<>();
+  public static List<Duel> duels = new ArrayList<>();
+  private static Player p1;
+  private static Player p2;
+  private static Arena arena;
 
-  public Duels() {}
+  public Duel(Player p1, Player p2, Arena arena) {
+    Duel.arena = arena;
+    Duel.p1 = p1;
+    Duel.p2 = p2;
+  }
+
+  public Player getPlayerOne() {
+    return p1;
+  }
+
+  public Player getPlayerTwo() {
+    return p2;
+  }
+
+  public Arena getArena() {
+    return arena;
+  }
 
   public static void setup() {
     File dir = new File(AuroraDuels.DATAFOLDER, "/arenas/");
-
     for (File file : dir.listFiles()) {
       Arena arena = new Arena(file.getName().replace(".yml", ""));
       if (arena.exists()) {
@@ -60,11 +80,17 @@ public class Duels {
   }
 
   public static boolean inDuel(Player p) {
-    return playersInDuel.contains(p);
+    for (Duel duel : duels) {
+      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
+        return true;
+      }
+
+    }
+    return false;
   }
 
   public static void sendDuelRequest(Player sender, Player receiver) {
-    if (receiver != null && !playersInDuel.contains(receiver)) {
+    if (receiver != null && !inDuel(receiver)) {
       pendingInvites.put(receiver, sender);
 
       sender.sendMessage(Lang.getComponent("sent-request"));
@@ -109,7 +135,8 @@ public class Duels {
 
     p1.showTitle(title1);
     p2.showTitle(title2);
+    Duel duel = new Duel(p1, p2, arena);
 
-    new DuelStartEvent(new Duels()).trigger(p1, p2, arena);
+    duels.add(duel);
   }
 }

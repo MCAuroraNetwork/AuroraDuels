@@ -6,6 +6,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Events implements Listener {
@@ -30,5 +31,9 @@ public class Events implements Listener {
           BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()),
           event.getPlayer());
     }
+  }
+  @EventHandler
+  public void onPlayerDeath(PlayerDeathEvent event) {
+
   }
 }

@@ -177,7 +177,7 @@ public class Arena implements WandListener {
       creationPhase = 0;
       Wand.setActive("right", false);
       Wand.setActive("left", false);
-      Duels.arenas.add(this);
+      Duel.arenas.add(this);
     }
   }
 
@@ -194,7 +194,7 @@ public class Arena implements WandListener {
     if (arena.exists()) {
       arena.getData().getFile().delete();
       arena.getSchematic().getFile().delete();
-      Duels.arenas.remove(arena);
+      Duel.arenas.remove(arena);
       p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
