@@ -25,22 +25,26 @@ public class Arena implements WandListener {
 
   public Arena(String arenaName) {
     Arena.arenaName = arenaName;
+
+    if (spawn1 == null) {
+      spawn1 = BukkitAdapter.asBlockVector(this.getData().getFirstSpawn());
+    }
+
+    if (spawn2 == null) {
+      spawn2 = BukkitAdapter.asBlockVector(this.getData().getSecondSpawn());
+    }
+
+    if (arenaWorld == null) {
+      arenaWorld = this.getData().getWorld();
+    }
   }
 
   public BlockVector3 getFirstSpawn() {
-    if (spawn1 == null) {
-      return BukkitAdapter.asBlockVector(this.getData().getFirstSpawn());
-    } else {
-      return spawn1;
-    }
+    return spawn1;
   }
 
   public BlockVector3 getSecondSpawn() {
-    if (spawn2 == null) {
-      return BukkitAdapter.asBlockVector(this.getData().getSecondSpawn());
-    } else {
-      return spawn2;
-    }
+    return spawn2;
   }
 
   public BlockVector3 getFirstPosition() {

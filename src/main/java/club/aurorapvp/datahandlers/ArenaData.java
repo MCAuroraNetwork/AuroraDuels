@@ -3,6 +3,7 @@ package club.aurorapvp.datahandlers;
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.modules.Arena;
 import com.sk89q.worldedit.math.BlockVector3;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -39,6 +40,14 @@ public class ArenaData {
         YamlConfiguration.loadConfiguration(file);
 
     return arenaData.getLocation("arena.spawns.spawn2");
+  }
+
+  public World getWorld() {
+    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
+    YamlConfiguration arenaData =
+        YamlConfiguration.loadConfiguration(file);
+
+    return Bukkit.getWorld(arenaData.getString("arena.world"));
   }
 
   public void create() {
