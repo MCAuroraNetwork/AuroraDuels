@@ -188,8 +188,8 @@ public class Arena implements WandListener {
     }
   }
 
-  public void reset(Player p, Arena arena) {
-    if (arena.exists()) {
+  public void reset(Player p) {
+    if (this.exists()) {
       new Schematics(this).paste();
       p.sendMessage(Lang.getComponent("arena-reset"));
     } else {

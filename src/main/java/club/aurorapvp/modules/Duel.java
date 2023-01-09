@@ -154,10 +154,11 @@ public class Duel {
     Player p1 = this.getPlayerOne();
     Player p2 = this.getPlayerTwo();
 
-    Queue.exitDuelQueue(p1, p2);
-    duels.remove(this);
-
     p1.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+
+    Queue.exitDuelQueue(p1, p2);
+    duels.remove(this);
+    this.getArena().reset(null);
   }
 }
