@@ -57,6 +57,8 @@ public class Lang {
     DEFAULTS.put("no-requests", "prefix <gradient:#FFAA00:#FF55FF>No pending requests");
     DEFAULTS.put("request-denied", "prefix <gradient:#FFAA00:#FF55FF>Duel request denied!");
     DEFAULTS.put("request-accepted", "prefix <gradient:#FFAA00:#FF55FF>Duel request accepted!");
+    DEFAULTS.put("you-win", "prefix <gradient:#FFAA00:#FF55FF>You won the duel!");
+    DEFAULTS.put("you-lose", "prefix <gradient:#FFAA00:#FF55FF>You lost the duel");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

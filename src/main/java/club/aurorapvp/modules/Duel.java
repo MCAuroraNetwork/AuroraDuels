@@ -154,6 +154,14 @@ public class Duel {
     p1.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
 
+    if (p1.isDead()) {
+      p1.sendMessage(Lang.getComponent("you-win"));
+      p2.sendMessage(Lang.getComponent("you-lose"));
+    } else {
+      p2.sendMessage(Lang.getComponent("you-win"));
+      p1.sendMessage(Lang.getComponent("you-lose"));
+    }
+
     Queue.exitDuelQueue(p1, p2);
     duels.remove(this);
     this.getArena().reset(null);
