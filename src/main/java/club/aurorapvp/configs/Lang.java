@@ -46,7 +46,7 @@ public class Lang {
     DEFAULTS.put("arena-already-exists", "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
     DEFAULTS.put("unknown-opponent", "prefix <gradient:#FFAA00:#FF55FF>Cannot find opponent");
     DEFAULTS.put("player-in-duel", "prefix <gradient:#FFAA00:#FF55FF>That player is in a duel!");
-    DEFAULTS.put("duel-started", "prefix <gradient:#FFAA00:#FF55FF>Duel started!");
+    DEFAULTS.put("duel-started", "<bold><gradient:#FFAA00:#FF55FF>Duel started!");
     DEFAULTS.put("entered-queue", "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
     DEFAULTS.put("received-request", "prefix <gradient:#FFAA00:#FF55FF>You have received a request from ");
