@@ -1,5 +1,6 @@
 package club.aurorapvp.modules;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import java.util.LinkedHashMap;
 import java.util.concurrent.Executors;
