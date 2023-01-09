@@ -125,7 +125,7 @@ public class Duel {
     }
   }
 
-  public static void startDuel(Player p1, Player p2, Arena arena) {
+  public void startDuel() {
     Location spawn1 =
         new Location(arena.getWorld(),
             arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
@@ -145,9 +145,8 @@ public class Duel {
 
     p1.showTitle(title1);
     p2.showTitle(title2);
-    Duel duel = new Duel(p1, p2, arena);
 
-    duels.add(duel);
+    duels.add(this);
   }
 
   public void endDuel() {

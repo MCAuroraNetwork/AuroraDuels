@@ -21,7 +21,7 @@ public class Queue {
         for (Player p1 : duelQueue.keySet()) {
           Player p2 = duelQueue.get(p1);
           if (!Duel.inDuel(p1) && Duel.inDuel(p2)) {
-            Duel.startDuel(p1, p2, arena);
+            new Duel(p1, p2, arena).startDuel();
           }
           return;
         }
