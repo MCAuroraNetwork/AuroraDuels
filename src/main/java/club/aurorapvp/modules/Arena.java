@@ -8,8 +8,11 @@ import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.events.wand.WandListener;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
+import java.io.File;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Arena implements WandListener {
@@ -27,16 +30,20 @@ public class Arena implements WandListener {
     Arena.arenaName = arenaName;
 
     if (this.exists()) {
+      File file = this.getData().getFile();
+      YamlConfiguration arenaData =
+          YamlConfiguration.loadConfiguration(file);
+
       if (spawn1 == null) {
-        spawn1 = BukkitAdapter.asBlockVector(this.getData().getFirstSpawn());
+        spawn1 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn1"));
       }
 
       if (spawn2 == null) {
-        spawn2 = BukkitAdapter.asBlockVector(this.getData().getSecondSpawn());
+        spawn2 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn2"));
       }
 
       if (arenaWorld == null) {
-        arenaWorld = this.getData().getWorld();
+        arenaWorld = Bukkit.getWorld(arenaData.getString("arena.world"));
       }
     }
   }

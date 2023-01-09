@@ -26,30 +26,6 @@ public class ArenaData {
     }
   }
 
-  public Location getFirstSpawn() {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
-    YamlConfiguration arenaData =
-        YamlConfiguration.loadConfiguration(file);
-
-    return arenaData.getLocation("arena.spawns.spawn1");
-  }
-
-  public Location getSecondSpawn() {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
-    YamlConfiguration arenaData =
-        YamlConfiguration.loadConfiguration(file);
-
-    return arenaData.getLocation("arena.spawns.spawn2");
-  }
-
-  public World getWorld() {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
-    YamlConfiguration arenaData =
-        YamlConfiguration.loadConfiguration(file);
-
-    return Bukkit.getWorld(arenaData.getString("arena.world"));
-  }
-
   public void create() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
     YamlConfiguration arenaData =
