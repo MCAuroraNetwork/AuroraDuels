@@ -1,5 +1,6 @@
 package club.aurorapvp.listeners;
 
+import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Wand;
 import club.aurorapvp.events.wand.WandEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -32,8 +33,12 @@ public class Events implements Listener {
           event.getPlayer());
     }
   }
+
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent event) {
-
+    if (Duel.inDuel(event.getPlayer())) {
+      Duel duel = Duel.getDuel(event.getPlayer());
+      duel.endDuel();
+    }
   }
 }

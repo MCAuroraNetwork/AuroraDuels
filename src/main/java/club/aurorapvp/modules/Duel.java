@@ -89,6 +89,16 @@ public class Duel {
     return false;
   }
 
+  public static Duel getDuel(Player p) {
+    for (Duel duel : duels) {
+      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
+        return duel;
+      }
+
+    }
+    return null;
+  }
+
   public static void sendDuelRequest(Player sender, Player receiver) {
     if (receiver != null && !inDuel(receiver)) {
       pendingInvites.put(receiver, sender);
@@ -138,5 +148,16 @@ public class Duel {
     Duel duel = new Duel(p1, p2, arena);
 
     duels.add(duel);
+  }
+
+  public void endDuel() {
+    Player p1 = this.getPlayerOne();
+    Player p2 = this.getPlayerTwo();
+
+    Queue.exitDuelQueue(p1, p2);
+    duels.remove(this);
+
+    p1.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
   }
 }
