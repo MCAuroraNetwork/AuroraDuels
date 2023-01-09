@@ -2,6 +2,7 @@ package club.aurorapvp.modules;
 
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
+import club.aurorapvp.events.duels.DuelStartEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ public class Duels {
   public static List<Player> playersInDuel = new ArrayList<>();
   public static Map<Player, Player> pendingInvites = new HashMap<>();
   public static List<Arena> arenas = new ArrayList<>();
+
+  public Duels() {}
 
   public static void setup() {
     File dir = new File(AuroraDuels.DATAFOLDER, "/arenas/");
@@ -87,11 +90,6 @@ public class Duels {
   }
 
   public static void startDuel(Player p1, Player p2, Arena arena) {
-    Queue.exitDuelQueue(p1, p2);
-    playersInDuel.add(p1);
-    playersInDuel.add(p2);
-    arena.setOccupied(true);
-
     Location spawn1 =
         new Location(arena.getWorld(),
             arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
@@ -111,5 +109,7 @@ public class Duels {
 
     p1.showTitle(title1);
     p2.showTitle(title2);
+
+    new DuelStartEvent(new Duels()).trigger(p1, p2, arena);
   }
 }
