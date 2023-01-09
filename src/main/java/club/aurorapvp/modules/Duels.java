@@ -87,6 +87,7 @@ public class Duels {
   }
 
   public static void startDuel(Player p1, Player p2, Arena arena) {
+    Queue.exitDuelQueue(p1, p2);
     playersInDuel.add(p1);
     playersInDuel.add(p2);
     arena.setOccupied(true);

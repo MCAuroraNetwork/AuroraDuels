@@ -29,6 +29,14 @@ public class Queue {
     }
   };
 
+  public static void exitDuelQueue(Player p1, Player p2) {
+    if (duelQueue.containsKey(p1)) {
+      duelQueue.remove(p1);
+    } else if (duelQueue.containsKey(p2)) {
+      duelQueue.remove(p2);
+    }
+  }
+
   public static void enterDuelQueue(Player p, Player opponent) {
     duelQueue.put(p, opponent);
     p.sendMessage(Lang.getComponent("entered-queue"));
