@@ -155,11 +155,11 @@ public class Duel {
     p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
 
     if (p1.isDead()) {
-      p1.sendMessage(Lang.getComponent("you-win"));
-      p2.sendMessage(Lang.getComponent("you-lose"));
-    } else {
       p2.sendMessage(Lang.getComponent("you-win"));
       p1.sendMessage(Lang.getComponent("you-lose"));
+    } else {
+      p1.sendMessage(Lang.getComponent("you-win"));
+      p2.sendMessage(Lang.getComponent("you-lose"));
     }
 
     Queue.exitDuelQueue(p1, p2);
