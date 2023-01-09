@@ -1,18 +1,16 @@
 package club.aurorapvp.configs;
 
 import club.aurorapvp.AuroraDuels;
-import net.kyori.adventure.text.Component;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import net.kyori.adventure.text.Component;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
   private static final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
   private static final HashMap<String, String> DEFAULTS = new HashMap<>();
-  private static final File FILE = new File(AuroraDuels.DATAFOLDER, "lang.yml");
-
+  private static final File FILE = new File(AuroraDuels.DATA_FOLDER, "lang.yml");
   private static YamlConfiguration lang;
 
   public static void generateDefaults() throws IOException {
@@ -42,14 +40,18 @@ public class Lang {
     DEFAULTS.put("arena-reset", "prefix <gradient:#FFAA00:#FF55FF>Arena reset successfully!");
     DEFAULTS.put("arena-deleted", "prefix <gradient:#FFAA00:#FF55FF>Arena deleted");
     DEFAULTS.put("arena-does-not-exist", "prefix <gradient:#FFAA00:#FF55FF>Arena does not exist!");
-    DEFAULTS.put("arena-already-being-created", "prefix <gradient:#FFAA00:#FF55FF>There is already an Arena being created!");
-    DEFAULTS.put("arena-already-exists", "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
+    DEFAULTS.put("arena-already-being-created",
+        "prefix <gradient:#FFAA00:#FF55FF>There is already an Arena being created!");
+    DEFAULTS.put("arena-already-exists",
+        "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
     DEFAULTS.put("unknown-opponent", "prefix <gradient:#FFAA00:#FF55FF>Cannot find opponent");
     DEFAULTS.put("player-in-duel", "prefix <gradient:#FFAA00:#FF55FF>That player is in a duel!");
     DEFAULTS.put("duel-started", "<bold><gradient:#FFAA00:#FF55FF>Duel started!");
-    DEFAULTS.put("entered-queue", "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
+    DEFAULTS.put("entered-queue",
+        "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
-    DEFAULTS.put("received-request", "prefix <gradient:#FFAA00:#FF55FF>You have received a request from ");
+    DEFAULTS.put("received-request",
+        "prefix <gradient:#FFAA00:#FF55FF>You have received a request from ");
     DEFAULTS.put("command-help", " use /duel accept to accept, or /duel deny to deny");
     DEFAULTS.put("request-timed-out", "prefix <gradient:#FFAA00:#FF55FF>Duel request timed out");
     DEFAULTS.put("no-requests", "prefix <gradient:#FFAA00:#FF55FF>No pending requests");

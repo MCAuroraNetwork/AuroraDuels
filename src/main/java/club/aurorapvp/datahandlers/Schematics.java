@@ -16,7 +16,6 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
@@ -28,15 +27,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Schematics {
-
   private static Arena arena;
-
   public Schematics(Arena arena) {
     Schematics.arena = arena;
   }
 
   public ClipboardFormat getFormat() {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+    File file =
+        new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
     if (file.exists()) {
       return ClipboardFormats.findByFile(file);
     } else {
@@ -45,18 +43,24 @@ public class Schematics {
   }
 
   public File getFile() {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+    File file =
+        new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
     if (file.exists()) {
       return file;
     } else {
       return null;
     }
   }
-  public void save() {
-    EditSession session = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
 
-    CuboidRegion region = new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getFirstPosition(), arena.getSecondPosition());
+  public void save() {
+    EditSession session =
+        WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
+    File file =
+        new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+
+    CuboidRegion region =
+        new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getFirstPosition(),
+            arena.getSecondPosition());
     BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     ForwardExtentCopy forwardExtentCopy =
         new ForwardExtentCopy(session, region, clipboard, region.getMinimumPoint());
@@ -85,7 +89,8 @@ public class Schematics {
   }
 
   public void paste() {
-    File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+    File file =
+        new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
 
     Clipboard clipboard;
 

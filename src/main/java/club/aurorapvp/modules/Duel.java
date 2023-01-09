@@ -1,7 +1,5 @@
 package club.aurorapvp.modules;
 
-import static org.bukkit.Bukkit.getServer;
-
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import java.io.File;
@@ -44,7 +42,7 @@ public class Duel {
   }
 
   public static void setup() {
-    File dir = new File(AuroraDuels.DATAFOLDER, "/arenas/");
+    File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
     for (File file : dir.listFiles()) {
       Arena arena = new Arena(file.getName().replace(".yml", ""));
       if (arena.exists()) {

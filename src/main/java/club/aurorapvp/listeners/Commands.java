@@ -35,7 +35,7 @@ public class Commands implements CommandExecutor {
       }
       case "resetarena" -> {
         Arena arena = new Arena(args[0]);
-        arena.reset(p, arena);
+        arena.reset(p);
       }
       case "deletearena" -> Arena.delete(p, new Arena(args[0]));
     }

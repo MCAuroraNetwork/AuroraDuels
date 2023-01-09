@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
   private static final HashMap<String, String> DEFAULTS = new HashMap<>();
-  private static final File FILE = new File(AuroraDuels.DATAFOLDER, "config.yml");
+  private static final File FILE = new File(AuroraDuels.DATA_FOLDER, "config.yml");
   private static YamlConfiguration config;
 
   public static void generateDefaults() throws IOException {

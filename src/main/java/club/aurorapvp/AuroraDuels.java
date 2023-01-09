@@ -21,7 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraDuels extends JavaPlugin {
   public static Plugin PLUGIN;
-  public static File DATAFOLDER;
+  public static File DATA_FOLDER;
   public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
   public static MiniMessage COMPONENT_DESERIALIZER;
 
@@ -29,7 +29,7 @@ public final class AuroraDuels extends JavaPlugin {
   public void onEnable() {
     // Register important variables
     PLUGIN = this;
-    DATAFOLDER = this.getDataFolder();
+    DATA_FOLDER = this.getDataFolder();
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
     COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 

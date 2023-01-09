@@ -14,11 +14,9 @@ public class WandEvent extends EventObject {
   @Serial
   private static final long serialVersionUID = 1L;
   private static final Set<WandListener> LISTENERS = new HashSet<>();
-
   public WandEvent(Object source) {
     super(source);
   }
-
   public void trigger(Action action, BlockVector3 vector, Player p) {
     Wand.actions.add(action);
     Wand.vectors.add(vector);

@@ -1,8 +1,8 @@
 package club.aurorapvp.listeners;
 
+import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Wand;
-import club.aurorapvp.events.wand.WandEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -19,7 +19,7 @@ public class Events implements Listener {
       return;
     }
 
-    if(event.getPlayer().getCooldown(Material.IRON_HOE) > 0) {
+    if (event.getPlayer().getCooldown(Material.IRON_HOE) > 0) {
       return;
     }
 
