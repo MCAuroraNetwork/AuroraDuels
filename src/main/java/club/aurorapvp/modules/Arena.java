@@ -26,16 +26,18 @@ public class Arena implements WandListener {
   public Arena(String arenaName) {
     Arena.arenaName = arenaName;
 
-    if (spawn1 == null) {
-      spawn1 = BukkitAdapter.asBlockVector(this.getData().getFirstSpawn());
-    }
+    if (this.exists()) {
+      if (spawn1 == null) {
+        spawn1 = BukkitAdapter.asBlockVector(this.getData().getFirstSpawn());
+      }
 
-    if (spawn2 == null) {
-      spawn2 = BukkitAdapter.asBlockVector(this.getData().getSecondSpawn());
-    }
+      if (spawn2 == null) {
+        spawn2 = BukkitAdapter.asBlockVector(this.getData().getSecondSpawn());
+      }
 
-    if (arenaWorld == null) {
-      arenaWorld = this.getData().getWorld();
+      if (arenaWorld == null) {
+        arenaWorld = this.getData().getWorld();
+      }
     }
   }
 
