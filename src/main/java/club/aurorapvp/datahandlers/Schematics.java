@@ -27,7 +27,7 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class Schematics implements SchematicsInterface {
+public class Schematics {
 
   private static Arena arena;
 
@@ -35,7 +35,6 @@ public class Schematics implements SchematicsInterface {
     Schematics.arena = arena;
   }
 
-  @Override
   public ClipboardFormat getFormat() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
     if (file.exists()) {
@@ -45,7 +44,6 @@ public class Schematics implements SchematicsInterface {
     }
   }
 
-  @Override
   public File getFile() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
     if (file.exists()) {
@@ -54,7 +52,6 @@ public class Schematics implements SchematicsInterface {
       return null;
     }
   }
-  @Override
   public void save() {
     EditSession session = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
@@ -87,7 +84,6 @@ public class Schematics implements SchematicsInterface {
     }
   }
 
-  @Override
   public void paste() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
 
@@ -115,11 +111,4 @@ public class Schematics implements SchematicsInterface {
       throw new RuntimeException(e);
     }
   }
-}
-
-interface SchematicsInterface {
-  ClipboardFormat getFormat();
-  File getFile();
-  void save() throws WorldEditException, IOException;
-  void paste();
 }

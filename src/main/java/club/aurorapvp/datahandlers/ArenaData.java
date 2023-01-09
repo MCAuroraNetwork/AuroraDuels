@@ -10,13 +10,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class ArenaData implements ArenaDataInterface {
+public class ArenaData {
   private static Arena arena;
   public ArenaData(Arena arena) {
     ArenaData.arena = arena;
   }
 
-  @Override
   public File getFile() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
     if (file.exists()) {
@@ -26,7 +25,6 @@ public class ArenaData implements ArenaDataInterface {
     }
   }
 
-  @Override
   public Location getFirstSpawn() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
     YamlConfiguration arenaData =
@@ -35,7 +33,6 @@ public class ArenaData implements ArenaDataInterface {
     return arenaData.getLocation("arena.spawns.spawn1");
   }
 
-  @Override
   public Location getSecondSpawn() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
     YamlConfiguration arenaData =
@@ -44,7 +41,6 @@ public class ArenaData implements ArenaDataInterface {
     return arenaData.getLocation("arena.spawns.spawn2");
   }
 
-  @Override
   public void create() {
     File file = new File(AuroraDuels.DATAFOLDER, "/arenas/" + arena.getName() + ".yml");
     YamlConfiguration arenaData =
@@ -73,9 +69,3 @@ public class ArenaData implements ArenaDataInterface {
   }
 }
 
-interface ArenaDataInterface {
-  File getFile();
-  Location getFirstSpawn();
-  Location getSecondSpawn();
-  void create();
-}

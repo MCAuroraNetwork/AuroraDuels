@@ -12,7 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class Arena implements WandListener, ArenaInterface {
+public class Arena implements WandListener {
   private static BlockVector3 spawn1 = null;
   private static BlockVector3 spawn2 = null;
   private static BlockVector3 pos1 = null;
@@ -27,7 +27,6 @@ public class Arena implements WandListener, ArenaInterface {
     Arena.arenaName = arenaName;
   }
 
-  @Override
   public BlockVector3 getFirstSpawn() {
     if (spawn1 == null) {
       return BukkitAdapter.asBlockVector(this.getData().getFirstSpawn());
@@ -36,7 +35,6 @@ public class Arena implements WandListener, ArenaInterface {
     }
   }
 
-  @Override
   public BlockVector3 getSecondSpawn() {
     if (spawn2 == null) {
       return BukkitAdapter.asBlockVector(this.getData().getSecondSpawn());
@@ -45,47 +43,38 @@ public class Arena implements WandListener, ArenaInterface {
     }
   }
 
-  @Override
   public BlockVector3 getFirstPosition() {
     return pos1;
   }
 
-  @Override
   public BlockVector3 getSecondPosition() {
     return pos2;
   }
 
-  @Override
   public World getWorld() {
     return arenaWorld;
   }
 
-  @Override
   public String getName() {
     return arenaName;
   }
 
-  @Override
   public boolean exists() {
     return (this.getData().getFile() != null && this.getSchematic().getFormat() != null);
   }
 
-  @Override
   public boolean isOccupied() {
     return occupancy;
   }
 
-  @Override
   public void setOccupied(boolean value) {
     occupancy = value;
   }
 
-  @Override
   public ArenaData getData() {
     return new ArenaData(this);
   }
 
-  @Override
   public Schematics getSchematic() {
     return new Schematics(this);
   }
@@ -205,18 +194,4 @@ public class Arena implements WandListener, ArenaInterface {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
-}
-
-interface ArenaInterface {
-  BlockVector3 getFirstSpawn();
-  BlockVector3 getSecondSpawn();
-  BlockVector3 getFirstPosition();
-  BlockVector3 getSecondPosition();
-  World getWorld();
-  String getName();
-  boolean exists();
-  boolean isOccupied();
-  void setOccupied(boolean value);
-  ArenaData getData();
-  Schematics getSchematic();
 }
