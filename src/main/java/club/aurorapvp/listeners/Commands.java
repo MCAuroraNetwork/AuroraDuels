@@ -4,6 +4,7 @@ import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.Schematics;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Duel;
+import club.aurorapvp.modules.Queue;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,6 +41,7 @@ public class Commands implements CommandExecutor {
         arena.reset(p);
       }
       case "deletearena" -> Arena.delete(p, new Arena(args[0]));
+      case  "findmatch" -> Queue.findMatch(p);
     }
     return true;
   }
