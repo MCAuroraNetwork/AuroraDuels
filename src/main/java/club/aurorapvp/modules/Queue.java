@@ -25,8 +25,8 @@ public class Queue {
             Player p2 = duelQueue.get(p1);
             if (!Duel.inDuel(p1) && !Duel.inDuel(p2)) {
               new Duel(p1, p2, arena).startDuel();
+              return;
             }
-            return;
           }
         }
       }
@@ -48,7 +48,7 @@ public class Queue {
   public static void exitDuelQueue(Player p1, Player p2) {
     if (duelQueue.containsKey(p1)) {
       duelQueue.remove(p1);
-    } else if (duelQueue.containsKey(p2)) {
+    } else {
       duelQueue.remove(p2);
     }
   }
