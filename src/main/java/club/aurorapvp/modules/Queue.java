@@ -2,6 +2,7 @@ package club.aurorapvp.modules;
 
 import club.aurorapvp.configs.Lang;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 public class Queue {
   public static LinkedHashMap<Player, Player> duelQueue = new LinkedHashMap<>();
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+  private static Player lookingForMatch = null;
 
   public static void setup() {
     executor.scheduleAtFixedRate(checkQueue, 0, 10, TimeUnit.SECONDS);
@@ -30,6 +32,15 @@ public class Queue {
       }
     }
   };
+
+  public static void findMatch(Player p) {
+    if (lookingForMatch == null) {
+      lookingForMatch = p;
+    } else {
+      enterDuelQueue(p, lookingForMatch);
+      lookingForMatch = null;
+    }
+  }
 
   public static void exitDuelQueue(Player p1, Player p2) {
     if (duelQueue.containsKey(p1)) {
