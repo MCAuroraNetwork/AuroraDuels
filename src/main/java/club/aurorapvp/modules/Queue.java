@@ -34,10 +34,13 @@ public class Queue {
   };
 
   public static void findMatch(Player p) {
+    p.sendMessage(Lang.getComponent("looking-match"));
     if (lookingForMatch == null) {
       lookingForMatch = p;
     } else {
       enterDuelQueue(p, lookingForMatch);
+      p.sendMessage(Lang.getComponent("match-found"));
+      lookingForMatch.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;
     }
   }

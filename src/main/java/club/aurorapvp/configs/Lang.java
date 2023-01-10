@@ -59,6 +59,8 @@ public class Lang {
     DEFAULTS.put("request-accepted", "prefix <gradient:#FFAA00:#FF55FF>Duel request accepted!");
     DEFAULTS.put("you-win", "prefix <gradient:#FFAA00:#FF55FF>You won the duel!");
     DEFAULTS.put("you-lose", "prefix <gradient:#FFAA00:#FF55FF>You lost the duel");
+    DEFAULTS.put("looking-match", "prefix <gradient:#FFAA00:#FF55FF>Searching for an opponent");
+    DEFAULTS.put("match-found", "prefix <gradient:#FFAA00:#FF55FF>Opponent found!");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
