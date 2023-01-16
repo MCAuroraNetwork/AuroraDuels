@@ -6,6 +6,7 @@ import club.aurorapvp.listeners.Commands;
 import club.aurorapvp.listeners.Events;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Duel;
+import club.aurorapvp.modules.Placeholders;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import java.io.File;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.plugin.Plugin;
@@ -27,7 +29,7 @@ public final class AuroraDuels extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    // Register important variables
+      // Register important variables
     PLUGIN = this;
     DATA_FOLDER = this.getDataFolder();
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
@@ -60,6 +62,9 @@ public final class AuroraDuels extends JavaPlugin {
     List<Command> commandList = PluginCommandYamlParser.parse(PLUGIN);
     for (Command command : commandList) {
       Objects.requireNonNull(getCommand(command.getName())).setExecutor(new Commands());
+    }
+    if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+      new Placeholders(this).register();
     }
 
     getLogger().info("Aurora Duels Loaded");

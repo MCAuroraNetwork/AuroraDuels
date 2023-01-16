@@ -123,6 +123,10 @@ public class Duel {
     }
   }
 
+  public static int inDuels() {
+    return duels.size();
+  }
+
   public void startDuel() {
     Location spawn1 =
         new Location(arena.getWorld(),
