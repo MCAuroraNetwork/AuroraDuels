@@ -19,6 +19,9 @@ commands:
   duel:
     description: Starts a duel
     permission: AuroraDuels.duel
+  findmatch:
+    description: Starts a duel
+    permission: AuroraDuels.duel
 permissions:
   AuroraDuels.admin:
     description: Enables use of AuroraDuels admin commands
