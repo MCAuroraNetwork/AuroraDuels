@@ -41,6 +41,16 @@ public class Duel {
     return arena;
   }
 
+  public static Player getOpponent(Player p) {
+    if (p == p1) {
+      return p2;
+    } else if (p == p2) {
+      return p1;
+    } else {
+      return null;
+    }
+  }
+
   public static void setup() {
     File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
     for (File file : dir.listFiles()) {

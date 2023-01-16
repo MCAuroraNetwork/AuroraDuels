@@ -2,6 +2,7 @@ package club.aurorapvp.modules;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +16,7 @@ public class Placeholders extends PlaceholderExpansion {
 
   @Override
   public @NotNull String getIdentifier() {
-    return "in_duels";
+    return "auroraduels";
   }
 
   @Override
@@ -34,10 +35,23 @@ public class Placeholders extends PlaceholderExpansion {
   }
 
   @Override
-  public String onRequest(OfflinePlayer player, String params) {
-    if(params.equalsIgnoreCase("in_duels")){
+  public String onRequest(OfflinePlayer p, @NotNull String params) {
+    return getResult(p, params);
+  }
+
+  private String getResult(OfflinePlayer p, String params) {
+    if (params.startsWith("in_duels")) {
       return String.valueOf(Duel.inDuels());
     }
+
+    if (params.startsWith("opponent_")) {
+      if (p.isOnline()) {
+        if (Duel.inDuel(p.getPlayer())) {
+          return Duel.getOpponent(p.getPlayer()).getName();
+        }
+      }
+    }
+
     return null;
   }
 }
