@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Arena implements WandListener {
+  public static List<Arena> arenas = new ArrayList<>();
   private static BlockVector3 spawn1 = null;
   private static BlockVector3 spawn2 = null;
   private static BlockVector3 pos1 = null;
@@ -190,7 +191,7 @@ public class Arena implements WandListener {
       creationPhase = 0;
       Wand.setActive("right", false);
       Wand.setActive("left", false);
-      Duel.arenas.add(this);
+      arenas.add(this);
     }
   }
 
@@ -213,6 +214,16 @@ public class Arena implements WandListener {
       p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
+    }
+  }
+
+  public static void setup() {
+    File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
+    for (File file : dir.listFiles()) {
+      Arena arena = new Arena(file.getName().replace(".yml", ""), null);
+      if (arena.exists()) {
+        arenas.add(arena);
+      }
     }
   }
 }

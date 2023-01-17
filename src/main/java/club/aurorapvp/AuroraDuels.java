@@ -37,7 +37,7 @@ public final class AuroraDuels extends JavaPlugin {
 
     // Setup classes
     Wand.setup();
-    Duel.setup();
+    Arena.setup();
     Queue.setup();
 
     // Setup configs
@@ -58,7 +58,7 @@ public final class AuroraDuels extends JavaPlugin {
 
     // Register Listeners
     getServer().getPluginManager().registerEvents(new Events(), this);
-    Events.wandEvent.registerListener(new Arena(null));
+    Events.wandEvent.registerListener(new Arena(null, null));
     List<Command> commandList = PluginCommandYamlParser.parse(PLUGIN);
     for (Command command : commandList) {
       Objects.requireNonNull(getCommand(command.getName())).setExecutor(new Commands());

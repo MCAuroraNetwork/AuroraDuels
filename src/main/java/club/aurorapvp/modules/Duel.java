@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 
 public class Duel {
   public static Map<Player, Player> pendingInvites = new HashMap<>();
-  public static List<Arena> arenas = new ArrayList<>();
   public static List<Duel> duels = new ArrayList<>();
   private static Player p1;
   private static Player p2;
@@ -54,16 +53,6 @@ public class Duel {
       return p1;
     } else {
       return null;
-    }
-  }
-
-  public static void setup() {
-    File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
-    for (File file : dir.listFiles()) {
-      Arena arena = new Arena(file.getName().replace(".yml", ""));
-      if (arena.exists()) {
-        arenas.add(arena);
-      }
     }
   }
 
@@ -183,6 +172,6 @@ public class Duel {
 
     arena.setOccupied(false);
     duels.remove(this);
-    this.getArena().reset(null);
+    this.getArena().reset();
   }
 }
