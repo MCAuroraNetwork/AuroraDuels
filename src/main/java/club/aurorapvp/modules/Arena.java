@@ -9,6 +9,9 @@ import club.aurorapvp.events.wand.WandListener;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,11 +26,13 @@ public class Arena implements WandListener {
   private static BlockVector3 pos2 = null;
   private static int creationPhase = 0;
   private boolean occupancy = false;
+  private static Schematics schematic;
+  private static ArenaData arenaData;
   private static String arenaName;
   private static World arenaWorld;
   private static Player p;
 
-  public Arena(String arenaName) {
+  public Arena(String arenaName, Player p) {
     Arena.arenaName = arenaName;
 
     if (p != null) {
@@ -41,17 +46,16 @@ public class Arena implements WandListener {
     YamlConfiguration arenaData =
         YamlConfiguration.loadConfiguration(file);
 
-      if (spawn1 == null) {
-        spawn1 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn1"));
-      }
+    if (spawn1 == null) {
+      spawn1 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn1"));
+    }
 
-      if (spawn2 == null) {
-        spawn2 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn2"));
-      }
+    if (spawn2 == null) {
+      spawn2 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn2"));
+    }
 
-      if (arenaWorld == null) {
-        arenaWorld = Bukkit.getWorld(arenaData.getString("arena.world"));
-      }
+    if (arenaWorld == null) {
+      arenaWorld = Bukkit.getWorld(arenaData.getString("arena.world"));
     }
   }
 
@@ -92,11 +96,11 @@ public class Arena implements WandListener {
   }
 
   public ArenaData getData() {
-    return new ArenaData(this);
+    return arenaData;
   }
 
   public Schematics getSchematic() {
-    return new Schematics(this);
+    return schematic;
   }
 
 
@@ -185,8 +189,6 @@ public class Arena implements WandListener {
       }
     }
     if (pos1 != null && pos2 != null) {
-      new Schematics(this).save();
-      new ArenaData(this).create();
       p.sendMessage(Lang.getComponent("arena-created"));
       creationPhase = 0;
       Wand.setActive("right", false);
@@ -195,7 +197,7 @@ public class Arena implements WandListener {
     }
   }
 
-  public void reset(Player p) {
+  public void reset() {
     if (this.exists()) {
       new Schematics(this).paste();
       if (!(p == null)) {
@@ -206,11 +208,11 @@ public class Arena implements WandListener {
     }
   }
 
-  public static void delete(Player p, Arena arena) {
-    if (arena.exists()) {
-      arena.getData().getFile().delete();
-      arena.getSchematic().getFile().delete();
-      Duel.arenas.remove(arena);
+  public void delete() {
+    if (this.exists()) {
+      this.getData().getFile().delete();
+      this.getSchematic().getFile().delete();
+      arenas.remove(this);
       p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
