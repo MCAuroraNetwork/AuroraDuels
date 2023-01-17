@@ -1,7 +1,5 @@
 package club.aurorapvp.listeners;
 
-import club.aurorapvp.configs.Lang;
-import club.aurorapvp.datahandlers.Schematics;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Queue;
@@ -32,16 +30,10 @@ public class Commands implements CommandExecutor {
           Duel.sendDuelRequest(p, Bukkit.getPlayer(args[0]));
         }
       }
-      case "createarena" -> {
-        Arena arena = new Arena(args[0]);
-        arena.create(p, arena);
-      }
-      case "resetarena" -> {
-        Arena arena = new Arena(args[0]);
-        arena.reset(p);
-      }
-      case "deletearena" -> Arena.delete(p, new Arena(args[0]));
-      case  "findmatch" -> Queue.findMatch(p);
+      case "createarena" -> new Arena(args[0], p);
+      case "resetarena" -> new Arena(args[0], p).reset();
+      case "deletearena" -> Arena.getArena(args[0]).delete();
+      case "findmatch" -> Queue.findMatch(p);
     }
     return true;
   }

@@ -112,8 +112,8 @@ public class Arena implements WandListener {
     return null;
   }
 
-  public void create(Player p, Arena arena) {
-    if (creationPhase == 0 && !arena.exists()) {
+  private void create(Player p) {
+    if (creationPhase == 0 && !this.exists()) {
       Arena.p = p;
       Wand.setActive("right", true);
       Wand.setActive("left", true);
@@ -127,7 +127,7 @@ public class Arena implements WandListener {
       p.sendMessage(Lang.getComponent("set-spawn1-and-spawn2"));
     } else if (creationPhase != 0) {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
-    } else if (arena.exists()) {
+    } else if (this.exists()) {
       p.sendMessage(Lang.getComponent("arena-already-exists"));
     }
   }
