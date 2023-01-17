@@ -64,7 +64,7 @@ public final class AuroraDuels extends JavaPlugin {
       Objects.requireNonNull(getCommand(command.getName())).setExecutor(new Commands());
     }
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-      new Placeholders(this).register();
+      new Placeholders().register();
     }
 
     getLogger().info("Aurora Duels Loaded");

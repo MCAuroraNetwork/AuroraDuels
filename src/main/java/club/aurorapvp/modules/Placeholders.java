@@ -3,16 +3,9 @@ package club.aurorapvp.modules;
 import java.util.concurrent.TimeUnit;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class Placeholders extends PlaceholderExpansion {
-
-  private final Plugin plugin;
-
-  public Placeholders(Plugin plugin) {
-    this.plugin = plugin;
-  }
 
   @Override
   public @NotNull String getIdentifier() {
