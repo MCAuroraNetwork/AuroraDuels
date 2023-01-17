@@ -169,9 +169,6 @@ public class Duel {
   }
 
   public void endDuel() {
-    Player p1 = this.getPlayerOne();
-    Player p2 = this.getPlayerTwo();
-
     p1.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
 
