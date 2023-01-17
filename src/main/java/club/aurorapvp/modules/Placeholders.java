@@ -1,5 +1,6 @@
 package club.aurorapvp.modules;
 
+import java.util.concurrent.TimeUnit;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
@@ -59,6 +60,19 @@ public class Placeholders extends PlaceholderExpansion {
       }
     }
 
+    if (params.startsWith("duel_duration")) {
+      if (p.isOnline()) {
+        if (Duel.inDuel(p.getPlayer())) {
+          Long elapsed = Duel.getDuel(p.getPlayer()).getElapsed();
+
+          return String.format("%d min, %d sec",
+              TimeUnit.MILLISECONDS.toMinutes(elapsed),
+              TimeUnit.MILLISECONDS.toSeconds(elapsed) -
+                  TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsed))
+          );
+        }
+      }
+    }
 
     return null;
   }

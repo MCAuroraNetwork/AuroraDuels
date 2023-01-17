@@ -22,11 +22,13 @@ public class Duel {
   private static Player p1;
   private static Player p2;
   private static Arena arena;
+  private static Long timeStarted;
 
   public Duel(Player p1, Player p2, Arena arena) {
     Duel.arena = arena;
     Duel.p1 = p1;
     Duel.p2 = p2;
+    timeStarted = System.currentTimeMillis();
   }
 
   public Player getPlayerOne() {
@@ -39,6 +41,10 @@ public class Duel {
 
   public Arena getArena() {
     return arena;
+  }
+
+  public Long getElapsed() {
+    return System.currentTimeMillis() - timeStarted;
   }
 
   public static Player getOpponent(Player p) {
