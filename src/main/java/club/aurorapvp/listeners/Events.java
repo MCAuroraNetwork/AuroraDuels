@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Events implements Listener {
   public static WandEvent wandEvent = new WandEvent(new Events());
@@ -36,6 +37,14 @@ public class Events implements Listener {
 
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent event) {
+    if (Duel.inDuel(event.getPlayer())) {
+      Duel duel = Duel.getDuel(event.getPlayer());
+      duel.endDuel();
+    }
+  }
+
+  @EventHandler
+  public void onPlayerQuit(PlayerQuitEvent event) {
     if (Duel.inDuel(event.getPlayer())) {
       Duel duel = Duel.getDuel(event.getPlayer());
       duel.endDuel();

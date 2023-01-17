@@ -175,7 +175,7 @@ public class Duel {
     p1.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
 
-    if (p1.isDead()) {
+    if (p1.isDead() || !p1.isOnline()) {
       p2.sendMessage(Lang.getComponent("you-win"));
       p1.sendMessage(Lang.getComponent("you-lose"));
     } else {
