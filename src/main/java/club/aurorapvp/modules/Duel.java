@@ -164,6 +164,7 @@ public class Duel {
     p1.showTitle(title1);
     p2.showTitle(title2);
 
+    Queue.exitDuelQueue(p1, p2);
     arena.setOccupied(true);
     duels.add(this);
   }
@@ -181,7 +182,6 @@ public class Duel {
     }
 
     arena.setOccupied(false);
-    Queue.exitDuelQueue(p1, p2);
     duels.remove(this);
     this.getArena().reset(null);
   }
