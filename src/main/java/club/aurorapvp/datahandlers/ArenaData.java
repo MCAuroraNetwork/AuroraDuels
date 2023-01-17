@@ -9,19 +9,19 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ArenaData {
   private static Arena arena;
-  private static File file;
+  private final File FILE;
   public ArenaData(Arena arena) {
     ArenaData.arena = arena;
     if (!arena.exists()) {
       create();
     }
 
-    file = new File(AuroraDuels.DATA_FOLDER, "/arenas/" + arena.getName() + ".yml");
+    FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/" + arena.getName() + ".yml");
   }
 
   public File getFile() {
-    if (file.exists()) {
-      return file;
+    if (FILE.exists()) {
+      return FILE;
     } else {
       return null;
     }
@@ -29,7 +29,7 @@ public class ArenaData {
 
   private void create() {
     YamlConfiguration arenaData =
-        YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration.loadConfiguration(FILE);
     Location spawn1 = new Location(arena.getWorld(), arena.getFirstSpawn().getBlockX(),
         arena.getFirstSpawn().getBlockY(), arena.getFirstSpawn().getBlockZ());
     Location spawn2 = new Location(arena.getWorld(), arena.getSecondSpawn().getBlockX(),
@@ -39,17 +39,17 @@ public class ArenaData {
     arenaData.set("arena.spawns.spawn1", spawn1);
     arenaData.set("arena.spawns.spawn2", spawn2);
 
-    if (!file.exists()) {
+    if (!FILE.exists()) {
       try {
-        file.getParentFile().mkdirs();
-        file.createNewFile();
+        FILE.getParentFile().mkdirs();
+        FILE.createNewFile();
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     }
 
     try {
-      arenaData.save(file);
+      arenaData.save(FILE);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

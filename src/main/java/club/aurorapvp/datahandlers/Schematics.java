@@ -28,27 +28,27 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Schematics {
   private static Arena arena;
-  private static File file;
+  private final File FILE;
   public Schematics(Arena arena) {
     Schematics.arena = arena;
     if (!arena.exists()) {
       save();
     }
 
-    file = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+    FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
   }
 
   public ClipboardFormat getFormat() {
-    if (file.exists()) {
-      return ClipboardFormats.findByFile(file);
+    if (FILE.exists()) {
+      return ClipboardFormats.findByFile(FILE);
     } else {
       return null;
     }
   }
 
   public File getFile() {
-    if (file.exists()) {
-      return file;
+    if (FILE.exists()) {
+      return FILE;
     } else {
       return null;
     }
@@ -71,17 +71,17 @@ public class Schematics {
       throw new RuntimeException(e);
     }
 
-    if (!file.exists()) {
+    if (!FILE.exists()) {
       try {
-        file.getParentFile().mkdirs();
-        file.createNewFile();
+        FILE.getParentFile().mkdirs();
+        FILE.createNewFile();
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     }
 
     try (ClipboardWriter writer =
-             BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(file))) {
+             BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(FILE))) {
       writer.write(clipboard);
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -96,9 +96,9 @@ public class Schematics {
             Bukkit.getWorld(YamlConfiguration
                 .loadConfiguration(arena.getData().getFile())
                 .getString("arena.world")));
-    ClipboardFormat format = ClipboardFormats.findByFile(file);
+    ClipboardFormat format = ClipboardFormats.findByFile(FILE);
 
-    try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
+    try (ClipboardReader reader = format.getReader(new FileInputStream(FILE))) {
       clipboard = reader.read();
 
       try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
