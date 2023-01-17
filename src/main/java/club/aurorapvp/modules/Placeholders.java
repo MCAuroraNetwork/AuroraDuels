@@ -2,7 +2,6 @@ package club.aurorapvp.modules;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,13 +43,22 @@ public class Placeholders extends PlaceholderExpansion {
       return String.valueOf(Duel.inDuels());
     }
 
-    if (params.startsWith("opponent_")) {
+    if (params.startsWith("opponent_ping")) {
+      if (p.isOnline()) {
+        if (Duel.inDuel(p.getPlayer())) {
+          return String.valueOf(Duel.getOpponent(p.getPlayer()).getPing());
+        }
+      }
+    }
+
+    if (params.startsWith("opponent")) {
       if (p.isOnline()) {
         if (Duel.inDuel(p.getPlayer())) {
           return Duel.getOpponent(p.getPlayer()).getName();
         }
       }
     }
+
 
     return null;
   }
