@@ -103,6 +103,14 @@ public class Arena implements WandListener {
     return schematic;
   }
 
+  public static Arena getArena(String arenaName) {
+    for (Arena arena : arenas) {
+      if (Objects.equals(arenaName, arena.getName())) {
+        return arena;
+      }
+    }
+    return null;
+  }
 
   public void create(Player p, Arena arena) {
     if (creationPhase == 0 && !arena.exists()) {
