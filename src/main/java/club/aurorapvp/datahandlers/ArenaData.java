@@ -9,15 +9,17 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ArenaData {
   private static Arena arena;
+  private static File file;
   public ArenaData(Arena arena) {
     ArenaData.arena = arena;
     if (!arena.exists()) {
       create();
     }
+
+    file = new File(AuroraDuels.DATA_FOLDER, "/arenas/" + arena.getName() + ".yml");
   }
 
   public File getFile() {
-    File file = new File(AuroraDuels.DATA_FOLDER, "/arenas/" + arena.getName() + ".yml");
     if (file.exists()) {
       return file;
     } else {
@@ -26,7 +28,6 @@ public class ArenaData {
   }
 
   private void create() {
-    File file = new File(AuroraDuels.DATA_FOLDER, "/arenas/" + arena.getName() + ".yml");
     YamlConfiguration arenaData =
         YamlConfiguration.loadConfiguration(file);
     Location spawn1 = new Location(arena.getWorld(), arena.getFirstSpawn().getBlockX(),

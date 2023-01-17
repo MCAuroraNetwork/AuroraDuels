@@ -28,16 +28,17 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Schematics {
   private static Arena arena;
+  private static File file;
   public Schematics(Arena arena) {
     Schematics.arena = arena;
     if (!arena.exists()) {
       save();
     }
+
+    file = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
   }
 
   public ClipboardFormat getFormat() {
-    File file =
-        new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
     if (file.exists()) {
       return ClipboardFormats.findByFile(file);
     } else {
@@ -46,8 +47,6 @@ public class Schematics {
   }
 
   public File getFile() {
-    File file =
-        new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
     if (file.exists()) {
       return file;
     } else {
@@ -58,8 +57,6 @@ public class Schematics {
   private void save() {
     EditSession session =
         WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
-    File file =
-        new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
 
     CuboidRegion region =
         new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getFirstPosition(),
@@ -92,9 +89,6 @@ public class Schematics {
   }
 
   public void paste() {
-    File file =
-        new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
-
     Clipboard clipboard;
 
     World world =
