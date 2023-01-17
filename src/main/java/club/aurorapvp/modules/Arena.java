@@ -29,10 +29,16 @@ public class Arena implements WandListener {
   public Arena(String arenaName) {
     Arena.arenaName = arenaName;
 
-    if (this.exists()) {
-      File file = this.getData().getFile();
-      YamlConfiguration arenaData =
-          YamlConfiguration.loadConfiguration(file);
+    if (p != null) {
+      create(p);
+    }
+
+    Arena.arenaData = new ArenaData(this);
+    Arena.schematic = new Schematics(this);
+
+    File file = this.getData().getFile();
+    YamlConfiguration arenaData =
+        YamlConfiguration.loadConfiguration(file);
 
       if (spawn1 == null) {
         spawn1 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn1"));

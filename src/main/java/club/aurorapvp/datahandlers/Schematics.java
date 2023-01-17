@@ -30,6 +30,9 @@ public class Schematics {
   private static Arena arena;
   public Schematics(Arena arena) {
     Schematics.arena = arena;
+    if (!arena.exists()) {
+      save();
+    }
   }
 
   public ClipboardFormat getFormat() {
@@ -52,7 +55,7 @@ public class Schematics {
     }
   }
 
-  public void save() {
+  private void save() {
     EditSession session =
         WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
     File file =
