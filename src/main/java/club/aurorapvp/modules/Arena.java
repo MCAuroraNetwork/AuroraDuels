@@ -35,9 +35,7 @@ public class Arena implements WandListener {
   public Arena(String arenaName, Player p) {
     Arena.arenaName = arenaName;
 
-    if (p != null) {
-      create(p);
-    }
+    create(p);
 
     Arena.arenaData = new ArenaData(this);
     Arena.schematic = new Schematics(this);
