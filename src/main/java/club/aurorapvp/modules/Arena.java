@@ -34,9 +34,6 @@ public class Arena implements WandListener {
   public Arena(String arenaName) {
     Arena.arenaName = arenaName;
 
-    Arena.arenaData = new ArenaData(this);
-    Arena.schematic = new Schematics(this);
-
     File file = this.getData().getFile();
     YamlConfiguration arenaData =
         YamlConfiguration.loadConfiguration(file);
@@ -200,9 +197,11 @@ public class Arena implements WandListener {
     }
     if (pos1 != null && pos2 != null) {
       p.sendMessage(Lang.getComponent("arena-created"));
-      creationPhase = 0;
       Wand.setActive("right", false);
       Wand.setActive("left", false);
+      Arena.schematic = new Schematics(this);
+      Arena.arenaData = new ArenaData(this);
+      creationPhase = 0;
       arenas.add(this);
     }
   }
