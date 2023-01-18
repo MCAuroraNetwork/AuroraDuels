@@ -19,7 +19,7 @@ public class Queue {
 
   private static final Runnable checkQueue = () -> {
     if (duelQueue.size() > 0) {
-      for (Arena arena : Duel.arenas) {
+      for (Arena arena : Arena.getArenas()) {
         if (!arena.isOccupied()) {
           for (Player p1 : duelQueue.keySet()) {
             Player p2 = duelQueue.get(p1);

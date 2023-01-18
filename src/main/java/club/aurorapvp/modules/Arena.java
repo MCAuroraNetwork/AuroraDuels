@@ -98,6 +98,10 @@ public class Arena implements WandListener {
     return schematic;
   }
 
+  public static List<Arena> getArenas() {
+    return arenas;
+  }
+
   public static Arena getArena(String arenaName) {
     for (Arena arena : arenas) {
       if (Objects.equals(arenaName, arena.getName())) {
