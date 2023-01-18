@@ -3,7 +3,7 @@ package club.aurorapvp.modules;
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.ArenaData;
-import club.aurorapvp.datahandlers.Schematics;
+import club.aurorapvp.datahandlers.Schematic;
 import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.events.wand.WandListener;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -27,7 +27,7 @@ public class Arena implements WandListener {
   private static BlockVector3 pos2 = null;
   private static int creationPhase = 0;
   private boolean occupancy = false;
-  private static Schematics schematic;
+  private static Schematic schematic;
   private static ArenaData arenaData;
   private static String arenaName;
   private static World arenaWorld;
@@ -38,16 +38,20 @@ public class Arena implements WandListener {
     YamlConfiguration arenaData =
         YamlConfiguration.loadConfiguration(file);
 
-    if (spawn1 == null) {
-      spawn1 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn1"));
-    }
+    if (this.exists()) {
+      if (spawn1 == null) {
+        spawn1 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn1"));
+      }
 
-    if (spawn2 == null) {
-      spawn2 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn2"));
-    }
+      if (spawn2 == null) {
+        spawn2 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn2"));
+      }
 
-    if (arenaWorld == null) {
-      arenaWorld = Bukkit.getWorld(arenaData.getString("arena.world"));
+      if (arenaWorld == null) {
+        arenaWorld = Bukkit.getWorld(arenaData.getString("arena.world"));
+      }
+      Arena.schematic = new Schematic(this);
+      Arena.arenaData = new ArenaData(this);
     }
   }
 
@@ -91,7 +95,7 @@ public class Arena implements WandListener {
     return arenaData;
   }
 
-  public Schematics getSchematic() {
+  public Schematic getSchematic() {
     return schematic;
   }
 
@@ -199,8 +203,6 @@ public class Arena implements WandListener {
       p.sendMessage(Lang.getComponent("arena-created"));
       Wand.setActive("right", false);
       Wand.setActive("left", false);
-      Arena.schematic = new Schematics(this);
-      Arena.arenaData = new ArenaData(this);
       creationPhase = 0;
       arenas.add(this);
     }
@@ -208,7 +210,7 @@ public class Arena implements WandListener {
 
   public void reset(Player playerSource) {
     if (this.exists()) {
-      new Schematics(this).paste();
+      new Schematic(this).paste();
       if (playerSource != null) {
         playerSource.sendMessage(Lang.getComponent("arena-reset"));
       }

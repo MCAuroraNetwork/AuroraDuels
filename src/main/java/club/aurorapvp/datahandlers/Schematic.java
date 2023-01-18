@@ -26,11 +26,11 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class Schematics {
+public class Schematic {
   private static Arena arena;
   private final File FILE;
-  public Schematics(Arena arena) {
-    Schematics.arena = arena;
+  public Schematic(Arena arena) {
+    Schematic.arena = arena;
     if (!arena.exists()) {
       save();
     }
