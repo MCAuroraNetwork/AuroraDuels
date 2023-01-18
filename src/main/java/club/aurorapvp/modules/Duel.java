@@ -172,6 +172,6 @@ public class Duel {
 
     arena.setOccupied(false);
     duels.remove(this);
-    this.getArena().reset();
+    this.getArena().reset(null);
   }
 }

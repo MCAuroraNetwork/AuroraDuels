@@ -30,9 +30,9 @@ public class Commands implements CommandExecutor {
           Duel.sendDuelRequest(p, Bukkit.getPlayer(args[0]));
         }
       }
-      case "createarena" -> new Arena(args[0], p);
-      case "resetarena" -> new Arena(args[0], p).reset();
-      case "deletearena" -> Arena.getArena(args[0]).delete();
+      case "createarena" -> new Arena(args[0]).create(p);
+      case "resetarena" -> Arena.getArena(args[0]).reset(p);
+      case "deletearena" -> Arena.getArena(args[0]).delete(p);
       case "findmatch" -> Queue.findMatch(p);
     }
     return true;

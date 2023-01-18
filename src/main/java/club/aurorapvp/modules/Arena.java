@@ -31,10 +31,8 @@ public class Arena implements WandListener {
   private static ArenaData arenaData;
   private static String arenaName;
   private static World arenaWorld;
-  public Arena(String arenaName, Player p) {
+  public Arena(String arenaName) {
     Arena.arenaName = arenaName;
-
-    create(p);
 
     Arena.arenaData = new ArenaData(this);
     Arena.schematic = new Schematics(this);
@@ -109,7 +107,7 @@ public class Arena implements WandListener {
     return null;
   }
 
-  private void create(Player p) {
+  public void create(Player p) {
     if (creationPhase == 0 && !this.exists()) {
       Wand.setActive("right", true);
       Wand.setActive("left", true);
@@ -205,33 +203,35 @@ public class Arena implements WandListener {
     }
   }
 
-  public void reset() {
+  public void reset(Player playerSource) {
     if (this.exists()) {
       new Schematics(this).paste();
-      if (!(p == null)) {
-        p.sendMessage(Lang.getComponent("arena-reset"));
+      if (playerSource != null) {
+        playerSource.sendMessage(Lang.getComponent("arena-reset"));
       }
-    } else if (!(p == null)) {
-      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
+    } else if (playerSource != null) {
+      playerSource.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
-  public void delete() {
+  public void delete(Player playerSource) {
     if (this.exists()) {
       this.getData().getFile().delete();
       this.getSchematic().getFile().delete();
       arenas.remove(this);
 
-      p.sendMessage(Lang.getComponent("arena-deleted"));
-    } else {
-      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      if (playerSource != null) {
+        playerSource.sendMessage(Lang.getComponent("arena-deleted"));
+      }
+    } else if (playerSource != null) {
+        playerSource.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
   public static void setup() {
     File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
     for (File file : dir.listFiles()) {
-      Arena arena = new Arena(file.getName().replace(".yml", ""), null);
+      Arena arena = new Arena(file.getName().replace(".yml", ""));
       if (arena.exists()) {
         arenas.add(arena);
       }
