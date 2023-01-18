@@ -73,7 +73,7 @@ public class Arena implements WandListener {
   }
 
   public boolean exists() {
-    return (this.getData().getFile() != null && this.getSchematic().getFormat() != null);
+    return this.getData().getFile().exists() && this.getSchematic().getFile().exists();
   }
 
   public boolean isOccupied() {
