@@ -32,7 +32,7 @@ public class Schematic {
   public Schematic(Arena arena) {
     Schematic.arena = arena;
     if (!arena.exists()) {
-      save();
+      create();
     }
 
     FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
@@ -54,7 +54,7 @@ public class Schematic {
     }
   }
 
-  private void save() {
+  private void create() {
     EditSession session =
         WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
 
