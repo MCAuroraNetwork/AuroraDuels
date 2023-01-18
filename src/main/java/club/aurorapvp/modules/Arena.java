@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 
 public class Arena implements WandListener {
   public static List<Arena> arenas = new ArrayList<>();
@@ -30,8 +31,6 @@ public class Arena implements WandListener {
   private static ArenaData arenaData;
   private static String arenaName;
   private static World arenaWorld;
-  private static Player p;
-
   public Arena(String arenaName, Player p) {
     Arena.arenaName = arenaName;
 
@@ -112,7 +111,6 @@ public class Arena implements WandListener {
 
   private void create(Player p) {
     if (creationPhase == 0 && !this.exists()) {
-      Arena.p = p;
       Wand.setActive("right", true);
       Wand.setActive("left", true);
       spawn1 = null;
@@ -132,10 +130,14 @@ public class Arena implements WandListener {
 
   @Override
   public void onWandEvent(WandEvent event) {
+    Player p = event.getPlayer();
+    Action action = event.getAction();
+    BlockVector3 vector = event.getVector();
+
     if (creationPhase != 0) {
       switch (creationPhase) {
-        case 1 -> setSpawns(p);
-        case 2 -> setCorners(p);
+        case 1 -> setSpawns(p, action, vector);
+        case 2 -> setCorners(p, action, vector);
         default -> {
           AuroraDuels.PLUGIN.getLogger()
               .warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
@@ -145,9 +147,9 @@ public class Arena implements WandListener {
     }
   }
 
-  public void setSpawns(Player p) {
-    if (Wand.getLastAction().isLeftClick()) {
-      spawn1 = Wand.getLastVector();
+  public void setSpawns(Player p, Action action, BlockVector3 vector) {
+    if (action.isLeftClick()) {
+      spawn1 = vector;
       p.sendMessage(
           AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("spawn1-set") +
               " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " +
@@ -156,8 +158,8 @@ public class Arena implements WandListener {
       if (spawn2 == null) {
         p.sendMessage(Lang.getComponent("set-spawn2"));
       }
-    } else if (Wand.getLastAction().isRightClick()) {
-      spawn2 = Wand.getLastVector();
+    } else if (action.isRightClick()) {
+      spawn2 = vector;
       p.sendMessage(
           AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("spawn2-set") +
               " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " +
@@ -174,9 +176,9 @@ public class Arena implements WandListener {
     }
   }
 
-  public void setCorners(Player p) {
-    if (Wand.getLastAction().isLeftClick()) {
-      pos1 = Wand.getLastVector();
+  public void setCorners(Player p, Action action, BlockVector3 vector) {
+    if (action.isLeftClick()) {
+      pos1 = vector;
       p.sendMessage(
           AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("pos1-set") +
               " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() +
@@ -184,8 +186,8 @@ public class Arena implements WandListener {
       if (pos2 == null) {
         p.sendMessage(Lang.getComponent("set-pos2"));
       }
-    } else if (Wand.getLastAction().isRightClick()) {
-      pos2 = Wand.getLastVector();
+    } else if (action.isRightClick()) {
+      pos2 = vector;
       p.sendMessage(
           AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("pos2-set") +
               " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() +
@@ -219,6 +221,7 @@ public class Arena implements WandListener {
       this.getData().getFile().delete();
       this.getSchematic().getFile().delete();
       arenas.remove(this);
+
       p.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));

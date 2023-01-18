@@ -14,12 +14,28 @@ public class WandEvent extends EventObject {
   @Serial
   private static final long serialVersionUID = 1L;
   private static final Set<WandListener> LISTENERS = new HashSet<>();
+  private Player p;
+  private BlockVector3 vector;
+  private Action action;
   public WandEvent(Object source) {
     super(source);
   }
+
+  public Player getPlayer() {
+    return p;
+  }
+
+  public Action getAction() {
+    return action;
+  }
+
+  public BlockVector3 getVector() {
+    return vector;
+  }
   public void trigger(Action action, BlockVector3 vector, Player p) {
-    Wand.actions.add(action);
-    Wand.vectors.add(vector);
+    this.p = p;
+    this.vector = vector;
+    this.action = action;
 
     p.getPlayer().setCooldown(Material.IRON_HOE, 20);
 
