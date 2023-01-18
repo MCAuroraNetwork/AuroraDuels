@@ -34,14 +34,10 @@ public class Arena implements WandListener {
   public Arena(String arenaName) {
     Arena.arenaName = arenaName;
 
-    File file = this.getData().getFile();
-    YamlConfiguration arenaData =
-        YamlConfiguration.loadConfiguration(file);
+    Arena.schematic = new Schematic(this);
+    Arena.arenaData = new ArenaData(this);
 
     if (this.exists()) {
-      Arena.schematic = new Schematic(this);
-      Arena.arenaData = new ArenaData(this);
-
       spawn1 = this.getData().getFirstSpawn();
       spawn2 = this.getData().getSecondSpawn();
       arenaWorld = this.getData().getWorld();
