@@ -39,19 +39,12 @@ public class Arena implements WandListener {
         YamlConfiguration.loadConfiguration(file);
 
     if (this.exists()) {
-      if (spawn1 == null) {
-        spawn1 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn1"));
-      }
-
-      if (spawn2 == null) {
-        spawn2 = BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn2"));
-      }
-
-      if (arenaWorld == null) {
-        arenaWorld = Bukkit.getWorld(arenaData.getString("arena.world"));
-      }
       Arena.schematic = new Schematic(this);
       Arena.arenaData = new ArenaData(this);
+
+      spawn1 = this.getData().getFirstSpawn();
+      spawn2 = this.getData().getSecondSpawn();
+      arenaWorld = this.getData().getWorld();
     }
   }
 
