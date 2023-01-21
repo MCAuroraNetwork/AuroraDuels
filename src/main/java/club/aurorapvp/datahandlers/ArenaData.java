@@ -21,7 +21,7 @@ public class ArenaData {
     FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/" + arena.getName() + ".yml");
     arenaData = YamlConfiguration.loadConfiguration(FILE);
 
-    if (!arena.exists()) {
+    if (!this.getFile().exists()) {
       this.create();
     }
   }

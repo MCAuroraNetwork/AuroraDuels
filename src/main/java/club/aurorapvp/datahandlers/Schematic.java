@@ -34,7 +34,7 @@ public class Schematic {
 
     FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
 
-    if (!arena.exists()) {
+    if (!this.getFile().exists()) {
       this.create();
     }
   }
