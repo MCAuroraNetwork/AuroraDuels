@@ -31,11 +31,12 @@ public class Schematic {
   private final File FILE;
   public Schematic(Arena arena) {
     Schematic.arena = arena;
+
+    FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+
     if (!arena.exists()) {
       this.create();
     }
-
-    FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
   }
 
   public ClipboardFormat getFormat() {

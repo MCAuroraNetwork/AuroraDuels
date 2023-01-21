@@ -17,12 +17,13 @@ public class ArenaData {
   private final YamlConfiguration arenaData;
   public ArenaData(Arena arena) {
     ArenaData.arena = arena;
-    if (!arena.exists()) {
-      this.create();
-    }
 
     FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/" + arena.getName() + ".yml");
     arenaData = YamlConfiguration.loadConfiguration(FILE);
+
+    if (!arena.exists()) {
+      this.create();
+    }
   }
 
   public World getWorld() {
