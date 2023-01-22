@@ -69,7 +69,7 @@ public class Schematic {
     try {
       Operations.complete(forwardExtentCopy);
     } catch (WorldEditException e) {
-      throw new RuntimeException(e);
+      AuroraDuels.PLUGIN.getLogger().severe("Failed to copy arena schematic data");
     }
 
     if (!FILE.exists()) {
@@ -77,7 +77,7 @@ public class Schematic {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        AuroraDuels.PLUGIN.getLogger().severe("Failed to generate schematic file");
       }
     }
 
@@ -111,7 +111,7 @@ public class Schematic {
         Operations.complete(operation);
       }
     } catch (WorldEditException | IOException e) {
-      throw new RuntimeException(e);
+      AuroraDuels.PLUGIN.getLogger().severe("Failed to paste schematic file");
     }
   }
 }

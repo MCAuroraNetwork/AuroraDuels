@@ -68,7 +68,7 @@ public class ArenaData {
     try {
       arenaData.save(FILE);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      AuroraDuels.PLUGIN.getLogger().severe("Failed to save arena data");
     }
   }
 }

@@ -41,20 +41,10 @@ public final class AuroraDuels extends JavaPlugin {
     Queue.setup();
 
     // Setup configs
-    try {
-      Lang.reload();
-      Config.reload();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-
-    // Generate default values
-    try {
-      Lang.generateDefaults();
-      Config.generateDefaults();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    Lang.reload();
+    Config.reload();
+    Lang.generateDefaults();
+    Config.generateDefaults();
 
     // Register Listeners
     getServer().getPluginManager().registerEvents(new Events(), this);
