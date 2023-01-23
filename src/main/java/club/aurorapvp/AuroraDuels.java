@@ -29,7 +29,9 @@ public final class AuroraDuels extends JavaPlugin {
 
   @Override
   public void onEnable() {
-      // Register important variables
+    long startTime = System.currentTimeMillis();
+
+    // Register important variables
     PLUGIN = this;
     DATA_FOLDER = this.getDataFolder();
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
@@ -57,7 +59,7 @@ public final class AuroraDuels extends JavaPlugin {
       new Placeholders().register();
     }
 
-    getLogger().info("Aurora Duels Loaded");
+    getLogger().info("Aurora Duels Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime));
   }
 
   @Override
