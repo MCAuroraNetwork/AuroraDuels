@@ -20,27 +20,26 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 
 public class Arena implements WandListener {
-  public static List<Arena> arenas = new ArrayList<>();
-  private static BlockVector3 spawn1 = null;
-  private static BlockVector3 spawn2 = null;
-  private static BlockVector3 pos1 = null;
-  private static BlockVector3 pos2 = null;
+  private static final List<Arena> arenas = new ArrayList<>();
+  private BlockVector3 spawn1 = null;
+  private BlockVector3 spawn2 = null;
+  private BlockVector3 pos1 = null;
+  private BlockVector3 pos2 = null;
   private static int creationPhase = 0;
   private boolean occupancy = false;
-  private static Schematic schematic;
-  private static ArenaData arenaData;
-  private static String arenaName;
-  private static World arenaWorld;
-  public Arena(String arenaName) {
-    Arena.arenaName = arenaName;
+  private final Schematic schematic;
+  private final ArenaData arenaData;
+  private final String arenaName;
+  private World arenaWorld;
 
-    Arena.schematic = new Schematic(this);
-    Arena.arenaData = new ArenaData(this);
+  public Arena(String arenaName) {
+    this.arenaName = arenaName;
+
+    this.schematic = new Schematic(this);
+    this.arenaData = new ArenaData(this);
 
     if (this.exists()) {
-      spawn1 = this.getData().getFirstSpawn();
-      spawn2 = this.getData().getSecondSpawn();
-      arenaWorld = this.getData().getWorld();
+      this.reload();
     }
   }
 
@@ -90,6 +89,12 @@ public class Arena implements WandListener {
 
   public static List<Arena> getArenas() {
     return arenas;
+  }
+
+  public void reload() {
+    spawn1 = this.getData().getFirstSpawn();
+    spawn2 = this.getData().getSecondSpawn();
+    arenaWorld = this.getData().getWorld();
   }
 
   public static Arena getArena(String arenaName) {
