@@ -13,7 +13,7 @@ public class Lang {
   private static final File FILE = new File(AuroraDuels.DATA_FOLDER, "lang.yml");
   private static YamlConfiguration lang;
 
-  public static void generateDefaults() throws IOException {
+  public static void generateDefaults() {
     for (Object path : get().getKeys(false).toArray()) {
       if (get().getString((String) path).startsWith("~") &&
           get().getString((String) path).endsWith("~")) {
@@ -65,7 +65,12 @@ public class Lang {
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
         get().set(path, DEFAULTS.get(path));
-        get().save(FILE);
+
+        try {
+          get().save(FILE);
+        } catch (IOException e) {
+          AuroraDuels.PLUGIN.getLogger().severe("Failed to save lang file");
+        }
       }
     }
   }
@@ -96,13 +101,15 @@ public class Lang {
     return lang;
   }
 
-  public static void reload() throws IOException {
+  public static void reload() {
     if (!FILE.exists()) {
-      FILE.getParentFile().mkdirs();
-
-      FILE.createNewFile();
+      try {
+        FILE.getParentFile().mkdirs();
+        FILE.createNewFile();
+      } catch (IOException e) {
+        AuroraDuels.PLUGIN.getLogger().severe("Failed to generate lang file");
+      }
     }
-
     lang = YamlConfiguration.loadConfiguration(FILE);
     AuroraDuels.PLUGIN.getLogger().info("Lang reloaded!");
   }

@@ -192,6 +192,8 @@ public class Arena implements WandListener {
       p.sendMessage(Lang.getComponent("arena-created"));
       Wand.setActive("right", false);
       Wand.setActive("left", false);
+      schematic.create();
+      arenaData.create();
       creationPhase = 0;
       arenas.add(this);
     }

@@ -20,10 +20,6 @@ public class ArenaData {
 
     FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/" + arena.getName() + ".yml");
     arenaData = YamlConfiguration.loadConfiguration(FILE);
-
-    if (!this.getFile().exists()) {
-      this.create();
-    }
   }
 
   public World getWorld() {
@@ -39,14 +35,10 @@ public class ArenaData {
   }
 
   public File getFile() {
-    if (FILE.exists()) {
-      return FILE;
-    } else {
-      return null;
-    }
+    return FILE;
   }
 
-  private void create() {
+  public void create() {
     Location spawn1 = new Location(arena.getWorld(), arena.getFirstSpawn().getBlockX(),
         arena.getFirstSpawn().getBlockY(), arena.getFirstSpawn().getBlockZ());
     Location spawn2 = new Location(arena.getWorld(), arena.getSecondSpawn().getBlockX(),
