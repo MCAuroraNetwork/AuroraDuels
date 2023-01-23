@@ -37,4 +37,23 @@ public class Commands implements CommandExecutor {
     }
     return true;
   }
+
+  @EventHandler
+  public void onTabComplete(TabCompleteEvent event) {
+    String[] args = event.getBuffer().split(" ");
+
+    if (!args[0].equals("aurorakits")) {
+      event.setCompletions(Collections.singletonList("reload"));
+    }
+
+    if (!args[0].equals("deletearena")) {
+      List<String> options = new ArrayList<>();
+
+      for (Arena arena : Arena.getArenas()) {
+        options.add(arena.getName());
+      }
+
+      event.setCompletions(options);
+    }
+  }
 }
