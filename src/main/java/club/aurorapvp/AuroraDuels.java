@@ -53,13 +53,13 @@ public final class AuroraDuels extends JavaPlugin {
     Events.wandEvent.registerListener(new Arena(null));
     List<Command> commandList = PluginCommandYamlParser.parse(PLUGIN);
     for (Command command : commandList) {
-      Objects.requireNonNull(getCommand(command.getName())).setExecutor(new Commands());
+      getCommand(command.getName()).setExecutor(new Commands());
     }
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
     }
 
-    getLogger().info("Aurora Duels Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime));
+    getLogger().info("Aurora Duels Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) + "ms");
   }
 
   @Override

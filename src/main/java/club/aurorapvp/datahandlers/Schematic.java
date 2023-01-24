@@ -69,7 +69,7 @@ public class Schematic {
              BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(FILE))) {
       writer.write(clipboard);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      AuroraDuels.PLUGIN.getLogger().severe("Failed to save schematic file");
     }
   }
 

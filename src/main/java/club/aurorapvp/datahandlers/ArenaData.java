@@ -52,15 +52,11 @@ public class ArenaData {
       try {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
+        arenaData.save(FILE);
       } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    }
+        AuroraDuels.PLUGIN.getLogger().severe("Failed to save arena data");
 
-    try {
-      arenaData.save(FILE);
-    } catch (IOException e) {
-      AuroraDuels.PLUGIN.getLogger().severe("Failed to save arena data");
+      }
     }
   }
 }

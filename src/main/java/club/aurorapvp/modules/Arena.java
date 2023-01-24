@@ -237,5 +237,6 @@ public class Arena implements WandListener {
         arenas.add(arena);
       }
     }
+    AuroraDuels.PLUGIN.getLogger().info("All arenas loaded!");
   }
 }
