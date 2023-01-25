@@ -26,6 +26,7 @@ public final class AuroraDuels extends JavaPlugin {
   public static File DATA_FOLDER;
   public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
   public static MiniMessage COMPONENT_DESERIALIZER;
+  public static boolean auroraKitsInstalled = false;
 
   @Override
   public void onEnable() {
@@ -57,6 +58,9 @@ public final class AuroraDuels extends JavaPlugin {
     }
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
+    }
+    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null) {
+      auroraKitsInstalled = true;
     }
 
     getLogger().info("Aurora Duels Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) + "ms");
