@@ -52,7 +52,7 @@ public class Lang {
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
     DEFAULTS.put("received-request",
         "prefix <gradient:#FFAA00:#FF55FF>You have received a request from ");
-    DEFAULTS.put("command-help", " use /duel accept to accept, or /duel deny to deny");
+    DEFAULTS.put("duel-commands-help", " use /duel accept to accept, or /duel deny to deny");
     DEFAULTS.put("request-timed-out", "prefix <gradient:#FFAA00:#FF55FF>Duel request timed out");
     DEFAULTS.put("no-requests", "prefix <gradient:#FFAA00:#FF55FF>No pending requests");
     DEFAULTS.put("request-denied", "prefix <gradient:#FFAA00:#FF55FF>Duel request denied!");
@@ -61,6 +61,13 @@ public class Lang {
     DEFAULTS.put("you-lose", "prefix <gradient:#FFAA00:#FF55FF>You lost the duel");
     DEFAULTS.put("looking-match", "prefix <gradient:#FFAA00:#FF55FF>Searching for an opponent");
     DEFAULTS.put("match-found", "prefix <gradient:#FFAA00:#FF55FF>Opponent found!");
+    DEFAULTS.put("queue-already-exists", "prefix <gradient:#FFAA00:#FF55FF>Queue already exists!");
+    DEFAULTS.put("queue-created", "prefix <gradient:#FFAA00:#FF55FF>Queue successfully created!");
+    DEFAULTS.put("cannot-find-queue", "prefix <gradient:#FFAA00:#FF55FF>Queue not found!");
+    DEFAULTS.put("already-has-request",
+        "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request!");
+    DEFAULTS.put("requested-player-has-request",
+        "prefix <gradient:#FFAA00:#FF55FF>Requested player already has a pending request!");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

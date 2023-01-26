@@ -12,7 +12,7 @@ public class Config {
   private static YamlConfiguration config;
 
   public static void generateDefaults() {
-    DEFAULTS.put("", "");
+    DEFAULTS.put("duel-requests.request-timeout", "30000");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

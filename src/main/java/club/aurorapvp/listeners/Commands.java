@@ -1,16 +1,24 @@
 package club.aurorapvp.listeners;
 
+import club.aurorapvp.api.KitAPI;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Queue;
+import club.aurorapvp.modules.Request;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.TabCompleteEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class Commands implements CommandExecutor {
+public class Commands implements CommandExecutor, Listener {
   private Player p;
 
   @Override
@@ -21,19 +29,30 @@ public class Commands implements CommandExecutor {
     }
 
     switch (command.getName()) {
+      case "auroraduels" -> {
+        // TODO
+        if (args[0].equals("reload")) {
+
+        }
+      }
       case "duel" -> {
         if (args[0].equals("accept")) {
-          Duel.acceptDuelRequest(p);
+          Request.acceptDuelRequest(p);
         } else if (args[0].equals("deny")) {
-          Duel.denyDuelRequest(p);
+          Request.denyDuelRequest(p);
         } else {
-          Duel.sendDuelRequest(p, Bukkit.getPlayer(args[0]));
+          if (args.length > 1) {
+            new Request(args[1], p, Bukkit.getPlayer(args[0]));
+          } else {
+            new Request("Default", p, Bukkit.getPlayer(args[0]));
+          }
         }
       }
       case "createarena" -> new Arena(args[0]).create(p);
       case "resetarena" -> Arena.getArena(args[0]).reset(p);
       case "deletearena" -> Arena.getArena(args[0]).delete(p);
-      case "findmatch" -> Queue.findMatch(p);
+      case "findmatch" -> Queue.findMatch(p, args[0]);
+      case "createqueue" -> new Queue(args[0]).create(p, args[1]);
     }
     return true;
   }
@@ -51,6 +70,16 @@ public class Commands implements CommandExecutor {
 
       for (Arena arena : Arena.getArenas()) {
         options.add(arena.getName());
+      }
+
+      event.setCompletions(options);
+    }
+
+    if (!args[0].equals("findmatch")) {
+      List<String> options = new ArrayList<>();
+
+      for (Queue queue : Queue.getQueues()) {
+        options.add(queue.getName());
       }
 
       event.setCompletions(options);

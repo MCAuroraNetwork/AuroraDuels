@@ -6,16 +6,13 @@ import club.aurorapvp.datahandlers.ArenaData;
 import club.aurorapvp.datahandlers.Schematic;
 import club.aurorapvp.events.wand.WandEvent;
 import club.aurorapvp.events.wand.WandListener;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 
@@ -204,28 +201,28 @@ public class Arena implements WandListener {
     }
   }
 
-  public void reset(Player playerSource) {
+  public void reset(Player source) {
     if (this.exists()) {
       new Schematic(this).paste();
-      if (playerSource != null) {
-        playerSource.sendMessage(Lang.getComponent("arena-reset"));
+      if (source != null) {
+        source.sendMessage(Lang.getComponent("arena-reset"));
       }
-    } else if (playerSource != null) {
-      playerSource.sendMessage(Lang.getComponent("arena-does-not-exist"));
+    } else if (source != null) {
+      source.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
-  public void delete(Player playerSource) {
+  public void delete(Player source) {
     if (this.exists()) {
       this.getData().getFile().delete();
       this.getSchematic().getFile().delete();
       arenas.remove(this);
 
-      if (playerSource != null) {
-        playerSource.sendMessage(Lang.getComponent("arena-deleted"));
+      if (source != null) {
+        source.sendMessage(Lang.getComponent("arena-deleted"));
       }
-    } else if (playerSource != null) {
-        playerSource.sendMessage(Lang.getComponent("arena-does-not-exist"));
+    } else if (source != null) {
+      source.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 

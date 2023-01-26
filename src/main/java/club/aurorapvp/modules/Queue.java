@@ -1,62 +1,165 @@
 package club.aurorapvp.modules;
 
+import static club.aurorapvp.AuroraDuels.auroraKitsInstalled;
+
+import club.aurorapvp.AuroraDuels;
+import club.aurorapvp.api.KitAPI;
 import club.aurorapvp.configs.Lang;
-import java.util.LinkedHashMap;
+import club.aurorapvp.datahandlers.QueueData;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.bukkit.entity.Player;
 
 public class Queue {
-  public static LinkedHashMap<Player, Player> duelQueue = new LinkedHashMap<>();
+  private final LinkedList<Duel> duelQueue = new LinkedList<>();
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static Player lookingForMatch = null;
+  private static final List<Queue> queues = new ArrayList<>();
+  private final String queueName;
+  private Kit kit;
+  private Arena[] arenas;
+  private final QueueData queueData;
 
-  public static void setup() {
-    executor.scheduleAtFixedRate(checkQueue, 0, 10, TimeUnit.SECONDS);
+  public Queue(String queueName) {
+    this.queueName = queueName;
+
+    this.queueData = new QueueData(this);
+
+    if (this.exists()) {
+      reload();
+    }
   }
 
-  private static final Runnable checkQueue = () -> {
+  public Kit getKit() {
+    return kit;
+  }
+
+  public boolean exists() {
+    return queueData.getFile().exists();
+  }
+
+  public Arena[] getArenas() {
+    return arenas;
+  }
+
+  public String getName() {
+    return queueName;
+  }
+
+  public Player[] getPlayers() {
+    List<Player> playerList = new ArrayList<>();
+
+    for (Duel duel : duelQueue) {
+      playerList.add(duel.getPlayerOne());
+      playerList.add(duel.getPlayerTwo());
+    }
+
+    Player[] players = new Player[playerList.size()];
+
+    for (int i = 0; i < playerList.size(); i++) {
+      players[i] = playerList.get(i);
+    }
+
+    return players;
+  }
+
+  // TODO
+  public void reload() {
+
+  }
+
+  public void create(Player p, String kitName) {
+    if (!this.exists()) {
+      executor.scheduleAtFixedRate(checkQueue, 0, 10, TimeUnit.SECONDS);
+      if (kitName != null && auroraKitsInstalled) {
+        this.kit = KitAPI.getKit(kitName);
+      }
+      queueData.create();
+      if (p != null) {
+        p.sendMessage(Lang.getComponent("queue-created"));
+      }
+    } else if (p != null) {
+      p.sendMessage(Lang.getComponent("queue-already-exists"));
+    }
+  }
+
+  public void enterDuelQueue(Player p, Player opponent, boolean isPublic) {
+    duelQueue.add(new Duel(p, opponent, isPublic));
+    p.sendMessage(Lang.getComponent("entered-queue"));
+    opponent.sendMessage(Lang.getComponent("entered-queue"));
+    executor.execute(checkQueue);
+  }
+
+  public void exitDuelQueue(Player p1, Player p2) {
+
+  }
+
+  private final Runnable checkQueue = () -> {
     if (duelQueue.size() > 0) {
-      for (Arena arena : Arena.getArenas()) {
+      for (Arena arena : this.getArenas()) {
         if (!arena.isOccupied()) {
-          for (Player p1 : duelQueue.keySet()) {
-            Player p2 = duelQueue.get(p1);
-            if (!Duel.inDuel(p1) && !Duel.inDuel(p2)) {
-              new Duel(p1, p2, arena).startDuel();
-              return;
-            }
-          }
+          duelQueue.getLast().startDuel(kit, arena);
         }
       }
     }
   };
 
-  public static void findMatch(Player p) {
+  public static Queue[] getQueues() {
+    Queue[] queueArray = new Queue[queues.size()];
+
+    for (int i = 0; i < queues.size(); i++) {
+      queueArray[i] = queues.get(i);
+    }
+
+    return queueArray;
+  }
+
+  public static Queue getQueue(String queueName) {
+    for (Queue queue : queues) {
+      if (Objects.equals(queue.getName(), queueName)) {
+        return queue;
+      }
+    }
+    return null;
+  }
+
+  public static Queue getQueue(Player p) {
+    for (Queue queue : queues) {
+      for (Player player : queue.getPlayers()) {
+        if (player == p) {
+          return queue;
+        }
+      }
+    }
+    return null;
+  }
+
+  public static void setup() {
+    File dir = new File(AuroraDuels.DATA_FOLDER, "/queues/");
+    for (File file : dir.listFiles()) {
+      Queue queue = new Queue(file.getName().replace(".yml", ""));
+      if (queue.exists()) {
+        queues.add(queue);
+      }
+    }
+    AuroraDuels.PLUGIN.getLogger().info("All queues loaded!");
+  }
+
+  public static void findMatch(Player p, String queueName) {
     p.sendMessage(Lang.getComponent("looking-match"));
     if (lookingForMatch == null) {
       lookingForMatch = p;
     } else {
-      enterDuelQueue(p, lookingForMatch);
+      Queue.getQueue(queueName).enterDuelQueue(p, lookingForMatch, true);
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;
     }
-  }
-
-  public static void exitDuelQueue(Player p1, Player p2) {
-    if (duelQueue.containsKey(p1)) {
-      duelQueue.remove(p1);
-    } else {
-      duelQueue.remove(p2);
-    }
-  }
-
-  public static void enterDuelQueue(Player p, Player opponent) {
-    duelQueue.put(p, opponent);
-    p.sendMessage(Lang.getComponent("entered-queue"));
-    opponent.sendMessage(Lang.getComponent("entered-queue"));
-    executor.execute(checkQueue);
   }
 }

@@ -16,17 +16,17 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class Duel {
-  public static Map<Player, Player> pendingInvites = new HashMap<>();
   public static List<Duel> duels = new ArrayList<>();
-  private static Player p1;
-  private static Player p2;
-  private static Arena arena;
+  private final Player p1;
+  private final Player p2;
   private static Long timeStarted;
+  private final boolean isPublic;
+  private Arena arena;
 
-  public Duel(Player p1, Player p2, Arena arena) {
-    Duel.arena = arena;
-    Duel.p1 = p1;
-    Duel.p2 = p2;
+  public Duel(Player p1, Player p2, boolean isPublic) {
+    this.isPublic = isPublic;
+    this.p1 = p1;
+    this.p2 = p2;
     timeStarted = System.currentTimeMillis();
   }
 
@@ -34,19 +34,19 @@ public class Duel {
     return p1;
   }
 
-  public Player getPlayerTwo() {
-    return p2;
+  public boolean isPublic() {
+    return isPublic;
   }
 
-  public Arena getArena() {
-    return arena;
+  public Player getPlayerTwo() {
+    return p2;
   }
 
   public Long getElapsed() {
     return System.currentTimeMillis() - timeStarted;
   }
 
-  public static Player getOpponent(Player p) {
+  public Player getOpponent(Player p) {
     if (p == p1) {
       return p2;
     } else if (p == p2) {
@@ -55,33 +55,6 @@ public class Duel {
       return null;
     }
   }
-
-  public static void acceptDuelRequest(Player p) {
-    if (pendingInvites.containsKey(p)) {
-      Player opponent = pendingInvites.get(p);
-
-      p.sendMessage(Lang.getComponent("request-accepted"));
-      opponent.sendMessage(Lang.getComponent("request-accepted"));
-      pendingInvites.remove(p);
-
-      Queue.enterDuelQueue(p, opponent);
-    } else {
-      p.sendMessage(Lang.getComponent("no-requests"));
-    }
-  }
-
-  public static void denyDuelRequest(Player p) {
-    if (pendingInvites.containsKey(p)) {
-      Player opponent = pendingInvites.get(p);
-
-      p.sendMessage(Lang.getComponent("request-denied"));
-      opponent.sendMessage(Lang.getComponent("request-denied"));
-      pendingInvites.remove(p);
-    } else {
-      p.sendMessage(Lang.getComponent("no-requests"));
-    }
-  }
-
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
       if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
@@ -102,37 +75,18 @@ public class Duel {
     return null;
   }
 
-  public static void sendDuelRequest(Player sender, Player receiver) {
-    if (receiver != null && !inDuel(receiver)) {
-      pendingInvites.put(receiver, sender);
-
-      sender.sendMessage(Lang.getComponent("sent-request"));
-      receiver.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
-          Lang.getString("received-request") + sender.getName() + Lang.getString("command-help")));
-
-      TimerTask task = new TimerTask() {
-        public void run() {
-          if (pendingInvites.containsKey(receiver)) {
-            pendingInvites.remove(receiver);
-            receiver.sendMessage(Lang.getComponent("request-timed-out"));
-            sender.sendMessage(Lang.getComponent("request-timed-out"));
-          }
-        }
-      };
-      new Timer().schedule(task, 60 * 1000);
-
-    } else if (receiver == null) {
-      sender.sendMessage(Lang.getComponent("unknown-opponent"));
-    } else {
-      sender.sendMessage(Lang.getComponent("player-in-duel"));
-    }
-  }
-
   public static int inDuels() {
     return duels.size();
   }
 
-  public void startDuel() {
+  public void startDuel(Kit kit, Arena arena) {
+    if (kit != null) {
+      kit.giveKit(p1);
+      kit.giveKit(p2);
+    }
+
+    this.arena = arena;
+
     Location spawn1 =
         new Location(arena.getWorld(),
             arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
@@ -153,7 +107,7 @@ public class Duel {
     p1.showTitle(title1);
     p2.showTitle(title2);
 
-    Queue.exitDuelQueue(p1, p2);
+    Queue.getQueue(p1).exitDuelQueue(p1, p2);
     arena.setOccupied(true);
     duels.add(this);
   }
@@ -171,7 +125,7 @@ public class Duel {
     }
 
     arena.setOccupied(false);
+    arena.reset(null);
     duels.remove(this);
-    this.getArena().reset(null);
   }
 }

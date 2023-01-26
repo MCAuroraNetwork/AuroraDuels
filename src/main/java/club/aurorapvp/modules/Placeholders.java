@@ -40,7 +40,7 @@ public class Placeholders extends PlaceholderExpansion {
     if (params.startsWith("opponent_ping")) {
       if (p.isOnline()) {
         if (Duel.inDuel(p.getPlayer())) {
-          return String.valueOf(Duel.getOpponent(p.getPlayer()).getPing());
+          return String.valueOf(Duel.getDuel(p.getPlayer()).getOpponent(p.getPlayer()).getPing());
         }
       }
     }
@@ -48,7 +48,7 @@ public class Placeholders extends PlaceholderExpansion {
     if (params.startsWith("opponent")) {
       if (p.isOnline()) {
         if (Duel.inDuel(p.getPlayer())) {
-          return Duel.getOpponent(p.getPlayer()).getName();
+          return Duel.getDuel(p.getPlayer()).getOpponent(p.getPlayer()).getName();
         }
       }
     }
@@ -66,7 +66,6 @@ public class Placeholders extends PlaceholderExpansion {
         }
       }
     }
-
     return null;
   }
 }
