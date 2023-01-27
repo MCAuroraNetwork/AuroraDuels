@@ -201,28 +201,30 @@ public class Arena implements WandListener {
     }
   }
 
-  public void reset(Player source) {
+  public void reset(Player p) {
     if (this.exists()) {
       new Schematic(this).paste();
-      if (source != null) {
-        source.sendMessage(Lang.getComponent("arena-reset"));
-      }
-    } else if (source != null) {
-      source.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      p.sendMessage(Lang.getComponent("arena-reset"));
+    } else {
+      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
-  public void delete(Player source) {
+  public void reset() {
+    if (this.exists()) {
+      new Schematic(this).paste();
+    }
+  }
+
+  public void delete(Player p) {
     if (this.exists()) {
       this.getData().getFile().delete();
       this.getSchematic().getFile().delete();
       arenas.remove(this);
 
-      if (source != null) {
-        source.sendMessage(Lang.getComponent("arena-deleted"));
-      }
-    } else if (source != null) {
-      source.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      p.sendMessage(Lang.getComponent("arena-deleted"));
+    } else {
+      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 

@@ -125,7 +125,7 @@ public class Duel {
     }
 
     arena.setOccupied(false);
-    arena.reset(null);
+    arena.reset();
     duels.remove(this);
   }
 }

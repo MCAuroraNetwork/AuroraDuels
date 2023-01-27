@@ -81,10 +81,8 @@ public class Queue {
         this.kit = KitAPI.getKit(kitName);
       }
       queueData.create();
-      if (p != null) {
-        p.sendMessage(Lang.getComponent("queue-created"));
-      }
-    } else if (p != null) {
+      p.sendMessage(Lang.getComponent("queue-created"));
+    } else {
       p.sendMessage(Lang.getComponent("queue-already-exists"));
     }
   }
