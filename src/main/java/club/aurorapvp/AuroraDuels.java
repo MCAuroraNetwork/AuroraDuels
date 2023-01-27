@@ -15,6 +15,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommandYamlParser;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,8 +48,11 @@ public final class AuroraDuels extends JavaPlugin {
     Config.generateDefaults();
 
     // Register Listeners
-    getServer().getPluginManager().registerEvents(new Events(), this);
-    getServer().getPluginManager().registerEvents(new Arena(), this);
+    for (Object eventHandler : List.of(new Events(), new Arena(), new Queue())) {
+      if (eventHandler instanceof Listener) {
+        getServer().getPluginManager().registerEvents((Listener) eventHandler, this);
+      }
+    }
     List<Command> commandList = PluginCommandYamlParser.parse(INSTANCE);
     for (Command command : commandList) {
       getCommand(command.getName()).setExecutor(new Commands());

@@ -50,6 +50,7 @@ public class Lang {
     DEFAULTS.put("entered-queue",
         "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
+    // TODO jank
     DEFAULTS.put("received-request",
         "prefix <gradient:#FFAA00:#FF55FF>You have received a request from ");
     DEFAULTS.put("duel-commands-help", " use /duel accept to accept, or /duel deny to deny");
@@ -62,12 +63,15 @@ public class Lang {
     DEFAULTS.put("looking-match", "prefix <gradient:#FFAA00:#FF55FF>Searching for an opponent");
     DEFAULTS.put("match-found", "prefix <gradient:#FFAA00:#FF55FF>Opponent found!");
     DEFAULTS.put("queue-already-exists", "prefix <gradient:#FFAA00:#FF55FF>Queue already exists!");
+    DEFAULTS.put("queue-being-created", "prefix <gradient:#FFAA00:#FF55FF>Queue already being created!");
     DEFAULTS.put("queue-created", "prefix <gradient:#FFAA00:#FF55FF>Queue successfully created!");
     DEFAULTS.put("cannot-find-queue", "prefix <gradient:#FFAA00:#FF55FF>Queue not found!");
     DEFAULTS.put("already-has-request",
         "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request!");
     DEFAULTS.put("requested-player-has-request",
         "prefix <gradient:#FFAA00:#FF55FF>Requested player already has a pending request!");
+    DEFAULTS.put("add-arena",
+        "prefix <gradient:#FFAA00:#FF55FF>What arena would you like to add to the queue? Type its name into chat. You have added %s arenas so far");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
