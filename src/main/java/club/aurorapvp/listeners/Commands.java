@@ -1,8 +1,6 @@
 package club.aurorapvp.listeners;
 
-import club.aurorapvp.api.KitAPI;
 import club.aurorapvp.modules.Arena;
-import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Request;
 import java.util.ArrayList;
@@ -52,7 +50,13 @@ public class Commands implements CommandExecutor, Listener {
       case "resetarena" -> Arena.getArena(args[0]).reset(p);
       case "deletearena" -> Arena.getArena(args[0]).delete(p);
       case "findmatch" -> Queue.findMatch(p, args[0]);
-      case "createqueue" -> new Queue(args[0]).create(p, args[1]);
+      case "createqueue" -> {
+        if (args.length > 1) {
+          new Queue(args[0]).create(p, args[1]);
+        } else {
+          new Queue(args[0]).create(p);
+        }
+      }
     }
     return true;
   }
@@ -61,11 +65,11 @@ public class Commands implements CommandExecutor, Listener {
   public void onTabComplete(TabCompleteEvent event) {
     String[] args = event.getBuffer().split(" ");
 
-    if (!args[0].equals("aurorakits")) {
+    if (args[0].equals("aurorakits")) {
       event.setCompletions(Collections.singletonList("reload"));
     }
 
-    if (!args[0].equals("deletearena")) {
+    if (args[0].equals("deletearena")) {
       List<String> options = new ArrayList<>();
 
       for (Arena arena : Arena.getArenas()) {
@@ -75,7 +79,7 @@ public class Commands implements CommandExecutor, Listener {
       event.setCompletions(options);
     }
 
-    if (!args[0].equals("findmatch")) {
+    if (args[0].equals("findmatch") && args[1] != null) {
       List<String> options = new ArrayList<>();
 
       for (Queue queue : Queue.getQueues()) {

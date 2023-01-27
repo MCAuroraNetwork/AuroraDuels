@@ -25,6 +25,12 @@ commands:
   findmatch:
     description: Starts a duel
     permission: AuroraDuels.duel
+  createqueue:
+    description: Creates a custom queue
+    permission: AuroraDuels.admin
+  deletequeue:
+    description: Deletes a custom queue
+    permission: AuroraDuels.admin
 permissions:
   AuroraDuels.admin:
     description: Enables use of AuroraDuels admin commands

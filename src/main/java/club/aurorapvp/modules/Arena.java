@@ -84,8 +84,14 @@ public class Arena implements WandListener {
     return schematic;
   }
 
-  public static List<Arena> getArenas() {
-    return arenas;
+  public static Arena[] getArenas() {
+    Arena[] arenaArray = new Arena[arenas.size()];
+
+    for (int i = 0; i < arenas.size(); i++) {
+      arenaArray[i] = arenas.get(i);
+    }
+
+    return arenaArray;
   }
 
   public void reload() {
@@ -133,7 +139,7 @@ public class Arena implements WandListener {
         case 1 -> setSpawns(p, action, vector);
         case 2 -> setCorners(p, action, vector);
         default -> {
-          AuroraDuels.PLUGIN.getLogger()
+          AuroraDuels.INSTANCE.getLogger()
               .warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
           creationPhase = 0;
         }
@@ -236,6 +242,6 @@ public class Arena implements WandListener {
         arenas.add(arena);
       }
     }
-    AuroraDuels.PLUGIN.getLogger().info("All arenas loaded!");
+    AuroraDuels.INSTANCE.getLogger().info("All arenas loaded!");
   }
 }

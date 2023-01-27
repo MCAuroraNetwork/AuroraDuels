@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class QueueData {
@@ -17,6 +16,7 @@ public class QueueData {
   private final Arena[] arenas;
   private final File FILE;
   private final YamlConfiguration queueData;
+
   public QueueData(Queue queue) {
     this.kit = queue.getKit();
     this.arenas = queue.getArenas();
@@ -70,7 +70,7 @@ public class QueueData {
         FILE.createNewFile();
         queueData.save(FILE);
       } catch (IOException e) {
-        AuroraDuels.PLUGIN.getLogger().severe("Unable to save queue data");
+        AuroraDuels.INSTANCE.getLogger().severe("Unable to save queue data");
       }
     }
   }

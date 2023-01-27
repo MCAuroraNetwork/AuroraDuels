@@ -42,7 +42,8 @@ public class Request {
 
     requester.sendMessage(Lang.getComponent("sent-request"));
     requested.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
-        Lang.getString("received-request") + requester.getName() + Lang.getString("duel-commands-help")));
+        Lang.getString("received-request") + requester.getName() +
+            Lang.getString("duel-commands-help")));
 
     Request thisRequest = this;
 

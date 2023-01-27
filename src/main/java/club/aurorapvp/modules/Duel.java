@@ -1,14 +1,8 @@
 package club.aurorapvp.modules;
 
-import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -55,6 +49,7 @@ public class Duel {
       return null;
     }
   }
+
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
       if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
@@ -107,7 +102,7 @@ public class Duel {
     p1.showTitle(title1);
     p2.showTitle(title2);
 
-    Queue.getQueue(p1).exitDuelQueue(p1, p2);
+    Queue.getQueue(p1).exitDuelQueue(p1);
     arena.setOccupied(true);
     duels.add(this);
   }

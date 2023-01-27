@@ -76,7 +76,7 @@ public class Lang {
         try {
           get().save(FILE);
         } catch (IOException e) {
-          AuroraDuels.PLUGIN.getLogger().severe("Failed to save lang file");
+          AuroraDuels.INSTANCE.getLogger().severe("Failed to save lang file");
         }
       }
     }
@@ -114,10 +114,10 @@ public class Lang {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraDuels.PLUGIN.getLogger().severe("Failed to generate lang file");
+        AuroraDuels.INSTANCE.getLogger().severe("Failed to generate lang file");
       }
     }
     lang = YamlConfiguration.loadConfiguration(FILE);
-    AuroraDuels.PLUGIN.getLogger().info("Lang reloaded!");
+    AuroraDuels.INSTANCE.getLogger().info("Lang reloaded!");
   }
 }

@@ -53,7 +53,7 @@ public class Schematic {
     try {
       Operations.complete(forwardExtentCopy);
     } catch (WorldEditException e) {
-      AuroraDuels.PLUGIN.getLogger().severe("Failed to copy arena schematic data");
+      AuroraDuels.INSTANCE.getLogger().severe("Failed to copy arena schematic data");
     }
 
     if (!FILE.exists()) {
@@ -61,7 +61,7 @@ public class Schematic {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraDuels.PLUGIN.getLogger().severe("Failed to generate schematic file");
+        AuroraDuels.INSTANCE.getLogger().severe("Failed to generate schematic file");
       }
     }
 
@@ -69,7 +69,7 @@ public class Schematic {
              BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(FILE))) {
       writer.write(clipboard);
     } catch (IOException e) {
-      AuroraDuels.PLUGIN.getLogger().severe("Failed to save schematic file");
+      AuroraDuels.INSTANCE.getLogger().severe("Failed to save schematic file");
     }
   }
 
@@ -95,7 +95,7 @@ public class Schematic {
         Operations.complete(operation);
       }
     } catch (WorldEditException | IOException e) {
-      AuroraDuels.PLUGIN.getLogger().severe("Failed to paste schematic file");
+      AuroraDuels.INSTANCE.getLogger().severe("Failed to paste schematic file");
     }
   }
 }

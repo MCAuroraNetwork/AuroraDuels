@@ -13,6 +13,7 @@ public class Config {
 
   public static void generateDefaults() {
     DEFAULTS.put("duel-requests.request-timeout", "30000");
+    DEFAULTS.put("queues.enable-default-queue", "true");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
@@ -21,7 +22,7 @@ public class Config {
         try {
           get().save(FILE);
         } catch (IOException e) {
-          AuroraDuels.PLUGIN.getLogger().severe("Failed to save config file");
+          AuroraDuels.INSTANCE.getLogger().severe("Failed to save config file");
         }
       }
     }
@@ -37,10 +38,10 @@ public class Config {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraDuels.PLUGIN.getLogger().severe("Failed to generate config file");
+        AuroraDuels.INSTANCE.getLogger().severe("Failed to generate config file");
       }
     }
     config = YamlConfiguration.loadConfiguration(FILE);
-    AuroraDuels.PLUGIN.getLogger().info("Config reloaded!");
+    AuroraDuels.INSTANCE.getLogger().info("Config reloaded!");
   }
 }
