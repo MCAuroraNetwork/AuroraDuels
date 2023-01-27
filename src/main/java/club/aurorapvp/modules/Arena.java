@@ -10,6 +10,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,22 +21,23 @@ import org.bukkit.event.block.Action;
 
 public class Arena implements Listener {
   private static final List<Arena> arenas = new ArrayList<>();
-  private BlockVector3 spawn1 = null;
-  private BlockVector3 spawn2 = null;
-  private BlockVector3 pos1 = null;
-  private BlockVector3 pos2 = null;
+  @Getter private BlockVector3 spawn1 = null;
+  @Getter private BlockVector3 spawn2 = null;
+  @Getter private BlockVector3 pos1 = null;
+  @Getter private BlockVector3 pos2 = null;
   private static int creationPhase = 0;
-  private boolean occupancy = false;
-  private final Schematic schematic;
-  private final ArenaData arenaData;
-  private final String arenaName;
-  private World arenaWorld;
+  @Setter
+  @Getter private boolean occupied = false;
+  @Getter private final Schematic schematic;
+  @Getter private final ArenaData data;
+  @Getter private final String name;
+  @Getter private World world;
 
   public Arena(String arenaName) {
-    this.arenaName = arenaName;
+    this.name = arenaName;
 
     this.schematic = new Schematic(this);
-    this.arenaData = new ArenaData(this);
+    this.data = new ArenaData(this);
 
     if (this.exists()) {
       this.reload();
@@ -42,53 +45,13 @@ public class Arena implements Listener {
   }
 
   public Arena() {
-    this.arenaName = null;
+    this.name = null;
     this.schematic = null;
-    this.arenaData = null;
-  }
-
-  public BlockVector3 getFirstSpawn() {
-    return spawn1;
-  }
-
-  public BlockVector3 getSecondSpawn() {
-    return spawn2;
-  }
-
-  public BlockVector3 getFirstPosition() {
-    return pos1;
-  }
-
-  public BlockVector3 getSecondPosition() {
-    return pos2;
-  }
-
-  public World getWorld() {
-    return arenaWorld;
-  }
-
-  public String getName() {
-    return arenaName;
+    this.data = null;
   }
 
   public boolean exists() {
     return this.getData().getFile().exists() && this.getSchematic().getFile().exists();
-  }
-
-  public boolean isOccupied() {
-    return occupancy;
-  }
-
-  public void setOccupied(boolean value) {
-    occupancy = value;
-  }
-
-  public ArenaData getData() {
-    return arenaData;
-  }
-
-  public Schematic getSchematic() {
-    return schematic;
   }
 
   public static Arena[] getArenas() {
@@ -104,7 +67,7 @@ public class Arena implements Listener {
   public void reload() {
     spawn1 = this.getData().getFirstSpawn();
     spawn2 = this.getData().getSecondSpawn();
-    arenaWorld = this.getData().getWorld();
+    world = this.getData().getWorld();
   }
 
   public static Arena getArena(String arenaName) {
@@ -178,7 +141,7 @@ public class Arena implements Listener {
     if (spawn1 != null && spawn2 != null) {
       p.sendMessage(Lang.getComponent("spawns-set"));
       p.sendMessage(Lang.getComponent("set-pos1-and-pos2"));
-      arenaWorld = p.getWorld();
+      world = p.getWorld();
       creationPhase++;
     }
   }
@@ -208,7 +171,7 @@ public class Arena implements Listener {
       Wand.setActive("right", false);
       Wand.setActive("left", false);
       schematic.create();
-      arenaData.create();
+      data.create();
       creationPhase = 0;
       arenas.add(this);
     }

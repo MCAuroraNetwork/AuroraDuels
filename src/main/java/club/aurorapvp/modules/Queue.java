@@ -8,7 +8,6 @@ import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.QueueData;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -17,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 public class Queue {
@@ -24,15 +24,15 @@ public class Queue {
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static Player lookingForMatch = null;
   private static final List<Queue> queues = new ArrayList<>();
-  private final String queueName;
-  private Kit kit;
+  @Getter private final String name;
+  @Getter private Kit kit;
   private final List<Arena> arenas = new ArrayList<>();
-  private final QueueData queueData;
+  @Getter private final QueueData data;
 
   public Queue(String queueName) {
-    this.queueName = queueName;
+    this.name = queueName;
 
-    this.queueData = new QueueData(this);
+    this.data = new QueueData(this);
 
     if (this.exists()) {
       reload();
@@ -44,7 +44,7 @@ public class Queue {
   }
 
   public boolean exists() {
-    return queueData.getFile().exists();
+    return data.getFile().exists();
   }
 
   public String getName() {
@@ -69,8 +69,8 @@ public class Queue {
     List<Player> playerList = new ArrayList<>();
 
     for (Duel duel : duelQueue) {
-      playerList.add(duel.getPlayerOne());
-      playerList.add(duel.getPlayerTwo());
+      playerList.add(duel.getP1());
+      playerList.add(duel.getP2());
     }
 
     Player[] players = new Player[playerList.size()];
@@ -105,10 +105,8 @@ public class Queue {
     if (!this.exists()) {
       queues.add(this);
       executor.scheduleAtFixedRate(checkQueue, 0, 10, TimeUnit.SECONDS);
-      queueData.create();
-      p.sendMessage(Lang.getComponent("queue-created"));
-    } else {
-      p.sendMessage(Lang.getComponent("queue-already-exists"));
+      this.arenas.addAll(Arrays.asList(arenas));
+      data.create();
     }
   }
 
@@ -117,7 +115,7 @@ public class Queue {
       queues.add(this);
       executor.scheduleAtFixedRate(checkQueue, 0, 10, TimeUnit.SECONDS);
       this.arenas.addAll(Arrays.asList(arenas));
-      queueData.create();
+      data.create();
     }
   }
 

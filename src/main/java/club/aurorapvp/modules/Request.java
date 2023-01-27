@@ -9,14 +9,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 public class Request {
   private static final List<Request> pendingRequests = new ArrayList<>();
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-  private final Player requester;
-  private final Player requested;
-  private final Queue queue;
+  @Getter private final Player requester;
+  @Getter private final Player requested;
+  @Getter private final Queue queue;
 
   public Request(String queueName, Player requester, Player requested) {
     this.requested = requested;
@@ -58,18 +59,6 @@ public class Request {
                  }
                }, Config.get().getInt("request-timeout")
     );
-  }
-
-  public Player getRequester() {
-    return requester;
-  }
-
-  public Player getRequested() {
-    return requested;
-  }
-
-  public Queue getQueue() {
-    return queue;
   }
 
   public void accept() {

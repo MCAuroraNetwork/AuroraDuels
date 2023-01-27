@@ -39,10 +39,10 @@ public class ArenaData {
   }
 
   public void create() {
-    Location spawn1 = new Location(arena.getWorld(), arena.getFirstSpawn().getBlockX(),
-        arena.getFirstSpawn().getBlockY(), arena.getFirstSpawn().getBlockZ());
-    Location spawn2 = new Location(arena.getWorld(), arena.getSecondSpawn().getBlockX(),
-        arena.getSecondSpawn().getBlockY(), arena.getSecondSpawn().getBlockZ());
+    Location spawn1 = new Location(arena.getWorld(), arena.getSpawn1().getBlockX(),
+        arena.getSpawn1().getBlockY(), arena.getSpawn1().getBlockZ());
+    Location spawn2 = new Location(arena.getWorld(), arena.getSpawn2().getBlockX(),
+        arena.getSpawn2().getBlockY(), arena.getSpawn2().getBlockZ());
 
     arenaData.set("arena.world", arena.getWorld().getName());
     arenaData.set("arena.spawns.spawn1", spawn1);

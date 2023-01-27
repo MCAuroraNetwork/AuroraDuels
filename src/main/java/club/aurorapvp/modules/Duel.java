@@ -3,6 +3,7 @@ package club.aurorapvp.modules;
 import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -11,10 +12,10 @@ import org.bukkit.entity.Player;
 
 public class Duel {
   public static List<Duel> duels = new ArrayList<>();
-  private final Player p1;
-  private final Player p2;
+  @Getter private final Player p1;
+  @Getter private final Player p2;
   private static Long timeStarted;
-  private final boolean isPublic;
+  @Getter private final boolean isPublic;
   private Arena arena;
 
   public Duel(Player p1, Player p2, boolean isPublic) {
@@ -24,16 +25,8 @@ public class Duel {
     timeStarted = System.currentTimeMillis();
   }
 
-  public Player getPlayerOne() {
-    return p1;
-  }
-
-  public boolean isPublic() {
-    return isPublic;
-  }
-
-  public Player getPlayerTwo() {
-    return p2;
+  public static int inDuels() {
+    return duels.size();
   }
 
   public Long getElapsed() {
@@ -52,7 +45,7 @@ public class Duel {
 
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
-      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
+      if (duel.getP1().equals(p) || duel.getP2().equals(p)) {
         return true;
       }
 
@@ -62,18 +55,13 @@ public class Duel {
 
   public static Duel getDuel(Player p) {
     for (Duel duel : duels) {
-      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
+      if (duel.getP1().equals(p) || duel.getP2().equals(p)) {
         return duel;
       }
 
     }
     return null;
   }
-
-  public static int inDuels() {
-    return duels.size();
-  }
-
   public void startDuel(Kit kit, Arena arena) {
     if (kit != null) {
       kit.giveKit(p1);
@@ -84,12 +72,12 @@ public class Duel {
 
     Location spawn1 =
         new Location(arena.getWorld(),
-            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
-            arena.getFirstSpawn().getZ());
+            arena.getSpawn1().getX(), arena.getSpawn1().getY(),
+            arena.getSpawn1().getZ());
     Location spawn2 =
         new Location(arena.getWorld(),
-            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
-            arena.getSecondSpawn().getZ());
+            arena.getSpawn2().getX(), arena.getSpawn2().getY(),
+            arena.getSpawn2().getZ());
 
     p1.teleportAsync(spawn1);
     p2.teleportAsync(spawn2);

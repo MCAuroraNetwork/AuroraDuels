@@ -44,8 +44,8 @@ public class Schematic {
         WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
 
     CuboidRegion region =
-        new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getFirstPosition(),
-            arena.getSecondPosition());
+        new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getPos1(),
+            arena.getPos2());
     BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     ForwardExtentCopy forwardExtentCopy =
         new ForwardExtentCopy(session, region, clipboard, region.getMinimumPoint());
