@@ -4,8 +4,7 @@ import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.ArenaData;
 import club.aurorapvp.datahandlers.Schematic;
-import club.aurorapvp.events.wand.WandEvent;
-import club.aurorapvp.events.wand.WandListener;
+import club.aurorapvp.events.WandEvent;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
 import java.util.ArrayList;
@@ -14,9 +13,11 @@ import java.util.Objects;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 
-public class Arena implements WandListener {
+public class Arena implements Listener {
   private static final List<Arena> arenas = new ArrayList<>();
   private BlockVector3 spawn1 = null;
   private BlockVector3 spawn2 = null;
@@ -38,6 +39,12 @@ public class Arena implements WandListener {
     if (this.exists()) {
       this.reload();
     }
+  }
+
+  public Arena() {
+    this.arenaName = null;
+    this.schematic = null;
+    this.arenaData = null;
   }
 
   public BlockVector3 getFirstSpawn() {
@@ -128,7 +135,7 @@ public class Arena implements WandListener {
     }
   }
 
-  @Override
+  @EventHandler
   public void onWandEvent(WandEvent event) {
     Player p = event.getPlayer();
     Action action = event.getAction();

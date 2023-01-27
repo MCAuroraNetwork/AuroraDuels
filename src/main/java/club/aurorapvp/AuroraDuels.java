@@ -48,7 +48,7 @@ public final class AuroraDuels extends JavaPlugin {
 
     // Register Listeners
     getServer().getPluginManager().registerEvents(new Events(), this);
-    Events.wandEvent.registerListener(new Arena(null));
+    getServer().getPluginManager().registerEvents(new Arena(), this);
     List<Command> commandList = PluginCommandYamlParser.parse(INSTANCE);
     for (Command command : commandList) {
       getCommand(command.getName()).setExecutor(new Commands());

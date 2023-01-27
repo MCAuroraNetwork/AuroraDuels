@@ -1,9 +1,10 @@
 package club.aurorapvp.listeners;
 
-import club.aurorapvp.events.wand.WandEvent;
+import club.aurorapvp.events.WandEvent;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Wand;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,10 +13,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Events implements Listener {
-  public static WandEvent wandEvent = new WandEvent(new Events());
-
   @EventHandler
-  public void onWandUse(PlayerInteractEvent event) {
+  public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {
       return;
     }
@@ -29,9 +28,8 @@ public class Events implements Listener {
     }
 
     if (Wand.isActive(event.getAction())) {
-      wandEvent.trigger(event.getAction(),
-          BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()),
-          event.getPlayer());
+      Bukkit.getPluginManager().callEvent(new WandEvent(event.getAction(),
+          BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()), event.getPlayer()));
     }
   }
 
