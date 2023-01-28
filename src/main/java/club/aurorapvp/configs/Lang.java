@@ -58,8 +58,8 @@ public class Lang {
     DEFAULTS.put("no-requests", "prefix <gradient:#FFAA00:#FF55FF>No pending requests");
     DEFAULTS.put("request-denied", "prefix <gradient:#FFAA00:#FF55FF>Duel request denied!");
     DEFAULTS.put("request-accepted", "prefix <gradient:#FFAA00:#FF55FF>Duel request accepted!");
-    DEFAULTS.put("you-win", "prefix <gradient:#FFAA00:#FF55FF>You won the duel!");
-    DEFAULTS.put("you-lose", "prefix <gradient:#FFAA00:#FF55FF>You lost the duel");
+    DEFAULTS.put("you-won", "<gradient:#FFAA00:#FF55FF>You won the duel!");
+    DEFAULTS.put("you-lost", "prefix <gradient:#FFAA00:#FF55FF>You lost the duel");
     DEFAULTS.put("looking-match", "prefix <gradient:#FFAA00:#FF55FF>Searching for an opponent");
     DEFAULTS.put("match-found", "prefix <gradient:#FFAA00:#FF55FF>Opponent found!");
     DEFAULTS.put("queue-already-exists", "prefix <gradient:#FFAA00:#FF55FF>Queue already exists!");

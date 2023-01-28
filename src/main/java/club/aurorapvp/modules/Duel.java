@@ -104,13 +104,13 @@ public class Duel {
     p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
 
     if (p1.isDead() || !p1.isOnline()) {
-      p1.showTitle(
+      p2.showTitle(
           Title.title(Lang.getComponent("you-won"), Component.text("Opponent: " + p1.getName())));
-      p1.sendMessage(Lang.getComponent("you-lose"));
+      p1.sendMessage(Lang.getComponent("you-lost"));
     } else {
       p1.showTitle(
           Title.title(Lang.getComponent("you-won"), Component.text("Opponent: " + p2.getName())));
-      p2.sendMessage(Lang.getComponent("you-lose"));
+      p2.sendMessage(Lang.getComponent("you-lost"));
     }
 
     arena.setOccupied(false);
