@@ -15,9 +15,12 @@ import org.bukkit.entity.Player;
 public class Request {
   private static final List<Request> pendingRequests = new ArrayList<>();
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-  @Getter private final Player requester;
-  @Getter private final Player requested;
-  @Getter private final Queue queue;
+  @Getter
+  private final Player requester;
+  @Getter
+  private final Player requested;
+  @Getter
+  private final Queue queue;
 
   public Request(String queueName, Player requester, Player requested) {
     this.requested = requested;

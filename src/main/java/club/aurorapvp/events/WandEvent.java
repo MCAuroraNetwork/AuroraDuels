@@ -10,9 +10,12 @@ import org.bukkit.event.block.Action;
 import org.jetbrains.annotations.NotNull;
 
 public class WandEvent extends Event {
-  @Getter private final Player player;
-  @Getter private final BlockVector3 vector;
-  @Getter private final Action action;
+  @Getter
+  private final Player player;
+  @Getter
+  private final BlockVector3 vector;
+  @Getter
+  private final Action action;
   private static final HandlerList HANDLERS = new HandlerList();
 
   public static HandlerList getHandlerList() {

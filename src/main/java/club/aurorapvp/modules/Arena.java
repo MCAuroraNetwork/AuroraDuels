@@ -21,17 +21,26 @@ import org.bukkit.event.block.Action;
 
 public class Arena implements Listener {
   private static final List<Arena> arenas = new ArrayList<>();
-  @Getter private BlockVector3 spawn1 = null;
-  @Getter private BlockVector3 spawn2 = null;
-  @Getter private BlockVector3 pos1 = null;
-  @Getter private BlockVector3 pos2 = null;
+  @Getter
+  private BlockVector3 spawn1 = null;
+  @Getter
+  private BlockVector3 spawn2 = null;
+  @Getter
+  private BlockVector3 pos1 = null;
+  @Getter
+  private BlockVector3 pos2 = null;
   private static int creationPhase = 0;
   @Setter
-  @Getter private boolean occupied = false;
-  @Getter private final Schematic schematic;
-  @Getter private final ArenaData data;
-  @Getter private final String name;
-  @Getter private World world;
+  @Getter
+  private boolean occupied = false;
+  @Getter
+  private final Schematic schematic;
+  @Getter
+  private final ArenaData data;
+  @Getter
+  private final String name;
+  @Getter
+  private World world;
 
   public Arena(String arenaName) {
     this.name = arenaName;

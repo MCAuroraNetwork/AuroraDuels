@@ -15,6 +15,7 @@ public class ArenaData {
   private static Arena arena;
   private final File FILE;
   private final YamlConfiguration arenaData;
+
   public ArenaData(Arena arena) {
     ArenaData.arena = arena;
 

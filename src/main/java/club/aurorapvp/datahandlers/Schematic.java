@@ -29,6 +29,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class Schematic {
   private static Arena arena;
   private final File FILE;
+
   public Schematic(Arena arena) {
     Schematic.arena = arena;
 
