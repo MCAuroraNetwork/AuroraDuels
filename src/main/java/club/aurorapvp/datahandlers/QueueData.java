@@ -63,7 +63,7 @@ public class QueueData {
   public void save() {
     if (!FILE.exists()) {
       try {
-        FILE.mkdirs();
+        FILE.getParentFile().mkdirs();
         FILE.createNewFile();
         queueData.save(FILE);
       } catch (IOException e) {
