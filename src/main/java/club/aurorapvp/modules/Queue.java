@@ -25,10 +25,11 @@ import org.bukkit.event.Listener;
 public class Queue implements Listener {
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
   private static boolean arenasSet = true;
-  private static Player creator;
+  private static Player currentCreator;
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static Player lookingForMatch = null;
   private static final List<Queue> queues = new ArrayList<>();
+  private static Queue unFinishedQueue;
   @Getter
   private final String name;
   @Getter
@@ -105,7 +106,8 @@ public class Queue implements Listener {
   public void create(Player p) {
     if (!this.exists() && arenasSet) {
       arenasSet = false;
-      creator = p;
+      currentCreator = p;
+      unFinishedQueue = this;
 
       p.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
           String.format(Lang.getString("add-arena"), arenas.size())));
@@ -119,6 +121,7 @@ public class Queue implements Listener {
   public void createArenaList(Player p, String str) {
     if (str.equals("stop")) {
       arenasSet = true;
+      queues.add(this);
       data.create();
       p.sendMessage(Lang.getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
@@ -134,7 +137,7 @@ public class Queue implements Listener {
   public void onPlayerChat(AsyncChatEvent event) {
     if (isCreator(event.getPlayer()) && !arenasSet) {
       event.setCancelled(true);
-      createArenaList(event.getPlayer(),
+      unFinishedQueue.createArenaList(event.getPlayer(),
           AuroraDuels.COMPONENT_SERIALIZER.serialize(event.originalMessage()));
     }
   }
@@ -170,7 +173,7 @@ public class Queue implements Listener {
   };
 
   public static boolean isCreator(Player p) {
-    return p == creator;
+    return p == currentCreator;
   }
 
   public static Queue[] getQueues() {
