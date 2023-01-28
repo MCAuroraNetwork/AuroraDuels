@@ -133,6 +133,7 @@ public class Queue implements Listener {
   @EventHandler
   public void onPlayerChat(AsyncChatEvent event) {
     if (isCreator(event.getPlayer()) && !arenasSet) {
+      event.setCancelled(true);
       createArenaList(event.getPlayer(),
           AuroraDuels.COMPONENT_SERIALIZER.serialize(event.originalMessage()));
     }
