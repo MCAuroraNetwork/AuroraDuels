@@ -18,9 +18,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.checkerframework.checker.units.qual.A;
 
 public class Queue implements Listener {
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
@@ -65,6 +67,10 @@ public class Queue implements Listener {
     }
 
     return arenaArray;
+  }
+
+  public void addArenas(Arena[] arenas) {
+    this.arenas.addAll(Arrays.asList(arenas));
   }
 
   public Player[] getPlayers() {
@@ -210,7 +216,9 @@ public class Queue implements Listener {
     File dir = new File(AuroraDuels.DATA_FOLDER, "/queues/");
 
     if (Config.get().getBoolean("queues.enable-default-queue")) {
-      new Queue("Default").create(Arena.getArenas());
+      Queue queue = new Queue("Default");
+      queue.addArenas(Arena.getArenas());
+      queues.add(queue);
     }
 
     if (dir.exists()) {

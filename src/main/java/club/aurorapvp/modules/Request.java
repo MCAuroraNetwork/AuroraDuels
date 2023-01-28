@@ -41,6 +41,8 @@ public class Request {
       return;
     }
 
+    pendingRequests.add(this);
+
     requester.sendMessage(Lang.getComponent("sent-request"));
     requested.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
         Lang.getString("received-request") + requester.getName() +
@@ -52,12 +54,14 @@ public class Request {
     t.schedule(new TimerTask() {
                  @Override
                  public void run() {
-                   requester.sendMessage(Lang.getComponent("request-timed-out"));
-                   requester.sendMessage(Lang.getComponent("request-timed-out"));
-                   pendingRequests.remove(thisRequest);
-                   t.cancel();
+                   if (pendingRequests.contains(thisRequest)) {
+                     requester.sendMessage(Lang.getComponent("request-timed-out"));
+                     requested.sendMessage(Lang.getComponent("request-timed-out"));
+                     pendingRequests.remove(thisRequest);
+                     t.cancel();
+                   }
                  }
-               }, Config.get().getInt("request-timeout")
+               }, Config.get().getInt("duels.requests.request-timeout")
     );
   }
 
