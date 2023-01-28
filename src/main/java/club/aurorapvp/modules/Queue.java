@@ -119,6 +119,8 @@ public class Queue implements Listener {
   public void createArenaList(Player p, String str) {
     if (str.equals("stop")) {
       arenasSet = true;
+      data.create();
+      p.sendMessage(Lang.getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
       arenas.add(Arena.getArena(str));
       p.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
