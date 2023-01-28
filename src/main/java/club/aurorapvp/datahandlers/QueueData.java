@@ -12,13 +12,13 @@ import java.util.List;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class QueueData {
-  private final Kit kit;
   private final Arena[] arenas;
   private final File FILE;
   private final YamlConfiguration queueData;
+  private final Queue queue;
 
   public QueueData(Queue queue) {
-    this.kit = queue.getKit();
+    this.queue = queue;
     this.arenas = queue.getArenas();
 
     FILE = new File(AuroraDuels.DATA_FOLDER, "/queues/" + queue.getName() + ".yml");
@@ -50,7 +50,7 @@ public class QueueData {
   }
 
   public void create() {
-    queueData.set("kit", kit.getName());
+    queueData.set("kit", queue.getKit().getName());
 
     List<String> arenaNames = new ArrayList<>();
 
