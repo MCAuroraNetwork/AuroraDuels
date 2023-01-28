@@ -108,7 +108,7 @@ public class Queue implements Listener {
       creator = p;
 
       p.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
-          String.format(Lang.getString("add-arena"), arenasSet)));
+          String.format(Lang.getString("add-arena"), arenas.size())));
     } else if (this.exists()) {
       p.sendMessage(Lang.getComponent("queue-already-exists"));
     } else {
@@ -122,7 +122,7 @@ public class Queue implements Listener {
     } else if (Arena.getArena(str) != null) {
       arenas.add(Arena.getArena(str));
       p.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
-          String.format(Lang.getString("add-arena"), arenasSet)));
+          String.format(Lang.getString("add-arena"), arenas.size())));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
