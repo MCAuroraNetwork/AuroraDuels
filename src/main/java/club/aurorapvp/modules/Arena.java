@@ -206,6 +206,11 @@ public class Arena implements Listener {
 
   public static void setup() {
     File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
+
+    if (!dir.exists()) {
+      dir.mkdirs();
+    }
+
     for (File file : dir.listFiles()) {
       Arena arena = new Arena(file.getName().replace(".yml", ""));
       if (arena.exists()) {

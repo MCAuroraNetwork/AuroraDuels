@@ -36,16 +36,16 @@ public final class AuroraDuels extends JavaPlugin {
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
     COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 
-    // Setup classes
-    Wand.setup();
-    Arena.setup();
-    Queue.setup();
-
     // Setup configs
     Lang.reload();
     Config.reload();
     Lang.generateDefaults();
     Config.generateDefaults();
+
+    // Setup classes
+    Wand.setup();
+    Arena.setup();
+    Queue.setup();
 
     // Register Listeners
     for (Object eventHandler : List.of(new Events(), new Arena(), new Queue())) {

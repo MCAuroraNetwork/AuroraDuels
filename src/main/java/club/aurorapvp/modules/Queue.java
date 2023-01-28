@@ -203,6 +203,10 @@ public class Queue implements Listener {
   public static void setup() {
     File dir = new File(AuroraDuels.DATA_FOLDER, "/queues/");
 
+    if (!dir.exists()) {
+      dir.mkdirs();
+    }
+
     if (Config.get().getBoolean("queues.enable-default-queue")) {
       new Queue("Default").create(Arena.getArenas());
     }
