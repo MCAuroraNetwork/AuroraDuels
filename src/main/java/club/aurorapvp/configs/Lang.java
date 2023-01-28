@@ -50,10 +50,8 @@ public class Lang {
     DEFAULTS.put("entered-queue",
         "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
-    // TODO jank
     DEFAULTS.put("received-request",
-        "prefix <gradient:#FFAA00:#FF55FF>You have received a request from ");
-    DEFAULTS.put("duel-commands-help", " use /duel accept to accept, or /duel deny to deny");
+        "prefix <gradient:#FFAA00:#FF55FF>You have received a request from %s use /duel accept to accept, or /duel deny to deny");
     DEFAULTS.put("request-timed-out", "prefix <gradient:#FFAA00:#FF55FF>Duel request timed out");
     DEFAULTS.put("no-requests", "prefix <gradient:#FFAA00:#FF55FF>No pending requests");
     DEFAULTS.put("request-denied", "prefix <gradient:#FFAA00:#FF55FF>Duel request denied!");
