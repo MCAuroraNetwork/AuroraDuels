@@ -48,7 +48,8 @@ public final class AuroraDuels extends JavaPlugin {
     Queue.setup();
 
     // Register Listeners
-    for (Object eventHandler : List.of(new Events(), new Arena(), new Queue())) {
+    List<?> eventHandlers = List.of(new Events(), new Arena(), new Queue(), new Commands());
+    for (Object eventHandler : eventHandlers) {
       if (eventHandler instanceof Listener) {
         getServer().getPluginManager().registerEvents((Listener) eventHandler, this);
       }
