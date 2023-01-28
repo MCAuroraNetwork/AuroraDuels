@@ -14,6 +14,11 @@ public class WandEvent extends Event {
   @Getter private final BlockVector3 vector;
   @Getter private final Action action;
   private static final HandlerList HANDLERS = new HandlerList();
+
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
+
   @Override
   public @NotNull HandlerList getHandlers() {
     return HANDLERS;
