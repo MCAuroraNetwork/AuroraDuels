@@ -16,20 +16,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class Queue implements Listener {
+public class Queue {
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
-  private static boolean arenasSet = true;
+  @Getter private static boolean arenasSet = true;
   private static Player currentCreator;
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static Player lookingForMatch = null;
   private static final List<Queue> queues = new ArrayList<>();
-  private static Queue unFinishedQueue;
+  @Getter private static Queue unFinishedQueue;
   @Getter
   private final String name;
   @Getter
@@ -89,8 +88,11 @@ public class Queue implements Listener {
   }
 
   public void reload() {
-    this.kit = this.getData().getKit();
     this.arenas.addAll(List.of(this.getData().getArenas()));
+
+    if (AuroraDuels.isAuroraKitsInstalled()) {
+      this.kit = this.getData().getKit();
+    }
   }
 
   public void create(Player p, String kitName) {
@@ -134,24 +136,6 @@ public class Queue implements Listener {
           String.format(Lang.getString("add-arena"), arenas.size())));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
-    }
-  }
-
-  @EventHandler
-  public void onPlayerChat(AsyncChatEvent event) {
-    if (isCreator(event.getPlayer()) && !arenasSet) {
-      event.setCancelled(true);
-      unFinishedQueue.createArenaList(event.getPlayer(),
-          AuroraDuels.COMPONENT_SERIALIZER.serialize(event.originalMessage()));
-    }
-  }
-
-  public void create(Arena[] arenas) {
-    if (!this.exists()) {
-      queues.add(this);
-      executor.scheduleAtFixedRate(checkQueue, 0, 10, TimeUnit.SECONDS);
-      this.arenas.addAll(Arrays.asList(arenas));
-      data.create();
     }
   }
 

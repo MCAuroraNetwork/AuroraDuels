@@ -48,11 +48,8 @@ public final class AuroraDuels extends JavaPlugin {
     Queue.setup();
 
     // Register Listeners
-    List<?> eventHandlers = List.of(new Events(), new Arena(), new Queue(), new Commands());
-    for (Object eventHandler : eventHandlers) {
-      if (eventHandler instanceof Listener) {
-        getServer().getPluginManager().registerEvents((Listener) eventHandler, this);
-      }
+    for (Listener eventHandler : List.of(new Events(), new Commands())) {
+      getServer().getPluginManager().registerEvents(eventHandler, this);
     }
     List<Command> commandList = PluginCommandYamlParser.parse(INSTANCE);
     for (Command command : commandList) {
@@ -68,6 +65,10 @@ public final class AuroraDuels extends JavaPlugin {
     getLogger().info(
         "Aurora Duels Loaded in " + Math.subtractExact(System.currentTimeMillis(), startTime) +
             "ms");
+  }
+
+  public static boolean isAuroraKitsInstalled() {
+    return auroraKitsInstalled;
   }
 
   @Override

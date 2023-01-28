@@ -1,9 +1,13 @@
 package club.aurorapvp.listeners;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.events.WandEvent;
+import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Duel;
+import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -30,6 +34,22 @@ public class Events implements Listener {
     if (Wand.isActive(event.getAction())) {
       Bukkit.getPluginManager().callEvent(new WandEvent(event.getAction(),
           BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation()), event.getPlayer()));
+    }
+  }
+
+  @EventHandler
+  public void onPlayerChat(AsyncChatEvent event) {
+    if (Queue.isCreator(event.getPlayer()) && !Queue.isArenasSet()) {
+      Queue.getUnFinishedQueue().createArenaList(event.getPlayer(),
+          AuroraDuels.COMPONENT_SERIALIZER.serialize(event.originalMessage()));
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onWandEvent(WandEvent event) {
+    if (Arena.getUnFinishedArena()) {
+      Arena.onWandEvent(event);
     }
   }
 

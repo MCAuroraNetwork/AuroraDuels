@@ -45,7 +45,9 @@ public class QueueData {
   }
 
   public void create() {
-    queueData.set("kit", queue.getKit().getName());
+    if (AuroraDuels.isAuroraKitsInstalled()) {
+      queueData.set("kit", queue.getKit().getName());
+    }
 
     List<String> arenaNames = new ArrayList<>();
 

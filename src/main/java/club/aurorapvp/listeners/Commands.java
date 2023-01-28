@@ -1,5 +1,6 @@
 package club.aurorapvp.listeners;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Request;
@@ -60,7 +61,7 @@ public class Commands implements CommandExecutor, Listener {
       }
       case "findmatch" -> Queue.findMatch(p, args[0]);
       case "createqueue" -> {
-        if (args.length > 1) {
+        if (args.length > 1 && AuroraDuels.isAuroraKitsInstalled()) {
           new Queue(args[0]).create(p, args[1]);
         } else {
           new Queue(args[0]).create(p);

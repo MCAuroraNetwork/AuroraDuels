@@ -15,11 +15,9 @@ import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 
-public class Arena implements Listener {
+public class Arena {
   private static final List<Arena> arenas = new ArrayList<>();
   @Getter
   private BlockVector3 spawn1 = null;
@@ -30,6 +28,7 @@ public class Arena implements Listener {
   @Getter
   private BlockVector3 pos2 = null;
   private static int creationPhase = 0;
+  private static Arena unFinishedArena;
   @Setter
   @Getter
   private boolean occupied = false;
@@ -63,6 +62,10 @@ public class Arena implements Listener {
     return this.getData().getFile().exists() && this.getSchematic().getFile().exists();
   }
 
+  public static boolean getUnFinishedArena() {
+    return creationPhase == 0;
+  }
+
   public static Arena[] getArenas() {
     Arena[] arenaArray = new Arena[arenas.size()];
 
@@ -88,6 +91,24 @@ public class Arena implements Listener {
     return null;
   }
 
+  public static void onWandEvent(WandEvent event) {
+    Player p = event.getPlayer();
+    Action action = event.getAction();
+    BlockVector3 vector = event.getVector();
+
+    if (creationPhase != 0) {
+      switch (creationPhase) {
+        case 1 -> unFinishedArena.setSpawns(p, action, vector);
+        case 2 -> unFinishedArena.setCorners(p, action, vector);
+        default -> {
+          AuroraDuels.INSTANCE.getLogger()
+              .warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
+          creationPhase = 0;
+        }
+      }
+    }
+  }
+
   public void create(Player p) {
     if (creationPhase == 0 && !this.exists()) {
       Wand.setActive("right", true);
@@ -97,6 +118,7 @@ public class Arena implements Listener {
       pos1 = null;
       pos2 = null;
       creationPhase = 1;
+      unFinishedArena = this;
 
       p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
       p.sendMessage(Lang.getComponent("set-spawn1-and-spawn2"));
@@ -104,25 +126,6 @@ public class Arena implements Listener {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
     } else if (this.exists()) {
       p.sendMessage(Lang.getComponent("arena-already-exists"));
-    }
-  }
-
-  @EventHandler
-  public void onWandEvent(WandEvent event) {
-    Player p = event.getPlayer();
-    Action action = event.getAction();
-    BlockVector3 vector = event.getVector();
-
-    if (creationPhase != 0) {
-      switch (creationPhase) {
-        case 1 -> setSpawns(p, action, vector);
-        case 2 -> setCorners(p, action, vector);
-        default -> {
-          AuroraDuels.INSTANCE.getLogger()
-              .warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
-          creationPhase = 0;
-        }
-      }
     }
   }
 
