@@ -12,10 +12,13 @@ import org.bukkit.entity.Player;
 
 public class Duel {
   public static List<Duel> duels = new ArrayList<>();
-  @Getter private final Player p1;
-  @Getter private final Player p2;
+  @Getter
+  private final Player p1;
+  @Getter
+  private final Player p2;
   private static Long timeStarted;
-  @Getter private final boolean isPublic;
+  @Getter
+  private final boolean isPublic;
   private Arena arena;
 
   public Duel(Player p1, Player p2, boolean isPublic) {
@@ -62,6 +65,7 @@ public class Duel {
     }
     return null;
   }
+
   public void startDuel(Kit kit, Arena arena) {
     if (kit != null) {
       kit.giveKit(p1);
@@ -100,10 +104,12 @@ public class Duel {
     p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
 
     if (p1.isDead() || !p1.isOnline()) {
-      p2.sendMessage(Lang.getComponent("you-win"));
+      p1.showTitle(
+          Title.title(Lang.getComponent("you-won"), Component.text("Opponent: " + p1.getName())));
       p1.sendMessage(Lang.getComponent("you-lose"));
     } else {
-      p1.sendMessage(Lang.getComponent("you-win"));
+      p1.showTitle(
+          Title.title(Lang.getComponent("you-won"), Component.text("Opponent: " + p2.getName())));
       p2.sendMessage(Lang.getComponent("you-lose"));
     }
 
