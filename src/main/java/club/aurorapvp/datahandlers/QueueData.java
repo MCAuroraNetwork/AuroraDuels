@@ -35,14 +35,11 @@ public class QueueData {
 
   public Arena[] getArenas() {
     List<?> arenaNames = queueData.getList("arenas");
-
-
     Arena[] arenaArray = new Arena[arenaNames.size()];
-    int i = 0;
 
-    for (Object arenaName : arenaNames) {
-      if (arenaName instanceof String) {
-        arenaArray[i] = Arena.getArena((String) arenaName);
+    for (int i = 0; i < arenaNames.size(); i++) {
+      if (arenaNames.get(i) instanceof String) {
+        arenaArray[i] = Arena.getArena((String) arenaNames.get(i));
       }
     }
 
