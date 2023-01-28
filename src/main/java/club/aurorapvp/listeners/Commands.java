@@ -6,6 +6,7 @@ import club.aurorapvp.modules.Request;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -49,6 +50,14 @@ public class Commands implements CommandExecutor, Listener {
       case "createarena" -> new Arena(args[0]).create(p);
       case "resetarena" -> Arena.getArena(args[0]).reset(p);
       case "deletearena" -> Arena.getArena(args[0]).delete(p);
+      case "arenalist" -> {
+        // TODO clean up or remove
+        StringBuilder str = new StringBuilder("Arenas:");
+        for (Arena arena : Arena.getArenas()) {
+          str.append("\n").append(arena.getName());
+        }
+        p.sendMessage(Component.text(str.toString()));
+      }
       case "findmatch" -> Queue.findMatch(p, args[0]);
       case "createqueue" -> {
         if (args.length > 1) {
@@ -79,7 +88,7 @@ public class Commands implements CommandExecutor, Listener {
       event.setCompletions(options);
     }
 
-    if (args[0].equals("findmatch") && args[1] != null) {
+    if (args[0].equals("findmatch")) {
       List<String> options = new ArrayList<>();
 
       for (Queue queue : Queue.getQueues()) {
@@ -88,5 +97,18 @@ public class Commands implements CommandExecutor, Listener {
 
       event.setCompletions(options);
     }
+
+    if (args.length == 2) {
+      if (args[0].equals("createqueue")) {
+        List<String> options = new ArrayList<>();
+
+        for (Arena arena : Arena.getArenas()) {
+          options.add(arena.getName());
+        }
+
+        event.setCompletions(options);
+      }
+    }
+
   }
 }

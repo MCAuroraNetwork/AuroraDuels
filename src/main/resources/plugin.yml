@@ -31,10 +31,16 @@ commands:
   deletequeue:
     description: Deletes a custom queue
     permission: AuroraDuels.admin
+  arenalist:
+    description: lists all arenas
+    permission: AuroraDuels.default
 permissions:
   AuroraDuels.admin:
     description: Enables use of AuroraDuels admin commands
     default: op
   AuroraDuels.duel:
     description: Enables use of AuroraDuels duel commands
+    default: true
+  AuroraDuels.default:
+    description: Enables use of misc commands that anyone should be able to use
     default: true
