@@ -13,6 +13,7 @@ public class Config {
 
   public static void generateDefaults() {
     DEFAULTS.put("duels.requests.request-timeout", 30000);
+    DEFAULTS.put("optional-plugins.aurorakits-compatibility", true);
     DEFAULTS.put("queues.enable-default-queue", true);
 
     for (String path : DEFAULTS.keySet()) {

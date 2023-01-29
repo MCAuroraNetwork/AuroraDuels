@@ -60,7 +60,8 @@ public final class AuroraDuels extends JavaPlugin {
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
     }
-    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null) {
+    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null &&
+        Config.get().getBoolean("optional-plugins.aurorakits-compatibility")) {
       auroraKitsInstalled = true;
     }
 
