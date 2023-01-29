@@ -1,8 +1,11 @@
 package club.aurorapvp.modules;
 
+import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
@@ -94,6 +97,19 @@ public class Duel {
     p1.showTitle(title1);
     p2.showTitle(title2);
 
+    Duel thisDuel = this;
+    new Timer().schedule(new TimerTask() {
+                           @Override
+                           public void run() {
+
+                               p1.sendMessage(Lang.getComponent("duel-time-expired"));
+                               p2.sendMessage("duel-time-expired");
+                               thisDuel.endDuel();
+                               this.cancel();
+                           }
+                         }, Config.get().getInt("duels.requests.request-timeout")
+    );
+
     Queue.getQueue(p1).exitDuelQueue(p1);
     arena.setOccupied(true);
     duels.add(this);
@@ -107,10 +123,13 @@ public class Duel {
       p2.showTitle(
           Title.title(Lang.getComponent("you-won"), Component.text("Opponent: " + p1.getName())));
       p1.sendMessage(Lang.getComponent("you-lost"));
-    } else {
+    } else if (p2.isDead() || !p2.isOnline()) {
       p1.showTitle(
           Title.title(Lang.getComponent("you-won"), Component.text("Opponent: " + p2.getName())));
       p2.sendMessage(Lang.getComponent("you-lost"));
+    } else {
+      p1.sendMessage("draw");
+      p2.sendMessage("draw");
     }
 
     arena.setOccupied(false);

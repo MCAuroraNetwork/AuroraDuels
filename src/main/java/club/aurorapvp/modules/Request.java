@@ -52,18 +52,17 @@ public class Request {
 
     Request thisRequest = this;
 
-    Timer t = new Timer();
-    t.schedule(new TimerTask() {
+    new Timer().schedule(new TimerTask() {
                  @Override
                  public void run() {
                    if (pendingRequests.contains(thisRequest)) {
                      requester.sendMessage(Lang.getComponent("request-timed-out"));
                      requested.sendMessage(Lang.getComponent("request-timed-out"));
                      pendingRequests.remove(thisRequest);
-                     t.cancel();
+                     this.cancel();
                    }
                  }
-               }, Config.get().getInt("duels.requests.request-timeout")
+               }, Config.get().getInt("duels.max-duration")
     );
   }
 

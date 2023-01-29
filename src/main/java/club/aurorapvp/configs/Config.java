@@ -15,6 +15,7 @@ public class Config {
     DEFAULTS.put("duels.requests.request-timeout", 30000);
     DEFAULTS.put("optional-plugins.aurorakits-compatibility", true);
     DEFAULTS.put("duels.enable-teleports", true);
+    DEFAULTS.put("duels.max-duration", 600000);
     DEFAULTS.put("queues.enable-default-queue", true);
 
     for (String path : DEFAULTS.keySet()) {
