@@ -1,6 +1,8 @@
 package club.aurorapvp.listeners;
 
 import club.aurorapvp.AuroraDuels;
+import club.aurorapvp.configs.Config;
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Queue;
@@ -12,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class Events implements Listener {
   @EventHandler
@@ -55,6 +58,16 @@ public class Events implements Listener {
     if (Duel.inDuel(event.getPlayer())) {
       Duel duel = Duel.getDuel(event.getPlayer());
       duel.endDuel();
+    }
+  }
+
+  @EventHandler
+  public void onPlayerTeleport(PlayerTeleportEvent event) {
+    if (Config.get().getBoolean("duels.enable-teleports")) {
+      if (Duel.inDuel(event.getPlayer())) {
+        event.getPlayer().sendMessage(Lang.getComponent("no-teleport"));
+        event.setCancelled(true);
+      }
     }
   }
 }
