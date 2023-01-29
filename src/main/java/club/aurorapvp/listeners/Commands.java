@@ -16,8 +16,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class Commands implements CommandExecutor, TabCompleter {
@@ -39,6 +37,7 @@ public class Commands implements CommandExecutor, TabCompleter {
           Queue.reloadAll();
         }
       }
+
       case "duel" -> {
         if (args[0].equals("accept")) {
           Request.acceptDuelRequest(p);
@@ -52,9 +51,11 @@ public class Commands implements CommandExecutor, TabCompleter {
           }
         }
       }
+
       case "createarena" -> new Arena(args[0]).create(p);
       case "resetarena" -> Arena.getArena(args[0]).reset(p);
       case "deletearena" -> Arena.getArena(args[0]).delete(p);
+
       case "arenalist" -> {
         // TODO clean up or remove
         StringBuilder str = new StringBuilder("Arenas:");
@@ -63,7 +64,9 @@ public class Commands implements CommandExecutor, TabCompleter {
         }
         p.sendMessage(Component.text(str.toString()));
       }
+
       case "findmatch" -> Queue.findMatch(p, args[0]);
+
       case "createqueue" -> {
         if (args.length > 1 && AuroraDuels.isAuroraKitsInstalled()) {
           new Queue(args[0]).create(p, args[1]);
@@ -74,6 +77,7 @@ public class Commands implements CommandExecutor, TabCompleter {
     }
     return true;
   }
+
   @Override
   public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
                                     @NotNull String alias, String[] args) {
@@ -93,7 +97,9 @@ public class Commands implements CommandExecutor, TabCompleter {
           }
         }
       }
-    } else if (args.length == 2) {
+    }
+
+    if (args.length == 2) {
       switch (cmd.getLabel()) {
         case "createqueue" -> {
           for (Arena arena : Arena.getArenas()) {
