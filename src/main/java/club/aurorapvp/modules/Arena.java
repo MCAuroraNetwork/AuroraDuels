@@ -52,12 +52,6 @@ public class Arena {
     }
   }
 
-  public Arena() {
-    this.name = null;
-    this.schematic = null;
-    this.data = null;
-  }
-
   public boolean exists() {
     return this.getData().getFile().exists() && this.getSchematic().getFile().exists();
   }
@@ -214,6 +208,14 @@ public class Arena {
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
+  }
+
+  public static void reloadAll() {
+    for (Arena arena : getArenas()) {
+      arena.reload();
+    }
+
+    AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
   }
 
   public static void setup() {

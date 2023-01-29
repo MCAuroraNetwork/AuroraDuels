@@ -160,6 +160,14 @@ public class Queue {
     }
   };
 
+  public static void reloadAll() {
+    for (Queue queue : getQueues()) {
+      queue.reload();
+    }
+
+    AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
+  }
+
   public static boolean isCreator(Player p) {
     return p == currentCreator;
   }

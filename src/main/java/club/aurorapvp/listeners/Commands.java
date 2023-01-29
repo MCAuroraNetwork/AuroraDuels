@@ -1,6 +1,8 @@
 package club.aurorapvp.listeners;
 
 import club.aurorapvp.AuroraDuels;
+import club.aurorapvp.configs.Config;
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Request;
@@ -30,9 +32,11 @@ public class Commands implements CommandExecutor, TabCompleter {
 
     switch (command.getName()) {
       case "auroraduels" -> {
-        // TODO
         if (args[0].equals("reload")) {
-
+          Config.reload();
+          Lang.reload();
+          Arena.reloadAll();
+          Queue.reloadAll();
         }
       }
       case "duel" -> {
