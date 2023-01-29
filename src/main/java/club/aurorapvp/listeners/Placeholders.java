@@ -1,5 +1,6 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.listeners;
 
+import club.aurorapvp.modules.Duel;
 import java.util.concurrent.TimeUnit;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;

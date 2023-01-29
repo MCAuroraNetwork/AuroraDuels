@@ -5,7 +5,7 @@ import club.aurorapvp.configs.Lang;
 import club.aurorapvp.listeners.Commands;
 import club.aurorapvp.listeners.Events;
 import club.aurorapvp.modules.Arena;
-import club.aurorapvp.modules.Placeholders;
+import club.aurorapvp.listeners.Placeholders;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import java.io.File;
