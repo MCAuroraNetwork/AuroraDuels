@@ -4,7 +4,7 @@ import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.ArenaData;
 import club.aurorapvp.datahandlers.Schematic;
-import club.aurorapvp.events.WandEvent;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Arena {
   private static final List<Arena> arenas = new ArrayList<>();
@@ -85,10 +86,10 @@ public class Arena {
     return null;
   }
 
-  public static void onWandEvent(WandEvent event) {
+  public static void onWandEvent(PlayerInteractEvent event) {
     Player p = event.getPlayer();
     Action action = event.getAction();
-    BlockVector3 vector = event.getVector();
+    BlockVector3 vector = BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation());
 
     if (creationPhase != 0) {
       switch (creationPhase) {

@@ -46,13 +46,17 @@ public final class AuroraDuels extends JavaPlugin {
     Arena.setup();
     Queue.setup();
 
-    // Register Listeners
+    // Register Event Listeners
     getServer().getPluginManager().registerEvents(new Events(), this);
+
+    // Register commands
     List<Command> commandList = PluginCommandYamlParser.parse(INSTANCE);
     for (Command command : commandList) {
       getCommand(command.getName()).setExecutor(new Commands());
       getCommand(command.getName()).setTabCompleter(new Commands());
     }
+
+    // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
     }
