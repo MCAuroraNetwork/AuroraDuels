@@ -19,11 +19,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class Commands implements CommandExecutor, TabCompleter {
-  private Player p;
 
   @Override
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                            @NotNull String label, @NotNull String[] args) {
+    Player p = null;
+
     if (sender instanceof Player) {
       p = (Player) sender;
     }
