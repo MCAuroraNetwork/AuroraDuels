@@ -78,10 +78,12 @@ public class Commands implements CommandExecutor, TabCompleter {
     return true;
   }
 
+  private static final List<String> results = new ArrayList<>();
+
   @Override
   public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
                                     @NotNull String alias, String[] args) {
-    List<String> results = new ArrayList<>();
+    results.clear();
 
     if (args.length == 1) {
       switch (cmd.getLabel()) {
