@@ -12,13 +12,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.server.TabCompleteEvent;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class Commands implements CommandExecutor, Listener {
+public class Commands implements CommandExecutor, TabCompleter {
   private Player p;
 
   @Override
@@ -70,46 +70,36 @@ public class Commands implements CommandExecutor, Listener {
     }
     return true;
   }
+  @Override
+  public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
+                                    @NotNull String alias, String[] args) {
+    List<String> results = new ArrayList<>();
 
-  @EventHandler
-  public void onTabComplete(TabCompleteEvent event) {
-    String[] args = event.getBuffer().split(" ");
-
-    if (args[0].equals("aurorakits")) {
-      event.setCompletions(Collections.singletonList("reload"));
-    }
-
-    if (args[0].equals("deletearena")) {
-      List<String> options = new ArrayList<>();
-
-      for (Arena arena : Arena.getArenas()) {
-        options.add(arena.getName());
-      }
-
-      event.setCompletions(options);
-    }
-
-    if (args[0].equals("findmatch")) {
-      List<String> options = new ArrayList<>();
-
-      for (Queue queue : Queue.getQueues()) {
-        options.add(queue.getName());
-      }
-
-      event.setCompletions(options);
-    }
-
-    if (args.length == 2) {
-      if (args[0].equals("createqueue")) {
-        List<String> options = new ArrayList<>();
-
-        for (Arena arena : Arena.getArenas()) {
-          options.add(arena.getName());
+    if (args.length == 1) {
+      switch (cmd.getLabel()) {
+        case "aurorakits" -> results.add("reload");
+        case "deletearena" -> {
+          for (Arena arena : Arena.getArenas()) {
+            results.add(arena.getName());
+          }
         }
-
-        event.setCompletions(options);
+        case "findmatch" -> {
+          for (Queue queue : Queue.getQueues()) {
+            results.add(queue.getName());
+          }
+        }
+      }
+    } else if (args.length == 2) {
+      switch (cmd.getLabel()) {
+        case "createqueue" -> {
+          for (Arena arena : Arena.getArenas()) {
+            results.add(arena.getName());
+          }
+        }
       }
     }
 
+    Collections.sort(results);
+    return results;
   }
 }

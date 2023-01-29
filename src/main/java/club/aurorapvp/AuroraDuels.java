@@ -15,7 +15,6 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommandYamlParser;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,12 +47,11 @@ public final class AuroraDuels extends JavaPlugin {
     Queue.setup();
 
     // Register Listeners
-    for (Listener eventHandler : List.of(new Events(), new Commands())) {
-      getServer().getPluginManager().registerEvents(eventHandler, this);
-    }
+    getServer().getPluginManager().registerEvents(new Events(), this);
     List<Command> commandList = PluginCommandYamlParser.parse(INSTANCE);
     for (Command command : commandList) {
       getCommand(command.getName()).setExecutor(new Commands());
+      getCommand(command.getName()).setTabCompleter(new Commands());
     }
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
