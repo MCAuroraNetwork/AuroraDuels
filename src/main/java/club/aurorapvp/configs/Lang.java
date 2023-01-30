@@ -73,7 +73,8 @@ public class Lang {
         "prefix <gradient:#FFAA00:#FF55FF>Requested player already has a pending request!");
     DEFAULTS.put("add-arena",
         "prefix <gradient:#FFAA00:#FF55FF>What arena would you like to add to the queue? Type its name into chat. You have added %s arenas so far");
-    DEFAULTS.put("no-teleport", "prefix <gradient:#FFAA00:#FF55FF>You cannot teleport duing a duel!");
+    DEFAULTS.put("no-teleport",
+        "prefix <gradient:#FFAA00:#FF55FF>You cannot teleport duing a duel!");
 
 
     for (String path : DEFAULTS.keySet()) {

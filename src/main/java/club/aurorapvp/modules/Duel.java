@@ -1,5 +1,6 @@
 package club.aurorapvp.modules;
 
+import club.aurorapvp.api.Kits;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
@@ -71,8 +72,8 @@ public class Duel {
 
   public void startDuel(Kit kit, Arena arena) {
     if (kit != null) {
-      kit.giveKit(p1);
-      kit.giveKit(p2);
+      Kits.giveKit(kit, p1);
+      Kits.giveKit(kit, p2);
     }
 
     this.arena = arena;
@@ -102,10 +103,10 @@ public class Duel {
                            @Override
                            public void run() {
 
-                               p1.sendMessage(Lang.getComponent("duel-time-expired"));
-                               p2.sendMessage("duel-time-expired");
-                               thisDuel.endDuel();
-                               this.cancel();
+                             p1.sendMessage(Lang.getComponent("duel-time-expired"));
+                             p2.sendMessage("duel-time-expired");
+                             thisDuel.endDuel();
+                             this.cancel();
                            }
                          }, Config.get().getInt("duels.requests.request-timeout")
     );

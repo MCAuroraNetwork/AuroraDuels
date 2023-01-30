@@ -3,11 +3,10 @@ package club.aurorapvp.modules;
 import static club.aurorapvp.AuroraDuels.auroraKitsInstalled;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.api.KitAPI;
+import club.aurorapvp.api.Kits;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.QueueData;
-import io.papermc.paper.event.player.AsyncChatEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,17 +17,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import lombok.Getter;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 public class Queue {
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
-  @Getter private static boolean arenasSet = true;
+  @Getter
+  private static boolean arenasSet = true;
   private static Player currentCreator;
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static Player lookingForMatch = null;
   private static final List<Queue> queues = new ArrayList<>();
-  @Getter private static Queue unFinishedQueue;
+  @Getter
+  private static Queue unFinishedQueue;
   @Getter
   private final String name;
   @Getter
@@ -98,7 +97,7 @@ public class Queue {
   public void create(Player p, String kitName) {
     if (!this.exists() && arenasSet) {
       if (kitName != null && auroraKitsInstalled) {
-        this.kit = KitAPI.getKit(kitName);
+        this.kit = Kits.getKit(kitName);
       }
 
       create(p);

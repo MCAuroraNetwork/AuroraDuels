@@ -53,16 +53,16 @@ public class Request {
     Request thisRequest = this;
 
     new Timer().schedule(new TimerTask() {
-                 @Override
-                 public void run() {
-                   if (pendingRequests.contains(thisRequest)) {
-                     requester.sendMessage(Lang.getComponent("request-timed-out"));
-                     requested.sendMessage(Lang.getComponent("request-timed-out"));
-                     pendingRequests.remove(thisRequest);
-                     this.cancel();
-                   }
-                 }
-               }, Config.get().getInt("duels.max-duration")
+                           @Override
+                           public void run() {
+                             if (pendingRequests.contains(thisRequest)) {
+                               requester.sendMessage(Lang.getComponent("request-timed-out"));
+                               requested.sendMessage(Lang.getComponent("request-timed-out"));
+                               pendingRequests.remove(thisRequest);
+                               this.cancel();
+                             }
+                           }
+                         }, Config.get().getInt("duels.max-duration")
     );
   }
 
