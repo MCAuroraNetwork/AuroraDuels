@@ -73,8 +73,8 @@ public class Queue {
     List<Player> playerList = new ArrayList<>();
 
     for (Duel duel : duelQueue) {
-      playerList.add(duel.getP1());
-      playerList.add(duel.getP2());
+      playerList.add(duel.getPlayerOne());
+      playerList.add(duel.getPlayerTwo());
     }
 
     Player[] players = new Player[playerList.size()];

@@ -1,6 +1,7 @@
 package club.aurorapvp.modules;
 
 import club.aurorapvp.api.Kits;
+import club.aurorapvp.api.events.DuelEndEvent;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
@@ -13,23 +14,24 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
-public class Duel {
+public class Duel implements Listener {
   public static List<Duel> duels = new ArrayList<>();
+  private final DuelEndEvent duelEndEvent = new DuelEndEvent(this);
+  private Long timeStarted;
   @Getter
-  private final Player p1;
+  private final Player playerOne;
   @Getter
-  private final Player p2;
-  private static Long timeStarted;
+  private final Player playerTwo;
   @Getter
   private final boolean isPublic;
   private Arena arena;
 
   public Duel(Player p1, Player p2, boolean isPublic) {
     this.isPublic = isPublic;
-    this.p1 = p1;
-    this.p2 = p2;
-    timeStarted = System.currentTimeMillis();
+    this.playerOne = p1;
+    this.playerTwo = p2;
   }
 
   public static int inDuels() {
@@ -41,10 +43,10 @@ public class Duel {
   }
 
   public Player getOpponent(Player p) {
-    if (p == p1) {
-      return p2;
-    } else if (p == p2) {
-      return p1;
+    if (p == playerOne) {
+      return playerTwo;
+    } else if (p == playerTwo) {
+      return playerOne;
     } else {
       return null;
     }
@@ -52,7 +54,7 @@ public class Duel {
 
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
-      if (duel.getP1().equals(p) || duel.getP2().equals(p)) {
+      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
         return true;
       }
 
@@ -62,7 +64,7 @@ public class Duel {
 
   public static Duel getDuel(Player p) {
     for (Duel duel : duels) {
-      if (duel.getP1().equals(p) || duel.getP2().equals(p)) {
+      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
         return duel;
       }
 
@@ -72,8 +74,8 @@ public class Duel {
 
   public void startDuel(Kit kit, Arena arena) {
     if (kit != null) {
-      Kits.giveKit(kit, p1);
-      Kits.giveKit(kit, p2);
+      Kits.giveKit(kit, playerOne);
+      Kits.giveKit(kit, playerTwo);
     }
 
     this.arena = arena;
@@ -87,54 +89,61 @@ public class Duel {
             arena.getSpawn2().getX(), arena.getSpawn2().getY(),
             arena.getSpawn2().getZ());
 
-    p1.teleportAsync(spawn1);
-    p2.teleportAsync(spawn2);
+    playerOne.teleportAsync(spawn1);
+    playerTwo.teleportAsync(spawn2);
 
     final Title title1 =
-        Title.title(Lang.getComponent("duel-started"), Component.text("Opponent: " + p2.getName()));
+        Title.title(Lang.getComponent("duel-started"),
+            Component.text("Opponent: " + playerTwo.getName()));
     final Title title2 =
-        Title.title(Lang.getComponent("duel-started"), Component.text("Opponent: " + p1.getName()));
+        Title.title(Lang.getComponent("duel-started"),
+            Component.text("Opponent: " + playerOne.getName()));
 
-    p1.showTitle(title1);
-    p2.showTitle(title2);
+    playerOne.showTitle(title1);
+    playerTwo.showTitle(title2);
 
     Duel thisDuel = this;
     new Timer().schedule(new TimerTask() {
                            @Override
                            public void run() {
 
-                             p1.sendMessage(Lang.getComponent("duel-time-expired"));
-                             p2.sendMessage("duel-time-expired");
+                             playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
+                             playerTwo.sendMessage("duel-time-expired");
                              thisDuel.endDuel();
                              this.cancel();
                            }
                          }, Config.get().getInt("duels.requests.request-timeout")
     );
 
-    Queue.getQueue(p1).exitDuelQueue(p1);
+    Queue.getQueue(playerOne).exitDuelQueue(playerOne);
     arena.setOccupied(true);
     duels.add(this);
+    timeStarted = System.currentTimeMillis();
   }
 
   public void endDuel() {
-    p1.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-    p2.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
 
-    if (p1.isDead() || !p1.isOnline()) {
-      p2.showTitle(
-          Title.title(Lang.getComponent("you-won"), Component.text("Opponent: " + p1.getName())));
-      p1.sendMessage(Lang.getComponent("you-lost"));
-    } else if (p2.isDead() || !p2.isOnline()) {
-      p1.showTitle(
-          Title.title(Lang.getComponent("you-won"), Component.text("Opponent: " + p2.getName())));
-      p2.sendMessage(Lang.getComponent("you-lost"));
+    if (playerOne.isDead() || !playerOne.isOnline()) {
+      playerTwo.showTitle(
+          Title.title(Lang.getComponent("you-won"),
+              Component.text("Opponent: " + playerOne.getName())));
+      playerOne.sendMessage(Lang.getComponent("you-lost"));
+    } else if (playerTwo.isDead() || !playerTwo.isOnline()) {
+      playerOne.showTitle(
+          Title.title(Lang.getComponent("you-won"),
+              Component.text("Opponent: " + playerTwo.getName())));
+      playerTwo.sendMessage(Lang.getComponent("you-lost"));
     } else {
-      p1.sendMessage("draw");
-      p2.sendMessage("draw");
+      playerOne.sendMessage("draw");
+      playerTwo.sendMessage("draw");
     }
+
 
     arena.setOccupied(false);
     arena.reset();
     duels.remove(this);
+    Bukkit.getPluginManager().callEvent(duelEndEvent);
   }
 }

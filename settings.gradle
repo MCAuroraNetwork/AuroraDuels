@@ -1,1 +1,3 @@
 rootProject.name = 'AuroraDuels'
+include 'AuroraDuels-API'
+

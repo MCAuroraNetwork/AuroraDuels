@@ -3,6 +3,7 @@ package club.aurorapvp.datahandlers;
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.api.Kits;
 import club.aurorapvp.modules.Arena;
+import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Queue;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class QueueData {
     return FILE;
   }
 
-  public club.aurorapvp.modules.Kit getKit() {
+  public Kit getKit() {
     return Kits.getKit(queueData.getString("kit"));
   }
 
