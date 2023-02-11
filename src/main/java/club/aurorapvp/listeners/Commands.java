@@ -23,56 +23,52 @@ public class Commands implements CommandExecutor, TabCompleter {
   @Override
   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                            @NotNull String label, @NotNull String[] args) {
-    Player p = null;
-
-    if (sender instanceof Player) {
-      p = (Player) sender;
-    }
-
-    switch (command.getName()) {
-      case "auroraduels" -> {
-        if (args[0].equals("reload")) {
-          Config.reload();
-          Lang.reload();
-          Arena.reloadAll();
-          Queue.reloadAll();
-        }
-      }
-
-      case "duel" -> {
-        if (args[0].equals("accept")) {
-          Request.acceptDuelRequest(p);
-        } else if (args[0].equals("deny")) {
-          Request.denyDuelRequest(p);
-        } else {
-          if (args.length > 1) {
-            new Request(args[1], p, Bukkit.getPlayer(args[0]));
-          } else {
-            new Request("Default", p, Bukkit.getPlayer(args[0]));
+    if (sender instanceof Player p) {
+      switch (command.getName()) {
+        case "auroraduels" -> {
+          if (args[0].equals("reload")) {
+            Config.reload();
+            Lang.reload();
+            Arena.reloadAll();
+            Queue.reloadAll();
           }
         }
-      }
 
-      case "createarena" -> new Arena(args[0]).create(p);
-      case "resetarena" -> Arena.getArena(args[0]).reset(p);
-      case "deletearena" -> Arena.getArena(args[0]).delete(p);
-
-      case "arenalist" -> {
-        // TODO clean up or remove
-        StringBuilder str = new StringBuilder("Arenas:");
-        for (Arena arena : Arena.getArenas()) {
-          str.append("\n").append(arena.getName());
+        case "duel" -> {
+          if (args[0].equals("accept")) {
+            Request.acceptDuelRequest(p);
+          } else if (args[0].equals("deny")) {
+            Request.denyDuelRequest(p);
+          } else {
+            if (args.length > 1) {
+              new Request(args[1], p, Bukkit.getPlayer(args[0]));
+            } else {
+              new Request("Default", p, Bukkit.getPlayer(args[0]));
+            }
+          }
         }
-        p.sendMessage(Component.text(str.toString()));
-      }
 
-      case "findmatch" -> Queue.findMatch(p, args[0]);
+        case "createarena" -> new Arena(args[0]).create(p);
+        case "resetarena" -> Arena.getArena(args[0]).reset(p);
+        case "deletearena" -> Arena.getArena(args[0]).delete(p);
 
-      case "createqueue" -> {
-        if (args.length > 1 && AuroraDuels.isAuroraKitsInstalled()) {
-          new Queue(args[0]).create(p, args[1]);
-        } else {
-          new Queue(args[0]).create(p);
+        case "arenalist" -> {
+          // TODO clean up or remove
+          StringBuilder str = new StringBuilder("Arenas:");
+          for (Arena arena : Arena.getArenas()) {
+            str.append("\n").append(arena.getName());
+          }
+          p.sendMessage(Component.text(str.toString()));
+        }
+
+        case "findmatch" -> Queue.findMatch(p, args[0]);
+
+        case "createqueue" -> {
+          if (args.length > 1 && AuroraDuels.isAuroraKitsInstalled()) {
+            new Queue(args[0]).create(p, args[1]);
+          } else {
+            new Queue(args[0]).create(p);
+          }
         }
       }
     }
