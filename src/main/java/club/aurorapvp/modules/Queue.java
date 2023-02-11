@@ -49,6 +49,25 @@ public class Queue {
   public Queue() {
     this.name = null;
     this.data = null;
+
+    File dir = new File(AuroraDuels.DATA_FOLDER, "/queues/");
+
+    if (Config.get().getBoolean("queues.enable-default-queue")) {
+      Queue queue = new Queue("Default");
+      queue.addArenas(Arena.getArenas());
+      queues.add(queue);
+    }
+
+    if (dir.exists()) {
+      for (File file : dir.listFiles()) {
+        Queue queue = new Queue(file.getName().replace(".yml", ""));
+        if (queue.exists()) {
+          queues.add(queue);
+        }
+      }
+    }
+
+    AuroraDuels.INSTANCE.getLogger().info("All queues loaded!");
   }
 
   public boolean exists() {
@@ -199,27 +218,6 @@ public class Queue {
       }
     }
     return null;
-  }
-
-  public static void setup() {
-    File dir = new File(AuroraDuels.DATA_FOLDER, "/queues/");
-
-    if (Config.get().getBoolean("queues.enable-default-queue")) {
-      Queue queue = new Queue("Default");
-      queue.addArenas(Arena.getArenas());
-      queues.add(queue);
-    }
-
-    if (dir.exists()) {
-      for (File file : dir.listFiles()) {
-        Queue queue = new Queue(file.getName().replace(".yml", ""));
-        if (queue.exists()) {
-          queues.add(queue);
-        }
-      }
-    }
-
-    AuroraDuels.INSTANCE.getLogger().info("All queues loaded!");
   }
 
   public static void findMatch(Player p, String queueName) {

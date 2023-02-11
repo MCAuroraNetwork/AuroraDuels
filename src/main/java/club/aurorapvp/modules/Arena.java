@@ -53,6 +53,25 @@ public class Arena {
     }
   }
 
+  public Arena() {
+    this.schematic = null;
+    this.data = null;
+    this.name = null;
+
+    File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
+
+    if (dir.exists()) {
+      for (File file : dir.listFiles()) {
+        Arena arena = new Arena(file.getName().replace(".yml", ""));
+        if (arena.exists()) {
+          arenas.add(arena);
+        }
+      }
+    }
+
+    AuroraDuels.INSTANCE.getLogger().info("All arenas loaded!");
+  }
+
   public boolean exists() {
     return this.getData().getFile().exists() && this.getSchematic().getFile().exists();
   }
@@ -217,20 +236,5 @@ public class Arena {
     }
 
     AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
-  }
-
-  public static void setup() {
-    File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
-
-    if (dir.exists()) {
-      for (File file : dir.listFiles()) {
-        Arena arena = new Arena(file.getName().replace(".yml", ""));
-        if (arena.exists()) {
-          arenas.add(arena);
-        }
-      }
-    }
-
-    AuroraDuels.INSTANCE.getLogger().info("All arenas loaded!");
   }
 }

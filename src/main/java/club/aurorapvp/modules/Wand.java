@@ -6,7 +6,7 @@ import org.bukkit.event.block.Action;
 public class Wand {
   private static final HashMap<String, Boolean> ACTIVE = new HashMap<>();
 
-  public static void setup() {
+  public Wand() {
     ACTIVE.put("right", false);
     ACTIVE.put("left", false);
   }

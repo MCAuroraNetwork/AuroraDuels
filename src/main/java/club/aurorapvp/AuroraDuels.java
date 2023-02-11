@@ -42,9 +42,9 @@ public final class AuroraDuels extends JavaPlugin {
     Config.generateDefaults();
 
     // Setup classes
-    Wand.setup();
-    Arena.setup();
-    Queue.setup();
+    new Wand();
+    new Arena();
+    new Queue();
 
     // Register Event Listeners
     getServer().getPluginManager().registerEvents(new Events(), this);
