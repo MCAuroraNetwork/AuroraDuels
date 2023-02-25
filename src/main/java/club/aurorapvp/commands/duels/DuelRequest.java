@@ -16,8 +16,10 @@ public class DuelRequest implements CommandExecutor {
       return false;
     }
 
-    if (args[0].equals("accept") || args[0].equals("deny")) {
-      return false;
+    if (args[0].equals("accept")) {
+      Request.acceptDuelRequest(p);
+    } else if (args[0].equals("deny")) {
+      Request.denyDuelRequest(p);
     }
 
     if (args.length > 1) {
