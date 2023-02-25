@@ -14,7 +14,7 @@ import club.aurorapvp.commands.queues.CreateQueue;
 public class Commands {
   public Commands() {
     AuroraDuels.INSTANCE.getCommand("createqueue").setExecutor(new CreateQueue());
-    AuroraDuels.INSTANCE.getCommand("aurorakits").setExecutor(new Reload());
+    AuroraDuels.INSTANCE.getCommand("auroraduels").setExecutor(new Reload());
     AuroraDuels.INSTANCE.getCommand("findmatch").setExecutor(new FindMatch());
     AuroraDuels.INSTANCE.getCommand("duel").setExecutor(new DuelRequest());
     AuroraDuels.INSTANCE.getCommand("duel").setExecutor(new DuelConfirmation());
