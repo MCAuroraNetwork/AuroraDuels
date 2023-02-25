@@ -3,7 +3,6 @@ package club.aurorapvp.modules;
 import static club.aurorapvp.AuroraDuels.auroraKitsInstalled;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.api.Kits;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.QueueData;
@@ -124,7 +123,7 @@ public class Queue {
   public void create(Player p, String kitName) {
     if (!this.exists() && arenasSet) {
       if (kitName != null && auroraKitsInstalled) {
-        this.kit = Kits.getKit(kitName);
+        this.kit = Kit.getKit(kitName);
       }
 
       create(p);

@@ -1,6 +1,5 @@
 package club.aurorapvp.modules;
 
-import club.aurorapvp.api.Kits;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.DuelEndEvent;
@@ -60,8 +59,8 @@ public class Duel implements Listener {
 
   public void startDuel(Kit kit, Arena arena) {
     if (kit != null) {
-      Kits.giveKit(kit, playerOne);
-      Kits.giveKit(kit, playerTwo);
+      Kit.giveKit(kit, playerOne);
+      Kit.giveKit(kit, playerTwo);
     }
 
     this.arena = arena;

@@ -31,7 +31,7 @@ repositories {
 dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.0'
 
-    compileOnly ':AuroraKits-API:1.0.0'
+    compileOnly ':AuroraKits:1.2.0'
     compileOnly 'io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.9'
     compileOnly 'me.clip:placeholderapi:2.11.1'
