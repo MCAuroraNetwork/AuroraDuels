@@ -11,6 +11,9 @@ softdepend:
   - PlaceholderAPI
   - AuroraKits
 commands:
+  auroraduels:
+    description: AuroraDuels general plugin commands
+    permission: AuroraDuels.admin
   createarena:
     description: Starts the arena creation process
     permission: AuroraDuels.admin
