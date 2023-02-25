@@ -48,6 +48,16 @@ public class DuelEndEvent extends Event {
     return duel.getElapsed();
   }
 
+  public Player getLoser() {
+    if (playerOne.isDead() || !playerOne.isOnline()) {
+      return playerOne;
+    } else if (playerTwo.isDead() || !playerTwo.isOnline()) {
+      return playerTwo;
+    } else {
+      return null;
+    }
+  }
+
   public Player getWinner() {
     if (playerOne.isDead() || !playerOne.isOnline()) {
       return playerTwo;
