@@ -57,7 +57,6 @@ public class Duel implements Listener {
       if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
         return true;
       }
-
     }
     return false;
   }
