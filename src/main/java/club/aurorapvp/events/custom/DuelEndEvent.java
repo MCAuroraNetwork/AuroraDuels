@@ -1,4 +1,4 @@
-package club.aurorapvp.api.events;
+package club.aurorapvp.events.custom;
 
 import club.aurorapvp.modules.Duel;
 import org.bukkit.entity.Player;
@@ -32,42 +32,22 @@ public class DuelEndEvent extends Event {
     return HANDLERS;
   }
 
-  /**
-   * Gets the duel that ended
-   * @return the duel
-   */
   public Duel getDuel() {
     return duel;
   }
 
-  /**
-   * Gets one of the players in the duel
-   * @return the player
-   */
   public Player getPlayerOne() {
     return playerOne;
   }
 
-  /**
-   * Gets one of the players in the duel
-   * @return the player
-   */
   public Player getPlayerTwo() {
     return playerTwo;
   }
 
-  /**
-   * Gets the time elapsed during the duel, in milliseconds
-   * @return time elapsed
-   */
   public Long timeElapsed() {
     return duel.getElapsed();
   }
 
-  /**
-   * Gets the winner of the duel
-   * @return the winner
-   */
   public Player getWinner() {
     if (playerOne.isDead() || !playerOne.isOnline()) {
       return playerTwo;

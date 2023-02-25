@@ -8,10 +8,10 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,27 +19,17 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Arena {
-  private static final List<Arena> arenas = new ArrayList<>();
-  @Getter
+  private static final Set<Arena> arenas = new HashSet<>();
   private BlockVector3 spawn1 = null;
-  @Getter
   private BlockVector3 spawn2 = null;
-  @Getter
   private BlockVector3 pos1 = null;
-  @Getter
   private BlockVector3 pos2 = null;
   private static int creationPhase = 0;
   private static Arena unFinishedArena;
-  @Setter
-  @Getter
   private boolean occupied = false;
-  @Getter
   private final Schematic schematic;
-  @Getter
   private final ArenaData data;
-  @Getter
   private final String name;
-  @Getter
   private World world;
 
   public Arena(String arenaName) {
@@ -72,6 +62,46 @@ public class Arena {
     AuroraDuels.INSTANCE.getLogger().info("All arenas loaded!");
   }
 
+  public World getWorld() {
+    return world;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public ArenaData getData() {
+    return data;
+  }
+
+  public Schematic getSchematic() {
+    return schematic;
+  }
+
+  public boolean isOccupied() {
+    return occupied;
+  }
+
+  public void setOccupied(boolean occupied) {
+    this.occupied = occupied;
+  }
+
+  public BlockVector3 getFirstPosition() {
+    return pos1;
+  }
+
+  public BlockVector3 getSecondPosition() {
+    return pos2;
+  }
+
+  public BlockVector3 getFirstSpawn() {
+    return spawn1;
+  }
+
+  public BlockVector3 getSecondSpawn() {
+    return spawn2;
+  }
+
   public boolean exists() {
     return this.getData().getFile().exists() && this.getSchematic().getFile().exists();
   }
@@ -83,9 +113,7 @@ public class Arena {
   public static Arena[] getArenas() {
     Arena[] arenaArray = new Arena[arenas.size()];
 
-    for (int i = 0; i < arenas.size(); i++) {
-      arenaArray[i] = arenas.get(i);
-    }
+    arenaArray = arenas.toArray(arenaArray);
 
     return arenaArray;
   }

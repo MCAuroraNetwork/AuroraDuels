@@ -1,25 +1,21 @@
 package club.aurorapvp;
 
+import club.aurorapvp.commands.Commands;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
-import club.aurorapvp.listeners.Commands;
-import club.aurorapvp.listeners.Events;
-import club.aurorapvp.listeners.Placeholders;
+import club.aurorapvp.events.Events;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
+import club.aurorapvp.placeholders.Placeholders;
 import java.io.File;
-import java.util.List;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.PluginCommandYamlParser;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraDuels extends JavaPlugin {
-  public static Plugin INSTANCE;
+  public static JavaPlugin INSTANCE;
   public static File DATA_FOLDER;
   public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
   public static MiniMessage COMPONENT_DESERIALIZER;
@@ -35,34 +31,24 @@ public final class AuroraDuels extends JavaPlugin {
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
     COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 
-    // Setup configs
-    Lang.reload();
-    Config.reload();
-    Lang.generateDefaults();
-    Config.generateDefaults();
-
     // Setup classes
+    new Config();
+    new Lang();
     new Wand();
+    new Events();
     new Arena();
     new Queue();
-
-    // Register Event Listeners
-    getServer().getPluginManager().registerEvents(new Events(), this);
-
-    // Register commands
-    List<Command> commandList = PluginCommandYamlParser.parse(INSTANCE);
-    for (Command command : commandList) {
-      getCommand(command.getName()).setExecutor(new Commands());
-      getCommand(command.getName()).setTabCompleter(new Commands());
-    }
+    new Commands();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
     }
-    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null &&
-        Config.get().getBoolean("optional-plugins.aurorakits-compatibility")) {
-      auroraKitsInstalled = true;
+
+    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null) {
+      if (Config.get().getBoolean("optional-plugins.aurorakits-compatibility")) {
+        auroraKitsInstalled = true;
+      }
     }
 
     getLogger().info(

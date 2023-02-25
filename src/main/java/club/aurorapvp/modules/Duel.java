@@ -1,14 +1,15 @@
 package club.aurorapvp.modules;
 
 import club.aurorapvp.api.Kits;
-import club.aurorapvp.api.events.DuelEndEvent;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
+import club.aurorapvp.events.custom.DuelEndEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -17,14 +18,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 public class Duel implements Listener {
-  public static List<Duel> duels = new ArrayList<>();
+  public static Set<Duel> duels = new HashSet<>();
   private final DuelEndEvent duelEndEvent = new DuelEndEvent(this);
   private Long timeStarted;
-  @Getter
   private final Player playerOne;
-  @Getter
   private final Player playerTwo;
-  @Getter
   private final boolean isPublic;
   private Arena arena;
 
@@ -32,10 +30,6 @@ public class Duel implements Listener {
     this.isPublic = isPublic;
     this.playerOne = p1;
     this.playerTwo = p2;
-  }
-
-  public static int inDuels() {
-    return duels.size();
   }
 
   public Long getElapsed() {
@@ -52,23 +46,16 @@ public class Duel implements Listener {
     }
   }
 
-  public static boolean inDuel(Player p) {
-    for (Duel duel : duels) {
-      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
-        return true;
-      }
-    }
-    return false;
+  public boolean isPublic() {
+    return isPublic;
   }
 
-  public static Duel getDuel(Player p) {
-    for (Duel duel : duels) {
-      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
-        return duel;
-      }
+  public Player getPlayerOne() {
+    return playerOne;
+  }
 
-    }
-    return null;
+  public Player getPlayerTwo() {
+    return playerTwo;
   }
 
   public void startDuel(Kit kit, Arena arena) {
@@ -81,12 +68,12 @@ public class Duel implements Listener {
 
     Location spawn1 =
         new Location(arena.getWorld(),
-            arena.getSpawn1().getX(), arena.getSpawn1().getY(),
-            arena.getSpawn1().getZ());
+            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
+            arena.getFirstSpawn().getZ());
     Location spawn2 =
         new Location(arena.getWorld(),
-            arena.getSpawn2().getX(), arena.getSpawn2().getY(),
-            arena.getSpawn2().getZ());
+            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
+            arena.getSecondSpawn().getZ());
 
     playerOne.teleportAsync(spawn1);
     playerTwo.teleportAsync(spawn2);
@@ -139,10 +126,32 @@ public class Duel implements Listener {
       playerTwo.sendMessage("draw");
     }
 
-
     arena.setOccupied(false);
     arena.reset();
     duels.remove(this);
     Bukkit.getPluginManager().callEvent(duelEndEvent);
+  }
+
+  public static int inDuels() {
+    return duels.size();
+  }
+
+  public static boolean inDuel(Player p) {
+    for (Duel duel : duels) {
+      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static Duel getDuel(Player p) {
+    for (Duel duel : duels) {
+      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
+        return duel;
+      }
+
+    }
+    return null;
   }
 }

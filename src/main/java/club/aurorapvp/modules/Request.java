@@ -4,22 +4,20 @@ import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import lombok.Getter;
 import org.bukkit.entity.Player;
 
 public class Request {
-  private static final List<Request> pendingRequests = new ArrayList<>();
+  private static final Set<Request> pendingRequests = new HashSet<>();
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-  @Getter
   private final Player requester;
-  @Getter
   private final Player requested;
-  @Getter
   private final Queue queue;
 
   public Request(String queueName, Player requester, Player requested) {
@@ -70,6 +68,18 @@ public class Request {
     pendingRequests.remove(this);
     requester.sendMessage(Lang.getComponent("request-accepted"));
     requested.sendMessage(Lang.getComponent("request-accepted"));
+  }
+
+  public Player getRequester() {
+    return requester;
+  }
+
+  public Player getRequested() {
+    return requested;
+  }
+
+  public Queue getQueue() {
+    return queue;
   }
 
   public void deny() {

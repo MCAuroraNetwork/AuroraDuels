@@ -1,4 +1,4 @@
-package club.aurorapvp.listeners;
+package club.aurorapvp.events.listeners;
 
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class Events implements Listener {
+public class Player implements Listener {
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {
@@ -63,11 +63,13 @@ public class Events implements Listener {
 
   @EventHandler
   public void onPlayerTeleport(PlayerTeleportEvent event) {
-    if (Config.get().getBoolean("duels.enable-teleports")) {
-      if (Duel.inDuel(event.getPlayer())) {
-        event.getPlayer().sendMessage(Lang.getComponent("no-teleport"));
-        event.setCancelled(true);
-      }
+    if (!Config.get().getBoolean("duels.enable-teleports")) {
+      return;
+    }
+
+    if (Duel.inDuel(event.getPlayer())) {
+      event.getPlayer().sendMessage(Lang.getComponent("no-teleport"));
+      event.setCancelled(true);
     }
   }
 }

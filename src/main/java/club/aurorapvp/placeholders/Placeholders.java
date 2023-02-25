@@ -1,4 +1,4 @@
-package club.aurorapvp.listeners;
+package club.aurorapvp.placeholders;
 
 import club.aurorapvp.modules.Duel;
 import java.util.concurrent.TimeUnit;

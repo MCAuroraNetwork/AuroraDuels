@@ -10,30 +10,26 @@ import club.aurorapvp.datahandlers.QueueData;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import lombok.Getter;
 import org.bukkit.entity.Player;
 
 public class Queue {
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
-  @Getter
   private static boolean arenasSet = true;
   private static Player currentCreator;
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static Player lookingForMatch = null;
-  private static final List<Queue> queues = new ArrayList<>();
-  @Getter
+  private static final Set<Queue> queues = new HashSet<>();
   private static Queue unFinishedQueue;
-  @Getter
   private final String name;
-  @Getter
   private Kit kit;
   private final List<Arena> arenas = new ArrayList<>();
-  @Getter
   private final QueueData data;
 
   public Queue(String queueName) {
@@ -68,6 +64,18 @@ public class Queue {
     }
 
     AuroraDuels.INSTANCE.getLogger().info("All queues loaded!");
+  }
+
+  public QueueData getData() {
+    return data;
+  }
+
+  public Kit getKit() {
+    return kit;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public boolean exists() {
@@ -178,6 +186,14 @@ public class Queue {
     }
   };
 
+  public static boolean isArenasSet() {
+    return arenasSet;
+  }
+
+  public static Queue getUnFinishedQueue() {
+    return unFinishedQueue;
+  }
+
   public static void reloadAll() {
     for (Queue queue : getQueues()) {
       queue.reload();
@@ -193,9 +209,7 @@ public class Queue {
   public static Queue[] getQueues() {
     Queue[] queueArray = new Queue[queues.size()];
 
-    for (int i = 0; i < queues.size(); i++) {
-      queueArray[i] = queues.get(i);
-    }
+    queueArray = queues.toArray(queueArray);
 
     return queueArray;
   }
