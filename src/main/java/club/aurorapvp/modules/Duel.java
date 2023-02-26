@@ -3,9 +3,7 @@ package club.aurorapvp.modules;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.DuelEndEvent;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,11 +16,11 @@ import org.bukkit.event.Listener;
 
 public class Duel implements Listener {
   public static Set<Duel> duels = new HashSet<>();
-  private final DuelEndEvent duelEndEvent = new DuelEndEvent(this);
   private Long timeStarted;
   private final Player playerOne;
   private final Player playerTwo;
   private final boolean isPublic;
+  private boolean started = false;
   private Arena arena;
 
   public Duel(Player p1, Player p2, boolean isPublic) {
@@ -104,6 +102,7 @@ public class Duel implements Listener {
     arena.setOccupied(true);
     duels.add(this);
     timeStarted = System.currentTimeMillis();
+    started = true;
   }
 
   public void endDuel() {
@@ -128,7 +127,11 @@ public class Duel implements Listener {
     arena.setOccupied(false);
     arena.reset();
     duels.remove(this);
-    Bukkit.getPluginManager().callEvent(duelEndEvent);
+    Bukkit.getPluginManager().callEvent(new DuelEndEvent(this));
+  }
+
+  public boolean isStarted() {
+    return started;
   }
 
   public static int inDuels() {
@@ -137,7 +140,7 @@ public class Duel implements Listener {
 
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
-      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
+      if ((duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) && duel.isStarted()) {
         return true;
       }
     }

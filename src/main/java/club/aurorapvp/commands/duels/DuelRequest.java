@@ -20,9 +20,7 @@ public class DuelRequest implements CommandExecutor {
       Request.acceptDuelRequest(p);
     } else if (args[0].equals("deny")) {
       Request.denyDuelRequest(p);
-    }
-
-    if (args.length > 1) {
+    } else if (args.length > 1) {
       new Request(args[1], p, Bukkit.getPlayer(args[0]));
     } else {
       new Request("Default", p, Bukkit.getPlayer(args[0]));
