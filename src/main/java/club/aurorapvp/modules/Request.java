@@ -3,9 +3,7 @@ package club.aurorapvp.modules;
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,8 +43,7 @@ public class Request {
     pendingRequests.add(this);
 
     requester.sendMessage(Lang.getComponent("sent-request"));
-    requested.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
-        String.format(Lang.getString("received-request"), requester.getName())));
+    requested.sendMessage(Lang.formatComponent("received-request", requester.getName()));
 
     Request thisRequest = this;
 
@@ -120,7 +117,7 @@ public class Request {
 
       request.accept();
 
-      request.getQueue().enterDuelQueue(request.getRequester(), request.requested, false);
+      request.getQueue().enterDuelQueue(request.getRequester(), request.getRequested(), false);
     } else {
       p.sendMessage(Lang.getComponent("no-requests"));
     }

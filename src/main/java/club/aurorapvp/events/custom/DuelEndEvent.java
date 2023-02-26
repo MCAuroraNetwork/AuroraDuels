@@ -19,8 +19,6 @@ public class DuelEndEvent extends Event {
     this.duel = duel;
     this.playerOne = duel.getPlayerOne();
     this.playerTwo = duel.getPlayerTwo();
-
-    duel.endDuel();
   }
 
   public static HandlerList getHandlerList() {

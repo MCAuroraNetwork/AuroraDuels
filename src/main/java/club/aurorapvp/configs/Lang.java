@@ -106,6 +106,21 @@ public class Lang {
     return pathString;
   }
 
+  public static Component formatComponent(String message, Object... args) {
+    String pathString = get().getString(message);
+    assert pathString != null;
+    for (String placeholder : PLACEHOLDERS.keySet()) {
+      if (pathString.contains(placeholder)) {
+        pathString = pathString.replace(placeholder,
+            PLACEHOLDERS.get(placeholder));
+      }
+    }
+
+    pathString = String.format(pathString, args);
+
+    return AuroraDuels.COMPONENT_DESERIALIZER.deserialize(pathString);
+  }
+
   public static Component getComponent(String message) {
     String pathString = get().getString(message);
     for (String placeholder : PLACEHOLDERS.keySet()) {

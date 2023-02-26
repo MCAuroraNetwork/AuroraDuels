@@ -1,8 +1,10 @@
 package club.aurorapvp.placeholders;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.modules.Duel;
 import java.util.concurrent.TimeUnit;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +22,7 @@ public class Placeholders extends PlaceholderExpansion {
 
   @Override
   public @NotNull String getVersion() {
-    return "1.0.0";
+    return AuroraDuels.INSTANCE.getDescription().getVersion();
   }
 
   @Override
