@@ -23,6 +23,6 @@ public class ArenaList implements CommandExecutor {
     }
     p.sendMessage(Component.text(str.toString()));
 
-    return false;
+    return true;
   }
 }

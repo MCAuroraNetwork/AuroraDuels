@@ -17,6 +17,6 @@ public class FindMatch implements CommandExecutor {
 
     Queue.findMatch(p, args[0]);
 
-    return false;
+    return true;
   }
 }

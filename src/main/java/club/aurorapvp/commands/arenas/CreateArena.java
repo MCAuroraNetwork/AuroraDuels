@@ -17,6 +17,6 @@ public class CreateArena implements CommandExecutor {
 
     new Arena(args[0]).create(p);
 
-    return false;
+    return true;
   }
 }

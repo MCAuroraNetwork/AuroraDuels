@@ -17,6 +17,6 @@ public class ResetArena implements CommandExecutor {
 
     Arena.getArena(args[0]).reset(p);
 
-    return false;
+    return true;
   }
 }

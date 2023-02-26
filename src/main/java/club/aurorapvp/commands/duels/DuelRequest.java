@@ -26,6 +26,6 @@ public class DuelRequest implements CommandExecutor {
       new Request("Default", p, Bukkit.getPlayer(args[0]));
     }
 
-    return false;
+    return true;
   }
 }

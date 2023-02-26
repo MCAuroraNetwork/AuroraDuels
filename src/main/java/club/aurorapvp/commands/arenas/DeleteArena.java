@@ -18,6 +18,6 @@ public class DeleteArena implements CommandExecutor {
 
     Objects.requireNonNull(Arena.getArena(args[0])).delete(p);
 
-    return false;
+    return true;
   }
 }
