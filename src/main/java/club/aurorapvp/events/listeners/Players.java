@@ -63,7 +63,7 @@ public class Players implements Listener {
 
   @EventHandler
   public void onPlayerTeleport(PlayerTeleportEvent event) {
-    if (!Config.get().getBoolean("duels.enable-teleports")) {
+    if (Config.get().getBoolean("duels.enable-teleports")) {
       return;
     }
 
