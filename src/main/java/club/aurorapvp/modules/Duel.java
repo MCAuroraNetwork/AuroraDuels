@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 public class Duel implements Listener {
   public static Set<Duel> duels = new HashSet<>();
   private Long timeStarted;
+  private Timer t;
   private final Player playerOne;
   private final Player playerTwo;
   private final boolean isPublic;
@@ -127,7 +128,10 @@ public class Duel implements Listener {
     arena.setOccupied(false);
     arena.reset();
     duels.remove(this);
-    Bukkit.getPluginManager().callEvent(new DuelEndEvent(this));
+    t.cancel();
+    synchronized (this) {
+      Bukkit.getPluginManager().callEvent(new DuelEndEvent(this));
+    }
   }
 
   public boolean isStarted() {
