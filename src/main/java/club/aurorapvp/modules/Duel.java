@@ -87,7 +87,8 @@ public class Duel implements Listener {
     playerTwo.showTitle(title2);
 
     Duel thisDuel = this;
-    new Timer().schedule(new TimerTask() {
+    t = new Timer();
+    t.schedule(new TimerTask() {
                            @Override
                            public void run() {
 
@@ -96,7 +97,7 @@ public class Duel implements Listener {
                              thisDuel.endDuel();
                              this.cancel();
                            }
-                         }, Config.get().getInt("duels.requests.request-timeout")
+                         }, Config.get().getInt("duels.max-duration")
     );
 
     Queue.getQueue(playerOne).exitDuelQueue(playerOne);
