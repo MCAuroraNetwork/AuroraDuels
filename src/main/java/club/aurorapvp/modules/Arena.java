@@ -129,6 +129,7 @@ public class Arena {
 
   public static void onWandEvent(PlayerInteractEvent event) {
     Player p = event.getPlayer();
+    p.setCooldown(Material.IRON_HOE, 20);
     Action action = event.getAction();
     BlockVector3 vector = BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation());
 
@@ -156,6 +157,7 @@ public class Arena {
       creationPhase = 1;
       unFinishedArena = this;
 
+      p.getInventory().getItemInMainHand().add();
       p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
       p.sendMessage(Lang.getComponent("set-spawn1-and-spawn2"));
     } else if (creationPhase != 0) {
