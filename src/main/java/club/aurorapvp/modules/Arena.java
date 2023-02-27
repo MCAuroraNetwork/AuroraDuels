@@ -7,9 +7,7 @@ import club.aurorapvp.datahandlers.Schematic;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.Material;
@@ -104,10 +102,6 @@ public class Arena {
 
   public boolean exists() {
     return this.getData().getFile().exists() && this.getSchematic().getFile().exists();
-  }
-
-  public static boolean getUnFinishedArena() {
-    return creationPhase == 0;
   }
 
   public static Arena[] getArenas() {

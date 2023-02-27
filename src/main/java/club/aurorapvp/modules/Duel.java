@@ -91,7 +91,7 @@ public class Duel implements Listener {
                            public void run() {
 
                              playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
-                             playerTwo.sendMessage("duel-time-expired");
+                             playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
                              thisDuel.endDuel();
                              this.cancel();
                            }
@@ -120,8 +120,8 @@ public class Duel implements Listener {
               Component.text("Opponent: " + playerTwo.getName())));
       playerTwo.sendMessage(Lang.getComponent("you-lost"));
     } else {
-      playerOne.sendMessage("draw");
-      playerTwo.sendMessage("draw");
+      playerOne.sendMessage(Lang.getComponent("draw"));
+      playerTwo.sendMessage(Lang.getComponent("draw"));
     }
 
     arena.setOccupied(false);

@@ -16,14 +16,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class PlayerEvents implements Listener {
+public class Players implements Listener {
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {
-      return;
-    }
-
-    if (event.getPlayer().getCooldown(Material.IRON_HOE) > 0) {
       return;
     }
 
@@ -31,7 +27,11 @@ public class PlayerEvents implements Listener {
       return;
     }
 
-    if (Wand.isActive(event.getAction()) && Arena.getUnFinishedArena()) {
+    if (event.getPlayer().getCooldown(Material.IRON_HOE) > 0) {
+      return;
+    }
+
+    if (Wand.isActive(event.getAction())) {
       Arena.onWandEvent(event);
     }
   }
