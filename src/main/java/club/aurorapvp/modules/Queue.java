@@ -189,7 +189,7 @@ public class Queue {
     return arenasSet;
   }
 
-  public static Queue getUnFinishedQueue() {
+  public static Queue isUnFinishedQueue() {
     return unFinishedQueue;
   }
 
