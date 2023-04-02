@@ -115,6 +115,7 @@ public class Request {
     if (hasPendingRequest(p)) {
       Request request = getRequest(p);
 
+      assert request != null;
       request.accept();
 
       request.getQueue().enterDuelQueue(request.getRequester(), request.getRequested(), false);

@@ -1,6 +1,5 @@
 package club.aurorapvp;
 
-import club.aurorapvp.commands.Commands;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.Events;
@@ -8,6 +7,7 @@ import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import club.aurorapvp.placeholders.Placeholders;
+import co.aikar.commands.PaperCommandManager;
 import java.io.File;
 import java.util.logging.Logger;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -21,6 +21,7 @@ public final class AuroraDuels extends JavaPlugin {
   public static File DATA_FOLDER;
   public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
   public static MiniMessage COMPONENT_DESERIALIZER;
+  public static PaperCommandManager MANAGER;
   public static boolean auroraKitsInstalled = false;
 
   @Override
@@ -35,13 +36,15 @@ public final class AuroraDuels extends JavaPlugin {
     COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 
     // Setup classes
+    Commands.init();
+    Commands.registerCompletions();
+
     new Config();
     new Lang();
     new Wand();
     new Events();
     new Arena();
     new Queue();
-    new Commands();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {

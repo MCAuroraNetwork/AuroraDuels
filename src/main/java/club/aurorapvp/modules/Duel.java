@@ -1,5 +1,6 @@
 package club.aurorapvp.modules;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.DuelEndEvent;
@@ -17,11 +18,11 @@ import org.bukkit.event.Listener;
 public class Duel implements Listener {
   public static Set<Duel> duels = new HashSet<>();
   private Long timeStarted;
-  private Timer t;
+  private final Timer t = new Timer();
   private final Player playerOne;
   private final Player playerTwo;
   private final boolean isPublic;
-  private boolean started = false;
+  private boolean active = false;
   private Arena arena;
 
   public Duel(Player p1, Player p2, boolean isPublic) {
@@ -87,30 +88,26 @@ public class Duel implements Listener {
     playerTwo.showTitle(title2);
 
     Duel thisDuel = this;
-    t = new Timer();
     t.schedule(new TimerTask() {
-                           @Override
-                           public void run() {
-
-                             playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
-                             playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
-                             thisDuel.endDuel();
-                             this.cancel();
-                           }
-                         }, Config.get().getInt("duels.max-duration")
-    );
+      @Override
+      public void run() {
+        if (thisDuel.isActive()) {
+          playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
+          playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
+          thisDuel.endDuel();
+        }
+        this.cancel();
+      }
+    }, Config.get().getInt("duels.max-duration"));
 
     Queue.getQueue(playerOne).exitDuelQueue(playerOne);
     arena.setOccupied(true);
     duels.add(this);
     timeStarted = System.currentTimeMillis();
-    started = true;
+    active = true;
   }
 
   public void endDuel() {
-    playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-    playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-
     if (playerOne.isDead() || !playerOne.isOnline()) {
       playerTwo.showTitle(
           Title.title(Lang.getComponent("you-won"),
@@ -126,17 +123,26 @@ public class Duel implements Listener {
       playerTwo.sendMessage(Lang.getComponent("draw"));
     }
 
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        this.cancel();
+      }
+    }, 3000);
+
+    this.active = false;
     arena.setOccupied(false);
     arena.reset();
-    duels.remove(this);
-    t.cancel();
-    synchronized (this) {
+    synchronized (AuroraDuels.INSTANCE) {
       Bukkit.getPluginManager().callEvent(new DuelEndEvent(this));
     }
+    duels.remove(this);
   }
 
-  public boolean isStarted() {
-    return started;
+  public boolean isActive() {
+    return active;
   }
 
   public static int inDuels() {
@@ -145,7 +151,7 @@ public class Duel implements Listener {
 
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
-      if ((duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) && duel.isStarted()) {
+      if ((duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) && duel.isActive()) {
         return true;
       }
     }
