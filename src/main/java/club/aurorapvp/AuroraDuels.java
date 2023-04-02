@@ -38,13 +38,12 @@ public final class AuroraDuels extends JavaPlugin {
     // Setup classes
     Commands.init();
     Commands.registerCompletions();
-
-    new Config();
-    new Lang();
-    new Wand();
-    new Events();
-    new Arena();
-    new Queue();
+    Events.init();
+    Config.init();
+    Lang.init();
+    Arena.init();
+    Queue.init();
+    Wand.init();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {

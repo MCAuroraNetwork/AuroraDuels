@@ -41,10 +41,7 @@ public class Queue {
     }
   }
 
-  public Queue() {
-    this.name = null;
-    this.data = null;
-
+  public static void init() {
     File dir = new File(AuroraDuels.DATA_FOLDER, "/queues/");
 
     if (Config.get().getBoolean("queues.enable-default-queue")) {

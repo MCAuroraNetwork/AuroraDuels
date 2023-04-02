@@ -1,11 +1,11 @@
 package club.aurorapvp.events;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.events.listeners.Players;
+import club.aurorapvp.events.listeners.PlayerEvents;
 import org.bukkit.Bukkit;
 
 public class Events {
-  public Events() {
-    Bukkit.getPluginManager().registerEvents(new Players(), AuroraDuels.INSTANCE);
+  public static void init() {
+    Bukkit.getPluginManager().registerEvents(new PlayerEvents(), AuroraDuels.INSTANCE);
   }
 }

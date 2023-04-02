@@ -26,12 +26,12 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class Schematic {
+public class SchematicData {
   private static Arena arena;
   private final File FILE;
 
-  public Schematic(Arena arena) {
-    Schematic.arena = arena;
+  public SchematicData(Arena arena) {
+    SchematicData.arena = arena;
 
     FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
   }
