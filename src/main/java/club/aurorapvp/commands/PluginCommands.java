@@ -8,6 +8,7 @@ import club.aurorapvp.modules.Queue;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
@@ -16,6 +17,7 @@ import org.bukkit.command.CommandSender;
 @CommandAlias("auroraduels")
 public class PluginCommands extends BaseCommand {
   @Subcommand("reload")
+  @CommandPermission("auroraduels.admin")
   @Description("Reloads all plugin data")
   public void onReload() {
     long startTime = System.currentTimeMillis();
