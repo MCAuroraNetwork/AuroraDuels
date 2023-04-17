@@ -37,6 +37,10 @@ public final class AuroraDuels extends JavaPlugin {
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
     COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 
+    // Initialize configs
+    Config.init();
+    Lang.init();
+
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
@@ -58,8 +62,6 @@ public final class AuroraDuels extends JavaPlugin {
     Commands.init();
     Commands.registerCompletions();
     Events.init();
-    Config.init();
-    Lang.init();
     Arena.init();
     Queue.init();
     Wand.init();
