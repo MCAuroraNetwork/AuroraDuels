@@ -37,17 +37,6 @@ public final class AuroraDuels extends JavaPlugin {
     COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
     COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 
-    // Setup classes
-    Commands.init();
-    Commands.registerCompletions();
-    Events.init();
-    Config.init();
-    Lang.init();
-    Arena.init();
-    Queue.init();
-    Wand.init();
-    Duel.init();
-
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
@@ -64,6 +53,17 @@ public final class AuroraDuels extends JavaPlugin {
         auroraCombatInstalled = true;
       }
     }
+
+    // Initialize classes
+    Commands.init();
+    Commands.registerCompletions();
+    Events.init();
+    Config.init();
+    Lang.init();
+    Arena.init();
+    Queue.init();
+    Wand.init();
+    Duel.init();
 
     getLogger().info(
         "AuroraDuels loaded in " + (System.currentTimeMillis() - startTime) +
