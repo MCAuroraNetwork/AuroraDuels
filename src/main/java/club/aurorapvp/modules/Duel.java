@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Duel implements Listener {
   public static Set<Duel> duels = new HashSet<>();
@@ -95,6 +96,7 @@ public class Duel implements Listener {
     playerTwo.showTitle(title2);
 
     Duel thisDuel = this;
+
     t.schedule(new TimerTask() {
       @Override
       public void run() {
@@ -109,12 +111,16 @@ public class Duel implements Listener {
 
     Queue.getQueue(playerOne).exitDuelQueue(playerOne);
     arena.setOccupied(true);
-    synchronized (AuroraDuels.INSTANCE) {
-      Bukkit.getPluginManager().callEvent(new DuelStartEvent(this));
-    }
     duels.add(this);
     timeStarted = System.currentTimeMillis();
     active = true;
+
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        Bukkit.getServer().getPluginManager().callEvent(new DuelStartEvent(thisDuel));
+      }
+    }.runTask(AuroraDuels.INSTANCE);
   }
 
   public void endDuel() {
@@ -145,9 +151,15 @@ public class Duel implements Listener {
     }, 3000);
 
     this.active = false;
-    synchronized (AuroraDuels.INSTANCE) {
-      Bukkit.getPluginManager().callEvent(new DuelEndEvent(this));
-    }
+    Duel thisDuel = this;
+
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel));
+      }
+    }.runTask(AuroraDuels.INSTANCE);
+
     duels.remove(this);
   }
 

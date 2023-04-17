@@ -1,5 +1,6 @@
 package club.aurorapvp.events.listeners;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.DuelStartEvent;
 import club.aurorapvp.modules.Rating;
