@@ -67,7 +67,7 @@ public class SchematicData {
     }
 
     try (ClipboardWriter writer =
-             BuiltInClipboardFormat.SPONGE_SCHEMATIC.getWriter(new FileOutputStream(FILE))) {
+             BuiltInClipboardFormat.FAST.getWriter(new FileOutputStream(FILE))) {
       writer.write(clipboard);
     } catch (IOException e) {
       AuroraDuels.INSTANCE.getLogger().severe("Failed to save schematic file");
