@@ -138,13 +138,13 @@ public class Duel implements Listener {
       public void run() {
         playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        arena.reset();
+        arena.setOccupied(false);
         this.cancel();
       }
     }, 3000);
 
     this.active = false;
-    arena.setOccupied(false);
-    arena.reset();
     synchronized (AuroraDuels.INSTANCE) {
       Bukkit.getPluginManager().callEvent(new DuelEndEvent(this));
     }
