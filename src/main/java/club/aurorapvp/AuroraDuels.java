@@ -4,6 +4,8 @@ import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.Events;
 import club.aurorapvp.modules.Arena;
+import club.aurorapvp.modules.Duel;
+import club.aurorapvp.modules.DuelSign;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import club.aurorapvp.placeholders.Placeholders;
@@ -21,8 +23,8 @@ public final class AuroraDuels extends JavaPlugin {
   public static File DATA_FOLDER;
   public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
   public static MiniMessage COMPONENT_DESERIALIZER;
-  public static PaperCommandManager MANAGER;
   public static boolean auroraKitsInstalled = false;
+  public static boolean auroraCombatInstalled = false;
 
   @Override
   public void onEnable() {
@@ -44,6 +46,7 @@ public final class AuroraDuels extends JavaPlugin {
     Arena.init();
     Queue.init();
     Wand.init();
+    Duel.init();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -56,6 +59,12 @@ public final class AuroraDuels extends JavaPlugin {
       }
     }
 
+    if (Bukkit.getPluginManager().getPlugin("AuroraCombat") != null) {
+      if (Config.get().getBoolean("optional-plugins.auroracombat-compatibility")) {
+        auroraCombatInstalled = true;
+      }
+    }
+
     getLogger().info(
         "AuroraDuels loaded in " + (System.currentTimeMillis() - startTime) +
             "ms");
@@ -63,6 +72,10 @@ public final class AuroraDuels extends JavaPlugin {
 
   public static boolean isAuroraKitsInstalled() {
     return auroraKitsInstalled;
+  }
+
+  public static boolean isAuroraCombatInstalled() {
+    return auroraCombatInstalled;
   }
 
   @Override

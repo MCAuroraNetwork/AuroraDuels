@@ -31,6 +31,12 @@ public class Duel implements Listener {
     this.playerTwo = p2;
   }
 
+  public static void init() {
+    if (AuroraDuels.isAuroraCombatInstalled()) {
+      Rating.setupRating("duels", false);
+    }
+  }
+
   public Long getElapsed() {
     return System.currentTimeMillis() - timeStarted;
   }

@@ -37,6 +37,7 @@ dependencies {
     implementation(platform("com.intellectualsites.bom:bom-1.18.x:1.25"))
 
     compileOnly ':AuroraKits:1.2.0'
+    compileOnly ':AuroraCombat:1.0.0'
     compileOnly 'io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Core'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit'

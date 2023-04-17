@@ -10,6 +10,7 @@ depend:
 softdepend:
   - PlaceholderAPI
   - AuroraKits
+  - AuroraCombat
 commands:
   auroraduels:
     description: AuroraDuels general plugin commands
