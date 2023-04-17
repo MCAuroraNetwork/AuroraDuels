@@ -4,6 +4,7 @@ import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.DuelEndEvent;
+import club.aurorapvp.events.custom.DuelStartEvent;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Timer;
@@ -108,6 +109,9 @@ public class Duel implements Listener {
 
     Queue.getQueue(playerOne).exitDuelQueue(playerOne);
     arena.setOccupied(true);
+    synchronized (AuroraDuels.INSTANCE) {
+      Bukkit.getPluginManager().callEvent(new DuelStartEvent(this));
+    }
     duels.add(this);
     timeStarted = System.currentTimeMillis();
     active = true;
