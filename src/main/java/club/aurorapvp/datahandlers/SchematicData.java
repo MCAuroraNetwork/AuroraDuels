@@ -15,6 +15,7 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.OperationQueue;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
@@ -24,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class SchematicData {
   private static Arena arena;
@@ -78,25 +78,30 @@ public class SchematicData {
     Clipboard clipboard;
 
     World world =
-        BukkitAdapter.adapt(
-            Bukkit.getWorld(YamlConfiguration
-                .loadConfiguration(arena.getData().getFile())
-                .getString("arena.world")));
+        BukkitAdapter.adapt(arena.getWorld());
     ClipboardFormat format = ClipboardFormats.findByFile(FILE);
 
-    try (ClipboardReader reader = format.getReader(new FileInputStream(FILE))) {
-      clipboard = reader.read();
+    try {
+      assert format != null;
+      try (ClipboardReader reader = format.getReader(new FileInputStream(FILE))) {
+        clipboard = reader.read();
 
-      try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
-        Operation operation =
-            new ClipboardHolder(clipboard)
-                .createPaste(editSession)
-                .to(clipboard.getOrigin())
-                .build();
-        Operations.complete(operation);
+        Bukkit.getScheduler().runTaskAsynchronously(AuroraDuels.INSTANCE, () -> {
+          try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
+            Operation operation =
+                new ClipboardHolder(clipboard)
+                    .createPaste(editSession)
+                    .to(clipboard.getOrigin())
+                    .build();
+
+            Operations.complete(operation);
+          } catch (WorldEditException e) {
+            AuroraDuels.INSTANCE.getLogger().severe("Failed to paste schematic file");
+          }
+        });
       }
-    } catch (WorldEditException | IOException e) {
-      AuroraDuels.INSTANCE.getLogger().severe("Failed to paste schematic file");
+    } catch (IOException e) {
+      AuroraDuels.INSTANCE.getLogger().severe("Failed to read schematic file");
     }
   }
 }
