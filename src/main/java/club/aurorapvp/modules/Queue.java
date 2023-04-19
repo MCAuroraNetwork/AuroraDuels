@@ -163,6 +163,10 @@ public class Queue {
     }
   }
 
+  public int inQueue() {
+    return duelQueue.size() * 2;
+  }
+
   public void enterDuelQueue(Player p, Player opponent, boolean isPublic, boolean ranked) {
     duelQueue.add(new Duel(p, opponent, isPublic, ranked));
     p.sendMessage(Lang.getComponent("entered-queue"));

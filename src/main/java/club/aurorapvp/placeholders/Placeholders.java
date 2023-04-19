@@ -2,9 +2,9 @@ package club.aurorapvp.placeholders;
 
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.modules.Duel;
+import club.aurorapvp.modules.Queue;
 import java.util.concurrent.TimeUnit;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +38,16 @@ public class Placeholders extends PlaceholderExpansion {
   private String getResult(OfflinePlayer p, String params) {
     if (params.startsWith("in_duels")) {
       return String.valueOf(Duel.inDuels());
+    }
+
+    if (params.startsWith("in_queue_")) {
+      String queue = params.split("_")[1];
+
+      return Queue.getQueue(queue).inQueue() + " players in queue";
+    }
+
+    if (!p.isOnline()) {
+      return "Player offline";
     }
 
     if (params.startsWith("opponent_ping")) {
