@@ -5,6 +5,7 @@ import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.DuelStartEvent;
 import club.aurorapvp.modules.CombatTag;
 import club.aurorapvp.modules.Rating;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -32,6 +33,10 @@ public class DuelEvents implements Listener {
 
     if (event.getDuel().isRanked()) {
       Rating.changeRating(event.getLoser(), event.getWinner(), "duels");
+    }
+
+    for (Player p : event.getDuel().getSpectators()) {
+      event.getDuel().setSpectator(p, false);
     }
 
     Rating.setUpdating("default", true);

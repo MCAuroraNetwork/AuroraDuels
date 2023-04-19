@@ -1,11 +1,11 @@
 package club.aurorapvp.modules;
 
-import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.DuelStartEvent;
+import com.sk89q.worldedit.math.BlockVector3;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Timer;
@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -24,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Duel implements Listener {
   private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
   public static Set<Duel> duels = new HashSet<>();
+  private final Set<Player> spectators = new HashSet<>();
   private Long timeStarted;
   private final Timer t = new Timer();
   private final Player playerOne;
@@ -58,6 +60,10 @@ public class Duel implements Listener {
     } else {
       return null;
     }
+  }
+
+  public Arena getArena() {
+    return arena;
   }
 
   public boolean isPublic() {
@@ -183,6 +189,30 @@ public class Duel implements Listener {
     }.runTask(AuroraDuels.INSTANCE);
 
     duels.remove(this);
+  }
+
+  public void setSpectator(Player p, boolean spectator) {
+    if (spectator) {
+      BlockVector3 midpoint = arena.getFirstSpawn().add(arena.getSecondSpawn()).divide(2);
+      Location loc =
+          new Location(arena.getWorld(), midpoint.getX(), midpoint.getY(), midpoint.getZ());
+
+      p.setGameMode(GameMode.SPECTATOR);
+      p.teleportAsync(loc);
+      p.sendMessage(Lang.getComponent("start-spectating"));
+
+      spectators.add(p);
+    } else {
+      p.teleportAsync(p.getWorld().getSpawnLocation());
+      p.setGameMode(Bukkit.getDefaultGameMode());
+      p.sendMessage(Lang.getComponent("stop-spectating"));
+
+      spectators.remove(p);
+    }
+  }
+
+  public Player[] getSpectators() {
+    return spectators.toArray(new Player[0]);
   }
 
   public boolean isActive() {
