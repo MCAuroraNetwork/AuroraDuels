@@ -14,38 +14,26 @@ softdepend:
 commands:
   auroraduels:
     description: AuroraDuels general plugin commands
-    permission: AuroraDuels.admin
-  createarena:
-    description: Starts the arena creation process
-    permission: AuroraDuels.admin
-  resetarena:
-    description: Resets an arena
-    permission: AuroraDuels.admin
-  deletearena:
-    description: Resets an arena
-    permission: AuroraDuels.admin
+    permission: auroraduels.admin
   duel:
     description: Starts a duel
-    permission: AuroraDuels.duel
+    permission: auroraduels.duel
   findmatch:
     description: Starts a duel
-    permission: AuroraDuels.duel
-  createqueue:
-    description: Creates a custom queue
-    permission: AuroraDuels.admin
-  deletequeue:
-    description: Deletes a custom queue
-    permission: AuroraDuels.admin
-  arenalist:
-    description: lists all arenas
-    permission: AuroraDuels.default
+    permission: auroraduels.duel
+  queue:
+    description: Manages custom queues
+    permission: auroraduels.admin
+  arena:
+    description: Manages custom arenas
+    permission: auroraduels.admin
 permissions:
-  AuroraDuels.admin:
+  auroraduels.admin:
     description: Enables use of AuroraDuels admin commands
     default: op
-  AuroraDuels.duel:
+  auroraduels.duel:
     description: Enables use of AuroraDuels duel commands
     default: true
-  AuroraDuels.default:
+  auroraduels.default:
     description: Enables use of misc commands that anyone should be able to use
     default: true
