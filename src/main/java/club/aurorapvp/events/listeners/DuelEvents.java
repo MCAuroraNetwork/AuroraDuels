@@ -30,7 +30,10 @@ public class DuelEvents implements Listener {
     CombatTag.setTaggable(event.getPlayerOne(), true);
     CombatTag.setTaggable(event.getPlayerTwo(), true);
 
-    Rating.changeRating(event.getLoser(), event.getWinner(), "duels");
+    if (event.getDuel().isRanked()) {
+      Rating.changeRating(event.getLoser(), event.getWinner(), "duels");
+    }
+
     Rating.setUpdating("default", true);
   }
 }

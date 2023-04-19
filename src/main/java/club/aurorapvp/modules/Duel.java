@@ -29,13 +29,15 @@ public class Duel implements Listener {
   private final Player playerOne;
   private final Player playerTwo;
   private final boolean isPublic;
+  private final boolean ranked;
   private boolean active = false;
   private Arena arena;
 
-  public Duel(Player p1, Player p2, boolean isPublic) {
+  public Duel(Player p1, Player p2, boolean isPublic, boolean ranked) {
     this.isPublic = isPublic;
     this.playerOne = p1;
     this.playerTwo = p2;
+    this.ranked = ranked;
   }
 
   public static void init() {
@@ -60,6 +62,10 @@ public class Duel implements Listener {
 
   public boolean isPublic() {
     return isPublic;
+  }
+
+  public boolean isRanked() {
+    return ranked;
   }
 
   public Player getPlayerOne() {

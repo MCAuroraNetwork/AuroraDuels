@@ -1,10 +1,10 @@
 package club.aurorapvp;
 
 
-import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.commands.ArenaCommands;
 import club.aurorapvp.commands.DuelCommands;
-import club.aurorapvp.commands.MatchCommands;
+import club.aurorapvp.commands.RankedCommands;
+import club.aurorapvp.commands.UnrankedCommands;
 import club.aurorapvp.commands.PluginCommands;
 import club.aurorapvp.commands.QueueCommands;
 import club.aurorapvp.modules.Arena;
@@ -23,7 +23,8 @@ public class Commands {
 
     MANAGER.registerCommand(new ArenaCommands());
     MANAGER.registerCommand(new DuelCommands());
-    MANAGER.registerCommand(new MatchCommands());
+    MANAGER.registerCommand(new UnrankedCommands());
+    MANAGER.registerCommand(new RankedCommands());
     MANAGER.registerCommand(new PluginCommands());
     MANAGER.registerCommand(new QueueCommands());
   }

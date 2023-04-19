@@ -9,9 +9,11 @@ import club.aurorapvp.datahandlers.QueueData;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -23,7 +25,7 @@ public class Queue {
   private static boolean arenasSet = true;
   private static Player currentCreator;
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-  private static Player lookingForMatch = null;
+  private static Map<Boolean, Player> lookingForMatch = new HashMap<>();
   private static final Set<Queue> queues = new HashSet<>();
   private static Queue unFinishedQueue;
   private final String name;
@@ -161,8 +163,8 @@ public class Queue {
     }
   }
 
-  public void enterDuelQueue(Player p, Player opponent, boolean isPublic) {
-    duelQueue.add(new Duel(p, opponent, isPublic));
+  public void enterDuelQueue(Player p, Player opponent, boolean isPublic, boolean ranked) {
+    duelQueue.add(new Duel(p, opponent, isPublic, ranked));
     p.sendMessage(Lang.getComponent("entered-queue"));
     opponent.sendMessage(Lang.getComponent("entered-queue"));
     executor.execute(checkQueue);
@@ -230,14 +232,14 @@ public class Queue {
     return null;
   }
 
-  public static void findMatch(Player p, String queueName) {
+  public static void findMatch(Player p, String queueName, boolean ranked) {
     p.sendMessage(Lang.getComponent("looking-match"));
-    if (lookingForMatch == null) {
-      lookingForMatch = p;
+    if (lookingForMatch.get(ranked) == null) {
+      lookingForMatch.put(true, p);
     } else {
-      Queue.getQueue(queueName).enterDuelQueue(p, lookingForMatch, true);
+      Queue.getQueue(queueName).enterDuelQueue(p, lookingForMatch.get(ranked), true, ranked);
       p.sendMessage(Lang.getComponent("match-found"));
-      lookingForMatch.sendMessage(Lang.getComponent("match-found"));
+      lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;
     }
   }

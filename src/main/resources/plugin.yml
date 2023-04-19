@@ -18,8 +18,11 @@ commands:
   duel:
     description: Starts a duel
     permission: auroraduels.duel
-  findmatch:
-    description: Starts a duel
+  ranked:
+    description: Finds a ranked duel
+    permission: auroraduels.duel
+  urranked:
+    description: Finds an unranked duel
     permission: auroraduels.duel
   queue:
     description: Manages custom queues

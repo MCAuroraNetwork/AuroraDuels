@@ -13,14 +13,14 @@ import co.aikar.commands.annotation.Syntax;
 import java.util.Objects;
 import org.bukkit.entity.Player;
 
-@CommandAlias("findmatch")
-public class MatchCommands extends BaseCommand {
+@CommandAlias("unranked")
+public class UnrankedCommands extends BaseCommand {
   @Default
   @CommandCompletion("@queues")
   @Syntax("[queue]")
   @Description("Joins a provided queue")
   public void onFindMatch(Player p, @Optional String name) {
-    Queue.findMatch(p, Objects.requireNonNullElse(name, "Default"));
+    Queue.findMatch(p, Objects.requireNonNullElse(name, "Default"), false);
   }
 
   @CatchUnknown

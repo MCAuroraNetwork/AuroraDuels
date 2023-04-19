@@ -118,7 +118,7 @@ public class Request {
       assert request != null;
       request.accept();
 
-      request.getQueue().enterDuelQueue(request.getRequester(), request.getRequested(), false);
+      request.getQueue().enterDuelQueue(request.getRequester(), request.getRequested(), false, false);
     } else {
       p.sendMessage(Lang.getComponent("no-requests"));
     }
