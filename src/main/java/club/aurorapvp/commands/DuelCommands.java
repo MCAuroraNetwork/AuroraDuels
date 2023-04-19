@@ -1,5 +1,7 @@
 package club.aurorapvp.commands;
 
+import club.aurorapvp.modules.Duel;
+import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Request;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
@@ -26,6 +28,16 @@ public class DuelCommands extends BaseCommand {
   @Description("Denies the duel request")
   public void onDeny(Player p) {
     Request.denyDuelRequest(p);
+  }
+
+  @Subcommand("kit")
+  @Description("Sets the duel kit")
+  public void onKitSet(Player p, @Optional String kitName) {
+    if (kitName != null && Kit.getKit(p, kitName) != null) {
+      Duel.setDuelKit(p, kitName);
+    } else {
+      Duel.setDuelKit(p, Kit.getLastUsedKit(p).getName());
+    }
   }
 
   @Default

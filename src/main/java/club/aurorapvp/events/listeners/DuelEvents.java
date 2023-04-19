@@ -1,5 +1,6 @@
 package club.aurorapvp.events.listeners;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.DuelStartEvent;
 import club.aurorapvp.modules.CombatTag;
@@ -10,6 +11,10 @@ import org.bukkit.event.Listener;
 public class DuelEvents implements Listener {
   @EventHandler
   public void onDuelStart(DuelStartEvent event) {
+    if (!AuroraDuels.isAuroraCombatInstalled()) {
+      return;
+    }
+
     CombatTag.setTaggable(event.getPlayerOne(), false);
     CombatTag.setTaggable(event.getPlayerTwo(), false);
 
@@ -18,6 +23,10 @@ public class DuelEvents implements Listener {
 
   @EventHandler
   public void onDuelEnd(DuelEndEvent event) {
+    if (!AuroraDuels.isAuroraCombatInstalled()) {
+      return;
+    }
+
     CombatTag.setTaggable(event.getPlayerOne(), true);
     CombatTag.setTaggable(event.getPlayerTwo(), true);
 

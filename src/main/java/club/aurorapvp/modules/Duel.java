@@ -1,5 +1,6 @@
 package club.aurorapvp.modules;
 
+import club.aurorapvp.AuroraCombat;
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
@@ -13,11 +14,15 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Duel implements Listener {
+  private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
   public static Set<Duel> duels = new HashSet<>();
   private Long timeStarted;
   private final Timer t = new Timer();
@@ -69,6 +74,17 @@ public class Duel implements Listener {
     if (kit != null) {
       Kit.giveKit(kit, playerOne);
       Kit.giveKit(kit, playerTwo);
+    } else {
+      Kit kit1 = Duel.getDuelKit(playerOne);
+      Kit kit2 = Duel.getDuelKit(playerTwo);
+
+      if (kit1 != null) {
+        Kit.giveKit(kit1, playerOne);
+      }
+
+      if (kit2 != null) {
+        Kit.giveKit(kit2, playerTwo);
+      }
     }
 
     this.arena = arena;
@@ -165,6 +181,20 @@ public class Duel implements Listener {
 
   public boolean isActive() {
     return active;
+  }
+
+  public static Kit getDuelKit(Player p) {
+    PersistentDataContainer container = p.getPersistentDataContainer();
+
+    return Kit.getKit(p, container.get(key, PersistentDataType.STRING));
+  }
+
+  public static void setDuelKit(Player p, String kitName) {
+    PersistentDataContainer container = p.getPersistentDataContainer();
+
+    container.set(key, PersistentDataType.STRING, kitName);
+
+    p.sendMessage(Lang.getComponent("duel-kit"));
   }
 
   public static int inDuels() {

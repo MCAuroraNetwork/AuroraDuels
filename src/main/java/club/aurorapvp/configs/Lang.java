@@ -80,7 +80,8 @@ public class Lang {
         "prefix <gradient:#FFAA00:#FF55FF>What arena would you like to add to the queue? Type its name into chat. You have added %s arenas so far");
     DEFAULTS.put("no-teleport",
         "prefix <gradient:#FFAA00:#FF55FF>You cannot teleport duing a duel!");
-
+    DEFAULTS.put("duel-kit",
+        "prefix <gradient:#FFAA00:#FF55FF>Duel kit set!");
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
