@@ -5,12 +5,15 @@ api-version: 1.19
 authors: [ Villagers654 ]
 description: A Duels Plugin for the Aurora Network
 website: aurorapvp.club
-depend:
-  - WorldEdit
-softdepend:
-  - PlaceholderAPI
-  - AuroraKits
-  - AuroraCombat
+dependencies:
+  - name: WorldEdit
+    required: true
+  - name: PlaceholderAPI
+    required: false
+  - name: AuroraKits
+    required: false
+  - name: AuroraCombat
+    required: false
 commands:
   auroraduels:
     description: AuroraDuels general plugin commands
