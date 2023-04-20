@@ -197,13 +197,13 @@ public class Duel implements Listener {
       Location loc =
           new Location(arena.getWorld(), midpoint.getX(), midpoint.getY(), midpoint.getZ());
 
-      p.setGameMode(GameMode.SPECTATOR);
       p.teleportAsync(loc);
+      p.setGameMode(GameMode.SPECTATOR);
       p.sendMessage(Lang.getComponent("start-spectating"));
 
       spectators.add(p);
     } else {
-      p.teleportAsync(p.getWorld().getSpawnLocation());
+      p.teleportAsync(Bukkit.getWorlds().get(0).getSpawnLocation());
       p.setGameMode(Bukkit.getDefaultGameMode());
       p.sendMessage(Lang.getComponent("stop-spectating"));
 
