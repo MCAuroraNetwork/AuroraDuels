@@ -44,8 +44,8 @@ public class DuelCommands extends BaseCommand {
   @CommandCompletion("@players")
   @Syntax("[player]")
   @Description("Spectates the duel of a given player")
-  public void onSetSpectator(Player p, String[] args) {
-    Duel.getDuel(p).setSpectator(Bukkit.getPlayer(args[0]), true);
+  public void onSetSpectator(Player p, String player) {
+    Duel.getDuel(Bukkit.getPlayer(player)).setSpectator(p, true);
   }
 
   @Default
