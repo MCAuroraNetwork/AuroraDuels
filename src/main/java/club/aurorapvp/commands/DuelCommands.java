@@ -1,5 +1,6 @@
 package club.aurorapvp.commands;
 
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Request;
@@ -45,7 +46,13 @@ public class DuelCommands extends BaseCommand {
   @Syntax("[player]")
   @Description("Spectates the duel of a given player")
   public void onSetSpectator(Player p, String player) {
-    Duel.getDuel(Bukkit.getPlayer(player)).setSpectator(p, true);
+    Duel duel = Duel.getDuel(Bukkit.getPlayer(player));
+
+    if (!Duel.inDuel(p) && duel != null) {
+      duel.setSpectator(p, true);
+    } else {
+      p.sendMessage(Lang.getComponent("unknown-duel"));
+    }
   }
 
   @Default
