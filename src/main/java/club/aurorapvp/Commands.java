@@ -19,8 +19,6 @@ public class Commands {
   public static PaperCommandManager MANAGER = new PaperCommandManager(AuroraDuels.INSTANCE);
 
   public static void init() {
-    MANAGER = new PaperCommandManager(AuroraDuels.INSTANCE);
-
     MANAGER.registerCommand(new ArenaCommands());
     MANAGER.registerCommand(new DuelCommands());
     MANAGER.registerCommand(new UnrankedCommands());
