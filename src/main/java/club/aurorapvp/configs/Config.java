@@ -7,7 +7,6 @@ import java.util.HashMap;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
-  private static final HashMap<String, Object> DEFAULTS = new HashMap<>();
   private static final File FILE = new File(AuroraDuels.DATA_FOLDER, "config.yml");
   private static YamlConfiguration config;
 
@@ -17,6 +16,8 @@ public class Config {
   }
 
   public static void generateDefaults() {
+    final HashMap<String, Object> DEFAULTS = new HashMap<>();
+
     DEFAULTS.put("duels.requests.request-timeout", 30000);
     DEFAULTS.put("optional-plugins.aurorakits-compatibility", true);
     DEFAULTS.put("optional-plugins.auroracombat-compatibility", true);
@@ -25,15 +26,15 @@ public class Config {
     DEFAULTS.put("queues.enable-default-queue", true);
 
     for (String path : DEFAULTS.keySet()) {
-      if (!get().contains(path) || get().getString(path) == null) {
+      if (!get().isSet(path) || get().getString(path) == null) {
         get().set(path, DEFAULTS.get(path));
-
-        try {
-          get().save(FILE);
-        } catch (IOException e) {
-          AuroraDuels.INSTANCE.getLogger().severe("Failed to save config file");
-        }
       }
+    }
+
+    try {
+      get().save(FILE);
+    } catch (IOException e) {
+      AuroraDuels.LOGGER.severe("Failed to save config file");
     }
   }
 
@@ -47,10 +48,10 @@ public class Config {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraDuels.INSTANCE.getLogger().severe("Failed to generate config file");
+        AuroraDuels.LOGGER.severe("Failed to generate config file");
       }
     }
     config = YamlConfiguration.loadConfiguration(FILE);
-    AuroraDuels.INSTANCE.getLogger().info("Config reloaded!");
+    AuroraDuels.LOGGER.info("Config reloaded!");
   }
 }
