@@ -7,8 +7,6 @@ import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.datahandlers.QueueData;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -30,7 +28,7 @@ public class Queue {
   private static Queue unFinishedQueue;
   private final String name;
   private Kit kit;
-  private final List<Arena> arenas = new ArrayList<>();
+  private final Set<Arena> arenas = new HashSet<>();
   private final QueueData data;
 
   public Queue(String queueName) {
@@ -64,10 +62,6 @@ public class Queue {
     AuroraDuels.INSTANCE.getLogger().info("All queues loaded!");
   }
 
-  public QueueData getData() {
-    return data;
-  }
-
   public Kit getKit() {
     return kit;
   }
@@ -80,42 +74,30 @@ public class Queue {
     return data.getFile().exists();
   }
 
-  public Arena[] getArenas() {
-    Arena[] arenaArray = new Arena[arenas.size()];
-
-    for (int i = 0; i < arenas.size(); i++) {
-      arenaArray[i] = arenas.get(i);
-    }
-
-    return arenaArray;
+  public void addArenas(Set<Arena> arenas) {
+    this.arenas.addAll(arenas);
   }
 
-  public void addArenas(Arena[] arenas) {
-    this.arenas.addAll(Arrays.asList(arenas));
+  public Set<Arena> getArenas() {
+    return arenas;
   }
 
   public Player[] getPlayers() {
-    List<Player> playerList = new ArrayList<>();
+    Set<Player> playerSet = new HashSet<>();
 
     for (Duel duel : duelQueue) {
-      playerList.add(duel.getPlayerOne());
-      playerList.add(duel.getPlayerTwo());
+      playerSet.add(duel.getPlayerOne());
+      playerSet.add(duel.getPlayerTwo());
     }
 
-    Player[] players = new Player[playerList.size()];
-
-    for (int i = 0; i < playerList.size(); i++) {
-      players[i] = playerList.get(i);
-    }
-
-    return players;
+    return playerSet.toArray(new Player[0]);
   }
 
   public void reload() {
-    this.arenas.addAll(List.of(this.getData().getArenas()));
+    this.arenas.addAll(List.of(this.data.getArenas()));
 
     if (AuroraDuels.isAuroraKitsInstalled()) {
-      this.kit = this.getData().getKit();
+      this.kit = this.data.getKit();
     }
   }
 
@@ -167,8 +149,8 @@ public class Queue {
     return duelQueue.size() * 2;
   }
 
-  public void enterDuelQueue(Player p, Player opponent, boolean isPublic, boolean ranked) {
-    duelQueue.add(new Duel(p, opponent, isPublic, ranked));
+  public void enterDuelQueue(Player p, Player opponent, boolean ranked) {
+    duelQueue.add(new Duel(p, opponent, ranked));
     p.sendMessage(Lang.getComponent("entered-queue"));
     opponent.sendMessage(Lang.getComponent("entered-queue"));
     executor.execute(checkQueue);
@@ -180,7 +162,7 @@ public class Queue {
 
   private final Runnable checkQueue = () -> {
     if (duelQueue.size() > 0) {
-      for (Arena arena : this.getArenas()) {
+      for (Arena arena : this.arenas) {
         if (!arena.isOccupied()) {
           duelQueue.getLast().startDuel(kit, arena);
         }
@@ -208,17 +190,13 @@ public class Queue {
     return p == currentCreator;
   }
 
-  public static Queue[] getQueues() {
-    Queue[] queueArray = new Queue[queues.size()];
-
-    queueArray = queues.toArray(queueArray);
-
-    return queueArray;
+  public static Set<Queue> getQueues() {
+    return queues;
   }
 
   public static Queue getQueue(String queueName) {
     for (Queue queue : queues) {
-      if (Objects.equals(queue.getName(), queueName)) {
+      if (Objects.equals(queue.name, queueName)) {
         return queue;
       }
     }
@@ -241,7 +219,7 @@ public class Queue {
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(true, p);
     } else {
-      Queue.getQueue(queueName).enterDuelQueue(p, lookingForMatch.get(ranked), true, ranked);
+      Queue.getQueue(queueName).enterDuelQueue(p, lookingForMatch.get(ranked), ranked);
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;

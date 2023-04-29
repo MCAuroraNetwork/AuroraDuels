@@ -56,20 +56,16 @@ public class Arena {
     AuroraDuels.INSTANCE.getLogger().info("All arenas loaded!");
   }
 
-  public World getWorld() {
-    return world;
+  public static Set<Arena> getArenas() {
+    return arenas;
   }
 
   public String getName() {
     return name;
   }
 
-  public ArenaData getData() {
-    return data;
-  }
-
-  public SchematicData getSchematic() {
-    return schematic;
+  public World getWorld() {
+    return world;
   }
 
   public boolean isOccupied() {
@@ -97,26 +93,18 @@ public class Arena {
   }
 
   public boolean exists() {
-    return this.getData().getFile().exists() && this.getSchematic().getFile().exists();
-  }
-
-  public static Arena[] getArenas() {
-    Arena[] arenaArray = new Arena[arenas.size()];
-
-    arenaArray = arenas.toArray(arenaArray);
-
-    return arenaArray;
+    return this.data.getFile().exists() && this.schematic.getFile().exists();
   }
 
   public void reload() {
-    spawn1 = this.getData().getFirstSpawn();
-    spawn2 = this.getData().getSecondSpawn();
-    world = this.getData().getWorld();
+    spawn1 = this.data.getFirstSpawn();
+    spawn2 = this.data.getSecondSpawn();
+    world = this.data.getWorld();
   }
 
   public static Arena getArena(String arenaName) {
     for (Arena arena : arenas) {
-      if (Objects.equals(arenaName, arena.getName())) {
+      if (Objects.equals(arenaName, arena.name)) {
         return arena;
       }
     }
@@ -240,8 +228,8 @@ public class Arena {
 
   public void delete(Player p) {
     if (this.exists()) {
-      this.getData().getFile().delete();
-      this.getSchematic().getFile().delete();
+      this.data.getFile().delete();
+      this.schematic.getFile().delete();
       arenas.remove(this);
 
       p.sendMessage(Lang.getComponent("arena-deleted"));
@@ -251,7 +239,7 @@ public class Arena {
   }
 
   public static void reloadAll() {
-    for (Arena arena : getArenas()) {
+    for (Arena arena : Arena.arenas) {
       arena.reload();
     }
 

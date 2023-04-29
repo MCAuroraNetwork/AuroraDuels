@@ -24,19 +24,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Duel implements Listener {
   private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
-  public static Set<Duel> duels = new HashSet<>();
+  private static Set<Duel> duels = new HashSet<>();
   private final Set<Player> spectators = new HashSet<>();
   private Long timeStarted;
   private final Timer t = new Timer();
   private final Player playerOne;
   private final Player playerTwo;
-  private final boolean isPublic;
   private final boolean ranked;
   private boolean active = false;
   private Arena arena;
 
-  public Duel(Player p1, Player p2, boolean isPublic, boolean ranked) {
-    this.isPublic = isPublic;
+  public Duel(Player p1, Player p2, boolean ranked) {
     this.playerOne = p1;
     this.playerTwo = p2;
     this.ranked = ranked;
@@ -52,6 +50,14 @@ public class Duel implements Listener {
     return System.currentTimeMillis() - timeStarted;
   }
 
+  public Player getPlayerOne() {
+    return playerOne;
+  }
+
+  public Player getPlayerTwo() {
+    return playerOne;
+  }
+
   public Player getOpponent(Player p) {
     if (p == playerOne) {
       return playerTwo;
@@ -62,24 +68,12 @@ public class Duel implements Listener {
     }
   }
 
-  public Arena getArena() {
-    return arena;
-  }
-
-  public boolean isPublic() {
-    return isPublic;
-  }
-
   public boolean isRanked() {
     return ranked;
   }
 
-  public Player getPlayerOne() {
-    return playerOne;
-  }
-
-  public Player getPlayerTwo() {
-    return playerTwo;
+  public Arena getArena() {
+    return arena;
   }
 
   public void startDuel(Kit kit, Arena arena) {
@@ -239,7 +233,7 @@ public class Duel implements Listener {
 
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
-      if ((duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) && duel.isActive()) {
+      if ((duel.playerOne.equals(p) || duel.playerTwo.equals(p)) && duel.isActive()) {
         return true;
       }
     }
@@ -248,7 +242,7 @@ public class Duel implements Listener {
 
   public static Duel getDuel(Player p) {
     for (Duel duel : duels) {
-      if (duel.getPlayerOne().equals(p) || duel.getPlayerTwo().equals(p)) {
+      if (duel.playerOne.equals(p) || duel.playerTwo.equals(p)) {
         return duel;
       }
 

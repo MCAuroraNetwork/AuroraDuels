@@ -1,6 +1,5 @@
 package club.aurorapvp.modules;
 
-import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import java.util.HashSet;
@@ -67,18 +66,6 @@ public class Request {
     requested.sendMessage(Lang.getComponent("request-accepted"));
   }
 
-  public Player getRequester() {
-    return requester;
-  }
-
-  public Player getRequested() {
-    return requested;
-  }
-
-  public Queue getQueue() {
-    return queue;
-  }
-
   public void deny() {
     pendingRequests.remove(this);
     requester.sendMessage(Lang.getComponent("request-denied"));
@@ -87,7 +74,7 @@ public class Request {
 
   public static Request getRequest(Player p) {
     for (Request request : pendingRequests) {
-      if (request.getRequester() == p || request.getRequested() == p) {
+      if (request.requester == p || request.requested == p) {
         return request;
       }
     }
@@ -96,7 +83,7 @@ public class Request {
 
   public static boolean hasPendingRequest(Player p) {
     for (Request request : pendingRequests) {
-      if (request.getRequester() == p || request.getRequested() == p) {
+      if (request.requester == p || request.requested == p) {
         return true;
       }
     }
@@ -118,7 +105,7 @@ public class Request {
       assert request != null;
       request.accept();
 
-      request.getQueue().enterDuelQueue(request.getRequester(), request.getRequested(), false, false);
+      request.queue.enterDuelQueue(request.requester, request.requested, false);
     } else {
       p.sendMessage(Lang.getComponent("no-requests"));
     }
