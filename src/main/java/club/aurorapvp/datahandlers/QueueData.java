@@ -7,7 +7,9 @@ import club.aurorapvp.modules.Queue;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class QueueData {
@@ -30,23 +32,17 @@ public class QueueData {
     return Kit.getKit(queueData.getString("kit"));
   }
 
-  public Arena[] getArenas() {
+  public Set<Arena> getArenas() {
     List<?> arenaNames = queueData.getList("arenas");
-    Arena[] arenaArray;
 
-    if (arenaNames != null) {
-      arenaArray = new Arena[arenaNames.size()];
-    } else {
-      return new Arena[0];
+    Set<Arena> arenas = new HashSet<>();
+
+    assert arenaNames != null;
+    for (Object name : arenaNames) {
+      arenas.add(Arena.getArena((String) name));
     }
 
-    for (int i = 0; i < arenaNames.size(); i++) {
-      if (arenaNames.get(i) instanceof String) {
-        arenaArray[i] = Arena.getArena((String) arenaNames.get(i));
-      }
-    }
-
-    return arenaArray;
+    return arenas;
   }
 
   public void create() {

@@ -94,7 +94,7 @@ public class Queue {
   }
 
   public void reload() {
-    this.arenas.addAll(List.of(this.data.getArenas()));
+    this.arenas.addAll(this.data.getArenas());
 
     if (AuroraDuels.isAuroraKitsInstalled()) {
       this.kit = this.data.getKit();
