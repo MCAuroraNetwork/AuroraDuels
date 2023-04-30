@@ -155,6 +155,16 @@ public class Queue {
     executor.execute(checkQueue);
   }
 
+  public void enterDuelQueue(Player[] players, boolean ranked) {
+    duelQueue.add(new PartyDuel(Set.of(players), ranked));
+
+    for (Player p : players) {
+      p.sendMessage(Lang.getComponent("entered-queue"));
+    }
+
+    executor.execute(checkQueue);
+  }
+
   public void exitDuelQueue(Player p) {
     duelQueue.remove(StandardDuel.getDuel(p));
   }
