@@ -1,6 +1,5 @@
 package club.aurorapvp.events.listeners;
 
-import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Arena;
@@ -33,7 +32,7 @@ public class PlayerEvents implements Listener {
     }
 
     if (Wand.isActive(event.getAction())) {
-      Arena.onWandEvent(event);
+      Arena.onWandUse(event);
     }
   }
 

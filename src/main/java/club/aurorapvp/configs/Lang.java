@@ -30,16 +30,11 @@ public class Lang {
     }
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
-    DEFAULTS.put(
-        "set-spawn1-and-spawn2",
-        "prefix <gradient:#FFAA00:#FF55FF>Left click on the first spawn point of the arena and right click on the second spawn point");
     DEFAULTS.put("set-spawn1", "prefix <gradient:#FFAA00:#FF55FF>Left click to set first spawn");
     DEFAULTS.put("set-spawn2", "prefix <gradient:#FFAA00:#FF55FF>Right click to set second spawn");
     DEFAULTS.put("spawn1-set", "prefix <gradient:#FFAA00:#FF55FF>First spawn set!");
     DEFAULTS.put("spawn2-set", "prefix <gradient:#FFAA00:#FF55FF>Second spawn set!");
     DEFAULTS.put("spawns-set", "prefix <gradient:#FFAA00:#FF55FF>Arena spawnpoints set!");
-    DEFAULTS.put("set-pos1-and-pos2",
-        "prefix <gradient:#FFAA00:#FF55FF>Left click on the first corner of the arena and right click on the second corner");
     DEFAULTS.put("set-pos1", "prefix <gradient:#FFAA00:#FF55FF>Left click to set Position 1");
     DEFAULTS.put("set-pos2", "prefix <gradient:#FFAA00:#FF55FF>Right click to set Position 2");
     DEFAULTS.put("pos1-set", "prefix <gradient:#FFAA00:#FF55FF>Position 1 set!");

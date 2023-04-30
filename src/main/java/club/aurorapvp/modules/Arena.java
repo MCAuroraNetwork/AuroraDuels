@@ -23,8 +23,8 @@ public class Arena {
   private BlockVector3 spawn2 = null;
   private BlockVector3 pos1 = null;
   private BlockVector3 pos2 = null;
-  private static int creationPhase = 0;
-  private static Arena unFinishedArena;
+  private static Arena unfinishedArena;
+  private ArenaState state;
   private boolean occupied = false;
   private final SchematicData schematic;
   private final ArenaData data;
@@ -33,11 +33,13 @@ public class Arena {
 
   public Arena(String arenaName) {
     this.name = arenaName;
+    this.state = ArenaState.IDLE;
 
     this.schematic = new SchematicData(this);
     this.data = new ArenaData(this);
 
     if (this.exists()) {
+      state = ArenaState.COMPLETE;
       this.reload();
     }
   }
@@ -59,6 +61,10 @@ public class Arena {
 
   public static Set<Arena> getArenas() {
     return arenas;
+  }
+
+  public ArenaState getState() {
+    return state;
   }
 
   public String getName() {
@@ -112,102 +118,96 @@ public class Arena {
     return null;
   }
 
-  public static void onWandEvent(PlayerInteractEvent event) {
+  public static void onWandUse(PlayerInteractEvent event) {
     Player p = event.getPlayer();
     p.setCooldown(Material.IRON_HOE, 20);
     Action action = event.getAction();
     BlockVector3 vector = BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation());
 
-    if (creationPhase != 0) {
-      switch (creationPhase) {
-        case 1 -> unFinishedArena.setSpawns(p, action, vector);
-        case 2 -> unFinishedArena.setCorners(p, action, vector);
-        default -> {
-          AuroraDuels.INSTANCE.getLogger()
-              .warning("Invalid arena creation phase " + creationPhase + "! Resetting to phase 0.");
-          creationPhase = 0;
-        }
+    switch (unfinishedArena.getState()) {
+      case SPAWN_1, SPAWN_2 -> unfinishedArena.setSpawns(p, action, vector);
+      case CORNER_1, CORNER_2 -> unfinishedArena.setCorners(p, action, vector);
+      default -> {
+        AuroraDuels.INSTANCE.getLogger().warning(
+            "Invalid ArenaState value " + unfinishedArena.getState().toString() +
+                "! Resetting to idle");
+        unfinishedArena.state = ArenaState.IDLE;
       }
     }
   }
 
-  public void create(Player p) {
-    if (creationPhase == 0 && !this.exists()) {
-      Wand.setActive("right", true);
-      Wand.setActive("left", true);
-      spawn1 = null;
-      spawn2 = null;
-      pos1 = null;
-      pos2 = null;
-      creationPhase = 1;
-      unFinishedArena = this;
+  public void startCreation(Player p) {
+    if (state == ArenaState.IDLE && !this.exists()) {
+      state = ArenaState.SPAWN_1;
+      Wand.setActive(Wand.WandActivity.LEFT);
+      unfinishedArena = this;
 
-      p.getInventory().getItemInMainHand().add();
+      p.getInventory().getItemInMainHand().setAmount(1);
       p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
-      p.sendMessage(Lang.getComponent("set-spawn1-and-spawn2"));
-    } else if (creationPhase != 0) {
+      p.sendMessage(Lang.getComponent("set-spawn1"));
+    } else if (state != ArenaState.IDLE) {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
-    } else if (this.exists()) {
+    } else {
       p.sendMessage(Lang.getComponent("arena-already-exists"));
     }
   }
 
   public void setSpawns(Player p, Action action, BlockVector3 vector) {
-    if (action.isLeftClick()) {
+    if (action.isLeftClick() && state == ArenaState.SPAWN_1) {
       spawn1 = vector;
+
       p.sendMessage(
           MiniMessage.miniMessage().deserialize(Lang.getString("spawn1-set") +
               " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " +
               spawn1.getBlockZ() +
               ")"));
-      if (spawn2 == null) {
-        p.sendMessage(Lang.getComponent("set-spawn2"));
-      }
-    } else if (action.isRightClick()) {
+
+      p.sendMessage(Lang.getComponent("set-spawn2"));
+      state = ArenaState.SPAWN_2;
+      Wand.setActive(Wand.WandActivity.RIGHT);
+    }
+
+    if (action.isRightClick() && state == ArenaState.SPAWN_2) {
       spawn2 = vector;
+
       p.sendMessage(
           MiniMessage.miniMessage().deserialize(Lang.getString("spawn2-set") +
               " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " +
               spawn2.getBlockZ() + ")"));
-      if (spawn1 == null) {
-        p.sendMessage(Lang.getComponent("set-spawn1"));
-      }
-    }
-    if (spawn1 != null && spawn2 != null) {
+
       p.sendMessage(Lang.getComponent("spawns-set"));
-      p.sendMessage(Lang.getComponent("set-pos1-and-pos2"));
+      p.sendMessage(Lang.getComponent("set-pos1"));
       world = p.getWorld();
-      creationPhase++;
+      state = ArenaState.CORNER_1;
+      Wand.setActive(Wand.WandActivity.LEFT);
     }
   }
 
   public void setCorners(Player p, Action action, BlockVector3 vector) {
-    if (action.isLeftClick()) {
+    if (action.isLeftClick() && state == ArenaState.CORNER_1) {
       pos1 = vector;
       p.sendMessage(
           MiniMessage.miniMessage().deserialize(Lang.getString("pos1-set") +
               " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() +
               ")"));
-      if (pos2 == null) {
-        p.sendMessage(Lang.getComponent("set-pos2"));
-      }
-    } else if (action.isRightClick()) {
+
+      p.sendMessage(Lang.getComponent("set-pos2"));
+      state = ArenaState.CORNER_2;
+      Wand.setActive(Wand.WandActivity.RIGHT);
+    }
+
+    if (action.isRightClick() && state == ArenaState.CORNER_2) {
       pos2 = vector;
       p.sendMessage(
           MiniMessage.miniMessage().deserialize(Lang.getString("pos2-set") +
               " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() +
               ")"));
-      if (pos1 == null) {
-        p.sendMessage(Lang.getComponent("set-pos1"));
-      }
-    }
-    if (pos1 != null && pos2 != null) {
+
       p.sendMessage(Lang.getComponent("arena-created"));
-      Wand.setActive("right", false);
-      Wand.setActive("left", false);
+      Wand.setActive(Wand.WandActivity.INACTIVE);
       schematic.create();
       data.create();
-      creationPhase = 0;
+      state = ArenaState.COMPLETE;
       arenas.add(this);
     }
   }
@@ -245,5 +245,14 @@ public class Arena {
     }
 
     AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
+  }
+
+  private enum ArenaState {
+    IDLE,
+    SPAWN_1,
+    SPAWN_2,
+    CORNER_1,
+    CORNER_2,
+    COMPLETE
   }
 }

@@ -23,7 +23,7 @@ public class ArenaCommands extends BaseCommand {
   @Syntax("[name]")
   @Description("Creates an arena")
   public void onCreate(Player p, String name) {
-    new Arena(name).create(p);
+    new Arena(name).startCreation(p);
   }
 
   @Subcommand("delete")

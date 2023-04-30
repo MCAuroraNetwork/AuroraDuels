@@ -48,8 +48,8 @@ public final class AuroraDuels extends JavaPlugin {
     Events.init();
     Arena.init();
     Queue.init();
-    Wand.init();
     Duel.init();
+    Wand.init();
 
     getLogger().info(
         "AuroraDuels loaded in " + (System.currentTimeMillis() - startTime) +
