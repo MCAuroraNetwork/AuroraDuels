@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
 public class Queue {
@@ -42,7 +43,7 @@ public class Queue {
   }
 
   public static void init() {
-    File dir = new File(AuroraDuels.DATA_FOLDER, "/queues/");
+    File dir = new File(AuroraDuels.INSTANCE.getDataFolder(), "/queues/");
 
     if (Config.get().getBoolean("queues.enable-default-queue")) {
       Queue queue = new Queue("Default");
@@ -121,7 +122,7 @@ public class Queue {
       currentCreator = p;
       unFinishedQueue = this;
 
-      p.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
+      p.sendMessage(MiniMessage.miniMessage().deserialize(
           String.format(Lang.getString("add-arena"), arenas.size())));
     } else if (this.exists()) {
       p.sendMessage(Lang.getComponent("queue-already-exists"));
@@ -138,7 +139,7 @@ public class Queue {
       p.sendMessage(Lang.getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
       arenas.add(Arena.getArena(str));
-      p.sendMessage(AuroraDuels.COMPONENT_DESERIALIZER.deserialize(
+      p.sendMessage(MiniMessage.miniMessage().deserialize(
           String.format(Lang.getString("add-arena"), arenas.size())));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));

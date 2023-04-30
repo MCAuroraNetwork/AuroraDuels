@@ -33,7 +33,7 @@ public class SchematicData {
   public SchematicData(Arena arena) {
     SchematicData.arena = arena;
 
-    FILE = new File(AuroraDuels.DATA_FOLDER, "/arenas/schematics/" + arena.getName() + ".schem");
+    FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "/arenas/schematics/" + arena.getName() + ".schem");
   }
 
   public File getFile() {

@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -42,7 +43,7 @@ public class Arena {
   }
 
   public static void init() {
-    File dir = new File(AuroraDuels.DATA_FOLDER, "/arenas/");
+    File dir = new File(AuroraDuels.INSTANCE.getDataFolder(), "/arenas/");
 
     if (dir.exists()) {
       for (File file : dir.listFiles()) {
@@ -155,7 +156,7 @@ public class Arena {
     if (action.isLeftClick()) {
       spawn1 = vector;
       p.sendMessage(
-          AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("spawn1-set") +
+          MiniMessage.miniMessage().deserialize(Lang.getString("spawn1-set") +
               " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " +
               spawn1.getBlockZ() +
               ")"));
@@ -165,7 +166,7 @@ public class Arena {
     } else if (action.isRightClick()) {
       spawn2 = vector;
       p.sendMessage(
-          AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("spawn2-set") +
+          MiniMessage.miniMessage().deserialize(Lang.getString("spawn2-set") +
               " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " +
               spawn2.getBlockZ() + ")"));
       if (spawn1 == null) {
@@ -184,7 +185,7 @@ public class Arena {
     if (action.isLeftClick()) {
       pos1 = vector;
       p.sendMessage(
-          AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("pos1-set") +
+          MiniMessage.miniMessage().deserialize(Lang.getString("pos1-set") +
               " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() +
               ")"));
       if (pos2 == null) {
@@ -193,7 +194,7 @@ public class Arena {
     } else if (action.isRightClick()) {
       pos2 = vector;
       p.sendMessage(
-          AuroraDuels.COMPONENT_DESERIALIZER.deserialize(Lang.getString("pos2-set") +
+          MiniMessage.miniMessage().deserialize(Lang.getString("pos2-set") +
               " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() +
               ")"));
       if (pos1 == null) {

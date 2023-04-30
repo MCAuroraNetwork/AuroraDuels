@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
   private static final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
-  private static final File FILE = new File(AuroraDuels.DATA_FOLDER, "lang.yml");
+  private static final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "lang.yml");
   private static YamlConfiguration lang;
 
   public static void init() {
@@ -135,7 +136,7 @@ public class Lang {
 
     pathString = String.format(pathString, args);
 
-    return AuroraDuels.COMPONENT_DESERIALIZER.deserialize(pathString);
+    return MiniMessage.miniMessage().deserialize(pathString);
   }
 
   public static Component getComponent(String message) {
@@ -148,7 +149,7 @@ public class Lang {
             PLACEHOLDERS.get(placeholder));
       }
     }
-    return AuroraDuels.COMPONENT_DESERIALIZER.deserialize(pathString);
+    return MiniMessage.miniMessage().deserialize(pathString);
   }
 
   public static YamlConfiguration get() {

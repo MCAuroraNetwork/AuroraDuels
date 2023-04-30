@@ -8,19 +8,11 @@ import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import club.aurorapvp.placeholders.Placeholders;
-import java.io.File;
-import java.util.logging.Logger;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraDuels extends JavaPlugin {
   public static JavaPlugin INSTANCE;
-  public static Logger LOGGER;
-  public static File DATA_FOLDER;
-  public static PlainTextComponentSerializer COMPONENT_SERIALIZER;
-  public static MiniMessage COMPONENT_DESERIALIZER;
   public static boolean auroraKitsInstalled = false;
   public static boolean auroraCombatInstalled = false;
 
@@ -28,12 +20,7 @@ public final class AuroraDuels extends JavaPlugin {
   public void onEnable() {
     long startTime = System.currentTimeMillis();
 
-    // Register important variables
     INSTANCE = this;
-    LOGGER = this.getLogger();
-    DATA_FOLDER = this.getDataFolder();
-    COMPONENT_SERIALIZER = PlainTextComponentSerializer.plainText();
-    COMPONENT_DESERIALIZER = MiniMessage.miniMessage();
 
     // Initialize configs
     Config.init();

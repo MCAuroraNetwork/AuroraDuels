@@ -8,6 +8,7 @@ import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,7 +41,7 @@ public class PlayerEvents implements Listener {
   public void onPlayerChat(AsyncChatEvent event) {
     if (Queue.isCreator(event.getPlayer()) && !Queue.isArenasSet()) {
       Queue.isUnFinishedQueue().createArenaList(event.getPlayer(),
-          AuroraDuels.COMPONENT_SERIALIZER.serialize(event.originalMessage()));
+          MiniMessage.miniMessage().serialize(event.originalMessage()));
       event.setCancelled(true);
     }
   }

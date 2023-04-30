@@ -27,7 +27,7 @@ public class PluginCommands extends BaseCommand {
     Arena.reloadAll();
     Queue.reloadAll();
 
-    AuroraDuels.LOGGER.info(
+    AuroraDuels.INSTANCE.getLogger().info(
         "AuroraDuels reloaded in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
