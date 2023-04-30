@@ -25,9 +25,7 @@ public class Commands {
     MANAGER.registerCommand(new RankedCommands());
     MANAGER.registerCommand(new PluginCommands());
     MANAGER.registerCommand(new QueueCommands());
-  }
 
-  public static void registerCompletions() {
     CommandCompletions<BukkitCommandCompletionContext> commandCompletions =
         MANAGER.getCommandCompletions();
 

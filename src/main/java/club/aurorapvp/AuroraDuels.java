@@ -58,7 +58,6 @@ public final class AuroraDuels extends JavaPlugin {
 
     // Initialize classes
     Commands.init();
-    Commands.registerCompletions();
     Events.init();
     Arena.init();
     Queue.init();
