@@ -35,7 +35,7 @@ public class Request {
       requester.sendMessage(Lang.getComponent("requested-player-has-request"));
       return;
     } else if (Duel.inDuel(requested)) {
-      requester.sendMessage("");
+      requester.sendMessage(Lang.getComponent("player-in-duel"));
       return;
     }
 

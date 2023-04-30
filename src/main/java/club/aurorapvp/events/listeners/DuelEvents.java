@@ -16,8 +16,9 @@ public class DuelEvents implements Listener {
       return;
     }
 
-    CombatTag.setTaggable(event.getPlayerOne(), false);
-    CombatTag.setTaggable(event.getPlayerTwo(), false);
+    for (Player p : event.getDuel().getPlayers()) {
+      CombatTag.setTaggable(p, false);
+    }
 
     Rating.setUpdating("default", false);
   }
@@ -28,12 +29,15 @@ public class DuelEvents implements Listener {
       return;
     }
 
-    CombatTag.setTaggable(event.getPlayerOne(), true);
-    CombatTag.setTaggable(event.getPlayerTwo(), true);
-
-    if (event.getDuel().isRanked()) {
-      Rating.changeRating(event.getLoser(), event.getWinner(), "duels");
+    for (Player p : event.getDuel().getPlayers()) {
+      CombatTag.setTaggable(p, true);
     }
+
+    // TODO update to account for 2v2+ duels
+    /*
+    if (event.getDuel().isRanked()) {
+      Rating.changeRating(event.getLosers(), event.getWinners(), "duels");
+    */
 
     for (Player p : event.getDuel().getSpectators()) {
       event.getDuel().setSpectator(p, false);

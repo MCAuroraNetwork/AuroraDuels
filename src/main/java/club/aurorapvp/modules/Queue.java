@@ -10,7 +10,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -83,15 +82,14 @@ public class Queue {
     return arenas;
   }
 
-  public Player[] getPlayers() {
+  public Set<Player> getPlayers() {
     Set<Player> playerSet = new HashSet<>();
 
     for (Duel duel : duelQueue) {
-      playerSet.add(duel.getPlayerOne());
-      playerSet.add(duel.getPlayerTwo());
+      playerSet.addAll(duel.getPlayers());
     }
 
-    return playerSet.toArray(new Player[0]);
+    return playerSet;
   }
 
   public void reload() {
@@ -151,21 +149,21 @@ public class Queue {
   }
 
   public void enterDuelQueue(Player p, Player opponent, boolean ranked) {
-    duelQueue.add(new Duel(p, opponent, ranked));
+    duelQueue.add(new StandardDuel(p, opponent, ranked));
     p.sendMessage(Lang.getComponent("entered-queue"));
     opponent.sendMessage(Lang.getComponent("entered-queue"));
     executor.execute(checkQueue);
   }
 
   public void exitDuelQueue(Player p) {
-    duelQueue.remove(Duel.getDuel(p));
+    duelQueue.remove(StandardDuel.getDuel(p));
   }
 
   private final Runnable checkQueue = () -> {
     if (duelQueue.size() > 0) {
       for (Arena arena : this.arenas) {
         if (!arena.isOccupied()) {
-          duelQueue.getLast().startDuel(kit, arena);
+          duelQueue.getLast().startDuel(arena, kit);
         }
       }
     }

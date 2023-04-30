@@ -3,7 +3,6 @@ package club.aurorapvp.placeholders;
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Queue;
-import java.util.concurrent.TimeUnit;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -50,26 +49,29 @@ public class Placeholders extends PlaceholderExpansion {
       return "Player offline";
     }
 
+    // TODO: update to account for 2v2+ duels
+
+    /*
     if (params.startsWith("opponent_ping")) {
       if (p.isOnline()) {
-        if (Duel.inDuel(p.getPlayer())) {
-          return String.valueOf(Duel.getDuel(p.getPlayer()).getOpponent(p.getPlayer()).getPing());
+        if (StandardDuel.inDuel(p.getPlayer())) {
+          return String.valueOf(StandardDuel.getDuel(p.getPlayer()).getOpponent(p.getPlayer()).getPing());
         }
       }
     }
 
     if (params.startsWith("opponent")) {
       if (p.isOnline()) {
-        if (Duel.inDuel(p.getPlayer())) {
-          return Duel.getDuel(p.getPlayer()).getOpponent(p.getPlayer()).getName();
+        if (StandardDuel.inDuel(p.getPlayer())) {
+          return StandardDuel.getDuel(p.getPlayer()).getOpponent(p.getPlayer()).getName();
         }
       }
     }
 
     if (params.startsWith("duel_duration")) {
       if (p.isOnline()) {
-        if (Duel.inDuel(p.getPlayer())) {
-          Long elapsed = Duel.getDuel(p.getPlayer()).getElapsed();
+        if (StandardDuel.inDuel(p.getPlayer())) {
+          Long elapsed = StandardDuel.getDuel(p.getPlayer()).getElapsed();
 
           return String.format("%d min, %d sec",
               TimeUnit.MILLISECONDS.toMinutes(elapsed),
@@ -79,6 +81,8 @@ public class Placeholders extends PlaceholderExpansion {
         }
       }
     }
+    */
+
     return null;
   }
 }

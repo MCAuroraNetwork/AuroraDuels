@@ -1,43 +1,32 @@
 package club.aurorapvp.modules;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
-import club.aurorapvp.events.custom.DuelEndEvent;
-import club.aurorapvp.events.custom.DuelStartEvent;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class Duel implements Listener {
+public abstract class Duel {
+  public static Set<Duel> duels = new HashSet<>();
   private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
-  private static Set<Duel> duels = new HashSet<>();
-  private final Set<Player> spectators = new HashSet<>();
-  private Long timeStarted;
-  private final Timer t = new Timer();
-  private final Player playerOne;
-  private final Player playerTwo;
+  protected final Set<Player> players = new HashSet<>();
+  protected final Set<Player> spectators = new HashSet<>();
+  protected Long timeStarted;
   private final boolean ranked;
-  private boolean active = false;
-  private Arena arena;
+  protected boolean active = false;
+  protected Arena arena;
 
-  public Duel(Player p1, Player p2, boolean ranked) {
-    this.playerOne = p1;
-    this.playerTwo = p2;
+  public Duel(Set<Player> players, boolean ranked) {
+    this.players.addAll(players);
     this.ranked = ranked;
+    duels.add(this);
   }
 
   public static void init() {
@@ -46,143 +35,32 @@ public class Duel implements Listener {
     }
   }
 
+  public abstract void startDuel(Arena arena, Kit kit);
+
+  public abstract void endDuel();
+
   public Long getElapsed() {
     return System.currentTimeMillis() - timeStarted;
-  }
-
-  public Player getPlayerOne() {
-    return playerOne;
-  }
-
-  public Player getPlayerTwo() {
-    return playerOne;
-  }
-
-  public Player getOpponent(Player p) {
-    if (p == playerOne) {
-      return playerTwo;
-    } else if (p == playerTwo) {
-      return playerOne;
-    } else {
-      return null;
-    }
-  }
-
-  public boolean isRanked() {
-    return ranked;
   }
 
   public Arena getArena() {
     return arena;
   }
 
-  public void startDuel(Kit kit, Arena arena) {
-    if (kit != null) {
-      Kit.giveKit(kit, playerOne);
-      Kit.giveKit(kit, playerTwo);
-    } else {
-      Kit kit1 = Duel.getDuelKit(playerOne);
-      Kit kit2 = Duel.getDuelKit(playerTwo);
-
-      if (kit1 != null) {
-        Kit.giveKit(kit1, playerOne);
-      }
-
-      if (kit2 != null) {
-        Kit.giveKit(kit2, playerTwo);
-      }
-    }
-
-    this.arena = arena;
-
-    Location spawn1 =
-        new Location(arena.getWorld(),
-            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
-            arena.getFirstSpawn().getZ());
-    Location spawn2 =
-        new Location(arena.getWorld(),
-            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
-            arena.getSecondSpawn().getZ());
-
-    playerOne.teleportAsync(spawn1);
-    playerTwo.teleportAsync(spawn2);
-
-    final Title title1 =
-        Title.title(Lang.getComponent("duel-started"),
-            Component.text("Opponent: " + playerTwo.getName()));
-    final Title title2 =
-        Title.title(Lang.getComponent("duel-started"),
-            Component.text("Opponent: " + playerOne.getName()));
-
-    playerOne.showTitle(title1);
-    playerTwo.showTitle(title2);
-
-    Duel thisDuel = this;
-
-    t.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        if (thisDuel.isActive()) {
-          playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
-          playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
-          thisDuel.endDuel();
-        }
-        this.cancel();
-      }
-    }, Config.get().getInt("duels.max-duration"));
-
-    Queue.getQueue(playerOne).exitDuelQueue(playerOne);
-    arena.setOccupied(true);
-    duels.add(this);
-    timeStarted = System.currentTimeMillis();
-    active = true;
-
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelStartEvent(thisDuel));
-      }
-    }.runTask(AuroraDuels.INSTANCE);
+  public Set<Player> getPlayers() {
+    return players;
   }
 
-  public void endDuel() {
-    if (playerOne.isDead() || !playerOne.isOnline()) {
-      playerTwo.showTitle(
-          Title.title(Lang.getComponent("you-won"),
-              Component.text("Opponent: " + playerOne.getName())));
-      playerOne.sendMessage(Lang.getComponent("you-lost"));
-    } else if (playerTwo.isDead() || !playerTwo.isOnline()) {
-      playerOne.showTitle(
-          Title.title(Lang.getComponent("you-won"),
-              Component.text("Opponent: " + playerTwo.getName())));
-      playerTwo.sendMessage(Lang.getComponent("you-lost"));
-    } else {
-      playerOne.sendMessage(Lang.getComponent("draw"));
-      playerTwo.sendMessage(Lang.getComponent("draw"));
-    }
+  public Set<Player> getSpectators() {
+    return spectators;
+  }
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        arena.reset();
-        arena.setOccupied(false);
-        this.cancel();
-      }
-    }, 3000);
+  public boolean isActive() {
+    return active;
+  }
 
-    this.active = false;
-    Duel thisDuel = this;
-
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel));
-      }
-    }.runTask(AuroraDuels.INSTANCE);
-
-    duels.remove(this);
+  public boolean isRanked() {
+    return ranked;
   }
 
   public void setSpectator(Player p, boolean spectator) {
@@ -205,12 +83,8 @@ public class Duel implements Listener {
     }
   }
 
-  public Player[] getSpectators() {
-    return spectators.toArray(new Player[0]);
-  }
-
-  public boolean isActive() {
-    return active;
+  public boolean contains(Player p) {
+    return players.contains(p);
   }
 
   public static Kit getDuelKit(Player p) {
@@ -233,7 +107,7 @@ public class Duel implements Listener {
 
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
-      if ((duel.playerOne.equals(p) || duel.playerTwo.equals(p)) && duel.isActive()) {
+      if ((duel.contains(p) || duel.contains(p)) && duel.isActive()) {
         return true;
       }
     }
@@ -242,10 +116,9 @@ public class Duel implements Listener {
 
   public static Duel getDuel(Player p) {
     for (Duel duel : duels) {
-      if (duel.playerOne.equals(p) || duel.playerTwo.equals(p)) {
+      if (duel.contains(p)) {
         return duel;
       }
-
     }
     return null;
   }
