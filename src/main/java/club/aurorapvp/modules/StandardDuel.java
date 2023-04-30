@@ -29,14 +29,6 @@ public class StandardDuel extends Duel implements Listener {
     STANDARD_DUELS.add(this);
   }
 
-  public Player getPlayerOne() {
-    return playerOne;
-  }
-
-  public Player getPlayerTwo() {
-    return playerOne;
-  }
-
   public Player getOpponent(Player p) {
     if (p == playerOne) {
       return playerTwo;
@@ -47,6 +39,7 @@ public class StandardDuel extends Duel implements Listener {
     }
   }
 
+  @Override
   public void startDuel(Arena arena, Kit kit) {
     this.arena = arena;
 
@@ -54,8 +47,8 @@ public class StandardDuel extends Duel implements Listener {
       Kit.giveKit(kit, playerOne);
       Kit.giveKit(kit, playerTwo);
     } else {
-      Kit kit1 = StandardDuel.getDuelKit(playerOne);
-      Kit kit2 = StandardDuel.getDuelKit(playerTwo);
+      Kit kit1 = Duel.getDuelKit(playerOne);
+      Kit kit2 = Duel.getDuelKit(playerTwo);
 
       if (kit1 != null) {
         Kit.giveKit(kit1, playerOne);
@@ -115,6 +108,7 @@ public class StandardDuel extends Duel implements Listener {
     }.runTask(AuroraDuels.INSTANCE);
   }
 
+  @Override
   public void endDuel() {
     if (playerOne.isDead() || !playerOne.isOnline()) {
       playerTwo.showTitle(
