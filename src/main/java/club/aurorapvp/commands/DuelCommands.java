@@ -4,6 +4,7 @@ import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Duel;
 import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Request;
+import club.aurorapvp.modules.StandardRequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
@@ -61,9 +62,9 @@ public class DuelCommands extends BaseCommand {
   @Description("Sends a duel request to another player")
   public void onNewRquest(Player p, @Optional String[] args) {
     if (args.length > 1) {
-      new Request(args[1], p, Bukkit.getPlayer(args[0]));
+      new StandardRequest(args[1], p, Bukkit.getPlayer(args[0]));
     } else {
-      new Request("Default", p, Bukkit.getPlayer(args[0]));
+      new StandardRequest("Default", p, Bukkit.getPlayer(args[0]));
     }
   }
 
