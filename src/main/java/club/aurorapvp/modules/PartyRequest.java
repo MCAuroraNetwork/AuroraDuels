@@ -68,10 +68,7 @@ public class PartyRequest extends Request {
   }
 
   public void accept(Player accepter) {
-    for (Player p : requested) {
-      p.sendMessage(Lang.getComponent("request-accepted"));
-    }
-
+    accepter.sendMessage(Lang.getComponent("request-accepted"));
     playersAccepted.put(accepter, true);
 
     if (!playersAccepted.containsValue(false)) {
@@ -87,7 +84,7 @@ public class PartyRequest extends Request {
     requester.sendMessage(Lang.getComponent("request-denied"));
 
     for (Player p : requested) {
-      p.sendMessage(Lang.getComponent("request-accepted"));
+      p.sendMessage(Lang.getComponent("request-denied"));
     }
   }
 }
