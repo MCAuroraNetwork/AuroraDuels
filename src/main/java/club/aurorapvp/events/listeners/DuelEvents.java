@@ -33,11 +33,9 @@ public class DuelEvents implements Listener {
       CombatTag.setTaggable(p, true);
     }
 
-    // TODO update to account for 2v2+ duels
-    /*
-    if (event.getDuel().isRanked()) {
-      Rating.changeRating(event.getLosers(), event.getWinners(), "duels");
-    */
+    if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() == 2) {
+      Rating.changeRating(event.getLosers().toArray(new Player[0])[0], event.getWinners().toArray(new Player[0])[0], "duels");
+    }
 
     for (Player p : event.getDuel().getSpectators()) {
       event.getDuel().setSpectator(p, false);
