@@ -224,7 +224,7 @@ public class PartyDuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel));
+        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel, winners, losers));
       }
     }.runTask(AuroraDuels.INSTANCE);
 
@@ -256,7 +256,7 @@ public class PartyDuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel));
+        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel, null, null));
       }
     }.runTask(AuroraDuels.INSTANCE);
 

@@ -130,7 +130,7 @@ public class StandardDuel extends Duel implements Listener {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel));
+        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel, winner, loser));
       }
     }.runTask(AuroraDuels.INSTANCE);
 
@@ -159,7 +159,7 @@ public class StandardDuel extends Duel implements Listener {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel));
+        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel, null, null));
       }
     }.runTask(AuroraDuels.INSTANCE);
 
