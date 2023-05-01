@@ -5,6 +5,7 @@ import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.DuelStartEvent;
 import club.aurorapvp.modules.CombatTag;
 import club.aurorapvp.modules.Rating;
+import java.util.Set;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,6 +36,22 @@ public class DuelEvents implements Listener {
 
     if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() == 2) {
       Rating.changeRating(event.getLosers().toArray(new Player[0])[0], event.getWinners().toArray(new Player[0])[0], "duels");
+    } else if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() > 2) {
+      Set<Player> losers = event.getLosers();
+      Set<Player> winners = event.getWinners();
+
+      double loserAvgRating = losers.stream().mapToDouble(p -> Rating.getRating(p, "duels")
+          .getPoints()).average().orElse(0.0);
+      double winnerAvgRating = winners.stream().mapToDouble(p -> Rating.getRating(p, "duels")
+          .getPoints()).average().orElse(0.0);
+
+      for (Player loser : losers) {
+        Rating.changeRating(loser, (int) winnerAvgRating, "duels");
+      }
+
+      for (Player winner : winners) {
+        Rating.changeRating(winner, (int) loserAvgRating, "duels");
+      }
     }
 
     for (Player p : event.getDuel().getSpectators()) {
