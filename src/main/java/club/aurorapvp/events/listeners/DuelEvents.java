@@ -51,7 +51,7 @@ public class DuelEvents implements Listener {
       }
 
       for (Player winner : winners) {
-        Rating.changeRating(winner, (int) winnerAvgRating, "duels");
+        Rating.changeRating(winner, (int) loserAvgRating, "duels");
       }
     }
 
