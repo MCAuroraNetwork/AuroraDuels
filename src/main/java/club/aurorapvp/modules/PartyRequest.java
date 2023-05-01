@@ -77,6 +77,8 @@ public class PartyRequest extends Request {
     if (!playersAccepted.containsValue(false)) {
       pendingRequests.remove(this);
       requester.sendMessage(Lang.getComponent("request-accepted"));
+
+      queue.enterDuelQueue(requester, requested[0], false);
     }
   }
 

@@ -2,6 +2,7 @@ package club.aurorapvp.modules;
 
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
@@ -52,6 +53,11 @@ public class StandardRequest extends Request {
     pendingRequests.remove(this);
     requester.sendMessage(Lang.getComponent("request-accepted"));
     p.sendMessage(Lang.getComponent("request-accepted"));
+
+    Player[] players = Arrays.copyOf (requested, requested.length + 1);
+    players[players.length - 1] = requester;
+
+    queue.enterDuelQueue(players, false);
   }
 
   public void deny() {

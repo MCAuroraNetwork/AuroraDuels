@@ -54,15 +54,6 @@ public abstract class Request {
 
       assert request != null;
       request.accept(p);
-
-      if (request.requested.length > 1) {
-        Player [] players = Arrays.copyOf (request.requested, request.requested.length + 1);
-        players [players.length - 1] = request.requester;
-
-        request.queue.enterDuelQueue(players, false);
-      } else {
-        request.queue.enterDuelQueue(request.requester, request.requested[0], false);
-      }
     } else {
       p.sendMessage(Lang.getComponent("no-requests"));
     }
