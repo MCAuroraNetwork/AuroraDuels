@@ -20,9 +20,8 @@ public class PartyRequest extends Request {
     } else if (requested == null || requested.length == 0) {
       requester.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
-    }
-    if (hasPendingRequest(requester)) {
-      requester.sendMessage(Lang.getComponent("already-has-pending-request"));
+    } else if (hasPendingRequest(requester)) {
+      requester.sendMessage(Lang.getComponent("already-has-request"));
       return;
     }
 
