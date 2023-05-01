@@ -9,6 +9,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import java.util.Objects;
@@ -34,7 +35,7 @@ public class PartyDuelCommands extends BaseCommand {
   @CommandCompletion("@players @queues")
   @Syntax("[player1, player2, player3] [queue]")
   @Description("Sends a duel request to another player")
-  public void onNewRquest(Player p, String[] playerNames, @Optional String queueName) {
+  public void onNewRquest(Player p, @Split(",") String[] playerNames, @Optional String queueName) {
     if (playerNames.length < 2) {
       return;
     }
