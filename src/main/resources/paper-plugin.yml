@@ -33,6 +33,9 @@ commands:
   arena:
     description: Manages custom arenas
     permission: auroraduels.admin
+  partyduel:
+    description: Allows the formation of party duels
+    permission: auroraduels.duel
 permissions:
   auroraduels.admin:
     description: Enables use of AuroraDuels admin commands
