@@ -35,6 +35,8 @@ public class PartyRequest extends Request {
       }
     }
 
+    pendingRequests.add(this);
+
     requester.sendMessage(Lang.getComponent("sent-request"));
 
     for (Player p : requested) {

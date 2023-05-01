@@ -17,7 +17,7 @@ public class StandardRequest extends Request {
       requester.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
     } else if (hasPendingRequest(requester)) {
-      requester.sendMessage(Lang.getComponent("already-has-pending-request"));
+      requester.sendMessage(Lang.getComponent("already-has-request"));
       return;
     } else if (hasPendingRequest(requested)) {
       requester.sendMessage(Lang.getComponent("requested-player-has-request"));
@@ -26,6 +26,8 @@ public class StandardRequest extends Request {
       requester.sendMessage(Lang.getComponent("player-in-duel"));
       return;
     }
+
+    pendingRequests.add(this);
 
     requester.sendMessage(Lang.getComponent("sent-request"));
     requested.sendMessage(Lang.formatComponent("received-request", requester.getName()));

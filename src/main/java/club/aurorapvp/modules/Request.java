@@ -16,7 +16,6 @@ public abstract class Request {
     this.requester = requester;
     this.requested = requested;
     this.queue = Queue.getQueue(queueName);
-    pendingRequests.add(this);
   }
 
   public abstract void accept(Player p);
