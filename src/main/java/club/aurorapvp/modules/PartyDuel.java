@@ -6,7 +6,9 @@ import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.DuelStartEvent;
 import com.google.common.collect.Iterables;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
@@ -26,10 +28,30 @@ public class PartyDuel extends Duel {
   public PartyDuel(Set<Player> players, boolean ranked) {
     super(players, ranked);
 
-    Iterable<List<Player>>
-        partitions = Iterables.partition(this.getPlayers(), (this.getPlayers().size() / 2));
+    int size = this.getPlayers().size();
+    Player extra = null;
 
-    this.team1 = new HashSet<>(partitions.iterator().next()).toArray(new Player[0]);
+    if (size % 2 == 1) {
+      Iterator<Player> iterator = this.getPlayers().iterator();
+      for (int i = 0; i < size - 1; i++) {
+        iterator.next();
+      }
+      extra = iterator.next();
+      iterator.remove();
+      size--;
+    }
+
+    Iterable<List<Player>>
+        partitions = Iterables.partition(this.getPlayers(), (size / 2));
+
+    Player[] temp = new HashSet<>(partitions.iterator().next()).toArray(new Player[0]);
+
+    if (extra != null) {
+      temp = Arrays.copyOf(temp, temp.length + 1);
+      temp[temp.length - 1] = extra;
+    }
+
+    this.team1 = temp;
     this.team2 = new HashSet<>(Iterables.getLast(partitions)).toArray(new Player[0]);
 
     PARTY_DUELS.add(this);

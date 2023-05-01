@@ -166,7 +166,7 @@ public class Queue {
   }
 
   public void exitDuelQueue(Player p) {
-    duelQueue.remove(StandardDuel.getDuel(p));
+    duelQueue.remove(Duel.getDuel(p));
   }
 
   private final Runnable checkQueue = () -> {
