@@ -71,6 +71,8 @@ public class PlayerEvents implements Listener {
 
       if (teammatesDead) {
         duel.endDuel(duel.getOpponents(event.getPlayer()), duel.getTeammates(event.getPlayer()));
+      } else {
+        duel.setSpectator(event.getPlayer(), true);
       }
     }
   }
