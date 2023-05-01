@@ -57,6 +57,7 @@ public class PlayerEvents implements Listener {
 
     if (Duel.getDuel(event.getPlayer()).getPlayers().size() == 2) {
       StandardDuel duel = (StandardDuel) Duel.getDuel(event.getPlayer());
+
       duel.endDuel(new Player[]{duel.getOpponent(event.getPlayer())}, new Player[]{event.getPlayer()});
     } else {
       PartyDuel duel = (PartyDuel) Duel.getDuel(event.getPlayer());
@@ -72,6 +73,7 @@ public class PlayerEvents implements Listener {
       if (teammatesDead) {
         duel.endDuel(duel.getOpponents(event.getPlayer()), duel.getTeammates(event.getPlayer()));
       } else {
+        event.getPlayer().spigot().respawn();
         duel.setSpectator(event.getPlayer(), true);
       }
     }
