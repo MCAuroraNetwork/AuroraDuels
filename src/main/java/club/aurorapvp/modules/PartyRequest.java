@@ -2,6 +2,7 @@ package club.aurorapvp.modules;
 
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -75,7 +76,10 @@ public class PartyRequest extends Request {
       pendingRequests.remove(this);
       requester.sendMessage(Lang.getComponent("request-accepted"));
 
-      queue.enterDuelQueue(requester, requested[0], false);
+      Player[] players = Arrays.copyOf (requested, requested.length + 1);
+      players[players.length - 1] = requester;
+
+      queue.enterDuelQueue(players, false);
     }
   }
 

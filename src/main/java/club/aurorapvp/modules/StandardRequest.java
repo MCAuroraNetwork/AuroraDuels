@@ -54,10 +54,7 @@ public class StandardRequest extends Request {
     requester.sendMessage(Lang.getComponent("request-accepted"));
     p.sendMessage(Lang.getComponent("request-accepted"));
 
-    Player[] players = Arrays.copyOf (requested, requested.length + 1);
-    players[players.length - 1] = requester;
-
-    queue.enterDuelQueue(players, false);
+    queue.enterDuelQueue(requester, requested[0], false);
   }
 
   public void deny() {
