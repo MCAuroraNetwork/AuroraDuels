@@ -39,7 +39,6 @@ public class StandardDuel extends Duel implements Listener {
     }
   }
 
-  @Override
   public void startDuel(Arena arena, Kit kit) {
     this.arena = arena;
 
@@ -89,7 +88,7 @@ public class StandardDuel extends Duel implements Listener {
         if (thisDuel.isActive()) {
           playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
           playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
-          thisDuel.endDuel();
+          thisDuel.draw();
         }
         this.cancel();
       }
@@ -108,21 +107,39 @@ public class StandardDuel extends Duel implements Listener {
     }.runTask(AuroraDuels.INSTANCE);
   }
 
-  @Override
-  public void endDuel() {
-    if (playerOne.isDead() || !playerOne.isOnline()) {
-      playerTwo.showTitle(
-          Title.title(Lang.getComponent("you-won"),
-              Component.text("Opponent: " + playerOne.getName())));
-      playerOne.sendMessage(Lang.getComponent("you-lost"));
-    } else if (playerTwo.isDead() || !playerTwo.isOnline()) {
-      playerOne.showTitle(
-          Title.title(Lang.getComponent("you-won"),
-              Component.text("Opponent: " + playerTwo.getName())));
-      playerTwo.sendMessage(Lang.getComponent("you-lost"));
-    } else {
-      playerOne.sendMessage(Lang.getComponent("draw"));
-      playerTwo.sendMessage(Lang.getComponent("draw"));
+  public void endDuel(Player[] winner, Player[] loser) {
+    winner[0].showTitle(
+        Title.title(Lang.getComponent("you-won"),
+            Component.text("Opponent: " + playerOne.getName())));
+    loser[0].sendMessage(Lang.getComponent("you-lost"));
+
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        arena.reset();
+        arena.setOccupied(false);
+        this.cancel();
+      }
+    }, 3000);
+
+    this.active = false;
+    Duel thisDuel = this;
+
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel));
+      }
+    }.runTask(AuroraDuels.INSTANCE);
+
+    STANDARD_DUELS.remove(this);
+  }
+
+  public void draw() {
+    for (Player p : this.getPlayers()) {
+      p.sendMessage(Lang.getComponent("draw"));
     }
 
     new Timer().schedule(new TimerTask() {
@@ -137,7 +154,7 @@ public class StandardDuel extends Duel implements Listener {
     }, 3000);
 
     this.active = false;
-    StandardDuel thisDuel = this;
+    Duel thisDuel = this;
 
     new BukkitRunnable() {
       @Override

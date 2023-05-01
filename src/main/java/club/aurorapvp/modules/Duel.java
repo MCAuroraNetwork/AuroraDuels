@@ -37,7 +37,9 @@ public abstract class Duel {
 
   public abstract void startDuel(Arena arena, Kit kit);
 
-  public abstract void endDuel();
+  public abstract void endDuel(Player[] winners, Player[] losers);
+
+  public abstract void draw();
 
   public Long getElapsed() {
     return System.currentTimeMillis() - timeStarted;

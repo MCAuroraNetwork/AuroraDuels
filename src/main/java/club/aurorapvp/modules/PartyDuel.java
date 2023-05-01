@@ -44,7 +44,15 @@ public class PartyDuel extends Duel {
     return team1;
   }
 
-  @Override
+  public Player[] getTeammates(Player p) {
+    for (Player player : team1) {
+      if (player == p) {
+        return team1;
+      }
+    }
+    return team2;
+  }
+
   public void startDuel(Arena arena, Kit kit) {
     this.arena = arena;
 
@@ -123,7 +131,7 @@ public class PartyDuel extends Duel {
             p.sendMessage(Lang.getComponent("duel-time-expired"));
             p.sendMessage(Lang.getComponent("duel-time-expired"));
           }
-          thisDuel.endDuel();
+          thisDuel.draw();
         }
         this.cancel();
       }
@@ -146,61 +154,63 @@ public class PartyDuel extends Duel {
     }.runTask(AuroraDuels.INSTANCE);
   }
 
-  @Override
-  public void endDuel() {
-    Set<Player> aliveTeam1Players = new HashSet<>();
-    for (Player p : team1) {
-      if (!p.isDead()) {
-        aliveTeam1Players.add(p);
-      }
-    }
-
-    Set<Player> aliveTeam2Players = new HashSet<>();
-    for (Player p : team2) {
-      if (!p.isDead()) {
-        aliveTeam2Players.add(p);
-      }
-    }
-
-    if (aliveTeam2Players.size() > 0 && aliveTeam2Players.size() > 0) {
-      for (Player p : this.getPlayers()) {
-        p.sendMessage(Lang.getComponent("draw"));
-      }
-
-    }
-
+  public void endDuel(Player[] winners, Player[] losers) {
     StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < team2.length; i++) {
-      sb.append(team2[i].getName());
-      if (i < team2.length - 1) {
+    for (int i = 0; i < winners.length; i++) {
+      sb.append(winners[i].getName());
+      if (i < winners.length - 1) {
         sb.append(", ");
       }
     }
-    String team1Names = sb.toString();
+    String winnerNames = sb.toString();
 
     sb = new StringBuilder();
-    for (int i = 0; i < team1.length; i++) {
-      sb.append(team1[i].getName());
-      if (i < team1.length - 1) {
+    for (int i = 0; i < losers.length; i++) {
+      sb.append(losers[i].getName());
+      if (i < losers.length - 1) {
         sb.append(", ");
       }
     }
-    String team2Names = sb.toString();
+    String loserNames = sb.toString();
 
-    if (aliveTeam1Players.size() > 0) {
-      for (Player p : team1) {
-        p.showTitle(Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + team2Names)));
+    for (Player p : winners) {
+      p.showTitle(Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + loserNames)));
+    }
+
+    for (Player p : losers) {
+      p.showTitle(Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
+    }
+
+    Duel thisDuel = this;
+
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        for (Player p : thisDuel.getPlayers()) {
+          p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        }
+        arena.reset();
+        arena.setOccupied(false);
+        this.cancel();
       }
-      for (Player p : team2) {
-        p.showTitle(Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + team1Names)));
+    }, 3000);
+
+    this.active = false;
+
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel));
       }
-    } else {
-      for (Player p : team1) {
-        p.showTitle(Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + team2Names)));
-      }
-      for (Player p : team2) {
-        p.showTitle(Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + team1Names)));
-      }
+    }.runTask(AuroraDuels.INSTANCE);
+
+    PARTY_DUELS.remove(this);
+  }
+
+  @Override
+  public void draw() {
+    for (Player p : this.getPlayers()) {
+      p.sendMessage(Lang.getComponent("draw"));
     }
 
     Duel thisDuel = this;
