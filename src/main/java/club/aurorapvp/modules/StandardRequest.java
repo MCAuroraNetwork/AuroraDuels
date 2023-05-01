@@ -46,10 +46,10 @@ public class StandardRequest extends Request {
     );
   }
 
-  public void accept() {
+  public void accept(Player p) {
     pendingRequests.remove(this);
     requester.sendMessage(Lang.getComponent("request-accepted"));
-    requested[0].sendMessage(Lang.getComponent("request-accepted"));
+    p.sendMessage(Lang.getComponent("request-accepted"));
   }
 
   public void deny() {

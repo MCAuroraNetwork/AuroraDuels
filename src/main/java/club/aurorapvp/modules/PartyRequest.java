@@ -2,11 +2,15 @@ package club.aurorapvp.modules;
 
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
 
 public class PartyRequest extends Request {
+
+  private final HashMap<Player, Boolean> playersAccepted = new HashMap<>();
+
   public PartyRequest(String queueName, Player requester, Player[] requested) {
     super(queueName, requester, requested);
 
@@ -38,6 +42,10 @@ public class PartyRequest extends Request {
       p.sendMessage(Lang.formatComponent("received-request", requester.getName()));
     }
 
+    for (Player p : requested) {
+      playersAccepted.put(p, false);
+    }
+
     Request thisRequest = this;
 
     new Timer().schedule(new TimerTask() {
@@ -58,12 +66,16 @@ public class PartyRequest extends Request {
     );
   }
 
-  public void accept() {
-    pendingRequests.remove(this);
-    requester.sendMessage(Lang.getComponent("request-accepted"));
-
+  public void accept(Player accepter) {
     for (Player p : requested) {
       p.sendMessage(Lang.getComponent("request-accepted"));
+    }
+
+    playersAccepted.put(accepter, true);
+
+    if (!playersAccepted.containsValue(false)) {
+      pendingRequests.remove(this);
+      requester.sendMessage(Lang.getComponent("request-accepted"));
     }
   }
 

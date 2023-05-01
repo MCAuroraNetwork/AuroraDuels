@@ -14,6 +14,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -61,11 +62,8 @@ public class DuelCommands extends BaseCommand {
   @Syntax("[player] [queue]")
   @Description("Sends a duel request to another player")
   public void onNewRquest(Player p, String playerName, @Optional String queueName) {
-    if (queueName != null) {
-      new StandardRequest(queueName, p, Bukkit.getPlayer(playerName));
-    } else {
-      new StandardRequest("Default", p, Bukkit.getPlayer(playerName));
-    }
+    new StandardRequest(Objects.requireNonNullElse(queueName, "Default"), p,
+        Bukkit.getPlayer(playerName));
   }
 
   @CatchUnknown

@@ -19,7 +19,7 @@ public abstract class Request {
     pendingRequests.add(this);
   }
 
-  public abstract void accept();
+  public abstract void accept(Player p);
 
   public abstract void deny();
 
@@ -54,7 +54,7 @@ public abstract class Request {
       Request request = getRequest(p);
 
       assert request != null;
-      request.accept();
+      request.accept(p);
 
       if (request.requested.length > 1) {
         Player [] players = Arrays.copyOf (request.requested, request.requested.length + 1);
