@@ -60,11 +60,11 @@ public class DuelCommands extends BaseCommand {
   @CommandCompletion("@players @queues")
   @Syntax("[player] [queue]")
   @Description("Sends a duel request to another player")
-  public void onNewRquest(Player p, @Optional String[] args) {
-    if (args.length > 1) {
-      new StandardRequest(args[1], p, Bukkit.getPlayer(args[0]));
+  public void onNewRquest(Player p, String playerName, @Optional String queueName) {
+    if (queueName != null) {
+      new StandardRequest(queueName, p, Bukkit.getPlayer(playerName));
     } else {
-      new StandardRequest("Default", p, Bukkit.getPlayer(args[0]));
+      new StandardRequest("Default", p, Bukkit.getPlayer(playerName));
     }
   }
 
