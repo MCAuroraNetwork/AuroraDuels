@@ -19,7 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @CommandAlias("duel")
-public class DuelCommands extends BaseCommand {
+public class StandardDuelCommands extends BaseCommand {
 
   @Subcommand("accept")
   @Description("Accepts the duel request")
