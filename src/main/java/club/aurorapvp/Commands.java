@@ -2,10 +2,10 @@ package club.aurorapvp;
 
 
 import club.aurorapvp.commands.ArenaCommands;
-import club.aurorapvp.commands.DuelCommands;
-import club.aurorapvp.commands.PartyDuelCommands;
-import club.aurorapvp.commands.RankedCommands;
-import club.aurorapvp.commands.UnrankedCommands;
+import club.aurorapvp.commands.duels.DuelCommands;
+import club.aurorapvp.commands.duels.PartyDuelCommands;
+import club.aurorapvp.commands.findmatch.RankedCommands;
+import club.aurorapvp.commands.findmatch.UnrankedCommands;
 import club.aurorapvp.commands.PluginCommands;
 import club.aurorapvp.commands.QueueCommands;
 import club.aurorapvp.modules.Arena;

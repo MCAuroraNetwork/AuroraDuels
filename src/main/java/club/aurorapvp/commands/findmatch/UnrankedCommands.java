@@ -1,4 +1,4 @@
-package club.aurorapvp.commands;
+package club.aurorapvp.commands.findmatch;
 
 import club.aurorapvp.modules.Queue;
 import co.aikar.commands.BaseCommand;
@@ -13,14 +13,14 @@ import co.aikar.commands.annotation.Syntax;
 import java.util.Objects;
 import org.bukkit.entity.Player;
 
-@CommandAlias("ranked")
-public class RankedCommands extends BaseCommand {
+@CommandAlias("unranked")
+public class UnrankedCommands extends BaseCommand {
   @Default
   @CommandCompletion("@queues")
   @Syntax("[queue]")
   @Description("Joins a provided queue")
   public void onFindMatch(Player p, @Optional String name) {
-    Queue.findMatch(p, Objects.requireNonNullElse(name, "Default"), true);
+    Queue.findMatch(p, Objects.requireNonNullElse(name, "Default"), false);
   }
 
   @CatchUnknown

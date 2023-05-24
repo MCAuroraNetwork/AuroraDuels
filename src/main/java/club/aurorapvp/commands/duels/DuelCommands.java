@@ -1,4 +1,4 @@
-package club.aurorapvp.commands;
+package club.aurorapvp.commands.duels;
 
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.duels.Duel;

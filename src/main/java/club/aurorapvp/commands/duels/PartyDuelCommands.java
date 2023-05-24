@@ -1,4 +1,4 @@
-package club.aurorapvp.commands;
+package club.aurorapvp.commands.duels;
 
 import club.aurorapvp.modules.requests.PartyRequest;
 import club.aurorapvp.modules.requests.Request;
