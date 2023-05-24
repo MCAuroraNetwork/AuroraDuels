@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 public class TeamDuelCommands extends DuelBaseCommand {
   @Default
   @CommandCompletion("@players @queues")
-  @Syntax("[player1, player2, player3] [queue]")
+  @Syntax("[player1,player2,player3] [player4,player5,player6] [queue]")
   @Description("Sends a duel request to another player")
   public void onNewRquest(Player p, @Split(",") String[] team1Names, @Split(",") String[] team2Names, @Optional String queueName) {
     if (team1Names.length < 2 && team2Names.length < 2) {
