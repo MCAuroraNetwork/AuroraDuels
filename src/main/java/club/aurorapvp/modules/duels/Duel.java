@@ -4,6 +4,7 @@ import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Kit;
+import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Rating;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.util.HashSet;
@@ -23,19 +24,15 @@ public abstract class Duel {
   protected final Set<Player> spectators = new HashSet<>();
   protected Long timeStarted;
   private final boolean ranked;
+  private Queue queue;
   protected boolean active = false;
   protected Arena arena;
 
-  public Duel(Set<Player> players, boolean ranked) {
+  public Duel(Set<Player> players, Queue queue, boolean ranked) {
     this.players.addAll(players);
     this.ranked = ranked;
+    this.queue = queue;
     duels.add(this);
-  }
-
-  public static void init() {
-    if (AuroraDuels.isAuroraCombatInstalled()) {
-      Rating.setupRating("duels", false);
-    }
   }
 
   public abstract void startDuel(Arena arena, Kit kit);
@@ -43,6 +40,10 @@ public abstract class Duel {
   public abstract void endDuel(Player[] winners, Player[] losers);
 
   public abstract void draw();
+
+  public Queue getQueue() {
+    return queue;
+  }
 
   public Long getElapsed() {
     return System.currentTimeMillis() - timeStarted;

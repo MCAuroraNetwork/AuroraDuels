@@ -48,7 +48,6 @@ public final class AuroraDuels extends JavaPlugin {
     Events.init();
     Arena.init();
     Queue.init();
-    Duel.init();
     Wand.init();
 
     getLogger().info(

@@ -28,8 +28,8 @@ public class PartyDuel extends Duel {
   private final Player[] team1;
   private final Player[] team2;
 
-  public PartyDuel(Set<Player> players, boolean ranked) {
-    super(players, ranked);
+  public PartyDuel(Set<Player> players, Queue queue, boolean ranked) {
+    super(players, queue, ranked);
 
     int size = this.getPlayers().size();
     Player extra = null;

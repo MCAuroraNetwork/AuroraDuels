@@ -27,9 +27,9 @@ public class TeamDuel extends Duel {
   private final Player[] team1;
   private final Player[] team2;
 
-  public TeamDuel(Player[] team1, Player[] team2, boolean ranked) {
+  public TeamDuel(Player[] team1, Player[] team2, Queue queue, boolean ranked) {
     super(Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()),
-        ranked);
+        queue, ranked);
 
     this.team1 = team1;
     this.team2 = team2;

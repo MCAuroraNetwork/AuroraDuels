@@ -36,22 +36,22 @@ public class DuelEvents implements Listener {
     }
 
     if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() == 2) {
-      Rating.changeRating(event.getLosers()[0], event.getWinners()[0], "duels");
+      Rating.changeRating(event.getLosers()[0], event.getWinners()[0], event.getDuel().getQueue().getName() + "_duels");
     } else if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() > 2) {
       Player[] losers = event.getLosers();
       Player[] winners = event.getWinners();
 
-      double loserAvgRating = Arrays.stream(losers).mapToDouble(p -> Rating.getRating(p, "duels")
+      double loserAvgRating = Arrays.stream(losers).mapToDouble(p -> Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels")
           .getPoints()).average().orElse(0.0);
-      double winnerAvgRating = Arrays.stream(winners).mapToDouble(p -> Rating.getRating(p, "duels")
+      double winnerAvgRating = Arrays.stream(winners).mapToDouble(p -> Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels")
           .getPoints()).average().orElse(0.0);
 
       for (Player loser : losers) {
-        Rating.changeRating(loser, (int) winnerAvgRating, "duels");
+        Rating.changeRating(loser, (int) winnerAvgRating, event.getDuel().getQueue().getName() + "_duels");
       }
 
       for (Player winner : winners) {
-        Rating.changeRating(winner, (int) loserAvgRating, "duels");
+        Rating.changeRating(winner, (int) loserAvgRating, event.getDuel().getQueue().getName() + "_duels");
       }
     }
 

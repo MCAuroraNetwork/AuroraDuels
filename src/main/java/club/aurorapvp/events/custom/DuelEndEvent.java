@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class DuelEndEvent extends Event {
   private static final HandlerList HANDLERS = new HandlerList();
-
   private final Player[] winners;
   private final Player[] losers;
   private final Duel duel;

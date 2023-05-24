@@ -43,13 +43,17 @@ public class Queue {
     if (this.exists()) {
       reload();
     }
+
+    if (AuroraDuels.isAuroraCombatInstalled()) {
+      Rating.setupRating(name + "_duels", false);
+    }
   }
 
   public static void init() {
     File dir = new File(AuroraDuels.INSTANCE.getDataFolder(), "/queues/");
 
     if (Config.get().getBoolean("queues.enable-default-queue")) {
-      Queue queue = new Queue("Default");
+      Queue queue = new Queue("default");
       queue.addArenas(Arena.getArenas());
       queues.add(queue);
     }
@@ -153,14 +157,14 @@ public class Queue {
   }
 
   public void enterDuelQueue(Player p, Player opponent, boolean ranked) {
-    duelQueue.add(new StandardDuel(p, opponent, ranked));
+    duelQueue.add(new StandardDuel(p, opponent, this, ranked));
     p.sendMessage(Lang.getComponent("entered-queue"));
     opponent.sendMessage(Lang.getComponent("entered-queue"));
     executor.execute(checkQueue);
   }
 
   public void enterDuelQueue(Player[] players, boolean ranked) {
-    duelQueue.add(new PartyDuel(Set.of(players), ranked));
+    duelQueue.add(new PartyDuel(Set.of(players), this, ranked));
 
     for (Player p : players) {
       p.sendMessage(Lang.getComponent("entered-queue"));
@@ -170,7 +174,7 @@ public class Queue {
   }
 
   public void enterDuelQueue(Player[] team1, Player[] team2, boolean ranked) {
-    duelQueue.add(new TeamDuel(team1, team2, ranked));
+    duelQueue.add(new TeamDuel(team1, team2, this, ranked));
 
     for (Player p : team1) {
       p.sendMessage(Lang.getComponent("entered-queue"));
