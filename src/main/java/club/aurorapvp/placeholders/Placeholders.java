@@ -1,7 +1,7 @@
 package club.aurorapvp.placeholders;
 
 import club.aurorapvp.AuroraDuels;
-import club.aurorapvp.modules.Duel;
+import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.Queue;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;

@@ -1,10 +1,13 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.modules.duels;
 
 import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.DuelStartEvent;
+import club.aurorapvp.modules.Arena;
+import club.aurorapvp.modules.Kit;
+import club.aurorapvp.modules.Queue;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Timer;

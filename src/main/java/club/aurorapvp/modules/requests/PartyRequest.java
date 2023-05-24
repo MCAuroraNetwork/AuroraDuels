@@ -1,7 +1,9 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.modules.requests;
 
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
+import club.aurorapvp.modules.Request;
+import club.aurorapvp.modules.duels.Duel;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Timer;

@@ -1,8 +1,9 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.modules.requests;
 
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
-import java.util.Arrays;
+import club.aurorapvp.modules.Request;
+import club.aurorapvp.modules.duels.Duel;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;

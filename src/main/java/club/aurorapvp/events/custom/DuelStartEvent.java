@@ -1,6 +1,6 @@
 package club.aurorapvp.events.custom;
 
-import club.aurorapvp.modules.Duel;
+import club.aurorapvp.modules.duels.Duel;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
