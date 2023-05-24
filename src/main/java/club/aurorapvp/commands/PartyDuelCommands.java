@@ -1,7 +1,7 @@
 package club.aurorapvp.commands;
 
 import club.aurorapvp.modules.requests.PartyRequest;
-import club.aurorapvp.modules.Request;
+import club.aurorapvp.modules.requests.Request;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;

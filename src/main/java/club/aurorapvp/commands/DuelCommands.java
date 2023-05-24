@@ -3,7 +3,7 @@ package club.aurorapvp.commands;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.Kit;
-import club.aurorapvp.modules.Request;
+import club.aurorapvp.modules.requests.Request;
 import club.aurorapvp.modules.requests.StandardRequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;

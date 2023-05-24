@@ -1,6 +1,7 @@
-package club.aurorapvp.modules;
+package club.aurorapvp.modules.requests;
 
 import club.aurorapvp.configs.Lang;
+import club.aurorapvp.modules.Queue;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
