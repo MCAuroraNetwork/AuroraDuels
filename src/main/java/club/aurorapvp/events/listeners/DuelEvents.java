@@ -5,6 +5,7 @@ import club.aurorapvp.events.custom.DuelEndEvent;
 import club.aurorapvp.events.custom.DuelStartEvent;
 import club.aurorapvp.modules.CombatTag;
 import club.aurorapvp.modules.Rating;
+import club.aurorapvp.modules.duels.Duel;
 import java.util.Arrays;
 
 import org.bukkit.entity.Player;
@@ -33,6 +34,8 @@ public class DuelEvents implements Listener {
 
     for (Player p : event.getDuel().getPlayers()) {
       CombatTag.setTaggable(p, true);
+
+      Duel.setLastDuel(p, event.getDuel());
     }
 
     if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() == 2) {

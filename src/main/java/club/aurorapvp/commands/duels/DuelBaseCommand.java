@@ -7,7 +7,6 @@ import co.aikar.commands.annotation.Subcommand;
 import org.bukkit.entity.Player;
 
 public class DuelBaseCommand extends BaseCommand {
-
   @Subcommand("accept")
   @Description("Accepts the duel request")
   public void onAccept(Player p) {

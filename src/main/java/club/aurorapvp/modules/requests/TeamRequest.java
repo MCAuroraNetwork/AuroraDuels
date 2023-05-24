@@ -20,9 +20,13 @@ public class TeamRequest extends Request {
     super(queueName, requester, Stream.concat(Arrays.stream(team1), Arrays.stream(team2))
         .toArray(Player[]::new));
 
-    ArrayList<Player> playerList = new ArrayList<>(Arrays.asList(team1));
-    playerList.add(requester);
-    team1 = playerList.toArray(new Player[0]);
+    ArrayList<Player> team1List = new ArrayList<>(Arrays.asList(team1));
+    ArrayList<Player> team2List = new ArrayList<>(Arrays.asList(team2));
+
+    if (!team1List.contains(requester) && !team2List.contains(requester)) {
+      team1List.add(requester);
+      team1 = team1List.toArray(new Player[0]);
+    }
 
     this.team1 = team1;
     this.team2 = team2;

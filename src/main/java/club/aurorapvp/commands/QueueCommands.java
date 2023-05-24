@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 
 @CommandAlias("queue")
 public class QueueCommands extends BaseCommand {
-
   @Subcommand("create")
   @CommandPermission("auroraduels.admin")
   @Syntax("[name]")
@@ -30,9 +29,9 @@ public class QueueCommands extends BaseCommand {
     }
   }
 
-  @Default
   @CatchUnknown
-  public void onUnknown(CommandSender sender) {
-    sender.sendMessage(Lang.getComponent(""));
+  @Subcommand("help")
+  public void onUnknown() {
+
   }
 }

@@ -7,6 +7,7 @@ import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Rating;
 import com.sk89q.worldedit.math.BlockVector3;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ import org.bukkit.persistence.PersistentDataType;
 public abstract class Duel {
   public static Set<Duel> duels = new HashSet<>();
   private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
+  private static final HashMap<Player, Duel> LAST_DUEL = new HashMap<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   protected Long timeStarted;
@@ -97,6 +99,19 @@ public abstract class Duel {
     PersistentDataContainer container = p.getPersistentDataContainer();
 
     return Kit.getKit(p, container.get(key, PersistentDataType.STRING));
+  }
+
+
+  public static void setLastDuel(Player p, Duel duel) {
+    LAST_DUEL.put(p, duel);
+  }
+
+  public static Duel getLastDuel(Player p) {
+    if (LAST_DUEL.containsKey(p)) {
+      return LAST_DUEL.get(p);
+    }
+
+    return null;
   }
 
   public static void setDuelKit(Player p, String kitName) {

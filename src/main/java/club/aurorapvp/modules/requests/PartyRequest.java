@@ -77,7 +77,7 @@ public class PartyRequest extends Request {
       pendingRequests.remove(this);
       requester.sendMessage(Lang.getComponent("request-accepted"));
 
-      Player[] players = Arrays.copyOf (requested, requested.length + 1);
+      Player[] players = Arrays.copyOf(requested, requested.length + 1);
       players[players.length - 1] = requester;
 
       queue.enterDuelQueue(players, false);

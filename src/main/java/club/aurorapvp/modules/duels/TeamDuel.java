@@ -37,6 +37,14 @@ public class TeamDuel extends Duel {
     PARTY_DUELS.add(this);
   }
 
+  public Player[] getTeam1() {
+    return team1;
+  }
+
+  public Player[] getTeam2() {
+    return team2;
+  }
+
   public Player[] getOpponents(Player p) {
     for (Player player : team1) {
       if (player == p) {

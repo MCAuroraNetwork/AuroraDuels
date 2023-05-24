@@ -37,9 +37,9 @@ public class PluginCommands extends BaseCommand {
 
   }
 
-  @Default
   @CatchUnknown
-  public void onUnknown(CommandSender sender) {
-    sender.sendMessage(Lang.getComponent(""));
+  @Subcommand("help")
+  public void onUnknown() {
+
   }
 }

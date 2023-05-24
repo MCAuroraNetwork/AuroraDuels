@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 
 @CommandAlias("arena")
 public class ArenaCommands extends BaseCommand {
-
   @Subcommand("create")
   @CommandPermission("auroraduels.admin")
   @Syntax("[name]")
@@ -66,9 +65,9 @@ public class ArenaCommands extends BaseCommand {
     p.sendMessage(Component.text(str.toString()));
   }
 
-  @Default
   @CatchUnknown
-  public void onUnknown(CommandSender sender) {
-    sender.sendMessage(Lang.getComponent(""));
+  @Subcommand("help")
+  public void onUnknown() {
+
   }
 }
