@@ -9,6 +9,7 @@ import club.aurorapvp.datahandlers.QueueData;
 import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.duels.PartyDuel;
 import club.aurorapvp.modules.duels.StandardDuel;
+import club.aurorapvp.modules.duels.TeamDuel;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -162,6 +163,20 @@ public class Queue {
     duelQueue.add(new PartyDuel(Set.of(players), ranked));
 
     for (Player p : players) {
+      p.sendMessage(Lang.getComponent("entered-queue"));
+    }
+
+    executor.execute(checkQueue);
+  }
+
+  public void enterDuelQueue(Player[] team1, Player[] team2, boolean ranked) {
+    duelQueue.add(new TeamDuel(team1, team2, ranked));
+
+    for (Player p : team1) {
+      p.sendMessage(Lang.getComponent("entered-queue"));
+    }
+
+    for (Player p : team2) {
       p.sendMessage(Lang.getComponent("entered-queue"));
     }
 
