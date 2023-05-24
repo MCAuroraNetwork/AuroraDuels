@@ -19,20 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @CommandAlias("duel")
-public class StandardDuelCommands extends BaseCommand {
-
-  @Subcommand("accept")
-  @Description("Accepts the duel request")
-  public void onAccept(Player p) {
-    Request.acceptDuelRequest(p);
-  }
-
-  @Subcommand("deny")
-  @Description("Denies the duel request")
-  public void onDeny(Player p) {
-    Request.denyDuelRequest(p);
-  }
-
+public class StandardDuelCommands extends DuelBaseCommand {
   @Subcommand("kit")
   @Description("Sets the duel kit")
   public void onKitSet(Player p, @Optional String kitName) {

@@ -19,20 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @CommandAlias("teamduel")
-public class TeamDuelCommands extends BaseCommand {
-
-  @Subcommand("accept")
-  @Description("Accepts the duel request")
-  public void onAccept(Player p) {
-    Request.acceptDuelRequest(p);
-  }
-
-  @Subcommand("deny")
-  @Description("Denies the duel request")
-  public void onDeny(Player p) {
-    Request.denyDuelRequest(p);
-  }
-
+public class TeamDuelCommands extends DuelBaseCommand {
   @Default
   @CommandCompletion("@players @queues")
   @Syntax("[player1, player2, player3] [queue]")
