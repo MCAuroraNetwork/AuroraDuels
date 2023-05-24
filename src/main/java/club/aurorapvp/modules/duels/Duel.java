@@ -24,7 +24,7 @@ public abstract class Duel {
   protected final Set<Player> spectators = new HashSet<>();
   protected Long timeStarted;
   private final boolean ranked;
-  private Queue queue;
+  private final Queue queue;
   protected boolean active = false;
   protected Arena arena;
 
