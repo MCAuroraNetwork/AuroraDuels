@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 @CommandAlias("queue")
 public class QueueCommands extends BaseCommand {
   @Subcommand("create")
-  @CommandPermission("auroraduels.admin")
   @Syntax("[name]")
   @Description("Creates a queue")
   public void onCreate(Player p, String name, @Optional String kitName) {

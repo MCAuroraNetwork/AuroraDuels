@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 @CommandAlias("arena")
 public class ArenaCommands extends BaseCommand {
   @Subcommand("create")
-  @CommandPermission("auroraduels.admin")
   @Syntax("[name]")
   @Description("Creates an arena")
   public void onCreate(Player p, String name) {
@@ -26,7 +25,6 @@ public class ArenaCommands extends BaseCommand {
   }
 
   @Subcommand("delete")
-  @CommandPermission("auroraduels.admin")
   @CommandCompletion("@arenas")
   @Syntax("[name]")
   @Description("Deletes an arena")
@@ -41,7 +39,6 @@ public class ArenaCommands extends BaseCommand {
   }
 
   @Subcommand("reset")
-  @CommandPermission("auroraduels.admin")
   @CommandCompletion("@arenas")
   @Syntax("[name]")
   @Description("Resets an arena")

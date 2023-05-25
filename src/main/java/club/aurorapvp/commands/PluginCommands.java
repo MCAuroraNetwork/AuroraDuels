@@ -17,7 +17,6 @@ import org.bukkit.command.CommandSender;
 @CommandAlias("auroraduels")
 public class PluginCommands extends BaseCommand {
   @Subcommand("reload")
-  @CommandPermission("auroraduels.admin")
   @Description("Reloads all plugin data")
   public void onReload() {
     long startTime = System.currentTimeMillis();
