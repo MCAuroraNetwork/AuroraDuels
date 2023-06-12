@@ -1,10 +1,6 @@
 package club.aurorapvp.commands.duels;
 
-import club.aurorapvp.modules.duels.TeamDuel;
-import club.aurorapvp.modules.requests.PartyRequest;
-import club.aurorapvp.modules.requests.Request;
 import club.aurorapvp.modules.requests.TeamRequest;
-import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -24,7 +20,8 @@ public class TeamDuelCommands extends DuelBaseCommand {
   @CommandCompletion("@players @queues")
   @Syntax("[player1,player2,player3] [player4,player5,player6] [queue]")
   @Description("Sends a duel request to another player")
-  public void onNewRquest(Player p, @Split(",") String[] team1Names, @Split(",") String[] team2Names, @Optional String queueName) {
+  public void onNewRquest(Player p, @Split(",") String[] team1Names,
+                          @Split(",") String[] team2Names, @Optional String queueName) {
     if (team1Names.length < 2 && team2Names.length < 2) {
       return;
     }

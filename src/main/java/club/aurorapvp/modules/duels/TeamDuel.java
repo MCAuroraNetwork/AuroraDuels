@@ -23,7 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeamDuel extends Duel {
-  private static final Set<TeamDuel> PARTY_DUELS = new HashSet<TeamDuel>();
+  private static final Set<TeamDuel> PARTY_DUELS = new HashSet<>();
   private final Player[] team1;
   private final Player[] team2;
 

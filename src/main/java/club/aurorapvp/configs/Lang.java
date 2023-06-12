@@ -34,7 +34,7 @@ public class Lang {
     DEFAULTS.put("set-spawn2", "prefix <gradient:#FFAA00:#FF55FF>Right click to set second spawn");
     DEFAULTS.put("spawn1-set", "prefix <gradient:#FFAA00:#FF55FF>First spawn set!");
     DEFAULTS.put("spawn2-set", "prefix <gradient:#FFAA00:#FF55FF>Second spawn set!");
-    DEFAULTS.put("spawns-set", "prefix <gradient:#FFAA00:#FF55FF>Arena spawnpoints set!");
+    DEFAULTS.put("spawns-set", "prefix <gradient:#FFAA00:#FF55FF>Arena spawn-points set!");
     DEFAULTS.put("set-pos1", "prefix <gradient:#FFAA00:#FF55FF>Left click to set Position 1");
     DEFAULTS.put("set-pos2", "prefix <gradient:#FFAA00:#FF55FF>Right click to set Position 2");
     DEFAULTS.put("pos1-set", "prefix <gradient:#FFAA00:#FF55FF>Position 1 set!");
@@ -79,7 +79,7 @@ public class Lang {
     DEFAULTS.put("add-arena",
         "prefix <gradient:#FFAA00:#FF55FF>What arena would you like to add to the queue? Type its name into chat. You have added %s arenas so far");
     DEFAULTS.put("no-teleport",
-        "prefix <gradient:#FFAA00:#FF55FF>You cannot teleport duing a duel!");
+        "prefix <gradient:#FFAA00:#FF55FF>You cannot teleport during a duel!");
     DEFAULTS.put("duel-kit", "prefix <gradient:#FFAA00:#FF55FF>Duel kit set!");
     DEFAULTS.put("start-spectating",
         "prefix <gradient:#FFAA00:#FF55FF>You are now spectating!");

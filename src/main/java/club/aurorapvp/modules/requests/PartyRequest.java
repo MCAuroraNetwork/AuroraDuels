@@ -69,9 +69,9 @@ public class PartyRequest extends Request {
     );
   }
 
-  public void accept(Player accepter) {
-    accepter.sendMessage(Lang.getComponent("request-accepted"));
-    playersAccepted.put(accepter, true);
+  public void accept(Player acceptor) {
+    acceptor.sendMessage(Lang.getComponent("request-accepted"));
+    playersAccepted.put(acceptor, true);
 
     if (!playersAccepted.containsValue(false)) {
       pendingRequests.remove(this);
