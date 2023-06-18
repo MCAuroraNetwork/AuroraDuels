@@ -48,7 +48,7 @@ public class Arena {
     File dir = new File(AuroraDuels.INSTANCE.getDataFolder(), "/arenas/");
 
     if (dir.exists()) {
-      for (File file : dir.listFiles()) {
+      for (File file : Objects.requireNonNull(dir.listFiles())) {
         Arena arena = new Arena(file.getName().replace(".yml", ""));
         if (arena.exists()) {
           arenas.add(arena);
@@ -122,7 +122,8 @@ public class Arena {
     Player p = event.getPlayer();
     p.setCooldown(Material.IRON_HOE, 20);
     Action action = event.getAction();
-    BlockVector3 vector = BukkitAdapter.asBlockVector(event.getClickedBlock().getLocation());
+    BlockVector3 vector = BukkitAdapter.asBlockVector(
+        Objects.requireNonNull(event.getClickedBlock()).getLocation());
 
     switch (unfinishedArena.getState()) {
       case SPAWN_1, SPAWN_2 -> unfinishedArena.setSpawns(p, action, vector);
@@ -227,6 +228,7 @@ public class Arena {
     }
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void delete(Player p) {
     if (this.exists()) {
       this.data.getFile().delete();

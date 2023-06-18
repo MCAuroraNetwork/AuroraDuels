@@ -61,6 +61,7 @@ public class QueueData {
     save();
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void save() {
     if (!FILE.exists()) {
       try {

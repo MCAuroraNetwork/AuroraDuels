@@ -1,5 +1,6 @@
 package club.aurorapvp.commands;
 
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.duels.PartyDuel;
 import club.aurorapvp.modules.duels.TeamDuel;
@@ -7,18 +8,22 @@ import club.aurorapvp.modules.requests.PartyRequest;
 import club.aurorapvp.modules.requests.StandardRequest;
 import club.aurorapvp.modules.requests.TeamRequest;
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Subcommand;
 import java.util.Set;
 import org.bukkit.entity.Player;
 
 @CommandAlias("rematch")
 public class RematchCommand extends BaseCommand {
   @Default
+  @SuppressWarnings("unused")
   public void onRematch(Player p) {
     Duel lastDuel = Duel.getLastDuel(p);
+
+    if (lastDuel == null) {
+      p.sendMessage(Lang.getComponent("no-last-duel"));
+      return;
+    }
 
     for (Player duelPlayer : lastDuel.getPlayers()) {
       if (Duel.inDuel(duelPlayer)) {
@@ -40,11 +45,5 @@ public class RematchCommand extends BaseCommand {
 
       new PartyRequest(lastDuel.getQueue().getName(), p, requested.toArray(new Player[0]));
     }
-  }
-
-  @CatchUnknown
-  @Subcommand("help")
-  public void onUnknown() {
-
   }
 }

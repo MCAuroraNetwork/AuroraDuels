@@ -3,12 +3,13 @@ package club.aurorapvp.events.listeners;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Arena;
+import club.aurorapvp.modules.Queue;
+import club.aurorapvp.modules.Wand;
 import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.duels.PartyDuel;
-import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.duels.StandardDuel;
-import club.aurorapvp.modules.Wand;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import java.util.Objects;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -55,14 +56,17 @@ public class PlayerEvents implements Listener {
       return;
     }
 
-    if (Duel.getDuel(event.getPlayer()).getPlayers().size() == 2) {
+    if (Objects.requireNonNull(Duel.getDuel(event.getPlayer())).getPlayers().size() == 2) {
       StandardDuel duel = (StandardDuel) Duel.getDuel(event.getPlayer());
 
-      duel.endDuel(new Player[]{duel.getOpponent(event.getPlayer())}, new Player[]{event.getPlayer()});
+      assert duel != null;
+      duel.endDuel(new Player[] {duel.getOpponent(event.getPlayer())},
+          new Player[] {event.getPlayer()});
     } else {
       PartyDuel duel = (PartyDuel) Duel.getDuel(event.getPlayer());
 
       boolean teammatesDead = true;
+      assert duel != null;
       for (Player p : duel.getTeammates(event.getPlayer())) {
         if (!(p.getGameMode() == GameMode.SPECTATOR) && !p.isDead() && p.isOnline()) {
           teammatesDead = false;
@@ -81,13 +85,20 @@ public class PlayerEvents implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    if (Duel.getDuel(event.getPlayer()).getPlayers().size() == 2) {
+    if (!Duel.inDuel(event.getPlayer())) {
+      return;
+    }
+
+    if (Objects.requireNonNull(Duel.getDuel(event.getPlayer())).getPlayers().size() == 2) {
       StandardDuel duel = (StandardDuel) Duel.getDuel(event.getPlayer());
-      duel.endDuel(new Player[]{duel.getOpponent(event.getPlayer())}, new Player[]{event.getPlayer()});
+      assert duel != null;
+      duel.endDuel(new Player[] {duel.getOpponent(event.getPlayer())},
+          new Player[] {event.getPlayer()});
     } else {
       PartyDuel duel = (PartyDuel) Duel.getDuel(event.getPlayer());
 
       boolean teammatesDead = true;
+      assert duel != null;
       for (Player p : duel.getTeammates(event.getPlayer())) {
         if (!(p.getGameMode() == GameMode.SPECTATOR) && !p.isDead() && p.isOnline()) {
           teammatesDead = false;

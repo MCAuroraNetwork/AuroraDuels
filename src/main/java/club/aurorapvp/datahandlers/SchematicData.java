@@ -15,7 +15,6 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.operation.OperationQueue;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
@@ -40,6 +39,7 @@ public class SchematicData {
     return FILE;
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void create() {
     EditSession session =
         WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));

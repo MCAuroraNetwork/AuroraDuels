@@ -16,6 +16,7 @@ public class DuelStartEvent extends Event {
     this.duel = duel;
   }
 
+  @SuppressWarnings("unused")
   public static HandlerList getHandlerList() {
     return HANDLERS;
   }

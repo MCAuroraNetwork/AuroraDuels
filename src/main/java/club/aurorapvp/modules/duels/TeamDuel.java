@@ -10,6 +10,7 @@ import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Queue;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,7 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeamDuel extends Duel {
-  private static final Set<TeamDuel> PARTY_DUELS = new HashSet<>();
+  private static final Set<TeamDuel> TEAM_DUELS = new HashSet<>();
   private final Player[] team1;
   private final Player[] team2;
 
@@ -34,7 +35,7 @@ public class TeamDuel extends Duel {
     this.team1 = team1;
     this.team2 = team2;
 
-    PARTY_DUELS.add(this);
+    TEAM_DUELS.add(this);
   }
 
   public Player[] getTeam1() {
@@ -45,6 +46,7 @@ public class TeamDuel extends Duel {
     return team2;
   }
 
+  @SuppressWarnings("unused")
   public Player[] getOpponents(Player p) {
     for (Player player : team1) {
       if (player == p) {
@@ -54,6 +56,7 @@ public class TeamDuel extends Duel {
     return team1;
   }
 
+  @SuppressWarnings("unused")
   public Player[] getTeammates(Player p) {
     for (Player player : team1) {
       if (player == p) {
@@ -148,7 +151,7 @@ public class TeamDuel extends Duel {
     }, Config.get().getInt("duels.max-duration"));
 
     for (Player p : this.getPlayers()) {
-      Queue.getQueue(p).exitDuelQueue(p);
+      Objects.requireNonNull(Queue.getQueue(p)).exitDuelQueue(p);
       break;
     }
 
@@ -217,7 +220,7 @@ public class TeamDuel extends Duel {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    PARTY_DUELS.remove(this);
+    TEAM_DUELS.remove(this);
   }
 
   @Override
@@ -249,6 +252,11 @@ public class TeamDuel extends Duel {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    PARTY_DUELS.remove(this);
+    TEAM_DUELS.remove(this);
+  }
+
+  @SuppressWarnings("unused")
+  public static Set<TeamDuel> getTeamDuels() {
+    return TEAM_DUELS;
   }
 }

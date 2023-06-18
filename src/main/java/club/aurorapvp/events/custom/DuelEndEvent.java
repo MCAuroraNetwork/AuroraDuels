@@ -20,6 +20,7 @@ public class DuelEndEvent extends Event {
     this.losers = losers;
   }
 
+  @SuppressWarnings("unused")
   public static HandlerList getHandlerList() {
     return HANDLERS;
   }
@@ -33,6 +34,7 @@ public class DuelEndEvent extends Event {
     return duel;
   }
 
+  @SuppressWarnings("unused")
   public Long timeElapsed() {
     return duel.getElapsed();
   }

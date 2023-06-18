@@ -4,7 +4,6 @@ import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.events.Events;
 import club.aurorapvp.modules.Arena;
-import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.Wand;
 import club.aurorapvp.placeholders.Placeholders;

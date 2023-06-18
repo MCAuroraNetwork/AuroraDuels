@@ -6,6 +6,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -24,21 +25,24 @@ public class ArenaData {
   }
 
   public World getWorld() {
-    return Bukkit.getWorld(arenaData.getString("arena.world"));
+    return Bukkit.getWorld(Objects.requireNonNull(arenaData.getString("arena.world")));
   }
 
   public BlockVector3 getFirstSpawn() {
-    return BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn1"));
+    return BukkitAdapter.asBlockVector(
+        Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn1")));
   }
 
   public BlockVector3 getSecondSpawn() {
-    return BukkitAdapter.asBlockVector(arenaData.getLocation("arena.spawns.spawn2"));
+    return BukkitAdapter.asBlockVector(
+        Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn2")));
   }
 
   public File getFile() {
     return FILE;
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void create() {
     Location spawn1 = new Location(arena.getWorld(), arena.getFirstSpawn().getBlockX(),
         arena.getFirstSpawn().getBlockY(), arena.getFirstSpawn().getBlockZ());

@@ -11,13 +11,14 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 @CommandAlias("auroraduels")
 public class PluginCommands extends BaseCommand {
   @Subcommand("reload")
   @CommandPermission("auroraduels.admin")
   @Description("Reloads all plugin data")
+  @SuppressWarnings("unused")
   public void onReload() {
     long startTime = System.currentTimeMillis();
 
@@ -30,15 +31,11 @@ public class PluginCommands extends BaseCommand {
         "AuroraDuels reloaded in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
-  @Subcommand("help")
-  @Description("Lists all available plugin commands and their function")
-  public void onHelp(CommandSender sender) {
-
-  }
-
   @CatchUnknown
   @Subcommand("help")
-  public void onUnknown() {
-
+  @Description("Lists all available plugin commands and their function")
+  @SuppressWarnings("unused")
+  public void onHelp(Player p) {
+    p.sendMessage(Lang.getComponent("help-command"));
   }
 }

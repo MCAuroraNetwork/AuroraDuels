@@ -1,14 +1,12 @@
 package club.aurorapvp.commands.duels;
 
 import club.aurorapvp.modules.requests.TeamRequest;
-import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Split;
-import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import java.util.Objects;
 import org.bukkit.Bukkit;
@@ -20,8 +18,9 @@ public class TeamDuelCommands extends DuelBaseCommand {
   @CommandCompletion("@players @queues")
   @Syntax("[player1,player2,player3] [player4,player5,player6] [queue]")
   @Description("Sends a duel request to another player")
-  public void onNewRquest(Player p, @Split(",") String[] team1Names,
-                          @Split(",") String[] team2Names, @Optional String queueName) {
+  @SuppressWarnings("unused")
+  public void onNewRequest(Player p, @Split String[] team1Names,
+                           @Split String[] team2Names, @Optional String queueName) {
     if (team1Names.length < 2 && team2Names.length < 2) {
       return;
     }
@@ -42,12 +41,5 @@ public class TeamDuelCommands extends DuelBaseCommand {
     }
 
     new TeamRequest(Objects.requireNonNullElse(queueName, "Default"), p, team1, team2);
-  }
-
-
-  @CatchUnknown
-  @Subcommand("help")
-  public void onUnknown() {
-
   }
 }

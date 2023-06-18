@@ -4,6 +4,7 @@ import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Queue;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.bukkit.entity.Player;
 
@@ -43,7 +44,7 @@ public abstract class Request {
 
   public static void denyDuelRequest(Player p) {
     if (hasPendingRequest(p)) {
-      getRequest(p).deny();
+      Objects.requireNonNull(getRequest(p)).deny();
     } else {
       p.sendMessage(Lang.getComponent("no-requests"));
     }

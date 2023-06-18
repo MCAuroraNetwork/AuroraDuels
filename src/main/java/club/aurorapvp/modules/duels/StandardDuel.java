@@ -9,6 +9,7 @@ import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Queue;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,6 +31,15 @@ public class StandardDuel extends Duel implements Listener {
     this.playerOne = p1;
     this.playerTwo = p2;
     STANDARD_DUELS.add(this);
+  }
+
+  public static StandardDuel getStandardDuel(Player p) {
+    for (StandardDuel duel : STANDARD_DUELS) {
+      if (duel.contains(p)) {
+        return duel;
+      }
+    }
+    return null;
   }
 
   public Player getOpponent(Player p) {
@@ -97,7 +107,7 @@ public class StandardDuel extends Duel implements Listener {
       }
     }, Config.get().getInt("duels.max-duration"));
 
-    Queue.getQueue(playerOne).exitDuelQueue(playerOne);
+    Objects.requireNonNull(Queue.getQueue(playerOne)).exitDuelQueue(playerOne);
     arena.setOccupied(true);
     timeStarted = System.currentTimeMillis();
     active = true;
@@ -167,5 +177,10 @@ public class StandardDuel extends Duel implements Listener {
     }.runTask(AuroraDuels.INSTANCE);
 
     STANDARD_DUELS.remove(this);
+  }
+
+  @SuppressWarnings("unused")
+  public static Set<StandardDuel> getStandardDuels() {
+    return STANDARD_DUELS;
   }
 }

@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -165,7 +166,7 @@ public class PartyDuel extends Duel {
     }, Config.get().getInt("duels.max-duration"));
 
     for (Player p : this.getPlayers()) {
-      Queue.getQueue(p).exitDuelQueue(p);
+      Objects.requireNonNull(Queue.getQueue(p)).exitDuelQueue(p);
       break;
     }
 
@@ -264,5 +265,10 @@ public class PartyDuel extends Duel {
     }.runTask(AuroraDuels.INSTANCE);
 
     PARTY_DUELS.remove(this);
+  }
+
+  @SuppressWarnings("unused")
+  public static Set<PartyDuel> getPartyDuels() {
+    return PARTY_DUELS;
   }
 }

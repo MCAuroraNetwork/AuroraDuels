@@ -2,6 +2,7 @@ package club.aurorapvp;
 
 
 import club.aurorapvp.commands.ArenaCommands;
+import club.aurorapvp.commands.RematchCommand;
 import club.aurorapvp.commands.duels.StandardDuelCommands;
 import club.aurorapvp.commands.duels.PartyDuelCommands;
 import club.aurorapvp.commands.duels.TeamDuelCommands;
@@ -29,6 +30,7 @@ public class Commands {
     MANAGER.registerCommand(new PartyDuelCommands());
     MANAGER.registerCommand(new PluginCommands());
     MANAGER.registerCommand(new QueueCommands());
+    MANAGER.registerCommand(new RematchCommand());
 
     CommandCompletions<BukkitCommandCompletionContext> commandCompletions =
         MANAGER.getCommandCompletions();

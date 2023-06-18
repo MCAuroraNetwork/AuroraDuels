@@ -1,5 +1,6 @@
 package club.aurorapvp.commands.findmatch;
 
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Queue;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
@@ -19,13 +20,15 @@ public class UnrankedCommands extends BaseCommand {
   @CommandCompletion("@queues")
   @Syntax("[queue]")
   @Description("Joins a provided queue")
+  @SuppressWarnings("unused")
   public void onFindMatch(Player p, @Optional String name) {
     Queue.findMatch(p, Objects.requireNonNullElse(name, "Default"), false);
   }
 
   @CatchUnknown
   @Subcommand("help")
-  public void onUnknown() {
-
+  @SuppressWarnings("unused")
+  public void onUnknown(Player p) {
+    p.sendMessage(Lang.getComponent("unknown-matchmaking-command"));
   }
 }

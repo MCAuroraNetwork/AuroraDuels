@@ -59,7 +59,7 @@ public class Queue {
     }
 
     if (dir.exists()) {
-      for (File file : dir.listFiles()) {
+      for (File file : Objects.requireNonNull(dir.listFiles())) {
         Queue queue = new Queue(file.getName().replace(".yml", ""));
         if (queue.exists()) {
           queues.add(queue);
@@ -250,7 +250,11 @@ public class Queue {
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(true, p);
     } else {
-      Queue.getQueue(queueName).enterDuelQueue(p, lookingForMatch.get(ranked), ranked);
+      // For some reason Intellij wouldn't stop whining about a possible NPE
+      // unless I wrote it like this, fuck you Intellij
+      Queue queue = Queue.getQueue(queueName);
+      assert queue != null;
+      queue.enterDuelQueue(p, lookingForMatch.get(ranked), ranked);
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;

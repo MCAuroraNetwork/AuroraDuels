@@ -5,7 +5,6 @@ import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Arena;
 import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Queue;
-import club.aurorapvp.modules.Rating;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.util.HashMap;
 import java.util.HashSet;

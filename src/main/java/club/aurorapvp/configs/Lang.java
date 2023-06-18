@@ -23,9 +23,10 @@ public class Lang {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
     for (Object path : get().getKeys(false).toArray()) {
-      if (get().getString((String) path).startsWith("~") &&
-          get().getString((String) path).endsWith("~")) {
-        PLACEHOLDERS.put((String) path, get().getString((String) path).replace("~", ""));
+      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~") &&
+          Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
+        PLACEHOLDERS.put((String) path, Objects.requireNonNull(get().getString((String) path))
+            .replace("~", ""));
       }
     }
 
@@ -85,6 +86,22 @@ public class Lang {
         "prefix <gradient:#FFAA00:#FF55FF>You are now spectating!");
     DEFAULTS.put("stop-spectating",
         "prefix <gradient:#FFAA00:#FF55FF>You are no longer spectating");
+    DEFAULTS.put("no-last-duel", "prefix <gradient:#FFAA00:#FF55FF>No previous duel found!");
+    DEFAULTS.put("unknown-duel-command",
+        "prefix <gradient:#FFAA00:#FF55FF>Unknown Duel Command! Use /help for help!");
+    DEFAULTS.put("unknown-matchmaking-command",
+        "prefix <gradient:#FFAA00:#FF55FF>Unknown Matchmaking Command! Use /help for help!");
+    DEFAULTS.put("unknown-arena-command",
+        "prefix <gradient:#FFAA00:#FF55FF>Unknown Arena Command! Use /help for help!");
+    DEFAULTS.put("unknown-queue-command",
+        "prefix <gradient:#FFAA00:#FF55FF>Unknown Arena Command! Use /help for help!");
+    DEFAULTS.put("help-command", """
+        prefix <gradient:#FFAA00:#FF55FF>All Commands:\s
+        <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player\s
+        <blue><bold>/ranked [name]: <reset><yellow>Joins a ranked queue, or the default one if no name is given\s
+        <blue><bold>/unranked [name]: <reset><yellow>Joins a ranked queue, or the default one if no name is given\s
+        <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members\s
+        """);
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {
@@ -151,6 +168,7 @@ public class Lang {
     return lang;
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public static void reload() {
     if (!FILE.exists()) {
       try {

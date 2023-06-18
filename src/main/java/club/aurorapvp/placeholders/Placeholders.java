@@ -48,9 +48,11 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("in_queue_")) {
-      String queue = params.split("_")[1];
+      String queueName = params.split("_")[1];
 
-      return Queue.getQueue(queue).inQueue() + " players in queue";
+      Queue queue = Queue.getQueue(queueName);
+      assert queue != null;
+      return queue.inQueue() + " players in queue";
     }
 
     if (!p.isOnline()) {
@@ -99,9 +101,8 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("duel_duration")) {
-      if (p.isOnline()) {
-        if (StandardDuel.inDuel(p.getPlayer())) {
-          Long elapsed = StandardDuel.getDuel(p.getPlayer()).getElapsed();
+      if (StandardDuel.inDuel(p.getPlayer())) {
+        Long elapsed = Objects.requireNonNull(Duel.getDuel(p.getPlayer())).getElapsed();
 
         return String.format("%d min, %d sec",
             TimeUnit.MILLISECONDS.toMinutes(elapsed),

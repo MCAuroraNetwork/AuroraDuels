@@ -17,6 +17,7 @@ public class ArenaCommands extends BaseCommand {
   @Subcommand("create")
   @Syntax("[name]")
   @Description("Creates an arena")
+  @SuppressWarnings("unused")
   public void onCreate(Player p, String name) {
     new Arena(name).startCreation(p);
   }
@@ -25,6 +26,7 @@ public class ArenaCommands extends BaseCommand {
   @CommandCompletion("@arenas")
   @Syntax("[name]")
   @Description("Deletes an arena")
+  @SuppressWarnings("unused")
   public void onDelete(Player p, String name) {
     Arena arena = Arena.getArena(name);
 
@@ -39,6 +41,7 @@ public class ArenaCommands extends BaseCommand {
   @CommandCompletion("@arenas")
   @Syntax("[name]")
   @Description("Resets an arena")
+  @SuppressWarnings("unused")
   public void onReset(Player p, String name) {
     Arena arena = Arena.getArena(name);
 
@@ -50,6 +53,7 @@ public class ArenaCommands extends BaseCommand {
   }
 
   @Subcommand("list")
+  @SuppressWarnings("unused")
   public void onList(Player p) {
     // TODO clean up or remove
     StringBuilder str = new StringBuilder("Arenas:");
@@ -61,7 +65,8 @@ public class ArenaCommands extends BaseCommand {
 
   @CatchUnknown
   @Subcommand("help")
-  public void onUnknown() {
-
+  @SuppressWarnings("unused")
+  public void onUnknown(Player p) {
+    p.sendMessage(Lang.getComponent("unknown-arena-command"));
   }
 }

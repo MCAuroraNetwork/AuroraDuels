@@ -1,6 +1,7 @@
 package club.aurorapvp.commands;
 
 import club.aurorapvp.AuroraDuels;
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.Queue;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
@@ -16,6 +17,7 @@ public class QueueCommands extends BaseCommand {
   @Subcommand("create")
   @Syntax("[name]")
   @Description("Creates a queue")
+  @SuppressWarnings("unused")
   public void onCreate(Player p, String name, @Optional String kitName) {
     if (kitName != null && AuroraDuels.isAuroraKitsInstalled()) {
       new Queue(name).create(p, kitName);
@@ -26,7 +28,8 @@ public class QueueCommands extends BaseCommand {
 
   @CatchUnknown
   @Subcommand("help")
-  public void onUnknown() {
-
+  @SuppressWarnings("unused")
+  public void onUnknown(Player p) {
+    p.sendMessage(Lang.getComponent("unknown-queue-command"));
   }
 }
