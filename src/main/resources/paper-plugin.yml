@@ -1,19 +1,10 @@
 name: AuroraDuels
 version: '${version}'
 main: club.aurorapvp.AuroraDuels
-api-version: 1.19
+api-version: 1.20
 authors: [ Villagers654 ]
 description: A Duels Plugin for the Aurora Network
 website: aurorapvp.club
-dependencies:
-  - name: WorldEdit
-    required: true
-  - name: PlaceholderAPI
-    required: false
-  - name: AuroraKits
-    required: false
-  - name: AuroraCombat
-    required: false
 commands:
   auroraduels:
     description: AuroraDuels general plugin commands
@@ -83,3 +74,14 @@ permissions:
     default: true
     children:
       auroraduels.command.auroraduels: true
+
+dependencies:
+  server:
+    WorldEdit:
+      required: true
+    PlaceholderAPI:
+      required: false
+    AuroraKits:
+      required: false
+    AuroraCombat:
+      required: false
