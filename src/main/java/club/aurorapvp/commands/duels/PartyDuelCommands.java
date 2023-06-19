@@ -38,6 +38,6 @@ public class PartyDuelCommands extends BaseCommand {
       i++;
     }
 
-    new PartyRequest(Objects.requireNonNullElse(queueName, "Default"), p, requested);
+    new PartyRequest(Objects.requireNonNullElse(queueName, "default"), p, requested);
   }
 }

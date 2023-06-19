@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("teamduel")
 public class TeamDuelCommands extends BaseCommand {
   @Default
-  @CommandCompletion("@players @queues")
+  @CommandCompletion("@players @players @queues")
   @Syntax("[player1,player2,player3] [player4,player5,player6] [queue]")
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
@@ -46,6 +46,6 @@ public class TeamDuelCommands extends BaseCommand {
       i++;
     }
 
-    new TeamRequest(Objects.requireNonNullElse(queueName, "Default"), p, team1, team2);
+    new TeamRequest(Objects.requireNonNullElse(queueName, "default"), p, team1, team2);
   }
 }

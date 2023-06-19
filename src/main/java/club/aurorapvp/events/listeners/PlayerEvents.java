@@ -8,6 +8,7 @@ import club.aurorapvp.modules.Wand;
 import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.duels.PartyDuel;
 import club.aurorapvp.modules.duels.StandardDuel;
+import club.aurorapvp.modules.duels.TeamDuel;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.Objects;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -89,17 +90,14 @@ public class PlayerEvents implements Listener {
       return;
     }
 
-    if (Objects.requireNonNull(Duel.getDuel(event.getPlayer())).getPlayers().size() == 2) {
-      StandardDuel duel = (StandardDuel) Duel.getDuel(event.getPlayer());
-      assert duel != null;
-      duel.endDuel(new Player[] {duel.getOpponent(event.getPlayer())},
-          new Player[] {event.getPlayer()});
-    } else {
-      PartyDuel duel = (PartyDuel) Duel.getDuel(event.getPlayer());
+    Duel duel = Duel.getDuel(event.getPlayer());
 
+    if (duel instanceof StandardDuel standardDuel) {
+      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(event.getPlayer())},
+          new Player[] {event.getPlayer()});
+    } else if (duel instanceof PartyDuel partyDuel){
       boolean teammatesDead = true;
-      assert duel != null;
-      for (Player p : duel.getTeammates(event.getPlayer())) {
+      for (Player p : partyDuel.getTeammates(event.getPlayer())) {
         if (!(p.getGameMode() == GameMode.SPECTATOR) && !p.isDead() && p.isOnline()) {
           teammatesDead = false;
           break;
@@ -107,7 +105,19 @@ public class PlayerEvents implements Listener {
       }
 
       if (teammatesDead) {
-        duel.endDuel(duel.getOpponents(event.getPlayer()), duel.getTeammates(event.getPlayer()));
+        duel.endDuel(partyDuel.getOpponents(event.getPlayer()), partyDuel.getTeammates(event.getPlayer()));
+      }
+    } else if (duel instanceof TeamDuel teamDuel) {
+      boolean teammatesDead = true;
+      for (Player p : teamDuel.getTeammates(event.getPlayer())) {
+        if (!(p.getGameMode() == GameMode.SPECTATOR) && !p.isDead() && p.isOnline()) {
+          teammatesDead = false;
+          break;
+        }
+      }
+
+      if (teammatesDead) {
+        duel.endDuel(teamDuel.getOpponents(event.getPlayer()), teamDuel.getTeammates(event.getPlayer()));
       }
     }
   }
