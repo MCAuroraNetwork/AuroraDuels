@@ -1,6 +1,8 @@
 package club.aurorapvp.commands.duels;
 
+import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.requests.PartyRequest;
+import club.aurorapvp.modules.requests.StandardRequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -21,8 +23,11 @@ public class PartyDuelCommands extends BaseCommand {
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
   public void onNewRequest(Player p, @Split String[] playerNames, @Optional String queueName) {
-    if (playerNames.length < 2) {
-      return;
+    if (playerNames.length == 1) {
+      new StandardRequest(Objects.requireNonNullElse(queueName, "default"), p,
+          Bukkit.getPlayer(playerNames[0]));
+    } else if (playerNames.length < 1) {
+      p.sendMessage(Lang.getComponent("not-enough-players"));
     }
 
     Player[] requested = new Player[playerNames.length];

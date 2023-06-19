@@ -1,5 +1,7 @@
 package club.aurorapvp.commands.duels;
 
+import club.aurorapvp.configs.Lang;
+import club.aurorapvp.modules.requests.StandardRequest;
 import club.aurorapvp.modules.requests.TeamRequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -22,8 +24,11 @@ public class TeamDuelCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onNewRequest(Player p, @Split String[] team1Names,
                            @Split String[] team2Names, @Optional String queueName) {
-    if (team1Names.length < 2 && team2Names.length < 2) {
-      return;
+    if (team2Names.length < 1 && team1Names.length == 1) {
+      new StandardRequest(Objects.requireNonNullElse(queueName, "default"), p,
+          Bukkit.getPlayer(team1Names[0]));
+    } else if (team1Names.length < 1) {
+      p.sendMessage(Lang.getComponent("not-enough-players"));
     }
 
     Player[] team1 = new Player[team1Names.length];
