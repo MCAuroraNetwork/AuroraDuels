@@ -3,8 +3,9 @@ package club.aurorapvp.modules.requests;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.duels.Duel;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
@@ -13,13 +14,13 @@ public class PartyRequest extends Request {
 
   private final HashMap<Player, Boolean> playersAccepted = new HashMap<>();
 
-  public PartyRequest(String queueName, Player requester, Player[] requested) {
-    super(queueName, requester, requested);
+  public PartyRequest(Player requester, Set<Player> requested, String queueName, String kitName) {
+    super(requester, requested, queueName, kitName);
 
     if (queue == null) {
       requester.sendMessage(Lang.getComponent("queue-not-found"));
       return;
-    } else if (requested == null || requested.length == 0) {
+    } else if (requested == null || requested.size() == 0) {
       requester.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
     } else if (hasPendingRequest(requester)) {
@@ -77,10 +78,10 @@ public class PartyRequest extends Request {
       pendingRequests.remove(this);
       requester.sendMessage(Lang.getComponent("request-accepted"));
 
-      Player[] players = Arrays.copyOf(requested, requested.length + 1);
-      players[players.length - 1] = requester;
+      Set<Player> players = new HashSet<>(requested);
+      players.add(requester);
 
-      queue.enterDuelQueue(players, false);
+      queue.enterDuelQueue(players, kit, false);
     }
   }
 

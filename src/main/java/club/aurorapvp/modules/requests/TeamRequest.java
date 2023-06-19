@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.bukkit.entity.Player;
 
@@ -16,9 +17,11 @@ public class TeamRequest extends Request {
   private final Player[] team1;
   private final Player[] team2;
 
-  public TeamRequest(String queueName, Player requester, Player[] team1, Player[] team2) {
-    super(queueName, requester, Stream.concat(Arrays.stream(team1), Arrays.stream(team2))
-        .toArray(Player[]::new));
+  public TeamRequest(Player requester, Player[] team1, Player[] team2, String queueName,
+                     String kitName) {
+    super(requester,
+        Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()),
+        queueName, kitName);
 
     ArrayList<Player> team1List = new ArrayList<>(Arrays.asList(team1));
     ArrayList<Player> team2List = new ArrayList<>(Arrays.asList(team2));
@@ -34,7 +37,7 @@ public class TeamRequest extends Request {
     if (queue == null) {
       requester.sendMessage(Lang.getComponent("queue-not-found"));
       return;
-    } else if (requested == null || requested.length == 0) {
+    } else if (requested == null || requested.size() == 0) {
       requester.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
     } else if (hasPendingRequest(requester)) {
@@ -92,7 +95,7 @@ public class TeamRequest extends Request {
       pendingRequests.remove(this);
       requester.sendMessage(Lang.getComponent("request-accepted"));
 
-      queue.enterDuelQueue(team1, team2, false);
+      queue.enterDuelQueue(team1, team2, kit,false);
     }
   }
 

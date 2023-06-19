@@ -3,19 +3,22 @@ package club.aurorapvp.modules.requests;
 import club.aurorapvp.configs.Config;
 import club.aurorapvp.configs.Lang;
 import club.aurorapvp.modules.duels.Duel;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
 
 public class StandardRequest extends Request {
-  public StandardRequest(String queueName, Player requester, Player requested) {
-    super(queueName, requester, new Player[] {requested});
+
+  private final Player requested;
+
+  public StandardRequest(Player requester, Player requested, String queueName, String kitName) {
+    super(requester, Set.of(requested), queueName, kitName);
+
+    this.requested = requested;
 
     if (queue == null) {
       requester.sendMessage(Lang.getComponent("queue-not-found"));
-      return;
-    } else if (requested == null) {
-      requester.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
     } else if (hasPendingRequest(requester)) {
       requester.sendMessage(Lang.getComponent("already-has-request"));
@@ -54,12 +57,12 @@ public class StandardRequest extends Request {
     requester.sendMessage(Lang.getComponent("request-accepted"));
     p.sendMessage(Lang.getComponent("request-accepted"));
 
-    queue.enterDuelQueue(requester, requested[0], false);
+    queue.enterDuelQueue(requester, requested, kit, false);
   }
 
   public void deny() {
     pendingRequests.remove(this);
     requester.sendMessage(Lang.getComponent("request-denied"));
-    requested[0].sendMessage(Lang.getComponent("request-denied"));
+    requested.sendMessage(Lang.getComponent("request-denied"));
   }
 }

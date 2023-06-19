@@ -26,13 +26,15 @@ public abstract class Duel {
   protected Long timeStarted;
   private final boolean ranked;
   private final Queue queue;
+  private final Kit kit;
   protected boolean active = false;
   protected Arena arena;
 
-  public Duel(Set<Player> players, Queue queue, boolean ranked) {
+  public Duel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
     this.players.addAll(players);
     this.ranked = ranked;
     this.queue = queue;
+    this.kit = kit;
     duels.add(this);
   }
 
@@ -45,6 +47,8 @@ public abstract class Duel {
   public Queue getQueue() {
     return queue;
   }
+
+  public Kit getKit() { return kit; }
 
   public Long getElapsed() {
     return System.currentTimeMillis() - timeStarted;

@@ -156,15 +156,15 @@ public class Queue {
     return duelQueue.size() * 2;
   }
 
-  public void enterDuelQueue(Player p, Player opponent, boolean ranked) {
-    duelQueue.add(new StandardDuel(p, opponent, this, ranked));
+  public void enterDuelQueue(Player p, Player opponent, Kit kit,  boolean ranked) {
+    duelQueue.add(new StandardDuel(p, opponent, this, kit, ranked));
     p.sendMessage(Lang.getComponent("entered-queue"));
     opponent.sendMessage(Lang.getComponent("entered-queue"));
     executor.execute(checkQueue);
   }
 
-  public void enterDuelQueue(Player[] players, boolean ranked) {
-    duelQueue.add(new PartyDuel(Set.of(players), this, ranked));
+  public void enterDuelQueue(Set<Player> players, Kit kit, boolean ranked) {
+    duelQueue.add(new PartyDuel(players, this, kit, ranked));
 
     for (Player p : players) {
       p.sendMessage(Lang.getComponent("entered-queue"));
@@ -173,8 +173,8 @@ public class Queue {
     executor.execute(checkQueue);
   }
 
-  public void enterDuelQueue(Player[] team1, Player[] team2, boolean ranked) {
-    duelQueue.add(new TeamDuel(team1, team2, this, ranked));
+  public void enterDuelQueue(Player[] team1, Player[] team2, Kit kit, boolean ranked) {
+    duelQueue.add(new TeamDuel(team1, team2, this, kit, ranked));
 
     for (Player p : team1) {
       p.sendMessage(Lang.getComponent("entered-queue"));
@@ -254,7 +254,7 @@ public class Queue {
       // unless I wrote it like this, fuck you Intellij
       Queue queue = Queue.getQueue(queueName);
       assert queue != null;
-      queue.enterDuelQueue(p, lookingForMatch.get(ranked), ranked);
+      queue.enterDuelQueue(Set.of(p, lookingForMatch.get(ranked)), null, ranked);
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;

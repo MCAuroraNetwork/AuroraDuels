@@ -26,8 +26,8 @@ public class StandardDuel extends Duel implements Listener {
   private final Player playerOne;
   private final Player playerTwo;
 
-  public StandardDuel(Player p1, Player p2, Queue queue, boolean ranked) {
-    super(Set.of(p1, p2), queue, ranked);
+  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, boolean ranked) {
+    super(Set.of(p1, p2), queue, kit, ranked);
     this.playerOne = p1;
     this.playerTwo = p2;
     STANDARD_DUELS.add(this);

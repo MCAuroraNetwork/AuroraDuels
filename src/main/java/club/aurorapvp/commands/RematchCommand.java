@@ -35,7 +35,7 @@ public class RematchCommand extends BaseCommand {
     if (lastDuel.getPlayers().size() == 2) {
       for (Player requested : lastDuel.getPlayers()) {
         if (!requested.equals(p)) {
-          new StandardRequest(lastDuel.getQueue().getName(), p, requested);
+          new StandardRequest(p, requested, lastDuel.getQueue().getName(), lastDuel.getKit().getName());
         }
       }
     } else if (lastDuel instanceof TeamDuel teamDuel) {
@@ -43,12 +43,12 @@ public class RematchCommand extends BaseCommand {
       Player[] team1 = isInTeam1 ? Arrays.stream(teamDuel.getTeam1()).filter(player -> !player.equals(p)).toArray(Player[]::new) : teamDuel.getTeam1();
       Player[] team2 = isInTeam1 ? teamDuel.getTeam2() : Arrays.stream(teamDuel.getTeam2()).filter(player -> !player.equals(p)).toArray(Player[]::new);
 
-      new TeamRequest(lastDuel.getQueue().getName(), p, team1, team2);
+      new TeamRequest(p, team1, team2, lastDuel.getQueue().getName(), lastDuel.getKit().getName());
     } else if (lastDuel instanceof PartyDuel partyDuel) {
       Set<Player> requested = partyDuel.getPlayers();
       requested.remove(p);
 
-      new PartyRequest(lastDuel.getQueue().getName(), p, requested.toArray(new Player[0]));
+      new PartyRequest(p, requested, lastDuel.getQueue().getName(), lastDuel.getKit().getName());
     }
   }
 }
