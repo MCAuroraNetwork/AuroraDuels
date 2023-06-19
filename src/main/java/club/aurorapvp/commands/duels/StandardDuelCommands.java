@@ -1,6 +1,8 @@
 package club.aurorapvp.commands.duels;
 
+import club.aurorapvp.AuroraDuels;
 import club.aurorapvp.modules.Kit;
+import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.requests.StandardRequest;
 import co.aikar.commands.annotation.CommandAlias;
@@ -33,7 +35,7 @@ public class StandardDuelCommands extends DuelBaseCommand {
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
   public void onNewRequest(Player p, String playerName, @Optional String queueName) {
-    new StandardRequest(Objects.requireNonNullElse(queueName, "Default"), p,
+    new StandardRequest(Objects.requireNonNullElse(queueName, "default"), p,
         Bukkit.getPlayer(playerName));
   }
 }
