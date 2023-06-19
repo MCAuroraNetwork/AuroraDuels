@@ -10,6 +10,7 @@ import club.aurorapvp.modules.requests.TeamRequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
+import java.util.Arrays;
 import java.util.Set;
 import org.bukkit.entity.Player;
 
@@ -38,7 +39,11 @@ public class RematchCommand extends BaseCommand {
         }
       }
     } else if (lastDuel instanceof TeamDuel teamDuel) {
-      new TeamRequest(lastDuel.getQueue().getName(), p, teamDuel.getTeam1(), teamDuel.getTeam2());
+      boolean isInTeam1 = Arrays.asList(teamDuel.getTeam1()).contains(p);
+      Player[] team1 = isInTeam1 ? Arrays.stream(teamDuel.getTeam1()).filter(player -> !player.equals(p)).toArray(Player[]::new) : teamDuel.getTeam1();
+      Player[] team2 = isInTeam1 ? teamDuel.getTeam2() : Arrays.stream(teamDuel.getTeam2()).filter(player -> !player.equals(p)).toArray(Player[]::new);
+
+      new TeamRequest(lastDuel.getQueue().getName(), p, team1, team2);
     } else if (lastDuel instanceof PartyDuel partyDuel) {
       Set<Player> requested = partyDuel.getPlayers();
       requested.remove(p);
