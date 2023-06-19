@@ -26,7 +26,7 @@ public abstract class Duel {
   protected Long timeStarted;
   private final boolean ranked;
   private final Queue queue;
-  private final Kit kit;
+  protected final Kit kit;
   protected boolean active = false;
   protected Arena arena;
 
@@ -38,7 +38,7 @@ public abstract class Duel {
     duels.add(this);
   }
 
-  public abstract void startDuel(Arena arena, Kit kit);
+  public abstract void startDuel(Arena arena);
 
   public abstract void endDuel(Player[] winners, Player[] losers);
 

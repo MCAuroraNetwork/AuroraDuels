@@ -52,7 +52,7 @@ public class StandardDuel extends Duel implements Listener {
     }
   }
 
-  public void startDuel(Arena arena, Kit kit) {
+  public void startDuel(Arena arena) {
     this.arena = arena;
 
     if (kit != null) {

@@ -81,7 +81,7 @@ public class PartyDuel extends Duel {
     return team2;
   }
 
-  public void startDuel(Arena arena, Kit kit) {
+  public void startDuel(Arena arena) {
     this.arena = arena;
 
     if (kit != null) {

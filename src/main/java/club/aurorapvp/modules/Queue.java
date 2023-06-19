@@ -157,14 +157,14 @@ public class Queue {
   }
 
   public void enterDuelQueue(Player p, Player opponent, Kit kit,  boolean ranked) {
-    duelQueue.add(new StandardDuel(p, opponent, this, kit, ranked));
+    duelQueue.add(new StandardDuel(p, opponent, this, Objects.requireNonNullElse(this.kit, kit), ranked));
     p.sendMessage(Lang.getComponent("entered-queue"));
     opponent.sendMessage(Lang.getComponent("entered-queue"));
     executor.execute(checkQueue);
   }
 
   public void enterDuelQueue(Set<Player> players, Kit kit, boolean ranked) {
-    duelQueue.add(new PartyDuel(players, this, kit, ranked));
+    duelQueue.add(new PartyDuel(players, this, Objects.requireNonNullElse(this.kit, kit), ranked));
 
     for (Player p : players) {
       p.sendMessage(Lang.getComponent("entered-queue"));
@@ -174,7 +174,7 @@ public class Queue {
   }
 
   public void enterDuelQueue(Player[] team1, Player[] team2, Kit kit, boolean ranked) {
-    duelQueue.add(new TeamDuel(team1, team2, this, kit, ranked));
+    duelQueue.add(new TeamDuel(team1, team2, this, Objects.requireNonNullElse(this.kit, kit), ranked));
 
     for (Player p : team1) {
       p.sendMessage(Lang.getComponent("entered-queue"));
@@ -195,7 +195,7 @@ public class Queue {
     if (duelQueue.size() > 0) {
       for (Arena arena : this.arenas) {
         if (!arena.isOccupied()) {
-          duelQueue.getLast().startDuel(arena, kit);
+          duelQueue.getLast().startDuel(arena);
         }
       }
     }
