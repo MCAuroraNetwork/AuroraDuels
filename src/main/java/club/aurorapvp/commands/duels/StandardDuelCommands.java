@@ -5,6 +5,7 @@ import club.aurorapvp.modules.Kit;
 import club.aurorapvp.modules.Queue;
 import club.aurorapvp.modules.duels.Duel;
 import club.aurorapvp.modules.requests.StandardRequest;
+import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
@@ -17,7 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @CommandAlias("duel")
-public class StandardDuelCommands extends DuelBaseCommand {
+public class StandardDuelCommands extends BaseCommand {
   @Subcommand("kit")
   @Description("Sets the duel kit")
   @SuppressWarnings("unused")

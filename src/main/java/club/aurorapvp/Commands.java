@@ -3,6 +3,7 @@ package club.aurorapvp;
 
 import club.aurorapvp.commands.ArenaCommands;
 import club.aurorapvp.commands.RematchCommand;
+import club.aurorapvp.commands.duels.DuelBaseCommands;
 import club.aurorapvp.commands.duels.StandardDuelCommands;
 import club.aurorapvp.commands.duels.PartyDuelCommands;
 import club.aurorapvp.commands.duels.TeamDuelCommands;
@@ -23,6 +24,7 @@ public class Commands {
 
   public static void init() {
     MANAGER.registerCommand(new ArenaCommands());
+    MANAGER.registerCommand(new DuelBaseCommands());
     MANAGER.registerCommand(new StandardDuelCommands());
     MANAGER.registerCommand(new TeamDuelCommands());
     MANAGER.registerCommand(new UnrankedCommands());

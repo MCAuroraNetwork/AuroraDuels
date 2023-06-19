@@ -1,6 +1,7 @@
 package club.aurorapvp.commands.duels;
 
 import club.aurorapvp.modules.requests.TeamRequest;
+import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
@@ -13,7 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @CommandAlias("teamduel")
-public class TeamDuelCommands extends DuelBaseCommand {
+public class TeamDuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @queues")
   @Syntax("[player1,player2,player3] [player4,player5,player6] [queue]")

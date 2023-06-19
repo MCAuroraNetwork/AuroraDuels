@@ -12,7 +12,7 @@ import co.aikar.commands.annotation.Syntax;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public abstract class DuelBaseCommand extends BaseCommand {
+public class DuelBaseCommands extends BaseCommand {
   @Subcommand("accept")
   @Description("Accepts the duel request")
   @SuppressWarnings("unused")
