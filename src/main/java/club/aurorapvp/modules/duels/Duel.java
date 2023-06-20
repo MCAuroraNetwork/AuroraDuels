@@ -48,7 +48,9 @@ public abstract class Duel {
     return queue;
   }
 
-  public Kit getKit() { return kit; }
+  public Kit getKit() {
+    return kit;
+  }
 
   public Long getElapsed() {
     return System.currentTimeMillis() - timeStarted;

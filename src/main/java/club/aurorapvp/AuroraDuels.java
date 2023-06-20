@@ -30,16 +30,14 @@ public final class AuroraDuels extends JavaPlugin {
       new Placeholders().register();
     }
 
-    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null) {
-      if (Config.get().getBoolean("optional-plugins.aurorakits-compatibility")) {
-        auroraKitsInstalled = true;
-      }
+    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null &&
+        Config.get().getBoolean("optional-plugins.aurorakits-compatibility")) {
+      auroraKitsInstalled = true;
     }
 
-    if (Bukkit.getPluginManager().getPlugin("AuroraCombat") != null) {
-      if (Config.get().getBoolean("optional-plugins.auroracombat-compatibility")) {
-        auroraCombatInstalled = true;
-      }
+    if (Bukkit.getPluginManager().getPlugin("AuroraCombat") != null &&
+        Config.get().getBoolean("optional-plugins.auroracombat-compatibility")) {
+      auroraCombatInstalled = true;
     }
 
     // Initialize classes
