@@ -36,12 +36,12 @@ dependencies {
     implementation "co.aikar:acf-paper:0.5.1-SNAPSHOT"
     implementation(platform("com.intellectualsites.bom:bom-1.18.x:1.28"))
 
-    compileOnly ':AuroraKits:1.4.0'
-    compileOnly ':AuroraCombat:1.0.0'
     compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Core'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit'
     compileOnly 'me.clip:placeholderapi:2.11.1'
+    compileOnly ':AuroraKits:1.4.0'
+    compileOnly ':AuroraCombat:1.0.0'
 }
 
 build {
