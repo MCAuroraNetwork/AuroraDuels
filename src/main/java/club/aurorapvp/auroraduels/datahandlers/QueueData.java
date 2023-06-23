@@ -3,7 +3,7 @@ package club.aurorapvp.auroraduels.datahandlers;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Queue;
-import club.aurorapvp.modules.Kit;
+import club.aurorapvp.aurorakits.modules.Kit;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

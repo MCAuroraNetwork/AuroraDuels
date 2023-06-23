@@ -1,11 +1,11 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
+import club.aurorapvp.auroracombat.modules.CombatTag;
+import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.modules.CombatTag;
-import club.aurorapvp.modules.Rating;
 import java.util.Arrays;
 
 import org.bukkit.entity.Player;

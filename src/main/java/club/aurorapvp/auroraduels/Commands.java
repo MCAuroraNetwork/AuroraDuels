@@ -13,7 +13,7 @@ import club.aurorapvp.auroraduels.commands.PluginCommands;
 import club.aurorapvp.auroraduels.commands.QueueCommands;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Queue;
-import club.aurorapvp.modules.Kit;
+import club.aurorapvp.aurorakits.modules.Kit;
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;

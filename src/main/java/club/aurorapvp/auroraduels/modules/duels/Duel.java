@@ -4,7 +4,7 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Queue;
-import club.aurorapvp.modules.Kit;
+import club.aurorapvp.aurorakits.modules.Kit;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.util.HashMap;
 import java.util.HashSet;

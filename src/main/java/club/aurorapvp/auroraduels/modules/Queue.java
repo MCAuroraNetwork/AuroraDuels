@@ -2,6 +2,7 @@ package club.aurorapvp.auroraduels.modules;
 
 import static club.aurorapvp.auroraduels.AuroraDuels.auroraKitsInstalled;
 
+import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
@@ -10,8 +11,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
-import club.aurorapvp.modules.Kit;
-import club.aurorapvp.modules.Rating;
+import club.aurorapvp.aurorakits.modules.Kit;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
