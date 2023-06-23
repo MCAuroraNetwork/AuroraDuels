@@ -10,6 +10,8 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.modules.Kit;
+import club.aurorapvp.modules.Rating;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
