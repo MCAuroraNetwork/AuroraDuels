@@ -1,7 +1,5 @@
 package club.aurorapvp.auroraduels.modules;
 
-import static club.aurorapvp.auroraduels.AuroraDuels.auroraKitsInstalled;
-
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.configs.Config;
@@ -112,7 +110,7 @@ public class Queue {
 
   public void create(Player p, String kitName) {
     if (!this.exists() && arenasSet) {
-      if (kitName != null && auroraKitsInstalled) {
+      if (kitName != null && AuroraDuels.isAuroraKitsInstalled()) {
         this.kit = Kit.getKit(kitName);
       }
 

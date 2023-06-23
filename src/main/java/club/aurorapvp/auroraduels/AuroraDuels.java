@@ -12,8 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraDuels extends JavaPlugin {
   public static JavaPlugin INSTANCE;
-  public static boolean auroraKitsInstalled = false;
-  public static boolean auroraCombatInstalled = false;
+  private static boolean auroraKitsInstalled = false;
+  private static boolean auroraCombatInstalled = false;
 
   @Override
   public void onEnable() {
