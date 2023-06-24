@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -11,6 +12,7 @@ import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import java.util.HashSet;
 import java.util.Set;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -57,26 +59,7 @@ public class PlayerEvents implements Listener {
       return;
     }
 
-    Duel duel = Duel.getDuel(event.getPlayer());
-
-    if (duel instanceof StandardDuel standardDuel) {
-      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(event.getPlayer())},
-          new Player[] {event.getPlayer()});
-    } else if (duel instanceof PartyDuel partyDuel) {
-      partyDuel.setDead(event.getPlayer());
-
-      if (partyDuel.teamDead(event.getPlayer())) {
-        duel.endDuel(partyDuel.getOpponents(event.getPlayer()),
-            partyDuel.getTeammates(event.getPlayer()));
-      }
-    } else if (duel instanceof TeamDuel teamDuel) {
-      teamDuel.setDead(event.getPlayer());
-
-      if ((teamDuel.teamDead(event.getPlayer()))) {
-        duel.endDuel(teamDuel.getOpponents(event.getPlayer()),
-            teamDuel.getTeammates(event.getPlayer()));
-      }
-    }
+    checkIfDuelOver(event.getPlayer());
   }
 
   @EventHandler
@@ -85,30 +68,34 @@ public class PlayerEvents implements Listener {
       return;
     }
 
-    Duel duel = Duel.getDuel(event.getPlayer());
+    checkIfDuelOver(event.getPlayer());
+  }
+
+  public void checkIfDuelOver(Player p) {
+    Duel duel = Duel.getDuel(p);
 
     if (duel instanceof StandardDuel standardDuel) {
-      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(event.getPlayer())},
-          new Player[] {event.getPlayer()});
+      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(p)},
+          new Player[] {p});
     } else if (duel instanceof PartyDuel partyDuel) {
-      partyDuel.setDead(event.getPlayer());
+      partyDuel.setDead(p);
 
-      if (partyDuel.teamDead(event.getPlayer())) {
-        duel.endDuel(partyDuel.getOpponents(event.getPlayer()),
-            partyDuel.getTeammates(event.getPlayer()));
+      if (partyDuel.teamDead(p)) {
+        duel.endDuel(partyDuel.getOpponents(p),
+            partyDuel.getTeammates(p));
       }
     } else if (duel instanceof TeamDuel teamDuel) {
-      teamDuel.setDead(event.getPlayer());
+      teamDuel.setDead(p);
 
-      if ((teamDuel.teamDead(event.getPlayer()))) {
-        duel.endDuel(teamDuel.getOpponents(event.getPlayer()),
-            teamDuel.getTeammates(event.getPlayer()));
+      if ((teamDuel.teamDead(p))) {
+        duel.endDuel(teamDuel.getOpponents(p),
+            teamDuel.getTeammates(p));
       }
     } else if (duel instanceof FFADuel ffaDuel) {
-      ffaDuel.setDead(event.getPlayer());
+      ffaDuel.setDead(p);
 
-      if (ffaDuel.allDeadExcept(event.getPlayer())) {
-        Set<Player> losers = ffaDuel.getPlayers();
+      if (ffaDuel.onePlayerAlive()) {
+        Set<Player> losers = new HashSet<>(ffaDuel.getPlayers());
         losers.remove(ffaDuel.getFirstAlive());
 
         duel.endDuel(new Player[] {ffaDuel.getFirstAlive()}, losers.toArray(new Player[0]));

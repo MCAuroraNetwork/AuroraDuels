@@ -39,7 +39,7 @@ public class FFADuel extends Duel {
 
   @SuppressWarnings("unused")
   public Player[] getOpponents(Player p) {
-    Set<Player> opponents = this.getPlayers();
+    Set<Player> opponents = new HashSet<>(this.getPlayers());
     opponents.remove(p);
 
     return opponents.toArray(new Player[0]);
@@ -49,14 +49,16 @@ public class FFADuel extends Duel {
     deadPlayers.put(p, true);
   }
 
-  public boolean allDeadExcept(Player p) {
-    for (Map.Entry<Player, Boolean> entry : deadPlayers.entrySet()) {
-      if (!entry.getKey().equals(p) && !entry.getValue()) {
-        return false;
+  public boolean onePlayerAlive() {
+    int aliveCount = 0;
+
+    for (Boolean isDead : deadPlayers.values()) {
+      if (!isDead) {
+        aliveCount++;
       }
     }
 
-    return true;
+    return aliveCount == 1;
   }
 
   // TODO janky method
@@ -216,7 +218,7 @@ public class FFADuel extends Duel {
     for (Player player : players) {
       Location safeSpawn = findSafeSpawnLocation(center, radius);
       if (safeSpawn != null) {
-        player.teleport(safeSpawn);
+        player.teleportAsync(safeSpawn);
       }
     }
   }
