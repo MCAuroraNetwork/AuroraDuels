@@ -157,14 +157,23 @@ public class Queue {
   }
 
   public void enterDuelQueue(Player p, Player opponent, Kit kit,  boolean ranked) {
-    duelQueue.add(new StandardDuel(p, opponent, this, Objects.requireNonNullElse(this.kit, kit), ranked));
+    if (kit == null) {
+      duelQueue.add(new StandardDuel(p, opponent, this, this.kit, ranked));
+    } else {
+      duelQueue.add(new StandardDuel(p, opponent, this, kit, ranked));
+    }
+
     p.sendMessage(Lang.getComponent("entered-queue"));
     opponent.sendMessage(Lang.getComponent("entered-queue"));
     executor.execute(checkQueue);
   }
 
   public void enterDuelQueue(Set<Player> players, Kit kit, boolean ranked) {
-    duelQueue.add(new PartyDuel(players, this, Objects.requireNonNullElse(this.kit, kit), ranked));
+    if (kit == null) {
+      duelQueue.add(new PartyDuel(players, this, this.kit, ranked));
+    } else {
+      duelQueue.add(new PartyDuel(players, this, kit, ranked));
+    }
 
     for (Player p : players) {
       p.sendMessage(Lang.getComponent("entered-queue"));
@@ -174,7 +183,11 @@ public class Queue {
   }
 
   public void enterDuelQueue(Player[] team1, Player[] team2, Kit kit, boolean ranked) {
-    duelQueue.add(new TeamDuel(team1, team2, this, Objects.requireNonNullElse(this.kit, kit), ranked));
+    if (kit == null) {
+      duelQueue.add(new TeamDuel(team1, team2, this, this.kit, ranked));
+    } else {
+      duelQueue.add(new TeamDuel(team1, team2, this, kit, ranked));
+    }
 
     for (Player p : team1) {
       p.sendMessage(Lang.getComponent("entered-queue"));
