@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +30,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class FFADuel extends Duel {
   private static final Set<FFADuel> FFA_DUELS = new HashSet<>();
   private final Map<Player, Boolean> deadPlayers = new HashMap<>();
+  private final Random random = new Random();
 
   @SuppressWarnings("unused")
   public FFADuel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
@@ -97,7 +99,9 @@ public class FFADuel extends Duel {
             arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
-    this.spawnPlayersSafely(spawn1, spawn2, this.getPlayers());
+    for (Player p : this.getPlayers()) {
+      p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2)));
+    }
 
     StringBuilder sb;
     String names;
@@ -211,37 +215,34 @@ public class FFADuel extends Duel {
     FFA_DUELS.remove(this);
   }
 
-  public void spawnPlayersSafely(Location spawn1, Location spawn2, Set<Player> players) {
-    Location center = calculateCenter(spawn1, spawn2);
-    double radius = spawn1.distance(spawn2) / 2;
-
-    for (Player player : players) {
-      Location safeSpawn = findSafeSpawnLocation(center, radius);
-      if (safeSpawn != null) {
-        player.teleportAsync(safeSpawn);
-      }
-    }
-  }
-
-  private Location calculateCenter(Location spawn1, Location spawn2) {
+  private Location findSafeSpawnLocation(Location spawn1, Location spawn2) {
     double x = (spawn1.getX() + spawn2.getX()) / 2;
     double y = (spawn1.getY() + spawn2.getY()) / 2;
     double z = (spawn1.getZ() + spawn2.getZ()) / 2;
-    return new Location(spawn1.getWorld(), x, y, z);
-  }
 
-  private Location findSafeSpawnLocation(Location center, double radius) {
+    Location center = new Location(spawn1.getWorld(), x, y, z);
+    int radius = (int) Math.floor(spawn1.distance(spawn2));
+
     World world = center.getWorld();
-    for (double x = center.getX() - radius; x <= center.getX() + radius; x++) {
-      for (double z = center.getZ() - radius; z <= center.getZ() + radius; z++) {
-        if (center.distance(new Location(world, x, center.getY(), z)) <= radius) {
-          Location spawnLocation = new Location(world, x, center.getY(), z);
-          if (isSafeSpawnLocation(spawnLocation)) {
-            return spawnLocation;
-          }
-        }
+
+    int maxAttempts = 100;
+    int attempts = 0;
+
+    while (attempts < maxAttempts) {
+      double angle = random.nextDouble() * Math.PI * 2;
+      double distance = random.nextDouble() * radius;
+      x = center.getX() + distance * Math.cos(angle);
+      z = center.getZ() + distance * Math.sin(angle);
+
+      Location spawnLocation = new Location(world, x, center.getY(), z);
+
+      if (isSafeSpawnLocation(spawnLocation)) {
+        return spawnLocation;
       }
+
+      attempts++;
     }
+
     return null;
   }
 
@@ -257,6 +258,32 @@ public class FFADuel extends Duel {
     boolean isOnSolidGround = belowBlockType.isSolid() && belowBlockType != Material.LAVA &&
         belowBlockType != Material.MAGMA_BLOCK;
     boolean hasEnoughHeadroom = aboveBlockType == Material.AIR;
+
+    if (!isAir && !(isNotDangerous && isOnSolidGround && hasEnoughHeadroom)) {
+      int maxAdjustments = 5;
+      int adjustments = 0;
+
+      while (adjustments < maxAdjustments) {
+        location.setY(location.getY() + 1);
+        blockType = location.getBlock().getType();
+        belowBlockType = location.clone().add(0, -1, 0).getBlock().getType();
+        aboveBlockType = location.clone().add(0, 1, 0).getBlock().getType();
+
+        isAir = blockType == Material.AIR;
+        isNotDangerous =
+            !blockType.isOccluding() && !blockType.isSolid() && blockType != Material.LAVA &&
+                blockType != Material.MAGMA_BLOCK;
+        isOnSolidGround = belowBlockType.isSolid() && belowBlockType != Material.LAVA &&
+            belowBlockType != Material.MAGMA_BLOCK;
+        hasEnoughHeadroom = aboveBlockType == Material.AIR;
+
+        if (isAir || (isNotDangerous && isOnSolidGround && hasEnoughHeadroom)) {
+          return true;
+        }
+
+        adjustments++;
+      }
+    }
 
     return isAir || (isNotDangerous && isOnSolidGround && hasEnoughHeadroom);
   }
