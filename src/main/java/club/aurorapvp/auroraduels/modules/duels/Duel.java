@@ -106,7 +106,6 @@ public abstract class Duel {
     return Kit.getKit(p, container.get(key, PersistentDataType.STRING));
   }
 
-
   public static void setLastDuel(Player p, Duel duel) {
     LAST_DUEL.put(p, duel);
   }

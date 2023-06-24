@@ -62,7 +62,9 @@ public class PartyDuel extends Duel {
     this.team1 = temp;
     this.team2 = new HashSet<>(Iterables.getLast(partitions)).toArray(new Player[0]);
 
-    this.getPlayers().add(extra);
+    if (extra != null) {
+      this.getPlayers().add(extra);
+    }
 
     PARTY_DUELS.add(this);
   }
