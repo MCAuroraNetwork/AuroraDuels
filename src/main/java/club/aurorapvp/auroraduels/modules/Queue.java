@@ -6,6 +6,7 @@ import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.datahandlers.QueueData;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
@@ -194,6 +195,22 @@ public class Queue {
     }
 
     for (Player p : team2) {
+      p.sendMessage(Lang.getComponent("entered-queue"));
+    }
+
+    executor.execute(checkQueue);
+  }
+
+  // TODO refactor this, or everything else
+  @SuppressWarnings("unused")
+  public void enterFFADuelQueue(Set<Player> players, Kit kit, boolean ranked) {
+    if (kit == null) {
+      duelQueue.add(new FFADuel(players, this, this.kit, ranked));
+    } else {
+      duelQueue.add(new FFADuel(players, this, kit, ranked));
+    }
+
+    for (Player p : players) {
       p.sendMessage(Lang.getComponent("entered-queue"));
     }
 
