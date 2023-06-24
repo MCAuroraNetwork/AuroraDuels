@@ -6,10 +6,12 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Queue;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import java.util.Set;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -101,6 +103,15 @@ public class PlayerEvents implements Listener {
       if ((teamDuel.teamDead(event.getPlayer()))) {
         duel.endDuel(teamDuel.getOpponents(event.getPlayer()),
             teamDuel.getTeammates(event.getPlayer()));
+      }
+    } else if (duel instanceof FFADuel ffaDuel) {
+      ffaDuel.setDead(event.getPlayer());
+
+      if (ffaDuel.allDeadExcept(event.getPlayer())) {
+        Set<Player> losers = ffaDuel.getPlayers();
+        losers.remove(ffaDuel.getFirstAlive());
+
+        duel.endDuel(new Player[] {ffaDuel.getFirstAlive()}, losers.toArray(new Player[0]));
       }
     }
   }
