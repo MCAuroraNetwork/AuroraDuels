@@ -9,7 +9,9 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Queue;
 import club.aurorapvp.aurorakits.modules.Kit;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
@@ -24,6 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeamDuel extends Duel {
+  private final Map<Player, Boolean> team1Dead = new HashMap<>();
+  private final Map<Player, Boolean> team2Dead = new HashMap<>();
   private static final Set<TeamDuel> TEAM_DUELS = new HashSet<>();
   private final Player[] team1;
   private final Player[] team2;
@@ -66,6 +70,32 @@ public class TeamDuel extends Duel {
     return team2;
   }
 
+  public void setDead(Player p) {
+    if (team1Dead.containsKey(p)) {
+      team1Dead.put(p, true);
+    } else {
+      team2Dead.put(p, true);
+    }
+  }
+
+  public boolean teamDead(Player p) {
+    if (team1Dead.containsKey(p)) {
+      for (boolean dead : team1Dead.values()) {
+        if (!dead) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      for (boolean dead : team2Dead.values()) {
+        if (!dead) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+
   public void startDuel(Arena arena) {
     this.arena = arena;
 
@@ -93,10 +123,12 @@ public class TeamDuel extends Duel {
             arena.getSecondSpawn().getZ());
 
     for (Player p : team1) {
+      team1Dead.put(p, false);
       p.teleportAsync(spawn1);
     }
 
     for (Player p : team2) {
+      team2Dead.put(p, false);
       p.teleportAsync(spawn2);
     }
 

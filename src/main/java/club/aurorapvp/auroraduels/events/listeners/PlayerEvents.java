@@ -11,7 +11,6 @@ import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -61,29 +60,19 @@ public class PlayerEvents implements Listener {
     if (duel instanceof StandardDuel standardDuel) {
       standardDuel.endDuel(new Player[] {standardDuel.getOpponent(event.getPlayer())},
           new Player[] {event.getPlayer()});
-    } else if (duel instanceof PartyDuel partyDuel){
-      boolean teammatesDead = true;
-      for (Player p : partyDuel.getTeammates(event.getPlayer())) {
-        if (!(p.getGameMode() == GameMode.SPECTATOR) && !p.isDead() && p.isOnline()) {
-          teammatesDead = false;
-          break;
-        }
-      }
+    } else if (duel instanceof PartyDuel partyDuel) {
+      partyDuel.setDead(event.getPlayer());
 
-      if (teammatesDead) {
-        duel.endDuel(partyDuel.getOpponents(event.getPlayer()), partyDuel.getTeammates(event.getPlayer()));
+      if (partyDuel.teamDead(event.getPlayer())) {
+        duel.endDuel(partyDuel.getOpponents(event.getPlayer()),
+            partyDuel.getTeammates(event.getPlayer()));
       }
     } else if (duel instanceof TeamDuel teamDuel) {
-      boolean teammatesDead = true;
-      for (Player p : teamDuel.getTeammates(event.getPlayer())) {
-        if (!(p.getGameMode() == GameMode.SPECTATOR) && !p.isDead() && p.isOnline()) {
-          teammatesDead = false;
-          break;
-        }
-      }
+      teamDuel.setDead(event.getPlayer());
 
-      if (teammatesDead) {
-        duel.endDuel(teamDuel.getOpponents(event.getPlayer()), teamDuel.getTeammates(event.getPlayer()));
+      if ((teamDuel.teamDead(event.getPlayer()))) {
+        duel.endDuel(teamDuel.getOpponents(event.getPlayer()),
+            teamDuel.getTeammates(event.getPlayer()));
       }
     }
   }
@@ -99,29 +88,19 @@ public class PlayerEvents implements Listener {
     if (duel instanceof StandardDuel standardDuel) {
       standardDuel.endDuel(new Player[] {standardDuel.getOpponent(event.getPlayer())},
           new Player[] {event.getPlayer()});
-    } else if (duel instanceof PartyDuel partyDuel){
-      boolean teammatesDead = true;
-      for (Player p : partyDuel.getTeammates(event.getPlayer())) {
-        if (!(p.getGameMode() == GameMode.SPECTATOR) && !p.isDead() && p.isOnline()) {
-          teammatesDead = false;
-          break;
-        }
-      }
+    } else if (duel instanceof PartyDuel partyDuel) {
+      partyDuel.setDead(event.getPlayer());
 
-      if (teammatesDead) {
-        duel.endDuel(partyDuel.getOpponents(event.getPlayer()), partyDuel.getTeammates(event.getPlayer()));
+      if (partyDuel.teamDead(event.getPlayer())) {
+        duel.endDuel(partyDuel.getOpponents(event.getPlayer()),
+            partyDuel.getTeammates(event.getPlayer()));
       }
     } else if (duel instanceof TeamDuel teamDuel) {
-      boolean teammatesDead = true;
-      for (Player p : teamDuel.getTeammates(event.getPlayer())) {
-        if (!(p.getGameMode() == GameMode.SPECTATOR) && !p.isDead() && p.isOnline()) {
-          teammatesDead = false;
-          break;
-        }
-      }
+      teamDuel.setDead(event.getPlayer());
 
-      if (teammatesDead) {
-        duel.endDuel(teamDuel.getOpponents(event.getPlayer()), teamDuel.getTeammates(event.getPlayer()));
+      if ((teamDuel.teamDead(event.getPlayer()))) {
+        duel.endDuel(teamDuel.getOpponents(event.getPlayer()),
+            teamDuel.getTeammates(event.getPlayer()));
       }
     }
   }

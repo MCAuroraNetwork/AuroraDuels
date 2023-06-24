@@ -10,9 +10,11 @@ import club.aurorapvp.auroraduels.modules.Queue;
 import club.aurorapvp.aurorakits.modules.Kit;
 import com.google.common.collect.Iterables;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
@@ -26,6 +28,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PartyDuel extends Duel {
   private static final Set<PartyDuel> PARTY_DUELS = new HashSet<>();
+  private final Map<Player, Boolean> team1Dead = new HashMap<>();
+  private final Map<Player, Boolean> team2Dead = new HashMap<>();
   private final Player[] team1;
   private final Player[] team2;
 
@@ -81,6 +85,32 @@ public class PartyDuel extends Duel {
     return team2;
   }
 
+  public void setDead(Player p) {
+    if (team1Dead.containsKey(p)) {
+      team1Dead.put(p, true);
+    } else {
+      team2Dead.put(p, true);
+    }
+  }
+
+  public boolean teamDead(Player p) {
+    if (team1Dead.containsKey(p)) {
+      for (boolean dead : team1Dead.values()) {
+        if (!dead) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      for (boolean dead : team2Dead.values()) {
+        if (!dead) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+
   public void startDuel(Arena arena) {
     this.arena = arena;
 
@@ -108,10 +138,12 @@ public class PartyDuel extends Duel {
             arena.getSecondSpawn().getZ());
 
     for (Player p : team1) {
+      team1Dead.put(p, false);
       p.teleportAsync(spawn1);
     }
 
     for (Player p : team2) {
+      team2Dead.put(p, false);
       p.teleportAsync(spawn2);
     }
 
@@ -202,11 +234,13 @@ public class PartyDuel extends Duel {
     String loserNames = sb.toString();
 
     for (Player p : winners) {
-      p.showTitle(Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + loserNames)));
+      p.showTitle(
+          Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + loserNames)));
     }
 
     for (Player p : losers) {
-      p.showTitle(Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
+      p.showTitle(
+          Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
     }
 
     Duel thisDuel = this;
@@ -228,7 +262,8 @@ public class PartyDuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel, winners, losers));
+        Bukkit.getServer().getPluginManager()
+            .callEvent(new DuelEndEvent(thisDuel, winners, losers));
       }
     }.runTask(AuroraDuels.INSTANCE);
 
