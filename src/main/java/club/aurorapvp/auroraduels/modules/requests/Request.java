@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.modules.requests;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.duels.DuelKitGUI;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
@@ -38,6 +39,12 @@ public abstract class Request {
     this.queue = queue;
 
     if (queue.isKitSet()) {
+      this.sendRequest();
+    }
+
+    if (!AuroraDuels.isAuroraKitsInstalled()) {
+      this.setKit(null);
+
       this.sendRequest();
     }
 
