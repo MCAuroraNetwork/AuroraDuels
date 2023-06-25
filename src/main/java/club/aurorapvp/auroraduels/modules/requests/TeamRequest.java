@@ -54,8 +54,6 @@ public class TeamRequest extends Request {
     }
 
     QueueGUI.open(requester);
-
-    PENDING_REQUESTS.add(this);
   }
 
   public void sendRequest() {
@@ -129,8 +127,6 @@ public class TeamRequest extends Request {
         return;
       }
     }
-
-    PENDING_REQUESTS.add(this);
 
     requester.sendMessage(Lang.getComponent("sent-request"));
 

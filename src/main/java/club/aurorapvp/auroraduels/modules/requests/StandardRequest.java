@@ -31,8 +31,6 @@ public class StandardRequest extends Request {
     }
 
     QueueGUI.open(requester);
-
-    PENDING_REQUESTS.add(this);
   }
 
   public StandardRequest(Player requester, Player requested, Queue queue, Kit kit) {
@@ -56,8 +54,6 @@ public class StandardRequest extends Request {
       requester.sendMessage(Lang.getComponent("player-in-duel"));
       return;
     }
-
-    PENDING_REQUESTS.add(this);
 
     requester.sendMessage(Lang.getComponent("sent-request"));
     requested.sendMessage(Lang.formatComponent("received-request", requester.getName()));

@@ -23,6 +23,8 @@ public abstract class Request {
     this.requested = requested;
 
     acceptable = false;
+
+    PENDING_REQUESTS.add(this);
   }
 
   public boolean isAcceptable() {

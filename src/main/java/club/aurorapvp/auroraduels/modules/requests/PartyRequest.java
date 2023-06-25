@@ -38,8 +38,6 @@ public class PartyRequest extends Request {
     }
 
     QueueGUI.open(requester);
-
-    PENDING_REQUESTS.add(this);
   }
 
   public PartyRequest(Player requester, Set<Player> requested, Queue queue, Kit kit) {
@@ -68,8 +66,6 @@ public class PartyRequest extends Request {
         return;
       }
     }
-
-    PENDING_REQUESTS.add(this);
 
     requester.sendMessage(Lang.getComponent("sent-request"));
 
