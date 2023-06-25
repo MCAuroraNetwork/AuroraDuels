@@ -1,6 +1,5 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
-import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -20,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -49,6 +49,15 @@ public class PlayerEvents implements Listener {
     if (Queue.isCreator(event.getPlayer()) && !Queue.isArenasSet()) {
       Queue.isUnFinishedQueue().createArenaList(event.getPlayer(),
           MiniMessage.miniMessage().serialize(event.originalMessage()));
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onCommandRun(PlayerCommandPreprocessEvent event) {
+    if (Duel.inDuel(event.getPlayer()) && !Config.get().getBoolean("duels.allow-commands")) {
+      event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
+
       event.setCancelled(true);
     }
   }

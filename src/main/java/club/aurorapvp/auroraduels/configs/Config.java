@@ -22,6 +22,7 @@ public class Config {
     DEFAULTS.put("optional-plugins.aurorakits-compatibility", true);
     DEFAULTS.put("optional-plugins.auroracombat-compatibility", true);
     DEFAULTS.put("duels.enable-teleports", true);
+    DEFAULTS.put("duels.allow-commands", false);
     DEFAULTS.put("duels.max-duration", 600000);
     DEFAULTS.put("queues.enable-default-queue", true);
 
