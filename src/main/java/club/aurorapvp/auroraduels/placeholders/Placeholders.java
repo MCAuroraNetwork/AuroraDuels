@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.placeholders;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.modules.Queue;
+import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;

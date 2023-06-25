@@ -3,6 +3,9 @@ package club.aurorapvp.auroraduels.modules.requests;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
+import club.aurorapvp.aurorakits.modules.Kit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,11 +20,83 @@ public class TeamRequest extends Request {
   private final Player[] team1;
   private final Player[] team2;
 
-  public TeamRequest(Player requester, Player[] team1, Player[] team2, String queueName,
-                     String kitName) {
+  public TeamRequest(Player requester, Player[] team1, Player[] team2) {
     super(requester,
-        Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()),
-        queueName, kitName);
+        Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()));
+
+    ArrayList<Player> team1List = new ArrayList<>(Arrays.asList(team1));
+    ArrayList<Player> team2List = new ArrayList<>(Arrays.asList(team2));
+
+    if (!team1List.contains(requester) && !team2List.contains(requester)) {
+      team1List.add(requester);
+      team1 = team1List.toArray(new Player[0]);
+    }
+
+    this.team1 = team1;
+    this.team2 = team2;
+
+    if (requested == null || requested.size() == 0) {
+      requester.sendMessage(Lang.getComponent("unknown-opponent"));
+      return;
+    } else if (hasPendingRequest(requester)) {
+      requester.sendMessage(Lang.getComponent("already-has-request"));
+      return;
+    }
+
+    for (Player p : requested) {
+      if (hasPendingRequest(p)) {
+        requester.sendMessage(Lang.getComponent("requested-player-has-request"));
+        return;
+      } else if (Duel.inDuel(p)) {
+        requester.sendMessage(Lang.getComponent("player-in-duel"));
+        return;
+      }
+    }
+
+    QueueGUI.open(requester);
+
+    PENDING_REQUESTS.add(this);
+  }
+
+  public void sendRequest() {
+    requester.sendMessage(Lang.getComponent("sent-request"));
+
+    for (Player p : requested) {
+      p.sendMessage(Lang.formatComponent("received-request", requester.getName()));
+    }
+
+    for (Player p : requested) {
+      playersAccepted.put(p, false);
+    }
+
+    Request thisRequest = this;
+
+    new Timer().schedule(new TimerTask() {
+                           @Override
+                           public void run() {
+                             if (PENDING_REQUESTS.contains(thisRequest)) {
+                               requester.sendMessage(Lang.getComponent("request-timed-out"));
+
+                               for (Player p : requested) {
+                                 p.sendMessage(Lang.getComponent("request-timed-out"));
+                               }
+
+                               PENDING_REQUESTS.remove(thisRequest);
+                               this.cancel();
+                             }
+                           }
+                         }, Config.get().getInt("duels.max-duration")
+    );
+
+    acceptable = true;
+  }
+
+  public TeamRequest(Player requester, Player[] team1, Player[] team2, Queue queue, Kit kit) {
+    super(requester,
+        Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()));
+
+    this.kit = kit;
+    this.queue = queue;
 
     ArrayList<Player> team1List = new ArrayList<>(Arrays.asList(team1));
     ArrayList<Player> team2List = new ArrayList<>(Arrays.asList(team2));
@@ -55,7 +130,7 @@ public class TeamRequest extends Request {
       }
     }
 
-    pendingRequests.add(this);
+    PENDING_REQUESTS.add(this);
 
     requester.sendMessage(Lang.getComponent("sent-request"));
 
@@ -72,35 +147,37 @@ public class TeamRequest extends Request {
     new Timer().schedule(new TimerTask() {
                            @Override
                            public void run() {
-                             if (pendingRequests.contains(thisRequest)) {
+                             if (PENDING_REQUESTS.contains(thisRequest)) {
                                requester.sendMessage(Lang.getComponent("request-timed-out"));
 
                                for (Player p : requested) {
                                  p.sendMessage(Lang.getComponent("request-timed-out"));
                                }
 
-                               pendingRequests.remove(thisRequest);
+                               PENDING_REQUESTS.remove(thisRequest);
                                this.cancel();
                              }
                            }
                          }, Config.get().getInt("duels.max-duration")
     );
+
+    acceptable = true;
   }
 
-  public void accept(Player accepter) {
-    accepter.sendMessage(Lang.getComponent("request-accepted"));
-    playersAccepted.put(accepter, true);
+  public void accept(Player acceptor) {
+    acceptor.sendMessage(Lang.getComponent("request-accepted"));
+    playersAccepted.put(acceptor, true);
 
     if (!playersAccepted.containsValue(false)) {
-      pendingRequests.remove(this);
+      PENDING_REQUESTS.remove(this);
       requester.sendMessage(Lang.getComponent("request-accepted"));
 
-      queue.enterDuelQueue(team1, team2, kit,false);
+      queue.enterTeamDuelQueue(team1, team2, kit, false);
     }
   }
 
   public void deny() {
-    pendingRequests.remove(this);
+    PENDING_REQUESTS.remove(this);
     requester.sendMessage(Lang.getComponent("request-denied"));
 
     for (Player p : requested) {

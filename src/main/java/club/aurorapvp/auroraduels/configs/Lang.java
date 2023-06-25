@@ -97,6 +97,12 @@ public class Lang {
         "prefix <gradient:#FFAA00:#FF55FF>Unknown Arena Command! Use /help for help!");
     DEFAULTS.put("unknown-queue-command",
         "prefix <gradient:#FFAA00:#FF55FF>Unknown Arena Command! Use /help for help!");
+    DEFAULTS.put("queue-menu", "<gradient:#FFAA00:#FF55FF><bold>Select Duel Type");
+    DEFAULTS.put("duel-kit-gui", "<gradient:#FFAA00:#FF55FF><bold>Select Duel Kit");
+    DEFAULTS.put("next-page", "<gradient:#FFAA00:#FF55FF>Next page");
+    DEFAULTS.put("previous-page", "<gradient:#FFAA00:#FF55FF>Previous page");
+    DEFAULTS.put("no-kit", "<gradient:#FFAA00:#FF55FF>Click here for no kit");
+    DEFAULTS.put("kit-invalid-name", "prefix <gradient:#FFAA00:#FF55FF>Invalid kit name!");
     DEFAULTS.put("help-command", """
         prefix <gradient:#FFAA00:#FF55FF>All Commands:\s
         <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player\s

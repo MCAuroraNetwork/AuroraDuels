@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.commands.duels;
 
 import club.aurorapvp.auroraduels.configs.Lang;
-
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.requests.StandardRequest;
 import club.aurorapvp.aurorakits.modules.Kit;
@@ -31,10 +30,10 @@ public class StandardDuelCommands extends BaseCommand {
 
   @Default
   @CommandCompletion("@players @types @queues")
-  @Syntax("[player] [flag] [queue/kit]")
+  @Syntax("[player]")
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
-  public void onNewRequest(Player p, String playerName, @Optional String... params) {
+  public void onNewRequest(Player p, String playerName) {
     Player requested = Bukkit.getPlayer(playerName);
 
     if (requested == null) {
@@ -42,17 +41,6 @@ public class StandardDuelCommands extends BaseCommand {
       return;
     }
 
-    String queueName = "default";
-    String kitName = null;
-
-    for (int i = 0; i < params.length; i++) {
-      if (params[i].equals("-k")) {
-        kitName = params[i + 1];
-      } else if (params[i].equals("-q")) {
-        queueName = params[i + 1];
-      }
-    }
-
-    new StandardRequest(p, requested, queueName, kitName);
+    new StandardRequest(p, requested);
   }
 }

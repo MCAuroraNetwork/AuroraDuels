@@ -1,7 +1,8 @@
 package club.aurorapvp.auroraduels.modules.requests;
 
 import club.aurorapvp.auroraduels.configs.Lang;
-import club.aurorapvp.auroraduels.modules.Queue;
+import club.aurorapvp.auroraduels.modules.duels.DuelKitGUI;
+import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.Kit;
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,25 +10,48 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 public abstract class Request {
-  protected static final Set<Request> pendingRequests = new HashSet<>();
+  protected static final Set<Request> PENDING_REQUESTS = new HashSet<>();
   protected final Player requester;
   protected final Set<Player> requested;
-  protected final Queue queue;
-  protected final Kit kit;
+  protected Queue queue;
+  protected Kit kit;
+  protected boolean acceptable;
 
-  public Request(Player requester, Set<Player> requested, String queueName, String kitName) {
+  public Request(Player requester, Set<Player> requested) {
     this.requester = requester;
     this.requested = requested;
-    this.queue = Queue.getQueue(queueName);
-    this.kit = Kit.getKit(kitName);
+
+    acceptable = false;
+  }
+
+  public boolean isAcceptable() {
+    return acceptable;
   }
 
   public abstract void accept(Player p);
 
   public abstract void deny();
 
+  public abstract void sendRequest();
+
+  public void setQueue(Queue queue) {
+    this.queue = queue;
+
+    if (queue.isKitSet()) {
+      this.sendRequest();
+    }
+
+    new DuelKitGUI(requester);
+  }
+
+  public void setKit(Kit kit) {
+    this.kit = kit;
+
+    this.sendRequest();
+  }
+
   public static Request getRequest(Player p) {
-    for (Request request : pendingRequests) {
+    for (Request request : PENDING_REQUESTS) {
       if (request.requester == p || request.requested.contains(p)) {
         return request;
       }
@@ -36,8 +60,8 @@ public abstract class Request {
   }
 
   public static boolean hasPendingRequest(Player p) {
-    for (Request request : pendingRequests) {
-      if (request.requester == p || request.requested.contains(p)) {
+    for (Request request : PENDING_REQUESTS) {
+      if (request.isAcceptable() && (request.requester == p || request.requested.contains(p))) {
         return true;
       }
     }

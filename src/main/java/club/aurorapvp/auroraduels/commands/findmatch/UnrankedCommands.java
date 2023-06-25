@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.commands.findmatch;
 
 import club.aurorapvp.auroraduels.configs.Lang;
-import club.aurorapvp.auroraduels.modules.Queue;
+import club.aurorapvp.auroraduels.modules.queues.Queue;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;

@@ -1,15 +1,17 @@
-package club.aurorapvp.auroraduels.modules;
+package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.datahandlers.QueueData;
+import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.auroraduels.util.ItemStackUtil;
 import club.aurorapvp.aurorakits.modules.Kit;
 import java.io.File;
 import java.util.HashMap;
@@ -21,7 +23,9 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class Queue {
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
@@ -32,7 +36,9 @@ public class Queue {
   private static final Set<Queue> queues = new HashSet<>();
   private static Queue unFinishedQueue;
   private final String name;
+  private ItemStack displayItem;
   private Kit kit;
+  private boolean kitSet = false;
   private final Set<Arena> arenas = new HashSet<>();
   private final QueueData data;
 
@@ -56,6 +62,9 @@ public class Queue {
     if (Config.get().getBoolean("queues.enable-default-queue")) {
       Queue queue = new Queue("default");
       queue.addArenas(Arena.getArenas());
+
+      queue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, queue.getName());
+
       queues.add(queue);
     }
 
@@ -77,6 +86,14 @@ public class Queue {
 
   public String getName() {
     return name;
+  }
+
+  public ItemStack getDisplayItem() {
+    return displayItem;
+  }
+
+  public boolean isKitSet() {
+    return kitSet;
   }
 
   public boolean exists() {
@@ -113,6 +130,7 @@ public class Queue {
     if (!this.exists() && arenasSet) {
       if (kitName != null && AuroraDuels.isAuroraKitsInstalled()) {
         this.kit = Kit.getKit(kitName);
+        kitSet = true;
       }
 
       create(p);
@@ -128,6 +146,8 @@ public class Queue {
       arenasSet = false;
       currentCreator = p;
       unFinishedQueue = this;
+      displayItem = ItemStackUtil.createDisplayItem(p.getInventory().getItemInMainHand().getType(),
+          this.getName());
 
       p.sendMessage(MiniMessage.miniMessage().deserialize(
           String.format(Lang.getString("add-arena"), arenas.size())));
@@ -143,6 +163,8 @@ public class Queue {
       arenasSet = true;
       queues.add(this);
       data.create();
+      QueueGUI.updateGUI(this.getDisplayItem());
+
       p.sendMessage(Lang.getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
       arenas.add(Arena.getArena(str));
@@ -157,7 +179,7 @@ public class Queue {
     return duelQueue.size() * 2;
   }
 
-  public void enterDuelQueue(Player p, Player opponent, Kit kit,  boolean ranked) {
+  public void enterStandardDuelQueue(Player p, Player opponent, Kit kit, boolean ranked) {
     if (kit == null) {
       duelQueue.add(new StandardDuel(p, opponent, this, this.kit, ranked));
     } else {
@@ -169,7 +191,7 @@ public class Queue {
     executor.execute(checkQueue);
   }
 
-  public void enterDuelQueue(Set<Player> players, Kit kit, boolean ranked) {
+  public void enterPartyDuelQueue(Set<Player> players, Kit kit, boolean ranked) {
     if (kit == null) {
       duelQueue.add(new PartyDuel(players, this, this.kit, ranked));
     } else {
@@ -183,7 +205,7 @@ public class Queue {
     executor.execute(checkQueue);
   }
 
-  public void enterDuelQueue(Player[] team1, Player[] team2, Kit kit, boolean ranked) {
+  public void enterTeamDuelQueue(Player[] team1, Player[] team2, Kit kit, boolean ranked) {
     if (kit == null) {
       duelQueue.add(new TeamDuel(team1, team2, this, this.kit, ranked));
     } else {
@@ -201,8 +223,6 @@ public class Queue {
     executor.execute(checkQueue);
   }
 
-  // TODO refactor this, or everything else
-  @SuppressWarnings("unused")
   public void enterFFADuelQueue(Set<Player> players, Kit kit, boolean ranked) {
     if (kit == null) {
       duelQueue.add(new FFADuel(players, this, this.kit, ranked));
@@ -211,6 +231,16 @@ public class Queue {
     }
 
     for (Player p : players) {
+      p.sendMessage(Lang.getComponent("entered-queue"));
+    }
+
+    executor.execute(checkQueue);
+  }
+
+  public void enterDuelQueue(Duel duel) {
+    duelQueue.add(duel);
+
+    for (Player p : duel.getPlayers()) {
       p.sendMessage(Lang.getComponent("entered-queue"));
     }
 
@@ -284,7 +314,7 @@ public class Queue {
       // unless I wrote it like this, fuck you Intellij
       Queue queue = Queue.getQueue(queueName);
       assert queue != null;
-      queue.enterDuelQueue(Set.of(p, lookingForMatch.get(ranked)), null, ranked);
+      queue.enterPartyDuelQueue(Set.of(p, lookingForMatch.get(ranked)), null, ranked);
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;

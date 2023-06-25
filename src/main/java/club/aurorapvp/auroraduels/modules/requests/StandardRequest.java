@@ -3,17 +3,43 @@ package club.aurorapvp.auroraduels.modules.requests;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
+import club.aurorapvp.aurorakits.modules.Kit;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
 
 public class StandardRequest extends Request {
-
   private final Player requested;
 
-  public StandardRequest(Player requester, Player requested, String queueName, String kitName) {
-    super(requester, Set.of(requested), queueName, kitName);
+  public StandardRequest(Player requester, Player requested) {
+    super(requester, Set.of(requested));
+
+    this.requested = requested;
+
+    if (hasPendingRequest(requester)) {
+      requester.sendMessage(Lang.getComponent("already-has-request"));
+      return;
+    } else if (hasPendingRequest(requested)) {
+      requester.sendMessage(Lang.getComponent("requested-player-has-request"));
+      return;
+    } else if (Duel.inDuel(requested)) {
+      requester.sendMessage(Lang.getComponent("player-in-duel"));
+      return;
+    }
+
+    QueueGUI.open(requester);
+
+    PENDING_REQUESTS.add(this);
+  }
+
+  public StandardRequest(Player requester, Player requested, Queue queue, Kit kit) {
+    super(requester, Set.of(requested));
+
+    this.kit = kit;
+    this.queue = queue;
 
     this.requested = requested;
 
@@ -31,7 +57,7 @@ public class StandardRequest extends Request {
       return;
     }
 
-    pendingRequests.add(this);
+    PENDING_REQUESTS.add(this);
 
     requester.sendMessage(Lang.getComponent("sent-request"));
     requested.sendMessage(Lang.formatComponent("received-request", requester.getName()));
@@ -41,27 +67,51 @@ public class StandardRequest extends Request {
     new Timer().schedule(new TimerTask() {
                            @Override
                            public void run() {
-                             if (pendingRequests.contains(thisRequest)) {
+                             if (PENDING_REQUESTS.contains(thisRequest)) {
                                requester.sendMessage(Lang.getComponent("request-timed-out"));
                                requested.sendMessage(Lang.getComponent("request-timed-out"));
-                               pendingRequests.remove(thisRequest);
+                               PENDING_REQUESTS.remove(thisRequest);
                                this.cancel();
                              }
                            }
                          }, Config.get().getInt("duels.max-duration")
     );
+
+    acceptable = true;
+  }
+
+  public void sendRequest() {
+    requester.sendMessage(Lang.getComponent("sent-request"));
+    requested.sendMessage(Lang.formatComponent("received-request", requester.getName()));
+
+    Request thisRequest = this;
+
+    new Timer().schedule(new TimerTask() {
+                           @Override
+                           public void run() {
+                             if (PENDING_REQUESTS.contains(thisRequest)) {
+                               requester.sendMessage(Lang.getComponent("request-timed-out"));
+                               requested.sendMessage(Lang.getComponent("request-timed-out"));
+                               PENDING_REQUESTS.remove(thisRequest);
+                               this.cancel();
+                             }
+                           }
+                         }, Config.get().getInt("duels.max-duration")
+    );
+
+    acceptable = true;
   }
 
   public void accept(Player p) {
-    pendingRequests.remove(this);
+    PENDING_REQUESTS.remove(this);
     requester.sendMessage(Lang.getComponent("request-accepted"));
     p.sendMessage(Lang.getComponent("request-accepted"));
 
-    queue.enterDuelQueue(requester, requested, kit, false);
+    queue.enterStandardDuelQueue(requester, requested, kit, false);
   }
 
   public void deny() {
-    pendingRequests.remove(this);
+    PENDING_REQUESTS.remove(this);
     requester.sendMessage(Lang.getComponent("request-denied"));
     requested.sendMessage(Lang.getComponent("request-denied"));
   }

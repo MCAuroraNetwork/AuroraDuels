@@ -6,7 +6,7 @@ import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.Queue;
+import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.Kit;
 import com.google.common.collect.Iterables;
 import java.util.Arrays;
