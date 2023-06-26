@@ -19,13 +19,8 @@ import org.bukkit.entity.Player;
 @CommandAlias("duel|teamduel|partyduel")
 public class DuelBaseCommands extends BaseCommand {
   @Subcommand("accept")
-  @Description("Accepts the duel request")
-  @SuppressWarnings("unused")
-  public void onAccept(Player p) {
-    Request.acceptDuelRequest(p);
-  }
-
-  @Subcommand("accept")
+  @Syntax("[player]")
+  @CommandCompletion("@players")
   @Description("Accepts the duel request")
   @SuppressWarnings("unused")
   public void onAccept(Player p, @Optional String requesterName) {
@@ -34,7 +29,13 @@ public class DuelBaseCommands extends BaseCommand {
     if (requesterName != null) {
       requester = Bukkit.getPlayer(requesterName);
     }
-    if (requester == null || !Request.hasPendingRequest(requester, p)) {
+
+    if (requester == null) {
+      Request.acceptDuelRequest(p);
+      return;
+    }
+
+    if (!Request.hasPendingRequest(requester, p)) {
       p.sendMessage(Lang.getComponent("no-requests"));
       return;
     }
@@ -45,14 +46,9 @@ public class DuelBaseCommands extends BaseCommand {
   }
 
   @Subcommand("deny")
+  @Syntax("[player]")
+  @CommandCompletion("@players")
   @Description("Denies the duel request")
-  @SuppressWarnings("unused")
-  public void onDeny(Player p) {
-    Request.denyDuelRequest(p);
-  }
-
-  @Subcommand("deny")
-  @Description("Accepts the duel request")
   @SuppressWarnings("unused")
   public void onDeny(Player p, @Optional String requesterName) {
     Player requester = null;
@@ -61,7 +57,12 @@ public class DuelBaseCommands extends BaseCommand {
       requester = Bukkit.getPlayer(requesterName);
     }
 
-    if (requester == null || !Request.hasPendingRequest(requester, p)) {
+    if (requester == null) {
+      Request.denyDuelRequest(p);
+      return;
+    }
+
+    if (!Request.hasPendingRequest(requester, p)) {
       p.sendMessage(Lang.getComponent("no-requests"));
       return;
     }
