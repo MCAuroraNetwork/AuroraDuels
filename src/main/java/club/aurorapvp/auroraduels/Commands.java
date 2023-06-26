@@ -57,19 +57,5 @@ public class Commands {
 
       return arenaNames;
     });
-
-    commandCompletions.registerCompletion("types", c -> List.of("-k", "-all"));
-
-    if (AuroraDuels.isAuroraKitsInstalled()) {
-      commandCompletions.registerCompletion("kits", c -> {
-        List<String> kitNames = new ArrayList<>();
-
-        for (Kit kit : Kit.getKits()) {
-          kitNames.add(kit.getName());
-        }
-
-        return kitNames;
-      });
-    }
   }
 }
