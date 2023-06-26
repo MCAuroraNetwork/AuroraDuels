@@ -52,7 +52,13 @@ public class Placeholders extends PlaceholderExpansion {
 
       Queue queue = Queue.getQueue(queueName);
       assert queue != null;
-      return queue.inQueue() + " players in queue";
+      return queue.inQueue() + " players in " + queueName + " queue";
+    }
+
+    if (params.startsWith("in_duel_")) {
+      String queueName = params.split("_")[1];
+
+      return Duel.inDuel(queueName) + " players in " + queueName + " duel";
     }
 
     if (!p.isOnline()) {

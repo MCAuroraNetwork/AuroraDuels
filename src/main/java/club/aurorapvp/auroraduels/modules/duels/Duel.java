@@ -8,6 +8,7 @@ import club.aurorapvp.aurorakits.modules.kits.Kit;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -87,6 +88,10 @@ public abstract class Duel {
     return ranked;
   }
 
+  public int inDuel() {
+    return this.getPlayers().size();
+  }
+
   public void setSpectator(Player p, boolean spectator) {
     if (spectator) {
       BlockVector3 midpoint = arena.getFirstSpawn().add(arena.getSecondSpawn()).divide(2);
@@ -138,7 +143,28 @@ public abstract class Duel {
   }
 
   public static int inDuels() {
-    return duels.size();
+    int inDuels = 0;
+
+    for (Duel duel : duels) {
+      inDuels = inDuels + duel.inDuel();
+    }
+
+    return inDuels;
+  }
+
+  public static Set<Duel> getDuels() {
+    return duels;
+  }
+
+  public static int inDuel(String queueName) {
+    int inDuel = 0;
+
+    for (Duel duel : Duel.getDuels()) {
+      if (Objects.equals(duel.getQueue().getName(), queueName)) {
+        inDuel = inDuel + duel.inDuel();
+      }
+    }
+    return inDuel;
   }
 
   public static boolean inDuel(Player p) {
