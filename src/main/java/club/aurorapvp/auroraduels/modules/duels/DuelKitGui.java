@@ -1,6 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.requests.Request;
 import club.aurorapvp.aurorakits.modules.Kit;
 import java.util.HashSet;
@@ -16,14 +16,14 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class DuelKitGUI {
-  private static final Set<DuelKitGUI> KITS_GUIS = new HashSet<>();
+public class DuelKitGui {
+  private static final Set<DuelKitGui> KITS_GUIS = new HashSet<>();
   private final Player p;
   private Inventory[] inventories;
   private int currentPage = 0;
   private int pages;
 
-  public DuelKitGUI(Player p) {
+  public DuelKitGui(Player p) {
     this.p = p;
 
     reload();
@@ -143,7 +143,7 @@ public class DuelKitGUI {
   public static void onInventoryClose(InventoryCloseEvent event) {
     Player p = (Player) event.getPlayer();
 
-    DuelKitGUI duelGUI = DuelKitGUI.getGui(p);
+    DuelKitGui duelGUI = DuelKitGui.getGui(p);
 
     if (duelGUI == null) {
       return;
@@ -157,7 +157,7 @@ public class DuelKitGUI {
   public static void onInventoryClicked(InventoryClickEvent event) {
     Player p = (Player) event.getWhoClicked();
 
-    DuelKitGUI duelGUI = DuelKitGUI.getGui(p);
+    DuelKitGui duelGUI = DuelKitGui.getGui(p);
 
     Request request = Request.getRequest(p);
     assert request != null;
@@ -201,8 +201,8 @@ public class DuelKitGUI {
     }
   }
 
-  public static DuelKitGUI getGui(Player p) {
-    for (DuelKitGUI kitsGui : KITS_GUIS) {
+  public static DuelKitGui getGui(Player p) {
+    for (DuelKitGui kitsGui : KITS_GUIS) {
       if (kitsGui.getPlayer() == p) {
         return kitsGui;
       }

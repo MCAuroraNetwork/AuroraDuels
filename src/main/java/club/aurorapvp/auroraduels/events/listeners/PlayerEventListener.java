@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
-import club.aurorapvp.auroraduels.configs.Config;
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.config.Config;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.Wand;
@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class PlayerEvents implements Listener {
+public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {

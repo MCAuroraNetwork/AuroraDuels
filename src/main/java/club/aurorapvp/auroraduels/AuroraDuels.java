@@ -1,13 +1,14 @@
 package club.aurorapvp.auroraduels;
 
-import club.aurorapvp.auroraduels.configs.Config;
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.commands.Commands;
+import club.aurorapvp.auroraduels.config.Config;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.Events;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
-import club.aurorapvp.auroraduels.placeholders.Placeholders;
+import club.aurorapvp.auroraduels.modules.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

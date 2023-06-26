@@ -1,10 +1,11 @@
-package club.aurorapvp.auroraduels;
+package club.aurorapvp.auroraduels.commands;
 
 
-import club.aurorapvp.auroraduels.commands.ArenaCommands;
-import club.aurorapvp.auroraduels.commands.PluginCommands;
-import club.aurorapvp.auroraduels.commands.QueueCommands;
-import club.aurorapvp.auroraduels.commands.RematchCommand;
+import club.aurorapvp.auroraduels.AuroraDuels;
+import club.aurorapvp.auroraduels.commands.arena.ArenaCommands;
+import club.aurorapvp.auroraduels.commands.plugin.PluginCommands;
+import club.aurorapvp.auroraduels.commands.queue.QueueCommands;
+import club.aurorapvp.auroraduels.commands.duels.RematchCommand;
 import club.aurorapvp.auroraduels.commands.duels.DuelBaseCommands;
 import club.aurorapvp.auroraduels.commands.duels.FFADuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.PartyDuelCommands;

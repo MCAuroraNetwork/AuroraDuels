@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.modules.requests;
 
-import club.aurorapvp.auroraduels.configs.Config;
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.config.Config;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;

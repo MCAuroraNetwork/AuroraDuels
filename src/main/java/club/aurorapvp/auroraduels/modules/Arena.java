@@ -1,9 +1,9 @@
 package club.aurorapvp.auroraduels.modules;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.configs.Lang;
-import club.aurorapvp.auroraduels.datahandlers.ArenaData;
-import club.aurorapvp.auroraduels.datahandlers.SchematicData;
+import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.data.ArenaDataHandler;
+import club.aurorapvp.auroraduels.data.SchematicDataHandler;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
@@ -26,8 +26,8 @@ public class Arena {
   private static Arena unfinishedArena;
   private ArenaState state;
   private boolean occupied = false;
-  private final SchematicData schematic;
-  private final ArenaData data;
+  private final SchematicDataHandler schematic;
+  private final ArenaDataHandler data;
   private final String name;
   private World world;
 
@@ -35,8 +35,8 @@ public class Arena {
     this.name = arenaName;
     this.state = ArenaState.IDLE;
 
-    this.schematic = new SchematicData(this);
-    this.data = new ArenaData(this);
+    this.schematic = new SchematicDataHandler(this);
+    this.data = new ArenaDataHandler(this);
 
     if (this.exists()) {
       state = ArenaState.COMPLETE;
@@ -215,7 +215,7 @@ public class Arena {
 
   public void reset(Player p) {
     if (this.exists()) {
-      new SchematicData(this).paste();
+      new SchematicDataHandler(this).paste();
       p.sendMessage(Lang.getComponent("arena-reset"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
@@ -224,7 +224,7 @@ public class Arena {
 
   public void reset() {
     if (this.exists()) {
-      new SchematicData(this).paste();
+      new SchematicDataHandler(this).paste();
     }
   }
 

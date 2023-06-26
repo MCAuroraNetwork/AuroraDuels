@@ -1,6 +1,6 @@
 package club.aurorapvp.auroraduels.modules.queues;
 
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.requests.Request;
 import java.util.List;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.datahandlers;
+package club.aurorapvp.auroraduels.data;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -11,14 +11,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 
-public class QueueData {
+public class QueueDataHandler {
   private final File FILE;
   private final YamlConfiguration queueData;
   private final Queue queue;
 
-  public QueueData(Queue queue) {
+  public QueueDataHandler(Queue queue) {
     this.queue = queue;
 
     FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "/queues/" + queue.getName() + ".yml");

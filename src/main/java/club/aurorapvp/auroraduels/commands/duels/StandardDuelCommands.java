@@ -1,6 +1,6 @@
 package club.aurorapvp.auroraduels.commands.duels;
 
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.requests.StandardRequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;

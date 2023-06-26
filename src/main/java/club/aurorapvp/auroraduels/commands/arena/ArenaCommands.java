@@ -1,6 +1,6 @@
-package club.aurorapvp.auroraduels.commands;
+package club.aurorapvp.auroraduels.commands.arena;
 
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;

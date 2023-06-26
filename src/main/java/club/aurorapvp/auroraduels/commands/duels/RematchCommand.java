@@ -1,6 +1,6 @@
-package club.aurorapvp.auroraduels.commands;
+package club.aurorapvp.auroraduels.commands.duels;
 
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;

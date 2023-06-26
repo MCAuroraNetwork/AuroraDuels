@@ -1,15 +1,15 @@
 package club.aurorapvp.auroraduels.events;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.events.listeners.DuelEvents;
-import club.aurorapvp.auroraduels.events.listeners.InventoryEvents;
-import club.aurorapvp.auroraduels.events.listeners.PlayerEvents;
+import club.aurorapvp.auroraduels.events.listeners.DuelEventListener;
+import club.aurorapvp.auroraduels.events.listeners.InventoryEventListener;
+import club.aurorapvp.auroraduels.events.listeners.PlayerEventListener;
 import org.bukkit.Bukkit;
 
 public class Events {
   public static void init() {
-    Bukkit.getPluginManager().registerEvents(new PlayerEvents(), AuroraDuels.INSTANCE);
-    Bukkit.getPluginManager().registerEvents(new DuelEvents(), AuroraDuels.INSTANCE);
-    Bukkit.getPluginManager().registerEvents(new InventoryEvents(), AuroraDuels.INSTANCE);
+    Bukkit.getPluginManager().registerEvents(new PlayerEventListener(), AuroraDuels.INSTANCE);
+    Bukkit.getPluginManager().registerEvents(new DuelEventListener(), AuroraDuels.INSTANCE);
+    Bukkit.getPluginManager().registerEvents(new InventoryEventListener(), AuroraDuels.INSTANCE);
   }
 }

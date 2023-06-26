@@ -1,8 +1,8 @@
 package club.aurorapvp.auroraduels.modules.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.configs.Lang;
-import club.aurorapvp.auroraduels.modules.duels.DuelKitGUI;
+import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.Kit;
 import java.util.HashSet;
@@ -51,7 +51,7 @@ public abstract class Request {
       this.sendRequest();
     }
 
-    new DuelKitGUI(requester);
+    new DuelKitGui(requester);
   }
 
   public void setKit(Kit kit) {

@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.placeholders;
+package club.aurorapvp.auroraduels.modules;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.queues.Queue;

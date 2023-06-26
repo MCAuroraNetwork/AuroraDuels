@@ -2,15 +2,12 @@ package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.configs.Config;
-import club.aurorapvp.auroraduels.configs.Lang;
-import club.aurorapvp.auroraduels.datahandlers.QueueData;
+import club.aurorapvp.auroraduels.config.Config;
+import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.data.QueueDataHandler;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.FFADuel;
-import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
-import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.util.ItemStackUtil;
 import club.aurorapvp.aurorakits.modules.Kit;
 import java.io.File;
@@ -40,12 +37,12 @@ public class Queue {
   private Kit kit;
   private boolean kitSet = false;
   private final Set<Arena> arenas = new HashSet<>();
-  private final QueueData data;
+  private final QueueDataHandler data;
 
   public Queue(String queueName) {
     this.name = queueName;
 
-    this.data = new QueueData(this);
+    this.data = new QueueDataHandler(this);
 
     if (this.exists()) {
       reload();

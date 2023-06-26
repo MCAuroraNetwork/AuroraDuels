@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class DuelEvents implements Listener {
+public class DuelEventListener implements Listener {
   @EventHandler
   public void onDuelStart(DuelStartEvent event) {
     if (!AuroraDuels.isAuroraCombatInstalled()) {

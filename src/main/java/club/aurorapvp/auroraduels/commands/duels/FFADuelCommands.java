@@ -1,8 +1,7 @@
 package club.aurorapvp.auroraduels.commands.duels;
 
-import club.aurorapvp.auroraduels.configs.Lang;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.requests.FFARequest;
-import club.aurorapvp.auroraduels.modules.requests.PartyRequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;

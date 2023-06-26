@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.datahandlers;
+package club.aurorapvp.auroraduels.data;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -12,13 +12,13 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class ArenaData {
+public class ArenaDataHandler {
   private static Arena arena;
   private final File FILE;
   private final YamlConfiguration arenaData;
 
-  public ArenaData(Arena arena) {
-    ArenaData.arena = arena;
+  public ArenaDataHandler(Arena arena) {
+    ArenaDataHandler.arena = arena;
 
     FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "/arenas/" + arena.getName() + ".yml");
     arenaData = YamlConfiguration.loadConfiguration(FILE);

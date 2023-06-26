@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.datahandlers;
+package club.aurorapvp.auroraduels.data;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -25,12 +25,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import org.bukkit.Bukkit;
 
-public class SchematicData {
+public class SchematicDataHandler {
   private static Arena arena;
   private final File FILE;
 
-  public SchematicData(Arena arena) {
-    SchematicData.arena = arena;
+  public SchematicDataHandler(Arena arena) {
+    SchematicDataHandler.arena = arena;
 
     FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "/arenas/schematics/" + arena.getName() + ".schem");
   }
