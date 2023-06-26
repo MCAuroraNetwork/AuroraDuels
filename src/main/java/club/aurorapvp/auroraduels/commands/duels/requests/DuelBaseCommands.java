@@ -28,9 +28,12 @@ public class DuelBaseCommands extends BaseCommand {
   @Subcommand("accept")
   @Description("Accepts the duel request")
   @SuppressWarnings("unused")
-  public void onAccept(Player p, String requesterName) {
-    Player requester = Bukkit.getPlayer(requesterName);
+  public void onAccept(Player p, @Optional String requesterName) {
+    Player requester = null;
 
+    if (requesterName != null) {
+      requester = Bukkit.getPlayer(requesterName);
+    }
     if (requester == null || !Request.hasPendingRequest(requester, p)) {
       p.sendMessage(Lang.getComponent("no-requests"));
       return;
@@ -51,8 +54,12 @@ public class DuelBaseCommands extends BaseCommand {
   @Subcommand("deny")
   @Description("Accepts the duel request")
   @SuppressWarnings("unused")
-  public void onDeny(Player p, String requesterName) {
-    Player requester = Bukkit.getPlayer(requesterName);
+  public void onDeny(Player p, @Optional String requesterName) {
+    Player requester = null;
+
+    if (requesterName != null) {
+      requester = Bukkit.getPlayer(requesterName);
+    }
 
     if (requester == null || !Request.hasPendingRequest(requester, p)) {
       p.sendMessage(Lang.getComponent("no-requests"));
