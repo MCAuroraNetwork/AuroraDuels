@@ -14,6 +14,7 @@ import club.aurorapvp.auroraduels.commands.findmatch.RankedCommands;
 import club.aurorapvp.auroraduels.commands.findmatch.UnrankedCommands;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.aurorakits.modules.Kit;
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
@@ -58,5 +59,17 @@ public class Commands {
 
       return arenaNames;
     });
+
+    if (AuroraDuels.isAuroraKitsInstalled()) {
+      commandCompletions.registerCompletion("kits", c -> {
+        List<String> kitNames = new ArrayList<>();
+
+        for (Kit kit : Kit.getKits()) {
+          kitNames.add(kit.getName());
+        }
+
+        return kitNames;
+      });
+    }
   }
 }
