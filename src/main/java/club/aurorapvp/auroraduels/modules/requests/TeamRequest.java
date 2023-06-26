@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.modules.requests;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import club.aurorapvp.aurorakits.modules.Kit;
@@ -168,7 +169,11 @@ public class TeamRequest extends Request {
       PENDING_REQUESTS.remove(this);
       requester.sendMessage(Lang.getComponent("request-accepted"));
 
-      queue.enterTeamDuelQueue(team1, team2, kit, false);
+      if (kit == null) {
+        queue.enterDuelQueue(new TeamDuel(team1, team2, queue, queue.getKit(), false));
+      } else {
+        queue.enterDuelQueue(new TeamDuel(team1, team2, queue, kit, false));
+      }
     }
   }
 

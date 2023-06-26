@@ -25,14 +25,11 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-// TODO implement properly into AuroraDuels, for now this will only function via AuroraParties.
-@SuppressWarnings("unused")
 public class FFADuel extends Duel {
   private static final Set<FFADuel> FFA_DUELS = new HashSet<>();
   private final Map<Player, Boolean> deadPlayers = new HashMap<>();
   private final Random random = new Random();
 
-  @SuppressWarnings("unused")
   public FFADuel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
     super(players, queue, kit, ranked);
 

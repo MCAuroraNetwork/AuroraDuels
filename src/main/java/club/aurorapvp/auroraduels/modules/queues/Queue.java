@@ -179,64 +179,6 @@ public class Queue {
     return duelQueue.size() * 2;
   }
 
-  public void enterStandardDuelQueue(Player p, Player opponent, Kit kit, boolean ranked) {
-    if (kit == null) {
-      duelQueue.add(new StandardDuel(p, opponent, this, this.kit, ranked));
-    } else {
-      duelQueue.add(new StandardDuel(p, opponent, this, kit, ranked));
-    }
-
-    p.sendMessage(Lang.getComponent("entered-queue"));
-    opponent.sendMessage(Lang.getComponent("entered-queue"));
-    executor.execute(checkQueue);
-  }
-
-  public void enterPartyDuelQueue(Set<Player> players, Kit kit, boolean ranked) {
-    if (kit == null) {
-      duelQueue.add(new PartyDuel(players, this, this.kit, ranked));
-    } else {
-      duelQueue.add(new PartyDuel(players, this, kit, ranked));
-    }
-
-    for (Player p : players) {
-      p.sendMessage(Lang.getComponent("entered-queue"));
-    }
-
-    executor.execute(checkQueue);
-  }
-
-  public void enterTeamDuelQueue(Player[] team1, Player[] team2, Kit kit, boolean ranked) {
-    if (kit == null) {
-      duelQueue.add(new TeamDuel(team1, team2, this, this.kit, ranked));
-    } else {
-      duelQueue.add(new TeamDuel(team1, team2, this, kit, ranked));
-    }
-
-    for (Player p : team1) {
-      p.sendMessage(Lang.getComponent("entered-queue"));
-    }
-
-    for (Player p : team2) {
-      p.sendMessage(Lang.getComponent("entered-queue"));
-    }
-
-    executor.execute(checkQueue);
-  }
-
-  public void enterFFADuelQueue(Set<Player> players, Kit kit, boolean ranked) {
-    if (kit == null) {
-      duelQueue.add(new FFADuel(players, this, this.kit, ranked));
-    } else {
-      duelQueue.add(new FFADuel(players, this, kit, ranked));
-    }
-
-    for (Player p : players) {
-      p.sendMessage(Lang.getComponent("entered-queue"));
-    }
-
-    executor.execute(checkQueue);
-  }
-
   public void enterDuelQueue(Duel duel) {
     duelQueue.add(duel);
 
@@ -310,11 +252,10 @@ public class Queue {
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(true, p);
     } else {
-      // For some reason Intellij wouldn't stop whining about a possible NPE
-      // unless I wrote it like this, fuck you Intellij
       Queue queue = Queue.getQueue(queueName);
       assert queue != null;
-      queue.enterPartyDuelQueue(Set.of(p, lookingForMatch.get(ranked)), null, ranked);
+
+      queue.enterDuelQueue(new StandardDuel(p, lookingForMatch.get(ranked), queue, queue.getKit(), ranked));
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;

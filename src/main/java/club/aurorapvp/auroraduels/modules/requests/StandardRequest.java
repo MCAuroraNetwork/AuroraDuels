@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.modules.requests;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import club.aurorapvp.aurorakits.modules.Kit;
@@ -103,7 +104,11 @@ public class StandardRequest extends Request {
     requester.sendMessage(Lang.getComponent("request-accepted"));
     p.sendMessage(Lang.getComponent("request-accepted"));
 
-    queue.enterStandardDuelQueue(requester, requested, kit, false);
+    if (kit == null) {
+      queue.enterDuelQueue(new StandardDuel(requester, requested, queue, queue.getKit(), false));
+    } else {
+      queue.enterDuelQueue(new StandardDuel(requester, requested, queue, kit, false));
+    }
   }
 
   public void deny() {

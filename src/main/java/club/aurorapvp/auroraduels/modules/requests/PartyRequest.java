@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.modules.requests;
 import club.aurorapvp.auroraduels.configs.Config;
 import club.aurorapvp.auroraduels.configs.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import club.aurorapvp.aurorakits.modules.Kit;
@@ -143,7 +144,11 @@ public class PartyRequest extends Request {
       Set<Player> players = new HashSet<>(requested);
       players.add(requester);
 
-      queue.enterPartyDuelQueue(players, kit, false);
+      if (kit == null) {
+        queue.enterDuelQueue(new PartyDuel(players, queue, queue.getKit(), false));
+      } else {
+        queue.enterDuelQueue(new PartyDuel(players, queue, kit, false));
+      }
     }
   }
 
