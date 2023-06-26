@@ -53,6 +53,7 @@ public class Lang {
         "prefix <gradient:#FFAA00:#FF55FF>Cannot find specified duel match");
     DEFAULTS.put("player-in-duel", "prefix <gradient:#FFAA00:#FF55FF>That player is in a duel!");
     DEFAULTS.put("duel-started", "<bold><gradient:#FFAA00:#FF55FF>Duel started!");
+    DEFAULTS.put("even-rounds", "prefix <gradient:#FFAA00:#FF55FF>A duel must have an odd number of rounds!");
     DEFAULTS.put("entered-queue",
         "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
@@ -101,7 +102,7 @@ public class Lang {
     DEFAULTS.put("duel-kit-gui", "<gradient:#FFAA00:#FF55FF><bold>Select Duel Kit");
     DEFAULTS.put("next-page", "<gradient:#FFAA00:#FF55FF>Next page");
     DEFAULTS.put("previous-page", "<gradient:#FFAA00:#FF55FF>Previous page");
-    DEFAULTS.put("no-kit", "<gradient:#FFAA00:#FF55FF>Click here for no kit");
+    DEFAULTS.put("no-kit", "<gradient:#FFAA00:#FF55FF>No kit");
     DEFAULTS.put("kit-invalid-name", "prefix <gradient:#FFAA00:#FF55FF>Invalid kit name!");
     DEFAULTS.put("help-command", """
         prefix <gradient:#FFAA00:#FF55FF>All Commands:\s

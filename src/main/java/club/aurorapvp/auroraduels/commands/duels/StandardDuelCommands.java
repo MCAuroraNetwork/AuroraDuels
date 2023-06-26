@@ -15,11 +15,13 @@ import org.bukkit.entity.Player;
 @CommandAlias("duel")
 public class StandardDuelCommands extends BaseCommand {
   @Default
-  @CommandCompletion("@players @types @queues")
+  @CommandCompletion("@players @int")
   @Syntax("[player]")
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
-  public void onNewRequest(Player p, String playerName) {
+  public void onNewRequest(Player p, String playerName, @Optional String rounds) {
+
+
     Player requested = Bukkit.getPlayer(playerName);
 
     if (requested == null) {
@@ -27,6 +29,12 @@ public class StandardDuelCommands extends BaseCommand {
       return;
     }
 
-    new StandardRequest(p, requested);
+    try {
+      if (Integer.parseInt(rounds) > 1) {
+        new StandardRequest(p, requested, Integer.parseInt(rounds));
+      }
+    } catch (NumberFormatException e) {
+      new StandardRequest(p, requested);
+    }
   }
 }

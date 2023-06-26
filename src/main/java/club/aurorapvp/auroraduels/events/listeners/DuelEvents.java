@@ -22,8 +22,6 @@ public class DuelEvents implements Listener {
     for (Player p : event.getDuel().getPlayers()) {
       CombatTag.setTaggable(p, false);
     }
-
-    Rating.setUpdating("default", false);
   }
 
   @EventHandler
@@ -61,7 +59,5 @@ public class DuelEvents implements Listener {
     for (Player p : event.getDuel().getSpectators()) {
       event.getDuel().setSpectator(p, false);
     }
-
-    Rating.setUpdating("default", true);
   }
 }

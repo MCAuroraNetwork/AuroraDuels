@@ -60,6 +60,8 @@ public class Commands {
       return arenaNames;
     });
 
+    commandCompletions.registerCompletion("int", c -> List.of("1", "2", "3", "4", "5", "6", "7", "8", "9"));
+
     if (AuroraDuels.isAuroraKitsInstalled()) {
       commandCompletions.registerCompletion("kits", c -> {
         List<String> kitNames = new ArrayList<>();

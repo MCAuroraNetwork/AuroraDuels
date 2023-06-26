@@ -29,12 +29,23 @@ public abstract class Duel {
   protected final Kit kit;
   protected boolean active = false;
   protected Arena arena;
+  protected int rounds = 1;
+  protected int currentRound = 1;
 
   public Duel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
     this.players.addAll(players);
     this.ranked = ranked;
     this.queue = queue;
     this.kit = kit;
+    duels.add(this);
+  }
+
+  public Duel(Set<Player> players, Queue queue, Kit kit, boolean ranked, int rounds) {
+    this.players.addAll(players);
+    this.ranked = ranked;
+    this.queue = queue;
+    this.kit = kit;
+    this.rounds = rounds;
     duels.add(this);
   }
 

@@ -52,7 +52,7 @@ public class Queue {
     }
 
     if (AuroraDuels.isAuroraCombatInstalled()) {
-      Rating.setupRating(name + "_duels", false);
+      Rating.setupRating(name + "_duels");
     }
   }
 
@@ -255,7 +255,7 @@ public class Queue {
       Queue queue = Queue.getQueue(queueName);
       assert queue != null;
 
-      queue.enterDuelQueue(new StandardDuel(p, lookingForMatch.get(ranked), queue, queue.getKit(), ranked));
+      queue.enterDuelQueue(new StandardDuel(p, lookingForMatch.get(ranked), queue, queue.getKit(), ranked, 1));
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch = null;

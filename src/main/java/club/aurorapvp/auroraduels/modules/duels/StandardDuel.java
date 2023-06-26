@@ -8,7 +8,9 @@ import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.Kit;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
@@ -23,13 +25,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class StandardDuel extends Duel implements Listener {
   private static final Set<StandardDuel> STANDARD_DUELS = new HashSet<>();
+  private final Map<Player, Integer> wins = new HashMap<>();
   private final Player playerOne;
   private final Player playerTwo;
 
-  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, boolean ranked) {
+  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, boolean ranked, int rounds) {
     super(Set.of(p1, p2), queue, kit, ranked);
     this.playerOne = p1;
     this.playerTwo = p2;
+    this.rounds = rounds;
     STANDARD_DUELS.add(this);
   }
 
@@ -54,6 +58,12 @@ public class StandardDuel extends Duel implements Listener {
 
   public void startDuel(Arena arena) {
     this.arena = arena;
+
+    if (rounds % 2 == 0) {
+      for (Player p : this.players) {
+        p.sendMessage(Lang.getComponent("even-rounds"));
+      }
+    }
 
     if (kit != null) {
       Kit.giveKit(kit, playerOne);
@@ -80,6 +90,9 @@ public class StandardDuel extends Duel implements Listener {
             arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
+    playerOne.spigot().respawn();
+    playerTwo.spigot().respawn();
+
     playerOne.teleportAsync(spawn1);
     playerTwo.teleportAsync(spawn2);
 
@@ -89,6 +102,11 @@ public class StandardDuel extends Duel implements Listener {
     final Title title2 =
         Title.title(Lang.getComponent("duel-started"),
             Component.text("Opponent: " + playerOne.getName()));
+
+    if (rounds > 1) {
+      playerOne.sendActionBar(Component.text("Round " + currentRound + " of " + rounds));
+      playerTwo.sendActionBar(Component.text("Round " + currentRound + " of " + rounds));
+    }
 
     playerOne.showTitle(title1);
     playerTwo.showTitle(title2);
@@ -121,6 +139,22 @@ public class StandardDuel extends Duel implements Listener {
   }
 
   public void endDuel(Player[] winner, Player[] loser) {
+    if (rounds > currentRound) {
+      if (wins.containsKey(winner[0])) {
+        int currentWins = wins.get(winner[0]);
+
+        wins.put(winner[0], currentWins + 1);
+      } else {
+        wins.put(winner[0], 1);
+        return;
+      }
+
+      if (!(wins.get(winner[0]) >= (rounds / 2 + 1))) {
+        this.startDuel(arena);
+        return;
+      }
+    }
+
     winner[0].showTitle(
         Title.title(Lang.getComponent("you-won"),
             Component.text("Opponent: " + playerOne.getName())));

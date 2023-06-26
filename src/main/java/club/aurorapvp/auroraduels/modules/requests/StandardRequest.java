@@ -14,11 +14,32 @@ import org.bukkit.entity.Player;
 
 public class StandardRequest extends Request {
   private final Player requested;
+  private int rounds = 1;
 
   public StandardRequest(Player requester, Player requested) {
     super(requester, Set.of(requested));
 
     this.requested = requested;
+
+    if (hasPendingRequest(requester)) {
+      requester.sendMessage(Lang.getComponent("already-has-request"));
+      return;
+    } else if (hasPendingRequest(requested)) {
+      requester.sendMessage(Lang.getComponent("requested-player-has-request"));
+      return;
+    } else if (Duel.inDuel(requested)) {
+      requester.sendMessage(Lang.getComponent("player-in-duel"));
+      return;
+    }
+
+    QueueGUI.open(requester);
+  }
+
+  public StandardRequest(Player requester, Player requested, int rounds) {
+    super(requester, Set.of(requested));
+
+    this.requested = requested;
+    this.rounds = rounds;
 
     if (hasPendingRequest(requester)) {
       requester.sendMessage(Lang.getComponent("already-has-request"));
@@ -105,9 +126,9 @@ public class StandardRequest extends Request {
     p.sendMessage(Lang.getComponent("request-accepted"));
 
     if (kit == null) {
-      queue.enterDuelQueue(new StandardDuel(requester, requested, queue, queue.getKit(), false));
+      queue.enterDuelQueue(new StandardDuel(requester, requested, queue, queue.getKit(), false, rounds));
     } else {
-      queue.enterDuelQueue(new StandardDuel(requester, requested, queue, kit, false));
+      queue.enterDuelQueue(new StandardDuel(requester, requested, queue, kit, false, rounds));
     }
   }
 
