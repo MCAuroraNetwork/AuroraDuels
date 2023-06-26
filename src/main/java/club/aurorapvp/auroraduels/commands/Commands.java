@@ -2,17 +2,14 @@ package club.aurorapvp.auroraduels.commands;
 
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.commands.arena.ArenaCommands;
-import club.aurorapvp.auroraduels.commands.plugin.PluginCommands;
-import club.aurorapvp.auroraduels.commands.queue.QueueCommands;
 import club.aurorapvp.auroraduels.commands.duels.RematchCommand;
-import club.aurorapvp.auroraduels.commands.duels.DuelBaseCommands;
-import club.aurorapvp.auroraduels.commands.duels.FFADuelCommands;
-import club.aurorapvp.auroraduels.commands.duels.PartyDuelCommands;
-import club.aurorapvp.auroraduels.commands.duels.StandardDuelCommands;
-import club.aurorapvp.auroraduels.commands.duels.TeamDuelCommands;
-import club.aurorapvp.auroraduels.commands.findmatch.RankedCommands;
-import club.aurorapvp.auroraduels.commands.findmatch.UnrankedCommands;
+import club.aurorapvp.auroraduels.commands.duels.requests.DuelBaseCommands;
+import club.aurorapvp.auroraduels.commands.duels.requests.FFADuelCommands;
+import club.aurorapvp.auroraduels.commands.duels.requests.PartyDuelCommands;
+import club.aurorapvp.auroraduels.commands.duels.requests.StandardDuelCommands;
+import club.aurorapvp.auroraduels.commands.duels.requests.TeamDuelCommands;
+import club.aurorapvp.auroraduels.commands.duels.matchmaking.RankedCommands;
+import club.aurorapvp.auroraduels.commands.duels.matchmaking.UnrankedCommands;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.Kit;

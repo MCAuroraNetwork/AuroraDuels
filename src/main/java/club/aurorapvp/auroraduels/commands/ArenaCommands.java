@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.commands.arena;
+package club.aurorapvp.auroraduels.commands;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;

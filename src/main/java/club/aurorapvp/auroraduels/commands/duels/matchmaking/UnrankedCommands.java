@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.commands.findmatch;
+package club.aurorapvp.auroraduels.commands.duels.matchmaking;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.queues.Queue;

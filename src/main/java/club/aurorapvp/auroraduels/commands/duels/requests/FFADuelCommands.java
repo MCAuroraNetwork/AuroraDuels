@@ -1,7 +1,7 @@
-package club.aurorapvp.auroraduels.commands.duels;
+package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.modules.requests.PartyRequest;
+import club.aurorapvp.auroraduels.modules.requests.FFARequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -12,8 +12,8 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-@CommandAlias("partyduel")
-public class PartyDuelCommands extends BaseCommand {
+@CommandAlias("ffaduel")
+public class FFADuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @players @players @players")
   @Syntax("[player1 player2 player3]")
@@ -33,6 +33,6 @@ public class PartyDuelCommands extends BaseCommand {
       i++;
     }
 
-    new PartyRequest(p, Set.of(requested));
+    new FFARequest(p, Set.of(requested));
   }
 }

@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.commands.queue;
+package club.aurorapvp.auroraduels.commands;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;

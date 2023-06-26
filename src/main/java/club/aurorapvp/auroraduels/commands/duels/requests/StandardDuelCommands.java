@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.commands.duels;
+package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.requests.StandardRequest;
