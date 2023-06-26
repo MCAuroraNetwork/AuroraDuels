@@ -12,6 +12,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -24,11 +25,41 @@ public class DuelBaseCommands extends BaseCommand {
     Request.acceptDuelRequest(p);
   }
 
+  @Subcommand("accept")
+  @Description("Accepts the duel request")
+  @SuppressWarnings("unused")
+  public void onAccept(Player p, String requesterName) {
+    Player requester = Bukkit.getPlayer(requesterName);
+
+    if (requester == null || !Request.hasPendingRequest(requester, p)) {
+      p.sendMessage(Lang.getComponent("no-requests"));
+      return;
+    }
+
+    Request request = Request.getRequest(requester, p);
+
+    Request.acceptDuelRequest(p, request);
+  }
+
   @Subcommand("deny")
   @Description("Denies the duel request")
   @SuppressWarnings("unused")
   public void onDeny(Player p) {
     Request.denyDuelRequest(p);
+  }
+
+  @Subcommand("deny")
+  @Description("Accepts the duel request")
+  @SuppressWarnings("unused")
+  public void onDeny(Player p, String requesterName) {
+    Player requester = Bukkit.getPlayer(requesterName);
+
+    if (requester == null || !Request.hasPendingRequest(requester, p)) {
+      p.sendMessage(Lang.getComponent("no-requests"));
+      return;
+    }
+
+    Objects.requireNonNull(Request.getRequest(requester, p)).deny();
   }
 
   @Subcommand("spectate")

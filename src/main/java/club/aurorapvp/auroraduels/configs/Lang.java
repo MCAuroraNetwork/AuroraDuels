@@ -74,10 +74,10 @@ public class Lang {
         "prefix <gradient:#FFAA00:#FF55FF>Queue already being created!");
     DEFAULTS.put("queue-created", "prefix <gradient:#FFAA00:#FF55FF>Queue successfully created!");
     DEFAULTS.put("queue-not-found", "prefix <gradient:#FFAA00:#FF55FF>Queue not found!");
-    DEFAULTS.put("already-has-request",
+    DEFAULTS.put("you-have-request",
         "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request!");
-    DEFAULTS.put("requested-player-has-request",
-        "prefix <gradient:#FFAA00:#FF55FF>Requested player already has a pending request!");
+    DEFAULTS.put("already-has-request",
+        "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request to that player!");
     DEFAULTS.put("add-arena",
         "prefix <gradient:#FFAA00:#FF55FF>What arena would you like to add to the queue? Type its name into chat. You have added %s arenas so far");
     DEFAULTS.put("no-teleport",

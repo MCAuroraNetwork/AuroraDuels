@@ -23,14 +23,14 @@ public class FFARequest extends Request {
     if (requested == null || requested.size() == 0) {
       requester.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
-    } else if (hasPendingRequest(requester)) {
-      requester.sendMessage(Lang.getComponent("already-has-request"));
+    } else if (Request.hasPendingRequest(requester)) {
+      requester.sendMessage(Lang.getComponent("you-have-request"));
       return;
     }
 
     for (Player p : requested) {
-      if (hasPendingRequest(p)) {
-        requester.sendMessage(Lang.getComponent("requested-player-has-request"));
+      if (hasPendingRequest(requester, p)) {
+        requester.sendMessage(Lang.getComponent("already-has-request"));
         return;
       } else if (Duel.inDuel(p)) {
         requester.sendMessage(Lang.getComponent("player-in-duel"));

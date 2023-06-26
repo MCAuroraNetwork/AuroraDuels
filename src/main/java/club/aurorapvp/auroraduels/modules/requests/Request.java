@@ -6,12 +6,13 @@ import club.aurorapvp.auroraduels.modules.duels.DuelKitGUI;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.Kit;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.entity.Player;
 
 public abstract class Request {
-  protected static final Set<Request> PENDING_REQUESTS = new HashSet<>();
+  protected static final LinkedList<Request> PENDING_REQUESTS = new LinkedList<>();
   protected final Player requester;
   protected final Set<Player> requested;
   protected Queue queue;
@@ -68,6 +69,46 @@ public abstract class Request {
     return null;
   }
 
+  public static Request getRequest(Player requester, Player requested) {
+    for (Request request : PENDING_REQUESTS) {
+      if (request.requester == requester && request.requested.contains(requested)) {
+        return request;
+      }
+    }
+    return null;
+  }
+
+  public static Set<Request> getRequests(Player p) {
+    Set<Request> matchingRequests = new HashSet<>();
+
+    for (Request request : PENDING_REQUESTS) {
+      if (request.requester == p || request.requested.contains(p)) {
+        matchingRequests.add(request);
+      }
+    }
+
+    return matchingRequests;
+  }
+
+  public static boolean isRequesting(Player p) {
+    for (Request request : PENDING_REQUESTS) {
+      if (request.requester == p) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean hasPendingRequest(Player requester, Player requested) {
+    for (Request request : PENDING_REQUESTS) {
+      if (request.isAcceptable() && request.requester == requester &&
+          request.requested.contains(requested)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static boolean hasPendingRequest(Player p) {
     for (Request request : PENDING_REQUESTS) {
       if (request.isAcceptable() && (request.requester == p || request.requested.contains(p))) {
@@ -85,11 +126,27 @@ public abstract class Request {
     }
   }
 
+  public static void acceptDuelRequest(Player p, Request request) {
+    for (Request pendingRequest : Request.getRequests(p)) {
+      if (pendingRequest != request) {
+        pendingRequest.deny();
+      }
+    }
+
+    request.accept(p);
+  }
+
   public static void acceptDuelRequest(Player p) {
     if (hasPendingRequest(p)) {
       Request request = getRequest(p);
-
       assert request != null;
+
+      for (Request pendingRequest : Request.getRequests(p)) {
+        if (pendingRequest != request) {
+          pendingRequest.deny();
+        }
+      }
+
       request.accept(p);
     } else {
       p.sendMessage(Lang.getComponent("no-requests"));
