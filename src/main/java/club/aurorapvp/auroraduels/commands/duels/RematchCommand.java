@@ -2,8 +2,10 @@ package club.aurorapvp.auroraduels.commands.duels;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.auroraduels.modules.requests.FFARequest;
 import club.aurorapvp.auroraduels.modules.requests.PartyRequest;
 import club.aurorapvp.auroraduels.modules.requests.StandardRequest;
 import club.aurorapvp.auroraduels.modules.requests.TeamRequest;
@@ -49,6 +51,11 @@ public class RematchCommand extends BaseCommand {
       requested.remove(p);
 
       new PartyRequest(p, requested, lastDuel.getQueue(), lastDuel.getKit());
+    } else if (lastDuel instanceof FFADuel ffaDuel) {
+      Set<Player> requested = ffaDuel.getPlayers();
+      requested.remove(p);
+
+      new FFARequest(p, requested, lastDuel.getQueue(), lastDuel.getKit());
     }
   }
 }
