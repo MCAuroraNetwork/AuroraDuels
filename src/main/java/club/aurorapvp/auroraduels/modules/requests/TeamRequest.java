@@ -40,7 +40,7 @@ public class TeamRequest extends Request {
       requester.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
     } else if (hasPendingRequest(requester)) {
-      requester.sendMessage(Lang.getComponent("already-has-request"));
+      requester.sendMessage(Lang.getComponent("you-have-request"));
       return;
     }
 
@@ -108,20 +108,17 @@ public class TeamRequest extends Request {
     this.team1 = team1;
     this.team2 = team2;
 
-    if (queue == null) {
-      requester.sendMessage(Lang.getComponent("queue-not-found"));
-      return;
-    } else if (requested == null || requested.size() == 0) {
+    if (requested == null || requested.size() == 0) {
       requester.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
-    } else if (Request.hasPendingRequest(requester)) {
+    } else if (hasPendingRequest(requester)) {
       requester.sendMessage(Lang.getComponent("you-have-request"));
       return;
     }
 
     for (Player p : requested) {
-      if (hasPendingRequest(requester, p)) {
-        requester.sendMessage(Lang.getComponent("already-has-request"));
+      if (hasPendingRequest(p)) {
+        requester.sendMessage(Lang.getComponent("requested-player-has-request"));
         return;
       } else if (Duel.inDuel(p)) {
         requester.sendMessage(Lang.getComponent("player-in-duel"));

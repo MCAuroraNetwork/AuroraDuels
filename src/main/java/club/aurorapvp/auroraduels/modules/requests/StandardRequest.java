@@ -63,17 +63,14 @@ public class StandardRequest extends Request {
 
     this.requested = requested;
 
-    if (queue == null) {
-      requester.sendMessage(Lang.getComponent("queue-not-found"));
-      return;
-    } else if (hasPendingRequest(requester)) {
+    if (hasPendingRequest(requester, requested)) {
       requester.sendMessage(Lang.getComponent("already-has-request"));
-      return;
-    } else if (hasPendingRequest(requested)) {
-      requester.sendMessage(Lang.getComponent("requested-player-has-request"));
       return;
     } else if (Duel.inDuel(requested)) {
       requester.sendMessage(Lang.getComponent("player-in-duel"));
+      return;
+    } else if (Request.hasPendingRequest(requester)) {
+      requester.sendMessage(Lang.getComponent("you-have-request"));
       return;
     }
 
