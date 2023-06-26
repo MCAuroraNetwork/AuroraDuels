@@ -4,7 +4,8 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.aurorakits.modules.Kit;
+
+import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Objects;

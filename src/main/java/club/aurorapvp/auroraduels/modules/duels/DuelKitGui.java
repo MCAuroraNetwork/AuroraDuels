@@ -2,7 +2,7 @@ package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.requests.Request;
-import club.aurorapvp.aurorakits.modules.Kit;
+import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;

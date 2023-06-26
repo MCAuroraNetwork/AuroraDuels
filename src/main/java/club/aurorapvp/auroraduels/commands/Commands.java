@@ -12,7 +12,8 @@ import club.aurorapvp.auroraduels.commands.duels.matchmaking.RankedCommands;
 import club.aurorapvp.auroraduels.commands.duels.matchmaking.UnrankedCommands;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.aurorakits.modules.Kit;
+
+import club.aurorapvp.aurorakits.modules.kits.Kit;
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
