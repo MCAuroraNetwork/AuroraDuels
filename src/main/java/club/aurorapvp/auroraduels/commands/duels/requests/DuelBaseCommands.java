@@ -24,6 +24,11 @@ public class DuelBaseCommands extends BaseCommand {
   @Description("Accepts the duel request")
   @SuppressWarnings("unused")
   public void onAccept(Player p, @Optional String requesterName) {
+    if (!Request.hasPendingRequest(p)) {
+      p.sendMessage(Lang.getComponent("no-requests"));
+      return;
+    }
+
     Player requester = null;
 
     if (requesterName != null) {
@@ -31,7 +36,16 @@ public class DuelBaseCommands extends BaseCommand {
     }
 
     if (requester == null) {
-      Request.acceptDuelRequest(p);
+      Request request = Request.getRequest(p);
+
+      for (Request pendingRequest : Request.getRequests(p)) {
+        if (pendingRequest != request) {
+          pendingRequest.deny();
+        }
+      }
+
+      assert request != null;
+      request.accept(p);
       return;
     }
 
@@ -42,7 +56,14 @@ public class DuelBaseCommands extends BaseCommand {
 
     Request request = Request.getRequest(requester, p);
 
-    Request.acceptDuelRequest(p, request);
+    for (Request pendingRequest : Request.getRequests(p)) {
+      if (pendingRequest != request) {
+        pendingRequest.deny();
+      }
+    }
+
+    assert request != null;
+    request.accept(p);
   }
 
   @Subcommand("deny")
@@ -51,6 +72,11 @@ public class DuelBaseCommands extends BaseCommand {
   @Description("Denies the duel request")
   @SuppressWarnings("unused")
   public void onDeny(Player p, @Optional String requesterName) {
+    if (!Request.hasPendingRequest(p)) {
+      p.sendMessage(Lang.getComponent("no-requests"));
+      return;
+    }
+
     Player requester = null;
 
     if (requesterName != null) {
@@ -58,7 +84,10 @@ public class DuelBaseCommands extends BaseCommand {
     }
 
     if (requester == null) {
-      Request.denyDuelRequest(p);
+      Request request = Request.getRequest(p);
+
+      assert request != null;
+      request.deny();
       return;
     }
 

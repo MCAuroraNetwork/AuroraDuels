@@ -109,39 +109,4 @@ public abstract class Request {
     }
     return false;
   }
-
-  public static void denyDuelRequest(Player p) {
-    if (hasPendingRequest(p)) {
-      Objects.requireNonNull(getRequest(p)).deny();
-    } else {
-      p.sendMessage(Lang.getComponent("no-requests"));
-    }
-  }
-
-  public static void acceptDuelRequest(Player p, Request request) {
-    for (Request pendingRequest : Request.getRequests(p)) {
-      if (pendingRequest != request) {
-        pendingRequest.deny();
-      }
-    }
-
-    request.accept(p);
-  }
-
-  public static void acceptDuelRequest(Player p) {
-    if (hasPendingRequest(p)) {
-      Request request = getRequest(p);
-      assert request != null;
-
-      for (Request pendingRequest : Request.getRequests(p)) {
-        if (pendingRequest != request) {
-          pendingRequest.deny();
-        }
-      }
-
-      request.accept(p);
-    } else {
-      p.sendMessage(Lang.getComponent("no-requests"));
-    }
-  }
 }
