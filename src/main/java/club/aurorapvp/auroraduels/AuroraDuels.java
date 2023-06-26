@@ -1,9 +1,9 @@
 package club.aurorapvp.auroraduels;
 
-import club.aurorapvp.auroraduels.commands.Commands;
+import club.aurorapvp.auroraduels.commands.CommandManager;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.events.Events;
+import club.aurorapvp.auroraduels.events.EventManager;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.Wand;
@@ -43,8 +43,8 @@ public final class AuroraDuels extends JavaPlugin {
     }
 
     // Initialize classes
-    Commands.init();
-    Events.init();
+    CommandManager.init();
+    EventManager.init();
     Arena.init();
     Queue.init();
     QueueGUI.init();

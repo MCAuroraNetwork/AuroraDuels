@@ -20,7 +20,7 @@ import co.aikar.commands.PaperCommandManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Commands {
+public class CommandManager {
   public static PaperCommandManager MANAGER = new PaperCommandManager(AuroraDuels.INSTANCE);
 
   public static void init() {
