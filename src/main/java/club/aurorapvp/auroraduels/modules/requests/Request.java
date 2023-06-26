@@ -90,15 +90,6 @@ public abstract class Request {
     return matchingRequests;
   }
 
-  public static boolean isRequesting(Player p) {
-    for (Request request : PENDING_REQUESTS) {
-      if (request.requester == p) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   public static boolean hasPendingRequest(Player requester, Player requested) {
     for (Request request : PENDING_REQUESTS) {
       if (request.isAcceptable() && request.requester == requester &&
