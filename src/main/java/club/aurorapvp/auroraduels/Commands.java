@@ -2,18 +2,18 @@ package club.aurorapvp.auroraduels;
 
 
 import club.aurorapvp.auroraduels.commands.ArenaCommands;
+import club.aurorapvp.auroraduels.commands.PluginCommands;
+import club.aurorapvp.auroraduels.commands.QueueCommands;
 import club.aurorapvp.auroraduels.commands.RematchCommand;
 import club.aurorapvp.auroraduels.commands.duels.DuelBaseCommands;
-import club.aurorapvp.auroraduels.commands.duels.StandardDuelCommands;
+import club.aurorapvp.auroraduels.commands.duels.FFADuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.PartyDuelCommands;
+import club.aurorapvp.auroraduels.commands.duels.StandardDuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.TeamDuelCommands;
 import club.aurorapvp.auroraduels.commands.findmatch.RankedCommands;
 import club.aurorapvp.auroraduels.commands.findmatch.UnrankedCommands;
-import club.aurorapvp.auroraduels.commands.PluginCommands;
-import club.aurorapvp.auroraduels.commands.QueueCommands;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.aurorakits.modules.Kit;
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
@@ -34,6 +34,7 @@ public class Commands {
     MANAGER.registerCommand(new PluginCommands());
     MANAGER.registerCommand(new QueueCommands());
     MANAGER.registerCommand(new RematchCommand());
+    MANAGER.registerCommand(new FFADuelCommands());
 
     CommandCompletions<BukkitCommandCompletionContext> commandCompletions =
         MANAGER.getCommandCompletions();

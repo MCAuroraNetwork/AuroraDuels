@@ -33,6 +33,9 @@ commands:
   teamduel:
     description: Allows the formation of team vs team duels
     permission: auroraduels.command.teamduel
+  ffaduel:
+    description: Allows the formation of FFA "duels"
+    permission: auroraduels.command.ffaduel
 permissions:
   auroraduels.command.auroraduels:
     default: false
@@ -45,6 +48,8 @@ permissions:
   auroraduels.command.partyduel:
     default: false
   auroraduels.command.teamduel:
+    default: false
+  auroraduels.command.ffaduel:
     default: false
   auroraduels.command.rematch:
     default: false
@@ -66,6 +71,7 @@ permissions:
       auroraduels.command.duel: true
       auroraduels.command.partyduel: true
       auroraduels.command.teamduel: true
+      auroraduels.command.ffaduel: true
       auroraduels.command.rematch: true
       auroraduels.command.ranked: true
       auroraduels.command.unranked: true
