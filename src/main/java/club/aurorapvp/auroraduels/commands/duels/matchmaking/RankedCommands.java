@@ -26,7 +26,6 @@ public class RankedCommands extends BaseCommand {
   }
 
   @CatchUnknown
-  @Subcommand("help")
   @SuppressWarnings("unused")
   public void onUnknown(Player p) {
     p.sendMessage(Lang.getComponent("unknown-matchmaking-command"));

@@ -127,7 +127,6 @@ public class DuelBaseCommands extends BaseCommand {
   }
 
   @CatchUnknown
-  @Subcommand("help")
   @SuppressWarnings("unused")
   public void onUnknown(Player p) {
     p.sendMessage(Lang.getComponent("unknown-duel-command"));

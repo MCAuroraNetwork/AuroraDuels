@@ -47,7 +47,7 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerChat(AsyncChatEvent event) {
     if (Queue.isCreator(event.getPlayer()) && !Queue.isArenasSet()) {
-      Queue.isUnFinishedQueue().createArenaList(event.getPlayer(),
+      Queue.getUnFinishedQueue().createArenaList(event.getPlayer(),
           MiniMessage.miniMessage().serialize(event.originalMessage()));
       event.setCancelled(true);
     }

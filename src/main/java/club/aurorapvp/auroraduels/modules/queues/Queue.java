@@ -165,8 +165,7 @@ public class Queue {
       p.sendMessage(Lang.getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
       arenas.add(Arena.getArena(str));
-      p.sendMessage(MiniMessage.miniMessage().deserialize(
-          String.format(Lang.getString("add-arena"), arenas.size())));
+      p.sendMessage(Lang.formatComponent("add-arena", arenas.size()));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
@@ -204,7 +203,7 @@ public class Queue {
     return arenasSet;
   }
 
-  public static Queue isUnFinishedQueue() {
+  public static Queue getUnFinishedQueue() {
     return unFinishedQueue;
   }
 
