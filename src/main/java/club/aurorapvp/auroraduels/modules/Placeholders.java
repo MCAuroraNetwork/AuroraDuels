@@ -48,17 +48,17 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("in_queue_")) {
-      String queueName = params.split("_")[1];
+      String queueName = params.split("_")[2];
 
       Queue queue = Queue.getQueue(queueName);
       assert queue != null;
-      return queue.inQueue() + " players in " + queueName + " queue";
+      return String.valueOf(queue.inQueue());
     }
 
     if (params.startsWith("in_duel_")) {
       String queueName = params.split("_")[1];
 
-      return Duel.inDuel(queueName) + " players in " + queueName + " duel";
+      return String.valueOf(Duel.inDuel(queueName));
     }
 
     if (!p.isOnline()) {
