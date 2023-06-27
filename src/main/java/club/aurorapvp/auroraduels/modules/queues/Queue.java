@@ -172,7 +172,7 @@ public class Queue {
   }
 
   public int inQueue() {
-    return duelQueue.size() * 2;
+    return duelQueue.size() * 2 + lookingForMatch.values().size();
   }
 
   public void enterDuelQueue(Duel duel) {
