@@ -117,7 +117,9 @@ public class Request {
   }
 
   public static void onInventoryClicked(InventoryClickEvent event) {
-    if (!QueueGUI.isQueueGUI(event.getClickedInventory())) {
+    Player p = (Player) event.getWhoClicked();
+
+    if (!QueueGUI.isQueueGUI(event.getClickedInventory()) || !Request.hasPendingRequest(p)) {
       return;
     }
 
@@ -126,8 +128,6 @@ public class Request {
     if (clickedItem == null || clickedItem.getType().isAir()) {
       return;
     }
-
-    Player p = (Player) event.getWhoClicked();
 
     event.setCancelled(true);
 
