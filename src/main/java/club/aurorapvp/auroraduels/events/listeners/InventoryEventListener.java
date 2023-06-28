@@ -3,7 +3,6 @@ package club.aurorapvp.auroraduels.events.listeners;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
-import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,7 +20,7 @@ public class InventoryEventListener implements Listener {
 
   @EventHandler
   public void onInventoryClick(InventoryClickEvent event) {
-    QueueGUI.onInventoryClicked(event);
+    Request.onInventoryClicked(event);
 
     if (AuroraDuels.isAuroraKitsInstalled()) {
       DuelKitGui.onInventoryClicked(event);

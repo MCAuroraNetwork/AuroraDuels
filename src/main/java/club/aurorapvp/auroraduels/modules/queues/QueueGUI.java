@@ -70,36 +70,4 @@ public class QueueGUI {
   public static boolean isQueueGUI(Inventory inv) {
     return inv == inventory;
   }
-
-  public static void onInventoryClicked(InventoryClickEvent event) {
-    if (!QueueGUI.isQueueGUI(event.getClickedInventory())) {
-      return;
-    }
-
-    final ItemStack clickedItem = event.getCurrentItem();
-
-    if (clickedItem == null || clickedItem.getType().isAir()) {
-      return;
-    }
-
-    event.setCancelled(true);
-
-    Player p = (Player) event.getWhoClicked();
-
-    if (event.getCurrentItem().getItemMeta().displayName() == null) {
-      p.sendMessage(Lang.getComponent("queue-not-found"));
-    } else {
-      String itemName = PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
-      String queueName = itemName.substring(1, itemName.length() - 1);
-
-      Queue queue = Queue.getQueue(queueName.toLowerCase());
-
-      if (queue == null) {
-        p.sendMessage(Lang.getComponent("queue-not-found"));
-        return;
-      }
-
-      Objects.requireNonNull(Duel.getDuel(p)).setQueue(queue);
-    }
-  }
 }
