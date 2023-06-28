@@ -33,6 +33,42 @@ public class PartyDuel extends Duel {
   private final Player[] team1;
   private final Player[] team2;
 
+  public PartyDuel(Set<Player> players, boolean ranked) {
+    super(players, ranked);
+
+    int size = this.getPlayers().size();
+    Player extra = null;
+
+    if (size % 2 == 1) {
+      Iterator<Player> iterator = this.getPlayers().iterator();
+      for (int i = 0; i < size - 1; i++) {
+        iterator.next();
+      }
+      extra = iterator.next();
+      iterator.remove();
+      size--;
+    }
+
+    Iterable<List<Player>>
+        partitions = Iterables.partition(this.getPlayers(), (size / 2));
+
+    Player[] temp = new HashSet<>(partitions.iterator().next()).toArray(new Player[0]);
+
+    if (extra != null) {
+      temp = Arrays.copyOf(temp, temp.length + 1);
+      temp[temp.length - 1] = extra;
+    }
+
+    this.team1 = temp;
+    this.team2 = new HashSet<>(Iterables.getLast(partitions)).toArray(new Player[0]);
+
+    if (extra != null) {
+      this.getPlayers().add(extra);
+    }
+
+    PARTY_DUELS.add(this);
+  }
+
   public PartyDuel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
     super(players, queue, kit, ranked);
 

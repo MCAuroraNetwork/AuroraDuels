@@ -1,19 +1,16 @@
 package club.aurorapvp.auroraduels.commands.duels;
 
 import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
+import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
-import club.aurorapvp.auroraduels.modules.requests.FFARequest;
-import club.aurorapvp.auroraduels.modules.requests.PartyRequest;
-import club.aurorapvp.auroraduels.modules.requests.StandardRequest;
-import club.aurorapvp.auroraduels.modules.requests.TeamRequest;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import java.util.Arrays;
-import java.util.Set;
 import org.bukkit.entity.Player;
 
 @CommandAlias("rematch")
@@ -37,25 +34,28 @@ public class RematchCommand extends BaseCommand {
     if (lastDuel.getPlayers().size() == 2) {
       for (Player requested : lastDuel.getPlayers()) {
         if (!requested.equals(p)) {
-          new StandardRequest(p, requested, lastDuel.getQueue(), lastDuel.getKit());
+          new Request(p,
+              new StandardDuel(p, requested, lastDuel.getQueue(), lastDuel.getKit(), false,
+                  lastDuel.getRounds()));
         }
       }
     } else if (lastDuel instanceof TeamDuel teamDuel) {
       boolean isInTeam1 = Arrays.asList(teamDuel.getTeam1()).contains(p);
-      Player[] team1 = isInTeam1 ? Arrays.stream(teamDuel.getTeam1()).filter(player -> !player.equals(p)).toArray(Player[]::new) : teamDuel.getTeam1();
-      Player[] team2 = isInTeam1 ? teamDuel.getTeam2() : Arrays.stream(teamDuel.getTeam2()).filter(player -> !player.equals(p)).toArray(Player[]::new);
+      Player[] team1 = isInTeam1 ?
+          Arrays.stream(teamDuel.getTeam1()).filter(player -> !player.equals(p))
+              .toArray(Player[]::new) : teamDuel.getTeam1();
+      Player[] team2 = isInTeam1 ? teamDuel.getTeam2() :
+          Arrays.stream(teamDuel.getTeam2()).filter(player -> !player.equals(p))
+              .toArray(Player[]::new);
 
-      new TeamRequest(p, team1, team2, lastDuel.getQueue(), lastDuel.getKit());
+      new Request(p, new TeamDuel(team1, team2, lastDuel.getQueue(), lastDuel.getKit(), false));
     } else if (lastDuel instanceof PartyDuel partyDuel) {
-      Set<Player> requested = partyDuel.getPlayers();
-      requested.remove(p);
 
-      new PartyRequest(p, requested, lastDuel.getQueue(), lastDuel.getKit());
+      new Request(p,
+          new PartyDuel(partyDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), false));
     } else if (lastDuel instanceof FFADuel ffaDuel) {
-      Set<Player> requested = ffaDuel.getPlayers();
-      requested.remove(p);
-
-      new FFARequest(p, requested, lastDuel.getQueue(), lastDuel.getKit());
+      new Request(p,
+          new FFADuel(ffaDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), false));
     }
   }
 }

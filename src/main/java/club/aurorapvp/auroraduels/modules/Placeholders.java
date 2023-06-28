@@ -56,7 +56,7 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("in_duel_")) {
-      String queueName = params.split("_")[1];
+      String queueName = params.split("_")[2];
 
       return String.valueOf(Duel.inDuel(queueName));
     }

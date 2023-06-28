@@ -1,7 +1,8 @@
 package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.modules.requests.Request;
+import club.aurorapvp.auroraduels.modules.duels.Duel;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -98,7 +99,7 @@ public class QueueGUI {
         return;
       }
 
-      Objects.requireNonNull(Request.getRequest(p)).setQueue(queue);
+      Objects.requireNonNull(Duel.getDuel(p)).setQueue(queue);
     }
   }
 }

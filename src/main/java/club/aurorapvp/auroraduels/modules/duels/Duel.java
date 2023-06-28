@@ -26,12 +26,24 @@ public abstract class Duel {
   protected final Set<Player> spectators = new HashSet<>();
   protected Long timeStarted;
   private final boolean ranked;
-  private final Queue queue;
-  protected final Kit kit;
+  private Queue queue;
+  protected Kit kit;
   protected boolean active = false;
   protected Arena arena;
   protected int rounds = 1;
   protected int currentRound = 1;
+  public Duel(Set<Player> players, boolean ranked) {
+    this.players.addAll(players);
+    this.ranked = ranked;
+    duels.add(this);
+  }
+
+  public Duel(Set<Player> players, boolean ranked, int rounds) {
+    this.players.addAll(players);
+    this.ranked = ranked;
+    this.rounds = rounds;
+    duels.add(this);
+  }
 
   public Duel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
     this.players.addAll(players);
@@ -88,8 +100,20 @@ public abstract class Duel {
     return ranked;
   }
 
+  public int getRounds() {
+    return rounds;
+  }
+
   public int inDuel() {
     return this.getPlayers().size();
+  }
+
+  public void setQueue(Queue queue) {
+    this.queue = queue;
+  }
+
+  public void setKit(Kit kit) {
+    this.kit = kit;
   }
 
   public void setSpectator(Player p, boolean spectator) {

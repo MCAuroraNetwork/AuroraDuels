@@ -24,6 +24,7 @@ public class Config {
     DEFAULTS.put("duels.enable-teleports", true);
     DEFAULTS.put("duels.allow-commands", false);
     DEFAULTS.put("duels.max-duration", 600000);
+    DEFAULTS.put("requests.expiry-time", 600000);
     DEFAULTS.put("queues.enable-default-queue", true);
 
     for (String path : DEFAULTS.keySet()) {

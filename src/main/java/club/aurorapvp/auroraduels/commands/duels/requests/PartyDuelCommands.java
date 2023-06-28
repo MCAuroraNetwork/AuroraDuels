@@ -1,16 +1,19 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.modules.requests.PartyRequest;
+import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Syntax;
+import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.checkerframework.framework.qual.RequiresQualifier;
 
 @CommandAlias("partyduel")
 public class PartyDuelCommands extends BaseCommand {
@@ -33,6 +36,9 @@ public class PartyDuelCommands extends BaseCommand {
       i++;
     }
 
-    new PartyRequest(p, Set.of(requested));
+    Set<Player> players = new HashSet<>(Set.of(requested));
+    players.add(p);
+
+    new Request(p, new PartyDuel(players, false));
   }
 }

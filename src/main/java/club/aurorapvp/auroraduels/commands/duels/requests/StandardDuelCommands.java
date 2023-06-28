@@ -1,7 +1,8 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.modules.requests.StandardRequest;
+import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -31,10 +32,10 @@ public class StandardDuelCommands extends BaseCommand {
 
     try {
       if (Integer.parseInt(rounds) > 1) {
-        new StandardRequest(p, requested, Integer.parseInt(rounds));
+        new Request(p, new StandardDuel(p, requested, false, Integer.parseInt(rounds)));
       }
     } catch (NumberFormatException e) {
-      new StandardRequest(p, requested);
+      new Request(p, new StandardDuel(p, requested, false, 1));
     }
   }
 }

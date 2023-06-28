@@ -30,6 +30,12 @@ public class FFADuel extends Duel {
   private final Map<Player, Boolean> deadPlayers = new HashMap<>();
   private final Random random = new Random();
 
+  public FFADuel(Set<Player> players, boolean ranked) {
+    super(players, ranked);
+
+    FFA_DUELS.add(this);
+  }
+
   public FFADuel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
     super(players, queue, kit, ranked);
 

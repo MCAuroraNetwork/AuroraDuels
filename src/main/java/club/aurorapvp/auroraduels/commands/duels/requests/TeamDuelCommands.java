@@ -1,7 +1,8 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.modules.requests.TeamRequest;
+import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -25,8 +26,10 @@ public class TeamDuelCommands extends BaseCommand {
       return;
     }
 
-    Player[] team1 = new Player[team1Names.length];
+    Player[] team1 = new Player[team1Names.length + 1];
     Player[] team2 = new Player[team2Names.length];
+
+    team1[team1Names.length - 1] = p;
 
     int i = 0;
     for (String playerName : team1Names) {
@@ -40,6 +43,6 @@ public class TeamDuelCommands extends BaseCommand {
       i++;
     }
 
-    new TeamRequest(p, team1, team2);
+    new Request(p, new TeamDuel(team1, team2, false));
   }
 }

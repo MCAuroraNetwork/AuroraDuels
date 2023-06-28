@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.modules.requests.Request;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -159,8 +158,8 @@ public class DuelKitGui {
 
     DuelKitGui duelGUI = DuelKitGui.getGui(p);
 
-    Request request = Request.getRequest(p);
-    assert request != null;
+    Duel duel = Duel.getDuel(p);
+    assert duel != null;
 
     if (duelGUI == null || !duelGUI.isGuiInventory(event.getInventory())) {
       return;
@@ -175,7 +174,7 @@ public class DuelKitGui {
       duelGUI.nextPage();
       return;
     } else if (event.getSlot() == 53) {
-      request.setKit(null);
+      duel.setKit(null);
       p.closeInventory();
       return;
     }
@@ -196,7 +195,7 @@ public class DuelKitGui {
       Kit kit = Kit.getKit(p, kitName);
 
       assert kit != null;
-      request.setKit(kit);
+      duel.setKit(kit);
       p.closeInventory();
     }
   }
