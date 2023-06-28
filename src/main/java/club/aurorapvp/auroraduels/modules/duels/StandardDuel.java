@@ -136,7 +136,6 @@ public class StandardDuel extends Duel implements Listener {
     Objects.requireNonNull(Queue.getQueue(playerOne)).exitDuelQueue(playerOne);
     arena.setOccupied(true);
     timeStarted = System.currentTimeMillis();
-    active = true;
 
     new BukkitRunnable() {
       @Override
@@ -181,7 +180,8 @@ public class StandardDuel extends Duel implements Listener {
       }
     }, 3000);
 
-    this.active = false;
+    this.setActive(false);
+
     Duel thisDuel = this;
 
     new BukkitRunnable() {
@@ -210,7 +210,7 @@ public class StandardDuel extends Duel implements Listener {
       }
     }, 3000);
 
-    this.active = false;
+    this.setActive(false);
     Duel thisDuel = this;
 
     new BukkitRunnable() {

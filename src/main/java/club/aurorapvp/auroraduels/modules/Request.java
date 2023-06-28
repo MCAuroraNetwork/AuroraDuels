@@ -40,11 +40,9 @@ public class Request {
     for (Player p : duel.getPlayers()) {
       if (hasPendingRequest(requester, p)) {
         requester.sendMessage(Lang.getComponent("already-has-request"));
-        PENDING_REQUESTS.remove(this);
         return;
       } else if (Duel.inDuel(p)) {
         requester.sendMessage(Lang.getComponent("player-in-duel"));
-        PENDING_REQUESTS.remove(this);
         return;
       }
     }

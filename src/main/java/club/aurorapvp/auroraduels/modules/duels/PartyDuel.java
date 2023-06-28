@@ -242,7 +242,6 @@ public class PartyDuel extends Duel {
 
     arena.setOccupied(true);
     timeStarted = System.currentTimeMillis();
-    active = true;
 
     new BukkitRunnable() {
       @Override
@@ -295,7 +294,7 @@ public class PartyDuel extends Duel {
       }
     }, 3000);
 
-    this.active = false;
+    this.setActive(false);
 
     new BukkitRunnable() {
       @Override
@@ -328,7 +327,7 @@ public class PartyDuel extends Duel {
       }
     }, 3000);
 
-    this.active = false;
+    this.setActive(false);
 
     new BukkitRunnable() {
       @Override

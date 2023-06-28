@@ -28,7 +28,7 @@ public abstract class Duel {
   private final boolean ranked;
   private Queue queue;
   protected Kit kit;
-  protected boolean active = false;
+  private boolean active = false;
   protected Arena arena;
   protected int rounds = 1;
   protected int currentRound = 1;
@@ -106,6 +106,10 @@ public abstract class Duel {
 
   public int inDuel() {
     return this.getPlayers().size();
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
   }
 
   public void setQueue(Queue queue) {

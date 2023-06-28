@@ -177,6 +177,7 @@ public class Queue {
 
   public void enterDuelQueue(Duel duel) {
     duelQueue.add(duel);
+    duel.setActive(true);
 
     for (Player p : duel.getPlayers()) {
       p.sendMessage(Lang.getComponent("entered-queue"));
