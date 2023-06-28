@@ -163,7 +163,7 @@ public class Arena {
 
   public void setSpawns(Player p, Action action, BlockVector3 vector) {
     if (action.isLeftClick() && state == ArenaState.SPAWN_1) {
-      spawn1 = vector;
+      spawn1 = vector.add(0, 1, 0);
 
       p.sendMessage(
           MiniMessage.miniMessage().deserialize(Lang.getString("spawn1-set") +
@@ -177,7 +177,7 @@ public class Arena {
     }
 
     if (action.isRightClick() && state == ArenaState.SPAWN_2) {
-      spawn2 = vector;
+      spawn2 = vector.add(0, 1, 0);
 
       p.sendMessage(
           MiniMessage.miniMessage().deserialize(Lang.getString("spawn2-set") +
