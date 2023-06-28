@@ -1,21 +1,18 @@
 package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.modules.duels.Duel;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class QueueGUI {
-  private static final Inventory inventory = Bukkit.createInventory(null, 27, Lang.getComponent("queue-menu"));
+  private static final Inventory inventory =
+      Bukkit.createInventory(null, 27, Lang.getComponent("queue-menu"));
+
   public static void init() {
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
 

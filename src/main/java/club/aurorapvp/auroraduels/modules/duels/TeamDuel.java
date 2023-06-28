@@ -95,15 +95,14 @@ public class TeamDuel extends Duel {
           return false;
         }
       }
-      return true;
     } else {
       for (boolean dead : team2Dead.values()) {
         if (!dead) {
           return false;
         }
       }
-      return true;
     }
+    return true;
   }
 
   public void startDuel(Arena arena) {

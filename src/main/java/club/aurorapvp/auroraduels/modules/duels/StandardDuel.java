@@ -165,8 +165,10 @@ public class StandardDuel extends Duel implements Listener {
 
     winner[0].showTitle(
         Title.title(Lang.getComponent("you-won"),
-            Component.text("Opponent: " + playerOne.getName())));
-    loser[0].sendMessage(Lang.getComponent("you-lost"));
+            Component.text("Opponent: " + loser[0].getName())));
+    loser[0].showTitle(
+        Title.title(Lang.getComponent("you-lost"),
+            Component.text("Opponent: " + winner[0].getName())));
 
     new Timer().schedule(new TimerTask() {
       @Override
