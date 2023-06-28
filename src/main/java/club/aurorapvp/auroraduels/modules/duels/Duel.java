@@ -19,19 +19,20 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public abstract class Duel {
-  public static Set<Duel> duels = new HashSet<>();
   private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
   private static final HashMap<Player, Duel> LAST_DUEL = new HashMap<>();
+  public static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
-  protected Long timeStarted;
   private final boolean ranked;
-  private Queue queue;
+  protected Long timeStarted;
   protected Kit kit;
-  private boolean active = false;
   protected Arena arena;
   protected int rounds = 1;
   protected int currentRound = 1;
+  private Queue queue;
+  private boolean active = false;
+
   public Duel(Set<Player> players, boolean ranked) {
     this.players.addAll(players);
     this.ranked = ranked;
@@ -60,88 +61,6 @@ public abstract class Duel {
     this.kit = kit;
     this.rounds = rounds;
     duels.add(this);
-  }
-
-  public abstract void startDuel(Arena arena);
-
-  public abstract void endDuel(Player[] winners, Player[] losers);
-
-  public abstract void draw();
-
-  public Queue getQueue() {
-    return queue;
-  }
-
-  public Kit getKit() {
-    return kit;
-  }
-
-  public Long getElapsed() {
-    return System.currentTimeMillis() - timeStarted;
-  }
-
-  public Arena getArena() {
-    return arena;
-  }
-
-  public Set<Player> getPlayers() {
-    return players;
-  }
-
-  public Set<Player> getSpectators() {
-    return spectators;
-  }
-
-  public boolean isActive() {
-    return active;
-  }
-
-  public boolean isRanked() {
-    return ranked;
-  }
-
-  public int getRounds() {
-    return rounds;
-  }
-
-  public int inDuel() {
-    return this.getPlayers().size();
-  }
-
-  public void setActive(boolean active) {
-    this.active = active;
-  }
-
-  public void setQueue(Queue queue) {
-    this.queue = queue;
-  }
-
-  public void setKit(Kit kit) {
-    this.kit = kit;
-  }
-
-  public void setSpectator(Player p, boolean spectator) {
-    if (spectator) {
-      BlockVector3 midpoint = arena.getFirstSpawn().add(arena.getSecondSpawn()).divide(2);
-      Location loc =
-          new Location(arena.getWorld(), midpoint.getX(), midpoint.getY(), midpoint.getZ());
-
-      p.teleportAsync(loc);
-      p.setGameMode(GameMode.SPECTATOR);
-      p.sendMessage(Lang.getComponent("start-spectating"));
-
-      spectators.add(p);
-    } else {
-      p.teleportAsync(Bukkit.getWorlds().get(0).getSpawnLocation());
-      p.setGameMode(Bukkit.getDefaultGameMode());
-      p.sendMessage(Lang.getComponent("stop-spectating"));
-
-      spectators.remove(p);
-    }
-  }
-
-  public boolean contains(Player p) {
-    return players.contains(p);
   }
 
   public static Kit getDuelKit(Player p) {
@@ -211,5 +130,87 @@ public abstract class Duel {
       }
     }
     return null;
+  }
+
+  public abstract void startDuel(Arena arena);
+
+  public abstract void endDuel(Player[] winners, Player[] losers);
+
+  public abstract void draw();
+
+  public Queue getQueue() {
+    return queue;
+  }
+
+  public void setQueue(Queue queue) {
+    this.queue = queue;
+  }
+
+  public Kit getKit() {
+    return kit;
+  }
+
+  public void setKit(Kit kit) {
+    this.kit = kit;
+  }
+
+  public Long getElapsed() {
+    return System.currentTimeMillis() - timeStarted;
+  }
+
+  public Arena getArena() {
+    return arena;
+  }
+
+  public Set<Player> getPlayers() {
+    return players;
+  }
+
+  public Set<Player> getSpectators() {
+    return spectators;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  public boolean isRanked() {
+    return ranked;
+  }
+
+  public int getRounds() {
+    return rounds;
+  }
+
+  public int inDuel() {
+    return this.getPlayers().size();
+  }
+
+  public void setSpectator(Player p, boolean spectator) {
+    if (spectator) {
+      BlockVector3 midpoint = arena.getFirstSpawn().add(arena.getSecondSpawn()).divide(2);
+      Location loc =
+          new Location(arena.getWorld(), midpoint.getX(), midpoint.getY(), midpoint.getZ());
+
+      p.teleportAsync(loc);
+      p.setGameMode(GameMode.SPECTATOR);
+      p.sendMessage(Lang.getComponent("start-spectating"));
+
+      spectators.add(p);
+    } else {
+      p.teleportAsync(Bukkit.getWorlds().get(0).getSpawnLocation());
+      p.setGameMode(Bukkit.getDefaultGameMode());
+      p.sendMessage(Lang.getComponent("stop-spectating"));
+
+      spectators.remove(p);
+    }
+  }
+
+  public boolean contains(Player p) {
+    return players.contains(p);
   }
 }

@@ -19,16 +19,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Arena {
   private static final Set<Arena> arenas = new HashSet<>();
+  private static Arena unfinishedArena;
+  private final SchematicDataHandler schematic;
+  private final ArenaDataHandler data;
+  private final String name;
   private BlockVector3 spawn1 = null;
   private BlockVector3 spawn2 = null;
   private BlockVector3 pos1 = null;
   private BlockVector3 pos2 = null;
-  private static Arena unfinishedArena;
   private ArenaState state;
   private boolean occupied = false;
-  private final SchematicDataHandler schematic;
-  private final ArenaDataHandler data;
-  private final String name;
   private World world;
 
   public Arena(String arenaName) {
@@ -61,6 +61,42 @@ public class Arena {
 
   public static Set<Arena> getArenas() {
     return arenas;
+  }
+
+  public static Arena getArena(String arenaName) {
+    for (Arena arena : arenas) {
+      if (Objects.equals(arenaName, arena.name)) {
+        return arena;
+      }
+    }
+    return null;
+  }
+
+  public static void onWandUse(PlayerInteractEvent event) {
+    Player p = event.getPlayer();
+    p.setCooldown(Material.IRON_HOE, 20);
+    Action action = event.getAction();
+    BlockVector3 vector = BukkitAdapter.asBlockVector(
+        Objects.requireNonNull(event.getClickedBlock()).getLocation());
+
+    switch (unfinishedArena.getState()) {
+      case SPAWN_1, SPAWN_2 -> unfinishedArena.setSpawns(p, action, vector);
+      case CORNER_1, CORNER_2 -> unfinishedArena.setCorners(p, action, vector);
+      default -> {
+        AuroraDuels.INSTANCE.getLogger().warning(
+            "Invalid ArenaState value " + unfinishedArena.getState().toString() +
+                "! Resetting to idle");
+        unfinishedArena.state = ArenaState.IDLE;
+      }
+    }
+  }
+
+  public static void reloadAll() {
+    for (Arena arena : Arena.arenas) {
+      arena.reload();
+    }
+
+    AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
   }
 
   public ArenaState getState() {
@@ -107,34 +143,6 @@ public class Arena {
     spawn1 = this.data.getFirstSpawn();
     spawn2 = this.data.getSecondSpawn();
     world = this.data.getWorld();
-  }
-
-  public static Arena getArena(String arenaName) {
-    for (Arena arena : arenas) {
-      if (Objects.equals(arenaName, arena.name)) {
-        return arena;
-      }
-    }
-    return null;
-  }
-
-  public static void onWandUse(PlayerInteractEvent event) {
-    Player p = event.getPlayer();
-    p.setCooldown(Material.IRON_HOE, 20);
-    Action action = event.getAction();
-    BlockVector3 vector = BukkitAdapter.asBlockVector(
-        Objects.requireNonNull(event.getClickedBlock()).getLocation());
-
-    switch (unfinishedArena.getState()) {
-      case SPAWN_1, SPAWN_2 -> unfinishedArena.setSpawns(p, action, vector);
-      case CORNER_1, CORNER_2 -> unfinishedArena.setCorners(p, action, vector);
-      default -> {
-        AuroraDuels.INSTANCE.getLogger().warning(
-            "Invalid ArenaState value " + unfinishedArena.getState().toString() +
-                "! Resetting to idle");
-        unfinishedArena.state = ArenaState.IDLE;
-      }
-    }
   }
 
   public void startCreation(Player p) {
@@ -239,14 +247,6 @@ public class Arena {
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
-  }
-
-  public static void reloadAll() {
-    for (Arena arena : Arena.arenas) {
-      arena.reload();
-    }
-
-    AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
   }
 
   private enum ArenaState {

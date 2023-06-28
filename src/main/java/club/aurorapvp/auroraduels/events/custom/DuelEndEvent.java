@@ -14,6 +14,7 @@ public class DuelEndEvent extends Event {
   private final Player[] winners;
   private final Player[] losers;
   private final Duel duel;
+
   public DuelEndEvent(Duel duel, Player[] winners, Player[] losers) {
     this.duel = duel;
     this.winners = winners;

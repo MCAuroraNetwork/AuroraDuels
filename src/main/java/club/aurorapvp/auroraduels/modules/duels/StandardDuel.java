@@ -54,6 +54,11 @@ public class StandardDuel extends Duel implements Listener {
     return null;
   }
 
+  @SuppressWarnings("unused")
+  public static Set<StandardDuel> getStandardDuels() {
+    return STANDARD_DUELS;
+  }
+
   public Player getOpponent(Player p) {
     if (p == playerOne) {
       return playerTwo;
@@ -221,10 +226,5 @@ public class StandardDuel extends Duel implements Listener {
     }.runTask(AuroraDuels.INSTANCE);
 
     STANDARD_DUELS.remove(this);
-  }
-
-  @SuppressWarnings("unused")
-  public static Set<StandardDuel> getStandardDuels() {
-    return STANDARD_DUELS;
   }
 }

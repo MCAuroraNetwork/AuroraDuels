@@ -5,10 +5,10 @@ import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.EventManager;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.auroraduels.modules.Wand;
-import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import club.aurorapvp.auroraduels.modules.Placeholders;
+import club.aurorapvp.auroraduels.modules.Wand;
+import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +16,14 @@ public final class AuroraDuels extends JavaPlugin {
   public static JavaPlugin INSTANCE;
   private static boolean auroraKitsInstalled = false;
   private static boolean auroraCombatInstalled = false;
+
+  public static boolean isAuroraKitsInstalled() {
+    return auroraKitsInstalled;
+  }
+
+  public static boolean isAuroraCombatInstalled() {
+    return auroraCombatInstalled;
+  }
 
   @Override
   public void onEnable() {
@@ -53,14 +61,6 @@ public final class AuroraDuels extends JavaPlugin {
     getLogger().info(
         "AuroraDuels loaded in " + (System.currentTimeMillis() - startTime) +
             "ms");
-  }
-
-  public static boolean isAuroraKitsInstalled() {
-    return auroraKitsInstalled;
-  }
-
-  public static boolean isAuroraCombatInstalled() {
-    return auroraCombatInstalled;
   }
 
   @Override

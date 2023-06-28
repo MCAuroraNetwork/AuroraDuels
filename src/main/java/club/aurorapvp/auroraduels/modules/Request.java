@@ -52,68 +52,6 @@ public class Request {
     PENDING_REQUESTS.add(this);
   }
 
-  public void sendRequest() {
-    this.requested.addAll(duel.getPlayers());
-
-    requested.remove(requester);
-
-    if (requested.size() == 0) {
-      requester.sendMessage(Lang.getComponent("unknown-opponent"));
-      PENDING_REQUESTS.remove(this);
-      return;
-    }
-
-    requester.sendMessage(Lang.getComponent("sent-request"));
-
-    for (Player p : requested) {
-      p.sendMessage(Lang.formatComponent("received-request", requester.getName()));
-    }
-
-    for (Player p : requested) {
-      playersAccepted.put(p, false);
-    }
-
-    Request thisRequest = this;
-
-    new Timer().schedule(new TimerTask() {
-                           @Override
-                           public void run() {
-                             if (PENDING_REQUESTS.contains(thisRequest)) {
-                               requester.sendMessage(Lang.getComponent("request-timed-out"));
-
-                               for (Player p : requested) {
-                                 p.sendMessage(Lang.getComponent("request-timed-out"));
-                               }
-
-                               PENDING_REQUESTS.remove(thisRequest);
-                               this.cancel();
-                             }
-                           }
-                         }, Config.get().getInt("requests.expiry-time")
-    );
-  }
-
-  public void accept(Player p) {
-    p.sendMessage(Lang.getComponent("request-accepted"));
-    playersAccepted.put(p, true);
-
-    if (!playersAccepted.containsValue(false)) {
-      PENDING_REQUESTS.remove(this);
-      requester.sendMessage(Lang.getComponent("request-accepted"));
-
-      duel.getQueue().enterDuelQueue(duel);
-    }
-  }
-
-  public void deny() {
-    PENDING_REQUESTS.remove(this);
-    requester.sendMessage(Lang.getComponent("request-denied"));
-
-    for (Player p : requested) {
-      p.sendMessage(Lang.getComponent("request-denied"));
-    }
-  }
-
   public static void onInventoryClicked(InventoryClickEvent event) {
     Player p = (Player) event.getWhoClicked();
 
@@ -211,5 +149,67 @@ public class Request {
       }
     }
     return false;
+  }
+
+  public void sendRequest() {
+    this.requested.addAll(duel.getPlayers());
+
+    requested.remove(requester);
+
+    if (requested.size() == 0) {
+      requester.sendMessage(Lang.getComponent("unknown-opponent"));
+      PENDING_REQUESTS.remove(this);
+      return;
+    }
+
+    requester.sendMessage(Lang.getComponent("sent-request"));
+
+    for (Player p : requested) {
+      p.sendMessage(Lang.formatComponent("received-request", requester.getName()));
+    }
+
+    for (Player p : requested) {
+      playersAccepted.put(p, false);
+    }
+
+    Request thisRequest = this;
+
+    new Timer().schedule(new TimerTask() {
+                           @Override
+                           public void run() {
+                             if (PENDING_REQUESTS.contains(thisRequest)) {
+                               requester.sendMessage(Lang.getComponent("request-timed-out"));
+
+                               for (Player p : requested) {
+                                 p.sendMessage(Lang.getComponent("request-timed-out"));
+                               }
+
+                               PENDING_REQUESTS.remove(thisRequest);
+                               this.cancel();
+                             }
+                           }
+                         }, Config.get().getInt("requests.expiry-time")
+    );
+  }
+
+  public void accept(Player p) {
+    p.sendMessage(Lang.getComponent("request-accepted"));
+    playersAccepted.put(p, true);
+
+    if (!playersAccepted.containsValue(false)) {
+      PENDING_REQUESTS.remove(this);
+      requester.sendMessage(Lang.getComponent("request-accepted"));
+
+      duel.getQueue().enterDuelQueue(duel);
+    }
+  }
+
+  public void deny() {
+    PENDING_REQUESTS.remove(this);
+    requester.sendMessage(Lang.getComponent("request-denied"));
+
+    for (Player p : requested) {
+      p.sendMessage(Lang.getComponent("request-denied"));
+    }
   }
 }

@@ -53,7 +53,8 @@ public class Lang {
         "prefix <gradient:#FFAA00:#FF55FF>Cannot find specified duel match");
     DEFAULTS.put("player-in-duel", "prefix <gradient:#FFAA00:#FF55FF>That player is in a duel!");
     DEFAULTS.put("duel-started", "<bold><gradient:#FFAA00:#FF55FF>Duel started!");
-    DEFAULTS.put("even-rounds", "prefix <gradient:#FFAA00:#FF55FF>A duel must have an odd number of rounds!");
+    DEFAULTS.put("even-rounds",
+        "prefix <gradient:#FFAA00:#FF55FF>A duel must have an odd number of rounds!");
     DEFAULTS.put("entered-queue",
         "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");

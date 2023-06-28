@@ -43,6 +43,11 @@ public class FFADuel extends Duel {
   }
 
   @SuppressWarnings("unused")
+  public static Set<FFADuel> getFfaDuels() {
+    return FFA_DUELS;
+  }
+
+  @SuppressWarnings("unused")
   public Player[] getOpponents(Player p) {
     Set<Player> opponents = new HashSet<>(this.getPlayers());
     opponents.remove(p);
@@ -320,10 +325,5 @@ public class FFADuel extends Duel {
     }.runTask(AuroraDuels.INSTANCE);
 
     FFA_DUELS.remove(this);
-  }
-
-  @SuppressWarnings("unused")
-  public static Set<FFADuel> getFfaDuels() {
-    return FFA_DUELS;
   }
 }

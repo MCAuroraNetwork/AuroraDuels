@@ -25,19 +25,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Queue {
-  private final LinkedList<Duel> duelQueue = new LinkedList<>();
+  private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+  private static final Set<Queue> queues = new HashSet<>();
   private static boolean arenasSet = true;
   private static Player currentCreator;
-  private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static Map<Boolean, Player> lookingForMatch = new HashMap<>();
-  private static final Set<Queue> queues = new HashSet<>();
   private static Queue unFinishedQueue;
+  private final LinkedList<Duel> duelQueue = new LinkedList<>();
   private final String name;
+  private final Set<Arena> arenas = new HashSet<>();
+  private final QueueDataHandler data;
+  private final Runnable checkQueue = () -> {
+    if (duelQueue.size() > 0) {
+      for (Arena arena : this.arenas) {
+        if (!arena.isOccupied()) {
+          duelQueue.getLast().startDuel(arena);
+        }
+      }
+    }
+  };
   private ItemStack displayItem;
   private Kit kit;
   private boolean kitSet = false;
-  private final Set<Arena> arenas = new HashSet<>();
-  private final QueueDataHandler data;
 
   public Queue(String queueName) {
     this.name = queueName;
@@ -75,6 +84,66 @@ public class Queue {
     }
 
     AuroraDuels.INSTANCE.getLogger().info("All queues loaded!");
+  }
+
+  public static boolean isArenasSet() {
+    return arenasSet;
+  }
+
+  public static Queue getUnFinishedQueue() {
+    return unFinishedQueue;
+  }
+
+  public static void reloadAll() {
+    for (Queue queue : getQueues()) {
+      queue.reload();
+    }
+
+    AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
+  }
+
+  public static boolean isCreator(Player p) {
+    return p == currentCreator;
+  }
+
+  public static Set<Queue> getQueues() {
+    return queues;
+  }
+
+  public static Queue getQueue(String queueName) {
+    for (Queue queue : queues) {
+      if (Objects.equals(queue.name, queueName)) {
+        return queue;
+      }
+    }
+    return null;
+  }
+
+  public static Queue getQueue(Player p) {
+    for (Queue queue : queues) {
+      for (Player player : queue.getPlayers()) {
+        if (player == p) {
+          return queue;
+        }
+      }
+    }
+    return null;
+  }
+
+  public static void findMatch(Player p, String queueName, boolean ranked) {
+    p.sendMessage(Lang.getComponent("looking-match"));
+    if (lookingForMatch.get(ranked) == null) {
+      lookingForMatch.put(true, p);
+    } else {
+      Queue queue = Queue.getQueue(queueName);
+      assert queue != null;
+
+      queue.enterDuelQueue(
+          new StandardDuel(p, lookingForMatch.get(ranked), queue, queue.getKit(), ranked, 1));
+      p.sendMessage(Lang.getComponent("match-found"));
+      lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
+      lookingForMatch = null;
+    }
   }
 
   public Kit getKit() {
@@ -188,74 +257,5 @@ public class Queue {
 
   public void exitDuelQueue(Player p) {
     duelQueue.remove(Duel.getDuel(p));
-  }
-
-  private final Runnable checkQueue = () -> {
-    if (duelQueue.size() > 0) {
-      for (Arena arena : this.arenas) {
-        if (!arena.isOccupied()) {
-          duelQueue.getLast().startDuel(arena);
-        }
-      }
-    }
-  };
-
-  public static boolean isArenasSet() {
-    return arenasSet;
-  }
-
-  public static Queue getUnFinishedQueue() {
-    return unFinishedQueue;
-  }
-
-  public static void reloadAll() {
-    for (Queue queue : getQueues()) {
-      queue.reload();
-    }
-
-    AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
-  }
-
-  public static boolean isCreator(Player p) {
-    return p == currentCreator;
-  }
-
-  public static Set<Queue> getQueues() {
-    return queues;
-  }
-
-  public static Queue getQueue(String queueName) {
-    for (Queue queue : queues) {
-      if (Objects.equals(queue.name, queueName)) {
-        return queue;
-      }
-    }
-    return null;
-  }
-
-  public static Queue getQueue(Player p) {
-    for (Queue queue : queues) {
-      for (Player player : queue.getPlayers()) {
-        if (player == p) {
-          return queue;
-        }
-      }
-    }
-    return null;
-  }
-
-  public static void findMatch(Player p, String queueName, boolean ranked) {
-    p.sendMessage(Lang.getComponent("looking-match"));
-    if (lookingForMatch.get(ranked) == null) {
-      lookingForMatch.put(true, p);
-    } else {
-      Queue queue = Queue.getQueue(queueName);
-      assert queue != null;
-
-      queue.enterDuelQueue(new StandardDuel(p, lookingForMatch.get(ranked), queue, queue.getKit(), ranked, 1));
-      p.sendMessage(Lang.getComponent("match-found"));
-      lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
-      lookingForMatch = null;
-    }
   }
 }

@@ -105,6 +105,11 @@ public class PartyDuel extends Duel {
     PARTY_DUELS.add(this);
   }
 
+  @SuppressWarnings("unused")
+  public static Set<PartyDuel> getPartyDuels() {
+    return PARTY_DUELS;
+  }
+
   public Player[] getOpponents(Player p) {
     for (Player player : team1) {
       if (player == p) {
@@ -337,10 +342,5 @@ public class PartyDuel extends Duel {
     }.runTask(AuroraDuels.INSTANCE);
 
     PARTY_DUELS.remove(this);
-  }
-
-  @SuppressWarnings("unused")
-  public static Set<PartyDuel> getPartyDuels() {
-    return PARTY_DUELS;
   }
 }

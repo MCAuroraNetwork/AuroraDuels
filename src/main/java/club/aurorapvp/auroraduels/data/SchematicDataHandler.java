@@ -32,7 +32,8 @@ public class SchematicDataHandler {
   public SchematicDataHandler(Arena arena) {
     SchematicDataHandler.arena = arena;
 
-    FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "/arenas/schematics/" + arena.getName() + ".schem");
+    FILE = new File(AuroraDuels.INSTANCE.getDataFolder(),
+        "/arenas/schematics/" + arena.getName() + ".schem");
   }
 
   public File getFile() {

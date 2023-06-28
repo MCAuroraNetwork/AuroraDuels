@@ -3,16 +3,15 @@ package club.aurorapvp.auroraduels.commands;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.commands.duels.RematchCommand;
+import club.aurorapvp.auroraduels.commands.duels.matchmaking.RankedCommands;
+import club.aurorapvp.auroraduels.commands.duels.matchmaking.UnrankedCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.DuelBaseCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.FFADuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.PartyDuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.StandardDuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.TeamDuelCommands;
-import club.aurorapvp.auroraduels.commands.duels.matchmaking.RankedCommands;
-import club.aurorapvp.auroraduels.commands.duels.matchmaking.UnrankedCommands;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
@@ -59,7 +58,8 @@ public class CommandManager {
       return arenaNames;
     });
 
-    commandCompletions.registerCompletion("int", c -> List.of("1", "2", "3", "4", "5", "6", "7", "8", "9"));
+    commandCompletions.registerCompletion("int",
+        c -> List.of("1", "2", "3", "4", "5", "6", "7", "8", "9"));
 
     if (AuroraDuels.isAuroraKitsInstalled()) {
       commandCompletions.registerCompletion("kits", c -> {

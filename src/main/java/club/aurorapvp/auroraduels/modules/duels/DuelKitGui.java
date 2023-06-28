@@ -32,6 +32,76 @@ public class DuelKitGui {
     open();
   }
 
+  public static void onInventoryClose(InventoryCloseEvent event) {
+    Player p = (Player) event.getPlayer();
+
+    DuelKitGui duelGUI = DuelKitGui.getGui(p);
+
+    if (duelGUI == null) {
+      return;
+    }
+
+    if (duelGUI.isGuiInventory(event.getInventory())) {
+      KITS_GUIS.remove(duelGUI);
+    }
+  }
+
+  public static void onInventoryClicked(InventoryClickEvent event) {
+    Player p = (Player) event.getWhoClicked();
+
+    DuelKitGui duelGUI = DuelKitGui.getGui(p);
+
+    Duel duel = Duel.getDuel(p);
+    assert duel != null;
+
+    if (duelGUI == null || !duelGUI.isGuiInventory(event.getInventory())) {
+      return;
+    }
+
+    event.setCancelled(true);
+
+    if (event.getSlot() == 45) {
+      duelGUI.previousPage();
+      return;
+    } else if (event.getSlot() == 53) {
+      duelGUI.nextPage();
+      return;
+    } else if (event.getSlot() == 53) {
+      duel.setKit(null);
+      p.closeInventory();
+      return;
+    }
+
+    final ItemStack clickedItem = event.getCurrentItem();
+
+    if (clickedItem == null || clickedItem.getType().isAir()) {
+      return;
+    }
+
+    if (event.getCurrentItem().getItemMeta().displayName() == null) {
+      p.sendMessage(Lang.getComponent("kit-invalid-name"));
+    } else {
+      String itemName = PlainTextComponentSerializer.plainText()
+          .serialize(event.getCurrentItem().displayName());
+      String kitName = itemName.substring(1, itemName.length() - 1);
+
+      Kit kit = Kit.getKit(p, kitName);
+
+      assert kit != null;
+      duel.setKit(kit);
+      p.closeInventory();
+    }
+  }
+
+  public static DuelKitGui getGui(Player p) {
+    for (DuelKitGui kitsGui : KITS_GUIS) {
+      if (kitsGui.getPlayer() == p) {
+        return kitsGui;
+      }
+    }
+    return null;
+  }
+
   public Player getPlayer() {
     return p;
   }
@@ -137,76 +207,6 @@ public class DuelKitGui {
 
       addPage(kits);
     }
-  }
-
-  public static void onInventoryClose(InventoryCloseEvent event) {
-    Player p = (Player) event.getPlayer();
-
-    DuelKitGui duelGUI = DuelKitGui.getGui(p);
-
-    if (duelGUI == null) {
-      return;
-    }
-
-    if (duelGUI.isGuiInventory(event.getInventory())) {
-      KITS_GUIS.remove(duelGUI);
-    }
-  }
-
-  public static void onInventoryClicked(InventoryClickEvent event) {
-    Player p = (Player) event.getWhoClicked();
-
-    DuelKitGui duelGUI = DuelKitGui.getGui(p);
-
-    Duel duel = Duel.getDuel(p);
-    assert duel != null;
-
-    if (duelGUI == null || !duelGUI.isGuiInventory(event.getInventory())) {
-      return;
-    }
-
-    event.setCancelled(true);
-
-    if (event.getSlot() == 45) {
-      duelGUI.previousPage();
-      return;
-    } else if (event.getSlot() == 53) {
-      duelGUI.nextPage();
-      return;
-    } else if (event.getSlot() == 53) {
-      duel.setKit(null);
-      p.closeInventory();
-      return;
-    }
-
-    final ItemStack clickedItem = event.getCurrentItem();
-
-    if (clickedItem == null || clickedItem.getType().isAir()) {
-      return;
-    }
-
-    if (event.getCurrentItem().getItemMeta().displayName() == null) {
-      p.sendMessage(Lang.getComponent("kit-invalid-name"));
-    } else {
-      String itemName = PlainTextComponentSerializer.plainText()
-          .serialize(event.getCurrentItem().displayName());
-      String kitName = itemName.substring(1, itemName.length() - 1);
-
-      Kit kit = Kit.getKit(p, kitName);
-
-      assert kit != null;
-      duel.setKit(kit);
-      p.closeInventory();
-    }
-  }
-
-  public static DuelKitGui getGui(Player p) {
-    for (DuelKitGui kitsGui : KITS_GUIS) {
-      if (kitsGui.getPlayer() == p) {
-        return kitsGui;
-      }
-    }
-    return null;
   }
 
   private void open() {
