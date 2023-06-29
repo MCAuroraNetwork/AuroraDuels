@@ -9,12 +9,12 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -93,6 +93,8 @@ public class StandardDuel extends Duel implements Listener {
     playerTwo.teleportAsync(spawn2);
 
     this.setActive(true);
+    arena.setOccupied(true);
+    executor.scheduleAtFixedRate(checkBounds, 60L, 1L, TimeUnit.SECONDS);
 
     final Title title1 =
         Title.title(Lang.getComponent("duel-started"),

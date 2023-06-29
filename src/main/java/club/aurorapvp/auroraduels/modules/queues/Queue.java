@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -258,7 +259,7 @@ public class Queue {
       p.sendMessage(Lang.getComponent("entered-queue"));
     }
 
-    executor.execute(checkQueue);
+    executor.scheduleAtFixedRate(checkQueue, 0L, 1L, TimeUnit.SECONDS);
   }
 
   public void exitDuelQueue(Player p) {

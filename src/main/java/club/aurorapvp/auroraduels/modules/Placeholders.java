@@ -66,10 +66,7 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("opponent_ping")) {
-      if (StandardDuel.inDuel(p.getPlayer())) {
-        return String.valueOf(Objects.requireNonNull(StandardDuel.getStandardDuel(p.getPlayer()))
-            .getOpponent(p.getPlayer()).getPing());
-      } else if (Duel.inDuel(p.getPlayer())) {
+      if (Duel.inDuel(p.getPlayer())) {
         for (Player player : Objects.requireNonNull(Duel.getDuel(p.getPlayer())).getPlayers()) {
           if (player != p.getPlayer()) {
             return String.valueOf(player.getPing());
@@ -83,9 +80,12 @@ public class Placeholders extends PlaceholderExpansion {
         return "Not in duel";
       }
 
-      if (StandardDuel.inDuel(p.getPlayer())) {
-        return Objects.requireNonNull(StandardDuel.getStandardDuel(p.getPlayer()))
-            .getOpponent(p.getPlayer()).getName();
+      if (Duel.inDuel(p.getPlayer())) {
+        for (Player player : Objects.requireNonNull(Duel.getDuel(p.getPlayer())).getPlayers()) {
+          if (player != p.getPlayer()) {
+            return player.getName();
+          }
+        }
       }
 
       Duel duel = Duel.getDuel(p.getPlayer());

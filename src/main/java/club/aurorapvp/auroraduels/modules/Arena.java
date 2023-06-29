@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -26,6 +27,8 @@ public class Arena {
   private final String name;
   private BlockVector3 spawn1 = null;
   private BlockVector3 spawn2 = null;
+  private Location corner1;
+  private Location corner2;
   private BlockVector3 pos1 = null;
   private BlockVector3 pos2 = null;
   private ArenaState state;
@@ -146,6 +149,14 @@ public class Arena {
     return spawn2;
   }
 
+  public Location getCornerOne() {
+    return corner1;
+  }
+
+  public Location getCornerTwo() {
+    return corner2;
+  }
+
   public boolean exists() {
     return this.data.getFile().exists() && this.schematic.getFile().exists();
   }
@@ -207,6 +218,9 @@ public class Arena {
   public void setCorners(Player p, Action action, BlockVector3 vector) {
     if (action.isLeftClick() && state == ArenaState.CORNER_1) {
       pos1 = vector;
+
+      corner1 = new Location(this.getWorld(), vector.getX(), vector.getY(), vector.getZ());
+
       p.sendMessage(
           MiniMessage.miniMessage().deserialize(Lang.getString("pos1-set") +
               " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() +
@@ -219,6 +233,9 @@ public class Arena {
 
     if (action.isRightClick() && state == ArenaState.CORNER_2) {
       pos2 = vector;
+
+      corner2 = new Location(this.getWorld(), vector.getX(), vector.getY(), vector.getZ());
+
       p.sendMessage(
           MiniMessage.miniMessage().deserialize(Lang.getString("pos2-set") +
               " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() +
@@ -259,6 +276,23 @@ public class Arena {
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
+  }
+
+  public static boolean isPlayerInBounds(Player player, Arena arena) {
+    Location playerLocation = player.getLocation();
+    Location corner1 = arena.getCornerOne();
+    Location corner2 = arena.getCornerTwo();
+
+    double minX = Math.min(corner1.getX(), corner2.getX());
+    double minY = Math.min(corner1.getY(), corner2.getY());
+    double minZ = Math.min(corner1.getZ(), corner2.getZ());
+    double maxX = Math.max(corner1.getX(), corner2.getX());
+    double maxY = Math.max(corner1.getY(), corner2.getY());
+    double maxZ = Math.max(corner1.getZ(), corner2.getZ());
+
+    return playerLocation.getX() >= minX && playerLocation.getX() <= maxX
+        && playerLocation.getY() >= minY && playerLocation.getY() <= maxY
+        && playerLocation.getZ() >= minZ && playerLocation.getZ() <= maxZ;
   }
 
   private enum ArenaState {

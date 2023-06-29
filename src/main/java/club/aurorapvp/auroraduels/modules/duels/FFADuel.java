@@ -16,6 +16,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -102,6 +103,8 @@ public class FFADuel extends Duel {
     }
 
     this.setActive(true);
+    arena.setOccupied(true);
+    executor.scheduleAtFixedRate(checkBounds, 60L, 1L, TimeUnit.SECONDS);
 
     StringBuilder sb;
     String names;
@@ -153,7 +156,6 @@ public class FFADuel extends Duel {
       break;
     }
 
-    arena.setOccupied(true);
     timeStarted = System.currentTimeMillis();
 
     new BukkitRunnable() {

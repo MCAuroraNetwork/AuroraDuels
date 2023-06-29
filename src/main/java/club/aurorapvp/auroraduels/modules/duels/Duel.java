@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -21,7 +23,7 @@ import org.bukkit.persistence.PersistentDataType;
 public abstract class Duel {
   private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
   private static final HashMap<Player, Duel> LAST_DUEL = new HashMap<>();
-  public static Set<Duel> duels = new HashSet<>();
+  protected static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   private final boolean ranked;
@@ -32,6 +34,16 @@ public abstract class Duel {
   protected int currentRound = 1;
   private Queue queue;
   private boolean active = false;
+  protected final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+  protected final Runnable checkBounds = () -> {
+    for (Player p : this.getPlayers()) {
+      Arena arena = this.getArena();
+      if (!Arena.isPlayerInBounds(p, arena)) {
+        p.setHealth(0);
+        p.sendMessage(Lang.getComponent("no-leaving-arena"));
+      }
+    }
+  };
 
   public Duel(Set<Player> players, boolean ranked) {
     this.players.addAll(players);
