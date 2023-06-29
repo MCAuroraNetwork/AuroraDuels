@@ -165,7 +165,7 @@ public class Arena {
     spawn1 = this.data.getFirstSpawn();
     spawn2 = this.data.getSecondSpawn();
     corner1 = this.data.getCornerOne();
-    corner1 = this.data.getCornerTwo();
+    corner2 = this.data.getCornerTwo();
     world = this.data.getWorld();
   }
 
