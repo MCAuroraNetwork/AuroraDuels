@@ -9,7 +9,10 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import java.util.Set;
+import java.util.TreeSet;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
 @CommandAlias("arena")
@@ -56,10 +59,19 @@ public class ArenaCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onList(Player p) {
     // TODO clean up or remove
-    StringBuilder str = new StringBuilder("Arenas:");
+    p.sendMessage(MiniMessage.miniMessage().deserialize("<yellow><bold>Arenas:"));
+
+    Set<String> arenaNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+
     for (Arena arena : Arena.getArenas()) {
-      str.append("\n").append(arena.getName());
+      arenaNames.add(arena.getName());
     }
+
+    StringBuilder str = new StringBuilder();
+    for (String name : arenaNames) {
+      str.append("\n").append(name);
+    }
+
     p.sendMessage(Component.text(str.toString()));
   }
 

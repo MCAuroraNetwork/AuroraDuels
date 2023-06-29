@@ -17,7 +17,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitTask;
 
 public abstract class Duel {
   private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
@@ -39,6 +38,12 @@ public abstract class Duel {
       Arena arena = this.getArena();
       if (!Arena.isPlayerInBounds(p, arena)) {
         p.setHealth(0);
+        p.sendMessage(Lang.getComponent("no-leaving-arena"));
+      }
+    }
+
+    for (Player p : this.getSpectators()) {
+      if (!Arena.isPlayerInBounds(p, arena)) {
         p.sendMessage(Lang.getComponent("no-leaving-arena"));
       }
     }
