@@ -111,6 +111,8 @@ public class FFADuel extends Duel {
       p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2)));
     }
 
+    this.setActive(true);
+
     StringBuilder sb;
     String names;
     Title title;

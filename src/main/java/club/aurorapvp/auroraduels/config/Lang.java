@@ -70,6 +70,7 @@ public class Lang {
     DEFAULTS.put("duel-time-expired", "prefix <gradient:#FFAA00:#FF55FF>The duel ran out of time");
     DEFAULTS.put("looking-match", "prefix <gradient:#FFAA00:#FF55FF>Searching for an opponent");
     DEFAULTS.put("match-found", "prefix <gradient:#FFAA00:#FF55FF>Opponent found!");
+    DEFAULTS.put("in-queue", "prefix <gradient:#FFAA00:#FF55FF>You're already in a queue!");
     DEFAULTS.put("queue-already-exists", "prefix <gradient:#FFAA00:#FF55FF>Queue already exists!");
     DEFAULTS.put("queue-being-created",
         "prefix <gradient:#FFAA00:#FF55FF>Queue already being created!");

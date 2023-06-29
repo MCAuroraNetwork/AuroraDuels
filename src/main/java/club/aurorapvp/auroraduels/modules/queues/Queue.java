@@ -35,6 +35,8 @@ public class Queue {
   private final String name;
   private final Set<Arena> arenas = new HashSet<>();
   private final QueueDataHandler data;
+  private ItemStack displayItem;
+  private Kit kit;
   private final Runnable checkQueue = () -> {
     if (duelQueue.size() > 0) {
       for (Arena arena : this.arenas) {
@@ -44,9 +46,6 @@ public class Queue {
       }
     }
   };
-  private ItemStack displayItem;
-  private Kit kit;
-  private boolean kitSet = false;
 
   public Queue(String queueName) {
     this.name = queueName;
@@ -205,7 +204,6 @@ public class Queue {
     if (!this.exists() && arenasSet) {
       if (kitName != null && AuroraDuels.isAuroraKitsInstalled()) {
         this.kit = Kit.getKit(kitName);
-        kitSet = true;
       }
 
       create(p);
@@ -255,7 +253,6 @@ public class Queue {
 
   public void enterDuelQueue(Duel duel) {
     duelQueue.add(duel);
-    duel.setActive(true);
 
     for (Player p : duel.getPlayers()) {
       p.sendMessage(Lang.getComponent("entered-queue"));
@@ -266,5 +263,16 @@ public class Queue {
 
   public void exitDuelQueue(Player p) {
     duelQueue.remove(Duel.getDuel(p));
+  }
+
+  public static boolean inQueue(Player p) {
+    for (Queue queue : Queue.getQueues()) {
+      for (Player player : queue.getPlayers()) {
+        if (p == player) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

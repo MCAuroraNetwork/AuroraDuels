@@ -35,6 +35,8 @@ public class Request {
     if (Request.hasPendingRequest(requester)) {
       requester.sendMessage(Lang.getComponent("you-have-request"));
       return;
+    } else if (Queue.inQueue(requester)) {
+      requester.sendMessage(Lang.getComponent("in-queue"));
     }
 
     for (Player p : duel.getPlayers()) {
@@ -42,6 +44,9 @@ public class Request {
         requester.sendMessage(Lang.getComponent("already-has-request"));
         return;
       } else if (Duel.inDuel(p)) {
+        requester.sendMessage(Lang.getComponent("player-in-duel"));
+        return;
+      } else if (Queue.inQueue(p)) {
         requester.sendMessage(Lang.getComponent("player-in-duel"));
         return;
       }

@@ -190,6 +190,8 @@ public class PartyDuel extends Duel {
       p.teleportAsync(spawn2);
     }
 
+    this.setActive(true);
+
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < team2.length; i++) {
       sb.append(team2[i].getName());

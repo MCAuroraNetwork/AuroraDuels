@@ -109,6 +109,8 @@ public class StandardDuel extends Duel implements Listener {
     playerOne.teleportAsync(spawn1);
     playerTwo.teleportAsync(spawn2);
 
+    this.setActive(true);
+
     final Title title1 =
         Title.title(Lang.getComponent("duel-started"),
             Component.text("Opponent: " + playerTwo.getName()));
