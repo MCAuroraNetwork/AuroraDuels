@@ -16,6 +16,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class Arena {
   private static final Set<Arena> arenas = new HashSet<>();
@@ -73,6 +74,7 @@ public class Arena {
   }
 
   public static void onWandUse(PlayerInteractEvent event) {
+    event.setCancelled(true);
     Player p = event.getPlayer();
     p.setCooldown(Material.IRON_HOE, 20);
     Action action = event.getAction();
@@ -160,8 +162,8 @@ public class Arena {
       Wand.setActive(Wand.WandActivity.LEFT);
       unfinishedArena = this;
 
-      p.getInventory().getItemInMainHand().setAmount(1);
-      p.getInventory().getItemInMainHand().setType(Material.IRON_HOE);
+      p.getInventory().setItem(p.getInventory().getHeldItemSlot(), new ItemStack(Material.IRON_HOE));
+
       p.sendMessage(Lang.getComponent("set-spawn1"));
     } else if (state != ArenaState.IDLE) {
       p.sendMessage(Lang.getComponent("arena-already-being-created"));
