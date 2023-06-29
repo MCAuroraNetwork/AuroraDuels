@@ -92,8 +92,17 @@ public class Arena {
   }
 
   public static void reloadAll() {
-    for (Arena arena : Arena.arenas) {
-      arena.reload();
+    arenas.clear();
+
+    File dir = new File(AuroraDuels.INSTANCE.getDataFolder(), "/arenas/");
+
+    if (dir.exists()) {
+      for (File file : Objects.requireNonNull(dir.listFiles())) {
+        Arena arena = new Arena(file.getName().replace(".yml", ""));
+        if (arena.exists()) {
+          arenas.add(arena);
+        }
+      }
     }
 
     AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");

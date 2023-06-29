@@ -95,8 +95,21 @@ public class Queue {
   }
 
   public static void reloadAll() {
+    queues.clear();
+
+    if (Config.get().getBoolean("queues.enable-default-queue")) {
+      Queue queue = new Queue("default");
+      queue.addArenas(Arena.getArenas());
+
+      queue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, queue.getName());
+
+      queues.add(queue);
+    }
+
     for (Queue queue : getQueues()) {
-      queue.reload();
+      if (!Objects.equals(queue.getName(), "default")) {
+        queue.reload();
+      }
     }
 
     AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
@@ -156,10 +169,6 @@ public class Queue {
 
   public ItemStack getDisplayItem() {
     return displayItem;
-  }
-
-  public boolean isKitSet() {
-    return kitSet;
   }
 
   public boolean exists() {
