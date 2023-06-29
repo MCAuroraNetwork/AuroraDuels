@@ -292,6 +292,8 @@ public class FFADuel extends Duel {
 
   @Override
   public void draw() {
+    Bukkit.getScheduler().cancelTask(taskId);
+
     for (Player p : this.getPlayers()) {
       p.sendMessage(Lang.getComponent("draw"));
     }

@@ -188,6 +188,8 @@ public class StandardDuel extends Duel implements Listener {
   }
 
   public void draw() {
+    Bukkit.getScheduler().cancelTask(taskId);
+
     for (Player p : this.getPlayers()) {
       p.sendMessage(Lang.getComponent("draw"));
     }
