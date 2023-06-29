@@ -132,7 +132,7 @@ public abstract class Duel {
 
   public static boolean inDuel(Player p) {
     for (Duel duel : duels) {
-      if ((duel.contains(p) || duel.contains(p)) && duel.isActive()) {
+      if ((duel.contains(p) || duel.isSpectator(p)) && duel.isActive()) {
         return true;
       }
     }
@@ -228,5 +228,9 @@ public abstract class Duel {
 
   public boolean contains(Player p) {
     return players.contains(p);
+  }
+
+  public boolean isSpectator(Player p) {
+    return spectators.contains(p);
   }
 }
