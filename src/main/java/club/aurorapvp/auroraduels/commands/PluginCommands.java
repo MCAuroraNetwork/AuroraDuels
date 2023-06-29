@@ -19,13 +19,15 @@ public class PluginCommands extends BaseCommand {
   @CommandPermission("auroraduels.admin")
   @Description("Reloads all plugin data")
   @SuppressWarnings("unused")
-  public void onReload() {
+  public void onReload(Player p) {
     long startTime = System.currentTimeMillis();
 
     Config.reload();
     Lang.reload();
     Arena.reloadAll();
     Queue.reloadAll();
+
+    p.sendMessage(Lang.getComponent("reloaded"));
 
     AuroraDuels.INSTANCE.getLogger().info(
         "AuroraDuels reloaded in " + (System.currentTimeMillis() - startTime) + "ms");

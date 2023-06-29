@@ -112,7 +112,7 @@ public class Queue {
       }
     }
 
-    AuroraDuels.INSTANCE.getLogger().info("ALl arenas reloaded!");
+    AuroraDuels.INSTANCE.getLogger().info("ALl queues reloaded!");
   }
 
   public static boolean isCreator(Player p) {

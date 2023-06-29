@@ -105,6 +105,7 @@ public class Lang {
     DEFAULTS.put("previous-page", "<gradient:#FFAA00:#FF55FF>Previous page");
     DEFAULTS.put("no-kit", "<gradient:#FFAA00:#FF55FF>No kit");
     DEFAULTS.put("kit-invalid-name", "prefix <gradient:#FFAA00:#FF55FF>Invalid kit name!");
+    DEFAULTS.put("reloaded", "prefix <gradient:#FFAA00:#FF55FF>Plugin reloaded!");
     DEFAULTS.put("help-command", """
         prefix <gradient:#FFAA00:#FF55FF>All Commands:\s
         <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player\s
