@@ -48,10 +48,16 @@ public class ArenaDataHandler {
         arena.getFirstSpawn().getBlockY(), arena.getFirstSpawn().getBlockZ());
     Location spawn2 = new Location(arena.getWorld(), arena.getSecondSpawn().getBlockX(),
         arena.getSecondSpawn().getBlockY(), arena.getSecondSpawn().getBlockZ());
+    Location pos1 = new Location(arena.getWorld(), arena.getFirstPosition().getX(),
+        arena.getFirstPosition().getY(), arena.getFirstPosition().getZ());
+    Location pos2 = new Location(arena.getWorld(), arena.getSecondPosition().getX(),
+        arena.getSecondPosition().getY(), arena.getSecondPosition().getZ());
 
     arenaData.set("arena.world", arena.getWorld().getName());
     arenaData.set("arena.spawns.spawn1", spawn1);
     arenaData.set("arena.spawns.spawn2", spawn2);
+    arenaData.set("arena.corners.pos1", pos1);
+    arenaData.set("arena.corners.pos2", pos2);
 
     if (!FILE.exists()) {
       try {

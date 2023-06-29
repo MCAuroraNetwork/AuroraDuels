@@ -162,7 +162,8 @@ public class Arena {
       Wand.setActive(Wand.WandActivity.LEFT);
       unfinishedArena = this;
 
-      p.getInventory().setItem(p.getInventory().getHeldItemSlot(), new ItemStack(Material.IRON_HOE));
+      p.getInventory()
+          .setItem(p.getInventory().getHeldItemSlot(), new ItemStack(Material.IRON_HOE));
 
       p.sendMessage(Lang.getComponent("set-spawn1"));
     } else if (state != ArenaState.IDLE) {
