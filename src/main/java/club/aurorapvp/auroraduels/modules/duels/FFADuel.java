@@ -16,7 +16,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -104,7 +103,7 @@ public class FFADuel extends Duel {
 
     this.setActive(true);
     arena.setOccupied(true);
-    executor.scheduleAtFixedRate(checkBounds, 60L, 1L, TimeUnit.SECONDS);
+    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 1200L, 200L);
 
     StringBuilder sb;
     String names;
@@ -167,6 +166,8 @@ public class FFADuel extends Duel {
   }
 
   public void endDuel(Player[] player, Player[] losers) {
+    Bukkit.getScheduler().cancelTask(taskId);
+
     Player winner = player[0];
 
     String winnerName = winner.getName();

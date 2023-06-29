@@ -38,6 +38,14 @@ public class ArenaDataHandler {
         Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn2")));
   }
 
+  public Location getCornerOne() {
+    return arenaData.getLocation("arena.corners.pos1");
+  }
+
+  public Location getCornerTwo() {
+    return arenaData.getLocation("arena.corners.pos2");
+  }
+
   public File getFile() {
     return FILE;
   }

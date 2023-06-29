@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
@@ -137,7 +136,7 @@ public class TeamDuel extends Duel {
 
     this.setActive(true);
     arena.setOccupied(true);
-    executor.scheduleAtFixedRate(checkBounds, 60L, 1L, TimeUnit.SECONDS);
+    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 1200L, 200L);
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < team2.length; i++) {
@@ -205,6 +204,8 @@ public class TeamDuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
+    Bukkit.getScheduler().cancelTask(taskId);
+
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < winners.length; i++) {
       sb.append(winners[i].getName());

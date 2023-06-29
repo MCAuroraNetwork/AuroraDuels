@@ -21,8 +21,6 @@ public class StandardDuelCommands extends BaseCommand {
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
   public void onNewRequest(Player p, String playerName, @Optional String rounds) {
-
-
     Player requested = Bukkit.getPlayer(playerName);
 
     if (requested == null) {

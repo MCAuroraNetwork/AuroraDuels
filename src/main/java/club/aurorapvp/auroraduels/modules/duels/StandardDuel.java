@@ -94,7 +94,7 @@ public class StandardDuel extends Duel implements Listener {
 
     this.setActive(true);
     arena.setOccupied(true);
-    executor.scheduleAtFixedRate(checkBounds, 60L, 1L, TimeUnit.SECONDS);
+    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 1200L, 200L);
 
     final Title title1 =
         Title.title(Lang.getComponent("duel-started"),
@@ -137,6 +137,8 @@ public class StandardDuel extends Duel implements Listener {
   }
 
   public void endDuel(Player[] winner, Player[] loser) {
+    Bukkit.getScheduler().cancelTask(taskId);
+
     if (rounds > currentRound) {
       if (wins.containsKey(winner[0])) {
         int currentWins = wins.get(winner[0]);
