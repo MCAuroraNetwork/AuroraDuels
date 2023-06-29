@@ -26,25 +26,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class FFADuel extends Duel {
-  private static final Set<FFADuel> FFA_DUELS = new HashSet<>();
   private final Map<Player, Boolean> deadPlayers = new HashMap<>();
   private final Random random = new Random();
 
   public FFADuel(Set<Player> players, boolean ranked) {
     super(players, ranked);
-
-    FFA_DUELS.add(this);
   }
 
   public FFADuel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
     super(players, queue, kit, ranked);
-
-    FFA_DUELS.add(this);
-  }
-
-  @SuppressWarnings("unused")
-  public static Set<FFADuel> getFfaDuels() {
-    return FFA_DUELS;
   }
 
   @SuppressWarnings("unused")
@@ -221,7 +211,7 @@ public class FFADuel extends Duel {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    FFA_DUELS.remove(this);
+    duels.remove(this);
   }
 
   private Location findSafeSpawnLocation(Location spawn1, Location spawn2) {
@@ -326,6 +316,6 @@ public class FFADuel extends Duel {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    FFA_DUELS.remove(this);
+    duels.remove(this);
   }
 }

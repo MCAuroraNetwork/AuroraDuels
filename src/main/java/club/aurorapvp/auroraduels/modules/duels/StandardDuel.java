@@ -24,7 +24,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class StandardDuel extends Duel implements Listener {
-  private static final Set<StandardDuel> STANDARD_DUELS = new HashSet<>();
   private final Map<Player, Integer> wins = new HashMap<>();
   private final Player playerOne;
   private final Player playerTwo;
@@ -34,7 +33,6 @@ public class StandardDuel extends Duel implements Listener {
     this.playerOne = p1;
     this.playerTwo = p2;
     this.rounds = rounds;
-    STANDARD_DUELS.add(this);
   }
 
   public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, boolean ranked, int rounds) {
@@ -42,21 +40,6 @@ public class StandardDuel extends Duel implements Listener {
     this.playerOne = p1;
     this.playerTwo = p2;
     this.rounds = rounds;
-    STANDARD_DUELS.add(this);
-  }
-
-  public static StandardDuel getStandardDuel(Player p) {
-    for (StandardDuel duel : STANDARD_DUELS) {
-      if (duel.contains(p)) {
-        return duel;
-      }
-    }
-    return null;
-  }
-
-  @SuppressWarnings("unused")
-  public static Set<StandardDuel> getStandardDuels() {
-    return STANDARD_DUELS;
   }
 
   public Player getOpponent(Player p) {
@@ -141,7 +124,6 @@ public class StandardDuel extends Duel implements Listener {
     }, Config.get().getInt("duels.max-duration"));
 
     Objects.requireNonNull(Queue.getQueue(playerOne)).exitDuelQueue(playerOne);
-    arena.setOccupied(true);
     timeStarted = System.currentTimeMillis();
 
     new BukkitRunnable() {
@@ -198,7 +180,7 @@ public class StandardDuel extends Duel implements Listener {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    STANDARD_DUELS.remove(this);
+    duels.remove(this);
   }
 
   public void draw() {
@@ -227,6 +209,6 @@ public class StandardDuel extends Duel implements Listener {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    STANDARD_DUELS.remove(this);
+    duels.remove(this);
   }
 }

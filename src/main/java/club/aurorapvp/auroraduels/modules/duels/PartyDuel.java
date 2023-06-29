@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PartyDuel extends Duel {
-  private static final Set<PartyDuel> PARTY_DUELS = new HashSet<>();
   private final Map<Player, Boolean> team1Dead = new HashMap<>();
   private final Map<Player, Boolean> team2Dead = new HashMap<>();
   private final Player[] team1;
@@ -65,8 +64,6 @@ public class PartyDuel extends Duel {
     if (extra != null) {
       this.getPlayers().add(extra);
     }
-
-    PARTY_DUELS.add(this);
   }
 
   public PartyDuel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
@@ -101,13 +98,6 @@ public class PartyDuel extends Duel {
     if (extra != null) {
       this.getPlayers().add(extra);
     }
-
-    PARTY_DUELS.add(this);
-  }
-
-  @SuppressWarnings("unused")
-  public static Set<PartyDuel> getPartyDuels() {
-    return PARTY_DUELS;
   }
 
   public Player[] getOpponents(Player p) {
@@ -311,7 +301,7 @@ public class PartyDuel extends Duel {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    PARTY_DUELS.remove(this);
+    duels.remove(this);
   }
 
   @Override
@@ -343,6 +333,6 @@ public class PartyDuel extends Duel {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    PARTY_DUELS.remove(this);
+    duels.remove(this);
   }
 }

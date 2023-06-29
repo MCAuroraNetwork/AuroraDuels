@@ -19,8 +19,6 @@ public class DuelEndEvent extends Event {
     this.duel = duel;
     this.winners = winners;
     this.losers = losers;
-
-    Duel.duels.remove(duel);
   }
 
   @SuppressWarnings("unused")

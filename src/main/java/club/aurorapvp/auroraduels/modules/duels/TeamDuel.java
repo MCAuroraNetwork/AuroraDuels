@@ -26,7 +26,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeamDuel extends Duel {
-  private static final Set<TeamDuel> TEAM_DUELS = new HashSet<>();
   private final Map<Player, Boolean> team1Dead = new HashMap<>();
   private final Map<Player, Boolean> team2Dead = new HashMap<>();
   private final Player[] team1;
@@ -38,8 +37,6 @@ public class TeamDuel extends Duel {
 
     this.team1 = team1;
     this.team2 = team2;
-
-    TEAM_DUELS.add(this);
   }
 
   public TeamDuel(Player[] team1, Player[] team2, Queue queue, Kit kit, boolean ranked) {
@@ -48,13 +45,6 @@ public class TeamDuel extends Duel {
 
     this.team1 = team1;
     this.team2 = team2;
-
-    TEAM_DUELS.add(this);
-  }
-
-  @SuppressWarnings("unused")
-  public static Set<TeamDuel> getTeamDuels() {
-    return TEAM_DUELS;
   }
 
   public Player[] getTeam1() {
@@ -267,7 +257,7 @@ public class TeamDuel extends Duel {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    TEAM_DUELS.remove(this);
+    duels.remove(this);
   }
 
   @Override
@@ -299,6 +289,6 @@ public class TeamDuel extends Duel {
       }
     }.runTask(AuroraDuels.INSTANCE);
 
-    TEAM_DUELS.remove(this);
+    duels.remove(this);
   }
 }
