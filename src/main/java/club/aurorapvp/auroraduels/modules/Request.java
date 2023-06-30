@@ -102,12 +102,17 @@ public class Request {
       return;
     }
 
-    if (QueueGUI.isQueueGUI(event.getInventory()) && Request.hasPendingRequest(p) &&
-        Objects.requireNonNull(Duel.getDuel(p)).getQueue() == null) {
-      QueueGUI.open(p);
+    if (!Request.hasPendingRequest(p)) {
+      return;
     }
 
-    if (!Request.hasPendingRequest(p) || DuelKitGui.getGui(p) == null) {
+    if (QueueGUI.isQueueGUI(event.getInventory()) &&
+        Objects.requireNonNull(Duel.getDuel(p)).getQueue() == null) {
+      Duel.getDuels().remove(Duel.getDuel(p));
+      PENDING_REQUESTS.remove(Request.getRequest(p));
+    }
+
+    if (DuelKitGui.getGui(p) == null) {
       return;
     }
 
