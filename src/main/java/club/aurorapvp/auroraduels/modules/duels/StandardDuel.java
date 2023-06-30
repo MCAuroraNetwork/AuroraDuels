@@ -84,9 +84,6 @@ public class StandardDuel extends Duel implements Listener {
             arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
-    playerOne.spigot().respawn();
-    playerTwo.spigot().respawn();
-
     playerOne.teleportAsync(spawn1);
     playerTwo.teleportAsync(spawn2);
 
@@ -137,7 +134,7 @@ public class StandardDuel extends Duel implements Listener {
   public void endDuel(Player[] winner, Player[] loser) {
     Bukkit.getScheduler().cancelTask(taskId);
 
-    if (rounds > 1) {
+    if (rounds > 1 && loser[0].isOnline()) {
       if (wins.containsKey(winner[0])) {
         int currentWins = wins.get(winner[0]);
 
@@ -147,6 +144,11 @@ public class StandardDuel extends Duel implements Listener {
       }
 
       if (!(wins.get(winner[0]) >= (rounds / 2 + 1))) {
+        playerOne.spigot().respawn();
+        playerTwo.spigot().respawn();
+
+        arena.reset();
+
         this.startDuel(arena);
         return;
       }
