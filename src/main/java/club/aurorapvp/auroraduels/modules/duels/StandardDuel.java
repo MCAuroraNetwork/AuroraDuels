@@ -132,8 +132,6 @@ public class StandardDuel extends Duel implements Listener {
   }
 
   public void endDuel(Player[] winner, Player[] loser) {
-    Bukkit.getScheduler().cancelTask(taskId);
-
     if (rounds > 1 && loser[0].isOnline()) {
       if (wins.containsKey(winner[0])) {
         int currentWins = wins.get(winner[0]);
@@ -144,15 +142,14 @@ public class StandardDuel extends Duel implements Listener {
       }
 
       if (!(wins.get(winner[0]) >= (rounds / 2 + 1))) {
-        playerOne.spigot().respawn();
-        playerTwo.spigot().respawn();
-
         arena.reset();
 
         this.startDuel(arena);
         return;
       }
     }
+
+    Bukkit.getScheduler().cancelTask(taskId);
 
     winner[0].showTitle(
         Title.title(Lang.getComponent("you-won"),
@@ -187,6 +184,13 @@ public class StandardDuel extends Duel implements Listener {
   }
 
   public void draw() {
+    if (rounds > 1) {
+      arena.reset();
+
+      this.startDuel(arena);
+      return;
+    }
+
     Bukkit.getScheduler().cancelTask(taskId);
 
     for (Player p : this.getPlayers()) {

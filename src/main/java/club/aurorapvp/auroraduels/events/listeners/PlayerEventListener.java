@@ -12,6 +12,7 @@ import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -22,6 +23,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PlayerEventListener implements Listener {
@@ -69,6 +71,17 @@ public class PlayerEventListener implements Listener {
     }
 
     checkIfDuelOver(event.getPlayer());
+  }
+
+  @EventHandler
+  public void onPlayerRespawn(PlayerRespawnEvent event) {
+    if (!Duel.inDuel(event.getPlayer())) {
+      return;
+    }
+
+    if (Objects.requireNonNull(Duel.getDuel(event.getPlayer())).getKit() != null) {
+      Objects.requireNonNull(Duel.getDuel(event.getPlayer())).getKit().giveKit(event.getPlayer());
+    }
   }
 
   @EventHandler
