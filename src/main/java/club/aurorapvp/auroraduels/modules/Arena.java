@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Arena {
   private static final Set<Arena> arenas = new HashSet<>();
@@ -255,7 +256,7 @@ public class Arena {
 
   public void reset(Player p) {
     if (this.exists()) {
-      new SchematicDataHandler(this).paste();
+      this.reset();
       p.sendMessage(Lang.getComponent("arena-reset"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
@@ -263,13 +264,17 @@ public class Arena {
   }
 
   public void reset() {
-    synchronized (AuroraDuels.INSTANCE.getServer()) {
-      for (Entity entity : this.getWorld().getEntities()) {
-        if (Arena.isInBounds(entity.getLocation(), this) && !(entity instanceof Player)) {
-          entity.remove();
+    Arena thisArena = this;
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        for (Entity entity : thisArena.getWorld().getEntities()) {
+          if (Arena.isInBounds(entity.getLocation(), thisArena) && !(entity instanceof Player)) {
+            entity.remove();
+          }
         }
       }
-    }
+    }.runTask(AuroraDuels.INSTANCE);
 
     if (this.exists()) {
       new SchematicDataHandler(this).paste();
