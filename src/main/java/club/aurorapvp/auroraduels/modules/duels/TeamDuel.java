@@ -136,7 +136,7 @@ public class TeamDuel extends Duel {
 
     this.setActive(true);
     arena.setOccupied(true);
-    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 1200L, 200L);
+    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < team2.length; i++) {

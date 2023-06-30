@@ -94,7 +94,7 @@ public class StandardDuel extends Duel implements Listener {
 
     this.setActive(true);
     arena.setOccupied(true);
-    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 1200L, 200L);
+    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     final Title title1 =
         Title.title(Lang.getComponent("duel-started"),
