@@ -103,8 +103,8 @@ public class StandardDuel extends Duel implements Listener {
             Component.text("Opponent: " + playerOne.getName()));
 
     if (rounds > 1) {
-      playerOne.sendActionBar(Component.text("Round " + currentRound + " of " + rounds));
-      playerTwo.sendActionBar(Component.text("Round " + currentRound + " of " + rounds));
+      playerOne.sendActionBar(Lang.formatComponent("rounds-remaining", currentRound, rounds));
+      playerTwo.sendActionBar(Lang.formatComponent("rounds-remaining", currentRound, rounds));
     }
 
     playerOne.showTitle(title1);

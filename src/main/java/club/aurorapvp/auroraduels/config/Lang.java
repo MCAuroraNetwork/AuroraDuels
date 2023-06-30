@@ -66,6 +66,7 @@ public class Lang {
     DEFAULTS.put("request-accepted", "prefix <gradient:#FFAA00:#FF55FF>Duel request accepted!");
     DEFAULTS.put("you-won", "<gradient:#FFAA00:#FF55FF>You won the duel!");
     DEFAULTS.put("you-lost", "<gradient:#FFAA00:#FF55FF>You lost the duel");
+    DEFAULTS.put("rounds-remaining", "<gradient:#FFAA00:#FF55FF>Round %1$s out of %1$s rounds");
     DEFAULTS.put("draw", "prefix <gradient:#FFAA00:#FF55FF>The duel was a draw!");
     DEFAULTS.put("no-leaving-arena", "prefix <gradient:#FFAA00:#FF55FF>You cannot leave the arena!");
     DEFAULTS.put("duel-time-expired", "prefix <gradient:#FFAA00:#FF55FF>The duel ran out of time");
