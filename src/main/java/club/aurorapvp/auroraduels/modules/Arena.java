@@ -263,9 +263,11 @@ public class Arena {
   }
 
   public void reset() {
-    for (Entity entity : this.getWorld().getEntities()) {
-      if (Arena.isInBounds(entity.getLocation(), this)) {
-        entity.remove();
+    synchronized (AuroraDuels.INSTANCE.getServer()) {
+      for (Entity entity : this.getWorld().getEntities()) {
+        if (Arena.isInBounds(entity.getLocation(), this)) {
+          entity.remove();
+        }
       }
     }
 
