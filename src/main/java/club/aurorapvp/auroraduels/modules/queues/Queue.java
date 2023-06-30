@@ -11,11 +11,16 @@ import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.util.ItemStackUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -39,11 +44,16 @@ public class Queue {
   private ItemStack displayItem;
   private Kit kit;
   private final Runnable checkQueue = () -> {
-    if (duelQueue.size() > 0) {
-      for (Arena arena : this.arenas) {
-        if (!arena.isOccupied()) {
-          duelQueue.getLast().startDuel(arena);
-        }
+    Set<Arena> arenasSet = this.getArenas();
+    List<Arena> arenasList = new ArrayList<>(arenasSet);
+    Collections.shuffle(arenasList);
+    Iterator<Arena> arenaIterator = arenasList.iterator();
+
+    while(arenaIterator.hasNext() && duelQueue.size() > 0) {
+      Arena arena = arenaIterator.next();
+      if (!arena.isOccupied()) {
+        duelQueue.getLast().startDuel(arena);
+        duelQueue.remove(duelQueue.getLast());
       }
     }
   };
@@ -260,10 +270,6 @@ public class Queue {
     }
 
     executor.scheduleAtFixedRate(checkQueue, 0L, 1L, TimeUnit.SECONDS);
-  }
-
-  public void exitDuelQueue(Player p) {
-    duelQueue.remove(Duel.getDuel(p));
   }
 
   public static boolean inQueue(Player p) {

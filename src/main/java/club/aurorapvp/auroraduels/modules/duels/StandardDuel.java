@@ -125,7 +125,6 @@ public class StandardDuel extends Duel implements Listener {
       }
     }, Config.get().getInt("duels.max-duration"));
 
-    Objects.requireNonNull(Queue.getQueue(playerOne)).exitDuelQueue(playerOne);
     timeStarted = System.currentTimeMillis();
 
     new BukkitRunnable() {

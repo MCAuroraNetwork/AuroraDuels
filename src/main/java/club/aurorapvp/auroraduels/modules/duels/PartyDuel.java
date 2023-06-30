@@ -235,11 +235,6 @@ public class PartyDuel extends Duel {
       }
     }, Config.get().getInt("duels.max-duration"));
 
-    for (Player p : this.getPlayers()) {
-      Objects.requireNonNull(Queue.getQueue(p)).exitDuelQueue(p);
-      break;
-    }
-
     timeStarted = System.currentTimeMillis();
 
     new BukkitRunnable() {
