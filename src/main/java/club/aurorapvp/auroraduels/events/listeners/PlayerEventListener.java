@@ -68,8 +68,6 @@ public class PlayerEventListener implements Listener {
       return;
     }
 
-    event.getDrops().clear();
-
     checkIfDuelOver(event.getPlayer());
   }
 

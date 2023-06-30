@@ -11,7 +11,6 @@ import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
@@ -136,7 +135,8 @@ public class TeamDuel extends Duel {
 
     this.setActive(true);
     arena.setOccupied(true);
-    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    taskId = Bukkit.getScheduler()
+        .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < team2.length; i++) {

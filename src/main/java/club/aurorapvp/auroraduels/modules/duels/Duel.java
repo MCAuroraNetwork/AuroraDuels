@@ -36,14 +36,14 @@ public abstract class Duel {
   protected final Runnable checkBounds = () -> {
     for (Player p : this.getPlayers()) {
       Arena arena = this.getArena();
-      if (!Arena.isPlayerInBounds(p, arena) && !this.isSpectator(p)) {
+      if (!Arena.isInBounds(p.getLocation(), arena) && !this.isSpectator(p)) {
         p.setHealth(0);
         p.sendMessage(Lang.getComponent("no-leaving-arena"));
       }
     }
 
     for (Player p : this.getSpectators()) {
-      if (!Arena.isPlayerInBounds(p, arena)) {
+      if (!Arena.isInBounds(p.getLocation(), arena)) {
         for (Player player : this.getPlayers()) {
           if (!this.isSpectator(player)) {
             p.teleportAsync(player.getLocation());

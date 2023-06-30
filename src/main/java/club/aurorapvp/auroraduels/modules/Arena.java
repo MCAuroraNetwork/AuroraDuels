@@ -14,6 +14,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -262,6 +263,12 @@ public class Arena {
   }
 
   public void reset() {
+    for (Entity entity : this.getWorld().getEntities()) {
+      if (Arena.isInBounds(entity.getLocation(), this)) {
+        entity.remove();
+      }
+    }
+
     if (this.exists()) {
       new SchematicDataHandler(this).paste();
     }
@@ -280,8 +287,7 @@ public class Arena {
     }
   }
 
-  public static boolean isPlayerInBounds(Player player, Arena arena) {
-    Location playerLocation = player.getLocation();
+  public static boolean isInBounds(Location loc, Arena arena) {
     Location corner1 = arena.getCornerOne();
     Location corner2 = arena.getCornerTwo();
 
@@ -292,9 +298,8 @@ public class Arena {
     double maxY = Math.max(corner1.getY(), corner2.getY());
     double maxZ = Math.max(corner1.getZ(), corner2.getZ());
 
-    return playerLocation.getX() >= minX && playerLocation.getX() <= maxX
-        && playerLocation.getY() >= minY && playerLocation.getY() <= maxY
-        && playerLocation.getZ() >= minZ && playerLocation.getZ() <= maxZ;
+    return loc.getX() >= minX && loc.getX() <= maxX && loc.getY() >= minY && loc.getY() <= maxY &&
+        loc.getZ() >= minZ && loc.getZ() <= maxZ;
   }
 
   private enum ArenaState {
