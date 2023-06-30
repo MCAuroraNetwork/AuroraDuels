@@ -19,6 +19,7 @@ public class DuelEventListener implements Listener {
     }
 
     for (Player p : event.getDuel().getPlayers()) {
+      Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels").setUpdating(true);
       CombatTag.setTaggable(p, false);
     }
   }
@@ -31,6 +32,7 @@ public class DuelEventListener implements Listener {
 
     for (Player p : event.getDuel().getPlayers()) {
       CombatTag.setTaggable(p, true);
+      Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels").setUpdating(false);
 
       Duel.setLastDuel(p, event.getDuel());
     }

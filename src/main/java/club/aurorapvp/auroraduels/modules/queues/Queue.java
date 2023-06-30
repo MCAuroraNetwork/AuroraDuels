@@ -68,7 +68,7 @@ public class Queue {
     }
 
     if (AuroraDuels.isAuroraCombatInstalled()) {
-      Rating.setupRating(name + "_duels");
+      Rating.setupRating(name + "_duels", false);
     }
   }
 
