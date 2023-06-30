@@ -142,6 +142,8 @@ public class StandardDuel extends Duel implements Listener {
       }
 
       if (!(wins.get(winner[0]) >= (rounds / 2 + 1))) {
+        loser[0].spigot().respawn();
+
         arena.reset();
 
         this.startDuel(arena);
