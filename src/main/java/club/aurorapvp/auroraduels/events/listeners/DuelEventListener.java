@@ -32,6 +32,9 @@ public class DuelEventListener implements Listener {
     }
 
     for (Player p : event.getDuel().getPlayers()) {
+      if (!p.isOnline()) {
+        break;
+      }
       CombatTag.setTaggable(p, true);
       Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels").setUpdating(false);
       Rating.getRating(p, "default").setUpdating(true);
