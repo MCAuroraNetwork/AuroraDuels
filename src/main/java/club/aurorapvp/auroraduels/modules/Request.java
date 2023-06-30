@@ -117,7 +117,7 @@ public class Request {
     }
 
     if (Objects.requireNonNull(DuelKitGui.getGui(p)).isGuiInventory(event.getInventory())) {
-      Objects.requireNonNull(Request.getRequest((Player) event.getPlayer())).sendRequest();
+      Objects.requireNonNull(Request.getRequest(p)).sendRequest();
     }
   }
 

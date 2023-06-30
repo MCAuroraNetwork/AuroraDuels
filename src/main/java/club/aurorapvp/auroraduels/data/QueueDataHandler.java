@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 public class QueueDataHandler {
   private final File FILE;
@@ -32,6 +33,10 @@ public class QueueDataHandler {
     return Kit.getKit(queueData.getString("kit"));
   }
 
+  public ItemStack getDisplayItem() {
+    return queueData.getItemStack("displayItem");
+  }
+
   public Set<Arena> getArenas() {
     List<?> arenaNames = queueData.getList("arenas");
 
@@ -46,7 +51,7 @@ public class QueueDataHandler {
   }
 
   public void create() {
-    if (AuroraDuels.isAuroraKitsInstalled()) {
+    if (AuroraDuels.isAuroraKitsInstalled() && queue.getKit() != null) {
       queueData.set("kit", queue.getKit().getName());
     }
 

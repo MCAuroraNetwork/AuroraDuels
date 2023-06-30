@@ -1,8 +1,11 @@
 package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroraduels.config.Lang;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -24,7 +27,8 @@ public class QueueGUI {
           .deserialize("<gradient:#FFAA00:#FF55FF>Currently in Queue: " + queue.inQueue())));
       displayItem.setItemMeta(meta);
 
-      itemStacks[i] = queue.getDisplayItem();
+      itemStacks[i] = displayItem;
+      i++;
     }
 
     populateGUI(itemStacks);
@@ -47,20 +51,46 @@ public class QueueGUI {
     }
   }
 
-  public static void updateGUI(ItemStack displayItem) {
-    int startingSlotInMiddleRow = 9;
+  public static void addItem(ItemStack newItem) {
+    ItemStack[] currentItems = inventory.getContents();
 
-    for (int i = startingSlotInMiddleRow; i < startingSlotInMiddleRow + 9; i++) {
-      ItemStack currentItem = inventory.getItem(i);
-      if (currentItem != null && currentItem.isSimilar(displayItem)) {
+    long nonNullItemCount = Arrays.stream(currentItems).filter(Objects::nonNull).count();
 
-        inventory.setItem(i, displayItem);
-        break;
+    ItemStack[] updatedItems = new ItemStack[(int) nonNullItemCount + 1];
+
+    int index = 0;
+    for (ItemStack item : currentItems) {
+      if (item != null) {
+        updatedItems[index++] = item;
+      }
+    }
+
+    updatedItems[updatedItems.length - 1] = newItem;
+
+    inventory.clear();
+    populateGUI(updatedItems);
+  }
+
+  public static void reload() {
+    for (ItemStack itemStack : inventory.getContents()) {
+      if (itemStack != null && !itemStack.getType().isAir()) {
+        String itemName =
+            PlainTextComponentSerializer.plainText().serialize(itemStack.displayName());
+        String queueName = itemName.substring(1, itemName.length() - 1);
+
+        Queue queue = Queue.getQueue(queueName.toLowerCase());
+        ItemMeta meta = itemStack.getItemMeta();
+        assert queue != null;
+
+        meta.lore(List.of(MiniMessage.miniMessage()
+            .deserialize("<gradient:#FFAA00:#FF55FF>Currently in Queue: " + queue.inQueue())));
+        itemStack.setItemMeta(meta);
       }
     }
   }
 
   public static void open(Player p) {
+    reload();
     p.openInventory(inventory);
   }
 

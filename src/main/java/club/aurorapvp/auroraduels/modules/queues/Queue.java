@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -49,7 +48,7 @@ public class Queue {
     Collections.shuffle(arenasList);
     Iterator<Arena> arenaIterator = arenasList.iterator();
 
-    while(arenaIterator.hasNext() && duelQueue.size() > 0) {
+    while (arenaIterator.hasNext() && duelQueue.size() > 0) {
       Arena arena = arenaIterator.next();
       if (!arena.isOccupied()) {
         duelQueue.getLast().startDuel(arena);
@@ -142,17 +141,6 @@ public class Queue {
     return null;
   }
 
-  public static Queue getQueue(Player p) {
-    for (Queue queue : queues) {
-      for (Player player : queue.getPlayers()) {
-        if (player == p) {
-          return queue;
-        }
-      }
-    }
-    return null;
-  }
-
   public static void findMatch(Player p, String queueName, boolean ranked) {
     p.sendMessage(Lang.getComponent("looking-match"));
     if (lookingForMatch.get(ranked) == null) {
@@ -205,6 +193,7 @@ public class Queue {
 
   public void reload() {
     this.arenas.addAll(this.data.getArenas());
+    this.displayItem = data.getDisplayItem();
 
     if (AuroraDuels.isAuroraKitsInstalled()) {
       this.kit = this.data.getKit();
@@ -247,7 +236,7 @@ public class Queue {
       arenasSet = true;
       queues.add(this);
       data.create();
-      QueueGUI.updateGUI(this.getDisplayItem());
+      QueueGUI.addItem(this.getDisplayItem());
 
       p.sendMessage(Lang.getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
