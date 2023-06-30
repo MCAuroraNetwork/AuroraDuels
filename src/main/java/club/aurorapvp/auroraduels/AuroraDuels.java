@@ -65,7 +65,14 @@ public final class AuroraDuels extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    // Plugin shutdown logic
-    getLogger().info("AuroraDuels unloaded");
+    long startTime = System.currentTimeMillis();
+
+    for (Arena arena : Arena.getArenas()) {
+      arena.reset();
+    }
+
+    getLogger().info(
+        "AuroraDuels unloaded in " + (System.currentTimeMillis() - startTime) +
+            "ms");
   }
 }
