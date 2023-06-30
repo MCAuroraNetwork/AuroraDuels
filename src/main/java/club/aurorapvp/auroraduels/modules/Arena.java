@@ -265,7 +265,7 @@ public class Arena {
   public void reset() {
     synchronized (AuroraDuels.INSTANCE.getServer()) {
       for (Entity entity : this.getWorld().getEntities()) {
-        if (Arena.isInBounds(entity.getLocation(), this)) {
+        if (Arena.isInBounds(entity.getLocation(), this) && !(entity instanceof Player)) {
           entity.remove();
         }
       }
