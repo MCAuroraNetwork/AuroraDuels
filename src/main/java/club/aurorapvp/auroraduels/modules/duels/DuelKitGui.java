@@ -66,8 +66,7 @@ public class DuelKitGui {
     } else if (event.getSlot() == 53) {
       duelGUI.nextPage();
       return;
-    } else if (event.getSlot() == 53) {
-      duel.setKit(null);
+    } else if (event.getSlot() == 49) {
       p.closeInventory();
       return;
     }
