@@ -10,11 +10,9 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -94,7 +92,8 @@ public class StandardDuel extends Duel implements Listener {
 
     this.setActive(true);
     arena.setOccupied(true);
-    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    taskId = Bukkit.getScheduler()
+        .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     final Title title1 =
         Title.title(Lang.getComponent("duel-started"),
@@ -138,14 +137,13 @@ public class StandardDuel extends Duel implements Listener {
   public void endDuel(Player[] winner, Player[] loser) {
     Bukkit.getScheduler().cancelTask(taskId);
 
-    if (rounds > currentRound) {
+    if (rounds > 1) {
       if (wins.containsKey(winner[0])) {
         int currentWins = wins.get(winner[0]);
 
         wins.put(winner[0], currentWins + 1);
       } else {
         wins.put(winner[0], 1);
-        return;
       }
 
       if (!(wins.get(winner[0]) >= (rounds / 2 + 1))) {
