@@ -224,6 +224,7 @@ public class Request {
 
   public void deny() {
     PENDING_REQUESTS.remove(this);
+    Duel.getDuels().remove(duel);
     requester.sendMessage(Lang.getComponent("request-denied"));
 
     for (Player p : requested) {
