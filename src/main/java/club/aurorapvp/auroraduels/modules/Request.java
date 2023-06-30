@@ -102,6 +102,11 @@ public class Request {
       return;
     }
 
+    if (QueueGUI.isQueueGUI(event.getInventory()) && Request.hasPendingRequest(p) &&
+        Objects.requireNonNull(Duel.getDuel(p)).getQueue() == null) {
+      QueueGUI.open(p);
+    }
+
     if (!Request.hasPendingRequest(p) || DuelKitGui.getGui(p) == null) {
       return;
     }
