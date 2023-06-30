@@ -94,6 +94,8 @@ public class PlayerEventListener implements Listener {
       if (partyDuel.teamDead(p)) {
         duel.endDuel(partyDuel.getOpponents(p),
             partyDuel.getTeammates(p));
+      } else {
+        duel.setSpectator(p, true);
       }
     } else if (duel instanceof TeamDuel teamDuel) {
       teamDuel.setDead(p);
@@ -101,6 +103,8 @@ public class PlayerEventListener implements Listener {
       if ((teamDuel.teamDead(p))) {
         duel.endDuel(teamDuel.getOpponents(p),
             teamDuel.getTeammates(p));
+      } else {
+        duel.setSpectator(p, true);
       }
     } else if (duel instanceof FFADuel ffaDuel) {
       ffaDuel.setDead(p);
@@ -110,6 +114,8 @@ public class PlayerEventListener implements Listener {
         losers.remove(ffaDuel.getFirstAlive());
 
         duel.endDuel(new Player[] {ffaDuel.getFirstAlive()}, losers.toArray(new Player[0]));
+      } else {
+        duel.setSpectator(p, true);
       }
     }
   }
