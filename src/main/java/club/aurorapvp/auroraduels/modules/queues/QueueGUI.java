@@ -23,6 +23,12 @@ public class QueueGUI {
     for (Queue queue : Queue.getQueues()) {
       ItemStack displayItem = queue.getDisplayItem();
       ItemMeta meta = displayItem.getItemMeta();
+
+      if (queue.getKit() != null) {
+        meta.lore(List.of(MiniMessage.miniMessage()
+            .deserialize("<gradient:#FFAA00:#FF55FF>Kit: " + queue.getKit().getName())));
+      }
+
       meta.lore(List.of(MiniMessage.miniMessage()
           .deserialize("<gradient:#FFAA00:#FF55FF>Currently in Queue: " + queue.inQueue())));
       displayItem.setItemMeta(meta);
