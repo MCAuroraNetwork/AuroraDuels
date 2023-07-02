@@ -142,6 +142,10 @@ public class Queue {
   }
 
   public static void findMatch(Player p, String queueName, boolean ranked) {
+    if (lookingForMatch.containsValue(p)) {
+      return;
+    }
+
     p.sendMessage(Lang.getComponent("looking-match"));
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(true, p);
