@@ -34,8 +34,8 @@ public class Queue {
   private static final Set<Queue> queues = new HashSet<>();
   private static boolean arenasSet = true;
   private static Player currentCreator;
-  private static Map<Boolean, Player> lookingForMatch = new HashMap<>();
   private static Queue unFinishedQueue;
+  private final Map<Boolean, Player> lookingForMatch = new HashMap<>();
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
   private final String name;
   private final Set<Arena> arenas = new HashSet<>();
@@ -141,7 +141,7 @@ public class Queue {
     return null;
   }
 
-  public static void findMatch(Player p, String queueName, boolean ranked) {
+  public void findMatch(Player p, boolean ranked) {
     // TODO exiting ranked/unranked queues
     if (lookingForMatch.containsValue(p)) {
       return;
@@ -151,14 +151,11 @@ public class Queue {
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(true, p);
     } else {
-      Queue queue = Queue.getQueue(queueName);
-      assert queue != null;
-
-      queue.enterDuelQueue(
-          new StandardDuel(p, lookingForMatch.get(ranked), queue, queue.getKit(), ranked, 1));
+      this.enterDuelQueue(
+          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(), ranked, 1));
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
-      lookingForMatch = null;
+      lookingForMatch.clear();
     }
   }
 

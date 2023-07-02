@@ -21,7 +21,14 @@ public class UnrankedCommands extends BaseCommand {
   @Description("Joins a provided queue")
   @SuppressWarnings("unused")
   public void onFindMatch(Player p, @Optional String name) {
-    Queue.findMatch(p, Objects.requireNonNullElse(name, "default"), false);
+    Queue queue = Queue.getQueue(Objects.requireNonNullElse(name, "default"));
+
+    if (queue == null) {
+      p.sendMessage(Lang.getComponent("queue-not-found"));
+      return;
+    }
+
+    queue.findMatch(p, false);
   }
 
   @CatchUnknown
