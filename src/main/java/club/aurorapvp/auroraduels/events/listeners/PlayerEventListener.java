@@ -74,17 +74,6 @@ public class PlayerEventListener implements Listener {
   }
 
   @EventHandler
-  public void onPlayerRespawn(PlayerRespawnEvent event) {
-    if (!Duel.inDuel(event.getPlayer())) {
-      return;
-    }
-
-    if (Objects.requireNonNull(Duel.getDuel(event.getPlayer())).getKit() != null) {
-      Objects.requireNonNull(Duel.getDuel(event.getPlayer())).getKit().giveKit(event.getPlayer());
-    }
-  }
-
-  @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
     if (!Duel.inDuel(event.getPlayer())) {
       return;

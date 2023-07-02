@@ -146,6 +146,27 @@ public class StandardDuel extends Duel implements Listener {
       if (!(wins.get(winner[0]) >= (rounds / 2 + 1))) {
         loser[0].spigot().respawn();
 
+        new BukkitRunnable() {
+          @Override
+          public void run() {
+            if (kit != null) {
+              Kit.giveKit(kit, playerOne);
+              Kit.giveKit(kit, playerTwo);
+            } else {
+              Kit kit1 = Duel.getDuelKit(playerOne);
+              Kit kit2 = Duel.getDuelKit(playerTwo);
+
+              if (kit1 != null) {
+                Kit.giveKit(kit1, playerOne);
+              }
+
+              if (kit2 != null) {
+                Kit.giveKit(kit2, playerTwo);
+              }
+            }
+          }
+        }.runTaskLater(AuroraDuels.INSTANCE, 1);
+
         arena.resetAsync();
 
         this.startDuel(arena);
