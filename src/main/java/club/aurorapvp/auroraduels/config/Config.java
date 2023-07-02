@@ -20,7 +20,8 @@ public class Config {
 
     DEFAULTS.put("duels.requests.request-timeout", 30000);
     DEFAULTS.put("optional-plugins.aurorakits-compatibility", true);
-    DEFAULTS.put("optional-plugins.auroracombat-compatibility", true);
+    DEFAULTS.put("optional-plugins.auroracombat-compatibility.enabled", true);
+    DEFAULTS.put("optional-plugins.auroracombat-compatibility.always-enable-default-elo", true);
     DEFAULTS.put("duels.enable-teleports", true);
     DEFAULTS.put("duels.allow-commands", false);
     DEFAULTS.put("duels.max-duration", 600000);

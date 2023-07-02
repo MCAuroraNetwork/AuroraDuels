@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.events.listeners;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
+import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
@@ -19,6 +20,10 @@ public class DuelEventListener implements Listener {
     }
 
     for (Player p : event.getDuel().getPlayers()) {
+      if (Config.get().getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
+        Rating.getRating(p, "default_duels").setUpdating(true);
+      }
+
       Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels").setUpdating(true);
       Rating.getRating(p, "default").setUpdating(false);
       CombatTag.setTaggable(p, false);
@@ -35,9 +40,13 @@ public class DuelEventListener implements Listener {
       if (!p.isOnline()) {
         break;
       }
-      CombatTag.setTaggable(p, true);
+      if (Config.get().getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
+        Rating.getRating(p, "default_duels").setUpdating(false);
+      }
+
       Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels").setUpdating(false);
       Rating.getRating(p, "default").setUpdating(true);
+      CombatTag.setTaggable(p, true);
 
       Duel.setLastDuel(p, event.getDuel());
     }

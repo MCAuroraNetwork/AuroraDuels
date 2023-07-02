@@ -46,7 +46,7 @@ public final class AuroraDuels extends JavaPlugin {
     }
 
     if (Bukkit.getPluginManager().getPlugin("AuroraCombat") != null &&
-        Config.get().getBoolean("optional-plugins.auroracombat-compatibility")) {
+        Config.get().getBoolean("optional-plugins.auroracombat-compatibility.enabled")) {
       auroraCombatInstalled = true;
     }
 
