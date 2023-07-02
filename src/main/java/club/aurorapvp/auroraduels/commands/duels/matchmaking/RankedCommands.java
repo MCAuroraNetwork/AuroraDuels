@@ -21,7 +21,7 @@ public class RankedCommands extends BaseCommand {
   @Description("Joins a provided queue")
   @SuppressWarnings("unused")
   public void onFindMatch(Player p, @Optional String name) {
-    Queue.findMatch(p, Objects.requireNonNullElse(name, "Default"), true);
+    Queue.findMatch(p, Objects.requireNonNullElse(name, "default"), true);
   }
 
   @CatchUnknown
