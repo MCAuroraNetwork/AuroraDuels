@@ -13,6 +13,7 @@ import co.aikar.commands.annotation.Syntax;
 import java.util.Objects;
 import org.bukkit.entity.Player;
 
+// TODO implement Queue GUI for ranked commands
 @CommandAlias("ranked")
 public class RankedCommands extends BaseCommand {
   @Default
@@ -21,7 +22,14 @@ public class RankedCommands extends BaseCommand {
   @Description("Joins a provided queue")
   @SuppressWarnings("unused")
   public void onFindMatch(Player p, @Optional String name) {
-    Queue.findMatch(p, Objects.requireNonNullElse(name, "default"), true);
+    Queue queue = Queue.getQueue(Objects.requireNonNullElse(name, "default"));
+
+    if (queue == null) {
+      p.sendMessage(Lang.getComponent("queue-not-found"));
+      return;
+    }
+
+    queue.findMatch(p, false);
   }
 
   @CatchUnknown
