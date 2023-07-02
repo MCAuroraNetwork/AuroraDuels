@@ -59,7 +59,7 @@ public final class AuroraDuels extends JavaPlugin {
     Wand.init();
 
     getLogger().info(
-        "AuroraDuels Enabled in " + (System.currentTimeMillis() - startTime) +
+        "AuroraDuels enabled in " + (System.currentTimeMillis() - startTime) +
             "ms");
   }
 
@@ -74,7 +74,7 @@ public final class AuroraDuels extends JavaPlugin {
     }
 
     getLogger().info(
-        "AuroraDuels Disabled in " + (System.currentTimeMillis() - startTime) +
+        "AuroraDuels disabled in " + (System.currentTimeMillis() - startTime) +
             "ms");
   }
 }
