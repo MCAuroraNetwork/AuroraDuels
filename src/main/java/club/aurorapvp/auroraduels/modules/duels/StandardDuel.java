@@ -85,7 +85,9 @@ public class StandardDuel extends Duel implements Listener {
             arena.getSecondSpawn().getZ());
 
     playerOne.teleportAsync(spawn1);
+    playerOne.setGlowing(true);
     playerTwo.teleportAsync(spawn2);
+    playerTwo.setGlowing(true);
 
     this.setActive(true);
     arena.setOccupied(true);
@@ -164,7 +166,9 @@ public class StandardDuel extends Duel implements Listener {
       @Override
       public void run() {
         playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerTwo.setGlowing(false);
         playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerTwo.setGlowing(false);
         arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
@@ -203,7 +207,9 @@ public class StandardDuel extends Duel implements Listener {
       @Override
       public void run() {
         playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerTwo.setGlowing(false);
         playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerTwo.setGlowing(false);
         arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();

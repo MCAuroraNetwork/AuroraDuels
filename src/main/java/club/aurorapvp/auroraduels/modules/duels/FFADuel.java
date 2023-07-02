@@ -99,6 +99,7 @@ public class FFADuel extends Duel {
 
     for (Player p : this.getPlayers()) {
       p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2)));
+      p.setGlowing(true);
     }
 
     this.setActive(true);
@@ -192,6 +193,7 @@ public class FFADuel extends Duel {
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);
@@ -300,6 +302,7 @@ public class FFADuel extends Duel {
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);

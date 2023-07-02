@@ -126,11 +126,13 @@ public class TeamDuel extends Duel {
     for (Player p : team1) {
       team1Dead.put(p, false);
       p.teleportAsync(spawn1);
+      p.setGlowing(true);
     }
 
     for (Player p : team2) {
       team2Dead.put(p, false);
       p.teleportAsync(spawn2);
+      p.setGlowing(true);
     }
 
     this.setActive(true);
@@ -236,6 +238,7 @@ public class TeamDuel extends Duel {
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);
@@ -271,6 +274,7 @@ public class TeamDuel extends Duel {
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);
