@@ -68,7 +68,9 @@ public final class AuroraDuels extends JavaPlugin {
     long startTime = System.currentTimeMillis();
 
     for (Arena arena : Arena.getArenas()) {
-      arena.reset();
+      if (arena.isOccupied())  {
+        arena.reset();
+      }
     }
 
     getLogger().info(
