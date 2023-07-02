@@ -49,7 +49,7 @@ public class ArenaCommands extends BaseCommand {
     Arena arena = Arena.getArena(name);
 
     if (arena != null) {
-      arena.reset(p);
+      arena.resetAsync(p);
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }

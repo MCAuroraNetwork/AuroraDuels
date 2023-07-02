@@ -144,7 +144,7 @@ public class StandardDuel extends Duel implements Listener {
       if (!(wins.get(winner[0]) >= (rounds / 2 + 1))) {
         loser[0].spigot().respawn();
 
-        arena.reset();
+        arena.resetAsync();
 
         this.startDuel(arena);
         return;
@@ -165,7 +165,7 @@ public class StandardDuel extends Duel implements Listener {
       public void run() {
         playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        arena.reset();
+        arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
       }
@@ -187,7 +187,7 @@ public class StandardDuel extends Duel implements Listener {
 
   public void draw() {
     if (rounds > 1) {
-      arena.reset();
+      arena.resetAsync();
 
       this.startDuel(arena);
       return;
@@ -204,7 +204,7 @@ public class StandardDuel extends Duel implements Listener {
       public void run() {
         playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        arena.reset();
+        arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
       }

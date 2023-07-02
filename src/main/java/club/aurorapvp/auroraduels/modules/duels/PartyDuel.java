@@ -15,11 +15,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -284,7 +282,7 @@ public class PartyDuel extends Duel {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         }
-        arena.reset();
+        arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
       }
@@ -319,7 +317,7 @@ public class PartyDuel extends Duel {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         }
-        arena.reset();
+        arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
       }

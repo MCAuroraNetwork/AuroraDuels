@@ -237,7 +237,7 @@ public class TeamDuel extends Duel {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         }
-        arena.reset();
+        arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
       }
@@ -272,7 +272,7 @@ public class TeamDuel extends Duel {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         }
-        arena.reset();
+        arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
       }

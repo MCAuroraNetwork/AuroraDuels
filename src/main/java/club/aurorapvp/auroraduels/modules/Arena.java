@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -19,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class Arena {
   private static final Set<Arena> arenas = new HashSet<>();
@@ -254,27 +254,37 @@ public class Arena {
     }
   }
 
-  public void reset(Player p) {
+  public void resetAsync(Player p) {
     if (this.exists()) {
-      this.reset();
+      this.resetAsync();
       p.sendMessage(Lang.getComponent("arena-reset"));
     } else {
       p.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
-  public void reset() {
+  public void resetAsync() {
     Arena thisArena = this;
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        for (Entity entity : thisArena.getWorld().getEntities()) {
-          if (Arena.isInBounds(entity.getLocation(), thisArena) && !(entity instanceof Player)) {
-            entity.remove();
-          }
+
+    Bukkit.getScheduler().runTask(AuroraDuels.INSTANCE, () -> {
+      for (Entity entity : thisArena.getWorld().getEntities()) {
+        if (Arena.isInBounds(entity.getLocation(), thisArena) && !(entity instanceof Player)) {
+          entity.remove();
         }
       }
-    }.runTask(AuroraDuels.INSTANCE);
+    });
+
+    if (this.exists()) {
+      new SchematicDataHandler(this).pasteAsync();
+    }
+  }
+
+  public void reset() {
+    for (Entity entity : this.getWorld().getEntities()) {
+      if (Arena.isInBounds(entity.getLocation(), this) && !(entity instanceof Player)) {
+        entity.remove();
+      }
+    }
 
     if (this.exists()) {
       new SchematicDataHandler(this).paste();

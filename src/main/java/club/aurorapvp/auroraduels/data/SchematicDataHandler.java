@@ -75,7 +75,7 @@ public class SchematicDataHandler {
     }
   }
 
-  public void paste() {
+  public void pasteAsync() {
     Clipboard clipboard;
 
     World world =
@@ -100,6 +100,35 @@ public class SchematicDataHandler {
             AuroraDuels.INSTANCE.getLogger().severe("Failed to paste schematic file");
           }
         });
+      }
+    } catch (IOException e) {
+      AuroraDuels.INSTANCE.getLogger().severe("Failed to read schematic file");
+    }
+  }
+
+  public void paste() {
+    Clipboard clipboard;
+
+    World world =
+        BukkitAdapter.adapt(arena.getWorld());
+    ClipboardFormat format = ClipboardFormats.findByFile(FILE);
+
+    try {
+      assert format != null;
+      try (ClipboardReader reader = format.getReader(new FileInputStream(FILE))) {
+        clipboard = reader.read();
+
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
+          Operation operation =
+              new ClipboardHolder(clipboard)
+                  .createPaste(editSession)
+                  .to(clipboard.getOrigin())
+                  .build();
+
+          Operations.complete(operation);
+        } catch (WorldEditException e) {
+          AuroraDuels.INSTANCE.getLogger().severe("Failed to paste schematic file");
+        }
       }
     } catch (IOException e) {
       AuroraDuels.INSTANCE.getLogger().severe("Failed to read schematic file");
