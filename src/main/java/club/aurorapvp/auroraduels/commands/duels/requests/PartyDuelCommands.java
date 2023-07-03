@@ -52,6 +52,6 @@ public class PartyDuelCommands extends BaseCommand {
       loc = WorldSpawn.getGlobalSpawn();
     }
 
-    new Request(p, new PartyDuel(players, false, loc));
+    new Request(p, new PartyDuel(players, loc, false));
   }
 }

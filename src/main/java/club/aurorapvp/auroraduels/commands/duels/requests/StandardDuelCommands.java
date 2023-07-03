@@ -43,10 +43,10 @@ public class StandardDuelCommands extends BaseCommand {
 
     try {
       if (Integer.parseInt(rounds) > 1) {
-        new Request(p, new StandardDuel(p, requested, false, Integer.parseInt(rounds), loc));
+        new Request(p, new StandardDuel(p, requested, loc, false, Integer.parseInt(rounds)));
       }
     } catch (NumberFormatException e) {
-      new Request(p, new StandardDuel(p, requested, false, 1, loc));
+      new Request(p, new StandardDuel(p, requested, loc, false, 1));
     }
   }
 }

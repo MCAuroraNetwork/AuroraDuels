@@ -56,6 +56,6 @@ public class TeamDuelCommands extends BaseCommand {
       loc = WorldSpawn.getGlobalSpawn();
     }
 
-    new Request(p, new TeamDuel(team1, team2, false, loc));
+    new Request(p, new TeamDuel(team1, team2, loc, false));
   }
 }
