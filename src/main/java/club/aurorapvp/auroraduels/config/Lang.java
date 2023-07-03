@@ -71,6 +71,7 @@ public class Lang {
     DEFAULTS.put("no-leaving-arena", "prefix <gradient:#FFAA00:#FF55FF>You cannot leave the arena!");
     DEFAULTS.put("duel-time-expired", "prefix <gradient:#FFAA00:#FF55FF>The duel ran out of time");
     DEFAULTS.put("looking-match", "prefix <gradient:#FFAA00:#FF55FF>Searching for an opponent");
+    DEFAULTS.put("not-looking-match", "prefix <gradient:#FFAA00:#FF55FF>No longer searching for an opponent");
     DEFAULTS.put("match-found", "prefix <gradient:#FFAA00:#FF55FF>Opponent found!");
     DEFAULTS.put("in-queue", "prefix <gradient:#FFAA00:#FF55FF>You're already in a queue!");
     DEFAULTS.put("queue-already-exists", "prefix <gradient:#FFAA00:#FF55FF>Queue already exists!");
