@@ -91,3 +91,5 @@ dependencies:
       required: false
     AuroraCombat:
       required: false
+    AuroraTeleports:
+      required: false

@@ -31,8 +31,8 @@ public class PartyDuel extends Duel {
   private final Player[] team1;
   private final Player[] team2;
 
-  public PartyDuel(Set<Player> players, boolean ranked) {
-    super(players, ranked);
+  public PartyDuel(Set<Player> players, Location respawnLocation, boolean ranked) {
+    super(players, respawnLocation, ranked);
 
     int size = this.getPlayers().size();
     Player extra = null;
@@ -65,8 +65,8 @@ public class PartyDuel extends Duel {
     }
   }
 
-  public PartyDuel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
-    super(players, queue, kit, ranked);
+  public PartyDuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
+    super(players, respawnLocation, queue, kit, ranked);
 
     int size = this.getPlayers().size();
     Player extra = null;
@@ -282,7 +282,7 @@ public class PartyDuel extends Duel {
       @Override
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.teleportAsync(thisDuel.getRespawnLocation());
           p.setGlowing(false);
         }
         arena.resetAsync();
@@ -318,7 +318,7 @@ public class PartyDuel extends Duel {
       @Override
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.teleportAsync(thisDuel.getRespawnLocation());
           p.setGlowing(false);
         }
         arena.resetAsync();

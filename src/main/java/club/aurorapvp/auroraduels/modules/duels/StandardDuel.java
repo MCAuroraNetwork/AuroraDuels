@@ -26,15 +26,15 @@ public class StandardDuel extends Duel implements Listener {
   private final Player playerOne;
   private final Player playerTwo;
 
-  public StandardDuel(Player p1, Player p2, boolean ranked, int rounds) {
-    super(Set.of(p1, p2), ranked);
+  public StandardDuel(Player p1, Player p2, Location respawnLocation, boolean ranked, int rounds) {
+    super(Set.of(p1, p2), respawnLocation, ranked);
     this.playerOne = p1;
     this.playerTwo = p2;
     this.rounds = rounds;
   }
 
-  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, boolean ranked, int rounds) {
-    super(Set.of(p1, p2), queue, kit, ranked);
+  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, Location respawnLocation, boolean ranked, int rounds) {
+    super(Set.of(p1, p2), respawnLocation, queue, kit, ranked);
     this.playerOne = p1;
     this.playerTwo = p2;
     this.rounds = rounds;
@@ -186,9 +186,9 @@ public class StandardDuel extends Duel implements Listener {
     new Timer().schedule(new TimerTask() {
       @Override
       public void run() {
-        playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerOne.teleportAsync(respawnLocation);
         playerTwo.setGlowing(false);
-        playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerTwo.teleportAsync(respawnLocation);
         playerTwo.setGlowing(false);
         arena.resetAsync();
         arena.setOccupied(false);
@@ -227,9 +227,9 @@ public class StandardDuel extends Duel implements Listener {
     new Timer().schedule(new TimerTask() {
       @Override
       public void run() {
-        playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerOne.teleportAsync(respawnLocation);
         playerTwo.setGlowing(false);
-        playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerTwo.teleportAsync(respawnLocation);
         playerTwo.setGlowing(false);
         arena.resetAsync();
         arena.setOccupied(false);

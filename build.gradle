@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'AuroraDuels'
-version = '1.11.10'
+version = '1.11.11'
 
 repositories {
     mavenCentral()
@@ -42,6 +42,7 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.1'
     compileOnly ':AuroraKits:1.6.0'
     compileOnly ':AuroraCombat:1.3.0'
+    compileOnly ':AuroraTeleports:1.0.0'
 }
 
 build {
