@@ -85,12 +85,6 @@ public final class AuroraDuels extends JavaPlugin {
       }
     }
 
-    for (Arena arena : Arena.getArenas()) {
-      if (arena.isOccupied())  {
-        arena.reset();
-      }
-    }
-
     getLogger().info(
         "AuroraDuels disabled in " + (System.currentTimeMillis() - startTime) +
             "ms");
