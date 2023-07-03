@@ -25,6 +25,7 @@ public abstract class Duel {
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   private final boolean ranked;
+  protected final Location respawnLocation;
   protected Long timeStarted;
   protected Kit kit;
   protected Arena arena;
@@ -54,20 +55,23 @@ public abstract class Duel {
     }
   };
 
-  public Duel(Set<Player> players, boolean ranked) {
+  public Duel(Set<Player> players, boolean ranked, Location respawnLocation) {
+    this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;
     duels.add(this);
   }
 
-  public Duel(Set<Player> players, boolean ranked, int rounds) {
+  public Duel(Set<Player> players, boolean ranked, Location respawnLocation, int rounds) {
+    this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;
     this.rounds = rounds;
     duels.add(this);
   }
 
-  public Duel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
+  public Duel(Set<Player> players, Queue queue, Kit kit, boolean ranked, Location respawnLocation) {
+    this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;
     this.queue = queue;
@@ -75,7 +79,8 @@ public abstract class Duel {
     duels.add(this);
   }
 
-  public Duel(Set<Player> players, Queue queue, Kit kit, boolean ranked, int rounds) {
+  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked, int rounds) {
+    this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;
     this.queue = queue;
@@ -181,6 +186,10 @@ public abstract class Duel {
 
   public Arena getArena() {
     return arena;
+  }
+
+  public Location getRespawnLocation() {
+    return respawnLocation;
   }
 
   public Set<Player> getPlayers() {

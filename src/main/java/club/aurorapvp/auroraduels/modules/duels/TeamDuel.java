@@ -28,17 +28,17 @@ public class TeamDuel extends Duel {
   private final Player[] team1;
   private final Player[] team2;
 
-  public TeamDuel(Player[] team1, Player[] team2, boolean ranked) {
+  public TeamDuel(Player[] team1, Player[] team2, boolean ranked, Location respawnLocation) {
     super(Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()),
-        ranked);
+        ranked, respawnLocation);
 
     this.team1 = team1;
     this.team2 = team2;
   }
 
-  public TeamDuel(Player[] team1, Player[] team2, Queue queue, Kit kit, boolean ranked) {
+  public TeamDuel(Player[] team1, Player[] team2, Queue queue, Kit kit, boolean ranked, Location respawnLocation) {
     super(Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()),
-        queue, kit, ranked);
+        queue, kit, ranked, respawnLocation);
 
     this.team1 = team1;
     this.team2 = team2;
@@ -126,11 +126,13 @@ public class TeamDuel extends Duel {
     for (Player p : team1) {
       team1Dead.put(p, false);
       p.teleportAsync(spawn1);
+      p.setGlowing(true);
     }
 
     for (Player p : team2) {
       team2Dead.put(p, false);
       p.teleportAsync(spawn2);
+      p.setGlowing(true);
     }
 
     this.setActive(true);
@@ -235,7 +237,8 @@ public class TeamDuel extends Duel {
       @Override
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.teleportAsync(thisDuel.getRespawnLocation());
+          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);
@@ -270,7 +273,8 @@ public class TeamDuel extends Duel {
       @Override
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.teleportAsync(thisDuel.getRespawnLocation());
+          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);

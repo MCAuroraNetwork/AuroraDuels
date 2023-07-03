@@ -16,6 +16,7 @@ public final class AuroraDuels extends JavaPlugin {
   public static JavaPlugin INSTANCE;
   private static boolean auroraKitsInstalled = false;
   private static boolean auroraCombatInstalled = false;
+  private static boolean auroraTeleportsInstalled = false;
 
   public static boolean isAuroraKitsInstalled() {
     return auroraKitsInstalled;
@@ -23,6 +24,10 @@ public final class AuroraDuels extends JavaPlugin {
 
   public static boolean isAuroraCombatInstalled() {
     return auroraCombatInstalled;
+  }
+
+  public static boolean isAuroraTeleportsInstalled() {
+    return auroraTeleportsInstalled;
   }
 
   @Override
@@ -48,6 +53,11 @@ public final class AuroraDuels extends JavaPlugin {
     if (Bukkit.getPluginManager().getPlugin("AuroraCombat") != null &&
         Config.get().getBoolean("optional-plugins.auroracombat-compatibility.enabled")) {
       auroraCombatInstalled = true;
+    }
+
+    if (Bukkit.getPluginManager().getPlugin("AuroraTeleports") != null &&
+        Config.get().getBoolean("optional-plugins.aurorateleports-compatibility")) {
+      auroraTeleportsInstalled = true;
     }
 
     // Initialize classes

@@ -10,6 +10,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.util.ItemStackUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
+import club.aurorapvp.aurorateleports.modules.WorldSpawn;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -153,7 +155,10 @@ public class Queue {
       lookingForMatch.put(true, p);
     } else {
       this.enterDuelQueue(
-          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(), ranked, 1));
+          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(),
+              ranked, 1, Objects.requireNonNullElseGet(
+              WorldSpawn.getWorldSpawn(Bukkit.getServer().getWorlds().get(0)).getSpawn(),
+              () -> Bukkit.getServer().getWorlds().get(0).getSpawnLocation())));
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.clear();

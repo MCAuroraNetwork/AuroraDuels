@@ -29,12 +29,12 @@ public class FFADuel extends Duel {
   private final Map<Player, Boolean> deadPlayers = new HashMap<>();
   private final Random random = new Random();
 
-  public FFADuel(Set<Player> players, boolean ranked) {
-    super(players, ranked);
+  public FFADuel(Set<Player> players, Location respawnLocation, boolean ranked) {
+    super(players, ranked, respawnLocation);
   }
 
-  public FFADuel(Set<Player> players, Queue queue, Kit kit, boolean ranked) {
-    super(players, queue, kit, ranked);
+  public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
+    super(players, queue, kit, ranked, respawnLocation);
   }
 
   @SuppressWarnings("unused")
@@ -99,6 +99,7 @@ public class FFADuel extends Duel {
 
     for (Player p : this.getPlayers()) {
       p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2)));
+      p.setGlowing(true);
     }
 
     this.setActive(true);
@@ -191,7 +192,8 @@ public class FFADuel extends Duel {
       @Override
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.teleportAsync(thisDuel.getRespawnLocation());
+          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);
@@ -299,7 +301,8 @@ public class FFADuel extends Duel {
       @Override
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+          p.teleportAsync(thisDuel.getRespawnLocation());
+          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);

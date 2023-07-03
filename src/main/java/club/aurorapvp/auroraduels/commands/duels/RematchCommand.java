@@ -36,7 +36,7 @@ public class RematchCommand extends BaseCommand {
         if (!requested.equals(p)) {
           new Request(p,
               new StandardDuel(p, requested, lastDuel.getQueue(), lastDuel.getKit(), false,
-                  lastDuel.getRounds()));
+                  lastDuel.getRounds(), lastDuel.getRespawnLocation()));
         }
       }
     } else if (lastDuel instanceof TeamDuel teamDuel) {
@@ -48,14 +48,14 @@ public class RematchCommand extends BaseCommand {
           Arrays.stream(teamDuel.getTeam2()).filter(player -> !player.equals(p))
               .toArray(Player[]::new);
 
-      new Request(p, new TeamDuel(team1, team2, lastDuel.getQueue(), lastDuel.getKit(), false));
+      new Request(p, new TeamDuel(team1, team2, lastDuel.getQueue(), lastDuel.getKit(), false, lastDuel.getRespawnLocation()));
     } else if (lastDuel instanceof PartyDuel partyDuel) {
 
       new Request(p,
-          new PartyDuel(partyDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), false));
+          new PartyDuel(partyDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), false, lastDuel.getRespawnLocation()));
     } else if (lastDuel instanceof FFADuel ffaDuel) {
       new Request(p,
-          new FFADuel(ffaDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), false));
+          new FFADuel(ffaDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), lastDuel.getRespawnLocation(), false));
     }
   }
 }

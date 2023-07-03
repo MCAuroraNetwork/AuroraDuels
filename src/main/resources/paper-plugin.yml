@@ -94,3 +94,6 @@ dependencies:
   - name: AuroraCombat
     required: false
     bootstrap: false
+  - name: AuroraTeleports
+    required: false
+    bootstrap: false

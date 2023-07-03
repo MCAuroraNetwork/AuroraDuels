@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.commands.duels.requests;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.aurorateleports.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -10,6 +11,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Syntax;
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -43,6 +45,8 @@ public class TeamDuelCommands extends BaseCommand {
       i++;
     }
 
-    new Request(p, new TeamDuel(team1, team2, false));
+    new Request(p, new TeamDuel(team1, team2, false,
+        Objects.requireNonNullElseGet(WorldSpawn.getWorldSpawn(p.getWorld()).getSpawn(),
+            () -> Bukkit.getServer().getWorlds().get(0).getSpawnLocation())));
   }
 }

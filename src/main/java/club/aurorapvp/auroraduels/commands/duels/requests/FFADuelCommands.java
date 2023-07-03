@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.commands.duels.requests;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
+import club.aurorapvp.aurorateleports.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -10,6 +11,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Syntax;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,6 +40,8 @@ public class FFADuelCommands extends BaseCommand {
     Set<Player> players = new HashSet<>(Set.of(requested));
     players.add(p);
 
-    new Request(p, new FFADuel(players, false));
+    new Request(p, new FFADuel(players,
+        Objects.requireNonNullElseGet(WorldSpawn.getWorldSpawn(p.getWorld()).getSpawn(),
+            () -> Bukkit.getServer().getWorlds().get(0).getSpawnLocation()), false));
   }
 }

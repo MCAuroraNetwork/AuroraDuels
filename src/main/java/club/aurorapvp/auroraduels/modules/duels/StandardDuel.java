@@ -26,15 +26,15 @@ public class StandardDuel extends Duel implements Listener {
   private final Player playerOne;
   private final Player playerTwo;
 
-  public StandardDuel(Player p1, Player p2, boolean ranked, int rounds) {
-    super(Set.of(p1, p2), ranked);
+  public StandardDuel(Player p1, Player p2, boolean ranked, int rounds, Location respawnLocation) {
+    super(Set.of(p1, p2), ranked, respawnLocation);
     this.playerOne = p1;
     this.playerTwo = p2;
     this.rounds = rounds;
   }
 
-  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, boolean ranked, int rounds) {
-    super(Set.of(p1, p2), queue, kit, ranked);
+  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, boolean ranked, int rounds, Location respawnLocation) {
+    super(Set.of(p1, p2), queue, kit, ranked, respawnLocation);
     this.playerOne = p1;
     this.playerTwo = p2;
     this.rounds = rounds;
@@ -85,7 +85,9 @@ public class StandardDuel extends Duel implements Listener {
             arena.getSecondSpawn().getZ());
 
     playerOne.teleportAsync(spawn1);
+    playerOne.setGlowing(true);
     playerTwo.teleportAsync(spawn2);
+    playerTwo.setGlowing(true);
 
     this.setActive(true);
     arena.setOccupied(true);
@@ -163,8 +165,10 @@ public class StandardDuel extends Duel implements Listener {
     new Timer().schedule(new TimerTask() {
       @Override
       public void run() {
-        playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerOne.teleportAsync(respawnLocation);
+        playerOne.setGlowing(false);
+        playerTwo.teleportAsync(respawnLocation);
+        playerTwo.setGlowing(false);
         arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
@@ -202,8 +206,10 @@ public class StandardDuel extends Duel implements Listener {
     new Timer().schedule(new TimerTask() {
       @Override
       public void run() {
-        playerOne.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        playerTwo.teleportAsync(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+        playerOne.teleportAsync(respawnLocation);
+        playerOne.setGlowing(false);
+        playerTwo.teleportAsync(respawnLocation);
+        playerTwo.setGlowing(false);
         arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();
