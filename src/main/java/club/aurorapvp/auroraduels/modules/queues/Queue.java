@@ -154,7 +154,7 @@ public class Queue {
 
     p.sendMessage(Lang.getComponent("looking-match"));
     if (lookingForMatch.get(ranked) == null) {
-      lookingForMatch.put(true, p);
+      lookingForMatch.put(ranked, p);
     } else {
       WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(Bukkit.getWorlds().get(0));
 
