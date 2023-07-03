@@ -142,8 +142,9 @@ public class Queue {
   }
 
   public void findMatch(Player p, boolean ranked) {
-    // TODO exiting ranked/unranked queues
     if (lookingForMatch.containsValue(p)) {
+      lookingForMatch.clear();
+      p.sendMessage(Lang.getComponent("not-looking-match"));
       return;
     }
 
