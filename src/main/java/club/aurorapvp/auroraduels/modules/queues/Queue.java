@@ -280,6 +280,10 @@ public class Queue {
 
   public static boolean inQueue(Player p) {
     for (Queue queue : Queue.getQueues()) {
+      if (queue.lookingForMatch.containsValue(p)) {
+        return true;
+      }
+
       for (Player player : queue.getPlayers()) {
         if (p == player) {
           return true;
