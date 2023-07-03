@@ -155,17 +155,19 @@ public class Queue {
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(ranked, p);
     } else {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(Bukkit.getWorlds().get(0));
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+      Location loc = null;
 
-      Location spawnLocation;
       if (worldSpawn != null) {
-        spawnLocation = worldSpawn.getSpawn();
-      } else {
-        spawnLocation = Bukkit.getWorlds().get(0).getSpawnLocation();
+        loc = worldSpawn.getSpawn();
+      }
+
+      if (loc == null) {
+        loc = WorldSpawn.getGlobalSpawn();
       }
 
       this.enterDuelQueue(
-          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(), spawnLocation,
+          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(), loc,
               ranked, 1));
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
