@@ -27,7 +27,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -154,11 +156,18 @@ public class Queue {
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(true, p);
     } else {
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(Bukkit.getWorlds().get(0));
+
+      Location spawnLocation;
+      if (worldSpawn != null) {
+        spawnLocation = worldSpawn.getSpawn();
+      } else {
+        spawnLocation = Bukkit.getWorlds().get(0).getSpawnLocation();
+      }
+
       this.enterDuelQueue(
-          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(),
-              Objects.requireNonNullElseGet(
-                  WorldSpawn.getWorldSpawn(Bukkit.getServer().getWorlds().get(0)).getSpawn(),
-                  () -> Bukkit.getServer().getWorlds().get(0).getSpawnLocation()), ranked, 1));
+          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(), spawnLocation,
+              ranked, 1));
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.clear();

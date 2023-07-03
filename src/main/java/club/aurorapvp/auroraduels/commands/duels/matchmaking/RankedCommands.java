@@ -29,7 +29,7 @@ public class RankedCommands extends BaseCommand {
       return;
     }
 
-    queue.findMatch(p, false);
+    queue.findMatch(p, true);
   }
 
   @CatchUnknown
