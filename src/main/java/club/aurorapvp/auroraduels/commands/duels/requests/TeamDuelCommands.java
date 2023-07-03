@@ -13,6 +13,7 @@ import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Syntax;
 import java.util.Objects;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 @CommandAlias("teamduel")
@@ -45,8 +46,17 @@ public class TeamDuelCommands extends BaseCommand {
       i++;
     }
 
-    new Request(p, new TeamDuel(team1, team2, false,
-        Objects.requireNonNullElseGet(WorldSpawn.getWorldSpawn(p.getWorld()).getSpawn(),
-            () -> Bukkit.getServer().getWorlds().get(0).getSpawnLocation())));
+    WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+    Location loc = null;
+
+    if (worldSpawn != null) {
+      loc = worldSpawn.getSpawn();
+    }
+
+    if (loc == null) {
+      loc = WorldSpawn.getGlobalSpawn();
+    }
+
+    new Request(p, new TeamDuel(team1, team2, loc, false));
   }
 }

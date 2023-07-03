@@ -28,7 +28,7 @@ public class TeamDuel extends Duel {
   private final Player[] team1;
   private final Player[] team2;
 
-  public TeamDuel(Player[] team1, Player[] team2, boolean ranked, Location respawnLocation) {
+  public TeamDuel(Player[] team1, Player[] team2, Location respawnLocation, boolean ranked) {
     super(Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()),
         ranked, respawnLocation);
 

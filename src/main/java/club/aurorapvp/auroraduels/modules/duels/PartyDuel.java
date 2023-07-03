@@ -31,7 +31,7 @@ public class PartyDuel extends Duel {
   private final Player[] team1;
   private final Player[] team2;
 
-  public PartyDuel(Set<Player> players, boolean ranked, Location respawnLocation) {
+  public PartyDuel(Set<Player> players, Location respawnLocation, boolean ranked) {
     super(players, ranked, respawnLocation);
 
     int size = this.getPlayers().size();
@@ -65,7 +65,7 @@ public class PartyDuel extends Duel {
     }
   }
 
-  public PartyDuel(Set<Player> players, Queue queue, Kit kit, boolean ranked, Location respawnLocation) {
+  public PartyDuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
     super(players, queue, kit, ranked, respawnLocation);
 
     int size = this.getPlayers().size();

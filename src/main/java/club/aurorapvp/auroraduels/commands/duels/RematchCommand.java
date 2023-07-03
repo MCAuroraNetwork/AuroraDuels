@@ -35,8 +35,8 @@ public class RematchCommand extends BaseCommand {
       for (Player requested : lastDuel.getPlayers()) {
         if (!requested.equals(p)) {
           new Request(p,
-              new StandardDuel(p, requested, lastDuel.getQueue(), lastDuel.getKit(), false,
-                  lastDuel.getRounds(), lastDuel.getRespawnLocation()));
+              new StandardDuel(p, requested, lastDuel.getQueue(), lastDuel.getKit(), lastDuel.getRespawnLocation(), false,
+                  lastDuel.getRounds()));
         }
       }
     } else if (lastDuel instanceof TeamDuel teamDuel) {
@@ -52,7 +52,7 @@ public class RematchCommand extends BaseCommand {
     } else if (lastDuel instanceof PartyDuel partyDuel) {
 
       new Request(p,
-          new PartyDuel(partyDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), false, lastDuel.getRespawnLocation()));
+          new PartyDuel(partyDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), lastDuel.getRespawnLocation(), false));
     } else if (lastDuel instanceof FFADuel ffaDuel) {
       new Request(p,
           new FFADuel(ffaDuel.getPlayers(), lastDuel.getQueue(), lastDuel.getKit(), lastDuel.getRespawnLocation(), false));
