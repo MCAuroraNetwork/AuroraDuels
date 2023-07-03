@@ -41,8 +41,17 @@ public class FFADuelCommands extends BaseCommand {
     Set<Player> players = new HashSet<>(Set.of(requested));
     players.add(p);
 
-    new Request(p, new FFADuel(players,
-        Objects.requireNonNullElseGet(WorldSpawn.getWorldSpawn(p.getWorld()).getSpawn(),
-            () -> Bukkit.getServer().getWorlds().get(0).getSpawnLocation()), false));
+    WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+    Location loc = null;
+
+    if (worldSpawn != null) {
+      loc = worldSpawn.getSpawn();
+    }
+
+    if (loc == null) {
+      loc = WorldSpawn.getGlobalSpawn();
+    }
+
+    new Request(p, new FFADuel(players, loc, false));
   }
 }

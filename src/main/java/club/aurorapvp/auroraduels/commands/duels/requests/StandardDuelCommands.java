@@ -11,8 +11,8 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
-import java.util.Objects;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 @CommandAlias("duel")
@@ -30,17 +30,23 @@ public class StandardDuelCommands extends BaseCommand {
       return;
     }
 
+    WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+    Location loc = null;
+
+    if (worldSpawn != null) {
+      loc = worldSpawn.getSpawn();
+    }
+
+    if (loc == null) {
+      loc = WorldSpawn.getGlobalSpawn();
+    }
+
     try {
       if (Integer.parseInt(rounds) > 1) {
-        new Request(p, new StandardDuel(p, requested,
-            Objects.requireNonNullElseGet(WorldSpawn.getWorldSpawn(p.getWorld()).getSpawn(),
-                () -> Bukkit.getServer().getWorlds().get(0).getSpawnLocation()), false,
-            Integer.parseInt(rounds)));
+        new Request(p, new StandardDuel(p, requested, false, Integer.parseInt(rounds), loc));
       }
     } catch (NumberFormatException e) {
-      new Request(p, new StandardDuel(p, requested,
-          Objects.requireNonNullElseGet(WorldSpawn.getWorldSpawn(p.getWorld()).getSpawn(),
-              () -> Bukkit.getServer().getWorlds().get(0).getSpawnLocation()), false, 1));
+      new Request(p, new StandardDuel(p, requested, false, 1, loc));
     }
   }
 }
