@@ -7,6 +7,7 @@ import club.aurorapvp.auroraduels.events.EventManager;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Placeholders;
 import club.aurorapvp.auroraduels.modules.Wand;
+import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import org.bukkit.Bukkit;
@@ -77,6 +78,12 @@ public final class AuroraDuels extends JavaPlugin {
   @Override
   public void onDisable() {
     long startTime = System.currentTimeMillis();
+
+    for (Duel duel : Duel.getDuels()) {
+      if (duel.isActive()) {
+        duel.draw();
+      }
+    }
 
     for (Arena arena : Arena.getArenas()) {
       if (arena.isOccupied())  {
