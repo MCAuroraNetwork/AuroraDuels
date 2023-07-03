@@ -77,6 +77,7 @@ public class Lang {
     DEFAULTS.put("queue-already-exists", "prefix <gradient:#FFAA00:#FF55FF>Queue already exists!");
     DEFAULTS.put("queue-being-created",
         "prefix <gradient:#FFAA00:#FF55FF>Queue already being created!");
+    DEFAULTS.put("queue-invalid-item", "prefix <gradient:#FFAA00:#FF55FF>Invalid queue display item!");
     DEFAULTS.put("queue-created", "prefix <gradient:#FFAA00:#FF55FF>Queue successfully created!");
     DEFAULTS.put("queue-not-found", "prefix <gradient:#FFAA00:#FF55FF>Queue not found!");
     DEFAULTS.put("you-have-request",

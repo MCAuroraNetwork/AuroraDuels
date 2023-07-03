@@ -29,7 +29,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -232,6 +231,12 @@ public class Queue {
   }
 
   public void create(Player p) {
+    if (p.getInventory().getItemInMainHand().getItemMeta() == null) {
+      p.sendMessage(Lang.getComponent("queue-invalid-item"));
+      queues.remove(this);
+      return;
+    }
+
     if (!this.exists() && arenasSet) {
       arenasSet = false;
       currentCreator = p;
