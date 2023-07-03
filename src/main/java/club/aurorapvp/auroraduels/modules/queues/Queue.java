@@ -37,8 +37,8 @@ public class Queue {
   private static final Set<Queue> queues = new HashSet<>();
   private static boolean arenasSet = true;
   private static Player currentCreator;
-  private static Map<Boolean, Player> lookingForMatch = new HashMap<>();
   private static Queue unFinishedQueue;
+  private final Map<Boolean, Player> lookingForMatch = new HashMap<>();
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
   private final String name;
   private final Set<Arena> arenas = new HashSet<>();
