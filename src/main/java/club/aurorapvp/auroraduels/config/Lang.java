@@ -111,6 +111,8 @@ public class Lang {
     DEFAULTS.put("no-kit", "<gradient:#FFAA00:#FF55FF>No kit");
     DEFAULTS.put("kit-invalid-name", "prefix <gradient:#FFAA00:#FF55FF>Invalid kit name!");
     DEFAULTS.put("reloaded", "prefix <gradient:#FFAA00:#FF55FF>Plugin reloaded!");
+    DEFAULTS.put("opponent-bossbar",
+        "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><blue> %3$s Blocks Away");
     DEFAULTS.put("help-command", """
         prefix <gradient:#FFAA00:#FF55FF>All Commands:\s
         <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player\s
