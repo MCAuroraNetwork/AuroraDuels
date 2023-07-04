@@ -12,10 +12,6 @@ public class InventoryEventListener implements Listener {
   @EventHandler
   public void onInventoryClose(InventoryCloseEvent event) {
     Request.onInventoryClose(event);
-
-    if (AuroraDuels.isAuroraKitsInstalled()) {
-      DuelKitGui.onInventoryClose(event);
-    }
   }
 
   @EventHandler

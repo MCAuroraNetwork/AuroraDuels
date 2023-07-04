@@ -1,10 +1,12 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
@@ -86,6 +88,10 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
+    if (AuroraDuels.isAuroraKitsInstalled()) {
+      DuelKitGui.remove(event.getPlayer());
+    }
+
     if (!Duel.inDuel(event.getPlayer())) {
       return;
     }

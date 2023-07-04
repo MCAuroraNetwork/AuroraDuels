@@ -32,17 +32,11 @@ public class DuelKitGui {
     open();
   }
 
-  public static void onInventoryClose(InventoryCloseEvent event) {
-    Player p = (Player) event.getPlayer();
+  public static void remove(Player p) {
+    DuelKitGui kitGui = DuelKitGui.getGui(p);
 
-    DuelKitGui duelGUI = DuelKitGui.getGui(p);
-
-    if (duelGUI == null) {
-      return;
-    }
-
-    if (duelGUI.isGuiInventory(event.getInventory())) {
-      KITS_GUIS.remove(duelGUI);
+    if (kitGui != null) {
+      KITS_GUIS.remove(kitGui);
     }
   }
 
