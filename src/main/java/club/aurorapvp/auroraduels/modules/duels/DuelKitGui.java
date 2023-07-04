@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,20 +29,6 @@ public class DuelKitGui {
     KITS_GUIS.add(this);
 
     open();
-  }
-
-  public static void onInventoryClose(InventoryCloseEvent event) {
-    Player p = (Player) event.getPlayer();
-
-    DuelKitGui duelGUI = DuelKitGui.getGui(p);
-
-    if (duelGUI == null) {
-      return;
-    }
-
-    if (duelGUI.isGuiInventory(event.getInventory())) {
-      KITS_GUIS.remove(duelGUI);
-    }
   }
 
   public static void onInventoryClicked(InventoryClickEvent event) {
@@ -103,6 +88,14 @@ public class DuelKitGui {
 
   public Player getPlayer() {
     return p;
+  }
+
+  public static void remove(Player p) {
+    DuelKitGui kitGui = DuelKitGui.getGui(p);
+
+    if (kitGui != null) {
+      KITS_GUIS.remove(kitGui);
+    }
   }
 
   public void addPage(Kit[] kits) {
