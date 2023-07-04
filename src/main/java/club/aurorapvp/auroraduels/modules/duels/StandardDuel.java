@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -20,9 +22,13 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class StandardDuel extends Duel implements Listener {
   private final Map<Player, Integer> wins = new HashMap<>();
+  private final BossBar[] playerOneBar = new BossBar[1];
+  private final BossBar[] playerTwoBar = new BossBar[1];
+  private BukkitTask task;
   private final Player playerOne;
   private final Player playerTwo;
 
@@ -33,7 +39,8 @@ public class StandardDuel extends Duel implements Listener {
     this.rounds = rounds;
   }
 
-  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, Location respawnLocation, boolean ranked, int rounds) {
+  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, Location respawnLocation,
+                      boolean ranked, int rounds) {
     super(Set.of(p1, p2), respawnLocation, queue, kit, ranked);
     this.playerOne = p1;
     this.playerTwo = p2;
@@ -123,6 +130,44 @@ public class StandardDuel extends Duel implements Listener {
       }
     }, Config.get().getInt("duels.max-duration"));
 
+    task = new BukkitRunnable() {
+      int seconds =
+          club.aurorapvp.auroracombat.config.Config.get().getInt("combat-tag.duration") / 1000;
+
+      @Override
+      public void run() {
+        if (playerOneBar[0] != null) {
+          playerOne.hideBossBar(playerOneBar[0]);
+        }
+
+        playerOneBar[0] = BossBar.bossBar(
+            Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
+                (int) playerTwo.getHealth(),
+                (int) playerTwo.getLocation().distance(playerOne.getLocation())),
+            1.0f,
+            BossBar.Color.RED,
+            BossBar.Overlay.PROGRESS
+        );
+
+        playerOne.showBossBar(playerOneBar[0]);
+
+        if (playerTwoBar[0] != null) {
+          playerTwo.hideBossBar(playerTwoBar[0]);
+        }
+
+        playerTwoBar[0] = BossBar.bossBar(
+            Lang.formatComponent("opponent-bossbar", playerOne.getName(),
+                (int) playerOne.getHealth(),
+                (int) playerOne.getLocation().distance(playerTwo.getLocation())),
+            1.0f,
+            BossBar.Color.RED,
+            BossBar.Overlay.PROGRESS
+        );
+
+        playerTwo.showBossBar(playerTwoBar[0]);
+      }
+    }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
+
     timeStarted = System.currentTimeMillis();
 
     new BukkitRunnable() {
@@ -196,6 +241,10 @@ public class StandardDuel extends Duel implements Listener {
       }
     }, 3000);
 
+    task.cancel();
+    playerOne.hideBossBar(playerOneBar[0]);
+    playerTwo.hideBossBar(playerTwoBar[0]);
+
     this.setActive(false);
 
     Duel thisDuel = this;
@@ -236,6 +285,10 @@ public class StandardDuel extends Duel implements Listener {
         this.cancel();
       }
     }, 3000);
+
+    task.cancel();
+    playerOne.hideBossBar(playerOneBar[0]);
+    playerTwo.hideBossBar(playerTwoBar[0]);
 
     this.setActive(false);
     Duel thisDuel = this;
