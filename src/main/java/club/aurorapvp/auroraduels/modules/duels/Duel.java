@@ -79,7 +79,8 @@ public abstract class Duel {
     duels.add(this);
   }
 
-  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked, int rounds) {
+  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked,
+              int rounds) {
     this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;
@@ -133,7 +134,10 @@ public abstract class Duel {
     int inDuel = 0;
 
     for (Duel duel : Duel.getDuels()) {
-      if (Objects.equals(duel.getQueue().getName(), queueName)) {
+      // TODO solve placeholder NPE more gracefully
+      Queue queue = duel.getQueue();
+
+      if (queue != null && Objects.equals(duel.getQueue().getName(), queueName)) {
         inDuel = inDuel + duel.inDuel();
       }
     }
