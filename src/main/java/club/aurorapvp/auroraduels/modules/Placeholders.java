@@ -66,7 +66,10 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("opponent_ping")) {
-      if (Duel.inDuel(p.getPlayer())) {
+      if (!Duel.inDuel(p.getPlayer())) {
+        return "Not in duel";
+      }
+
         for (Player player : Objects.requireNonNull(Duel.getDuel(p.getPlayer())).getPlayers()) {
           if (player != p.getPlayer()) {
             return String.valueOf(player.getPing());
