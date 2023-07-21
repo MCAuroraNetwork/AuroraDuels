@@ -19,13 +19,14 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public abstract class Duel {
-  private static final NamespacedKey key = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
+  private static final NamespacedKey duelKitKey = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
   private static final HashMap<Player, Duel> LAST_DUEL = new HashMap<>();
   protected static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   protected final Location respawnLocation;
   private final boolean ranked;
+  private static final NamespacedKey winStreakKey = new NamespacedKey(AuroraDuels.INSTANCE, "duel-winstreak");
   protected Long timeStarted;
   protected Kit kit;
   protected Arena arena;
@@ -90,10 +91,30 @@ public abstract class Duel {
     duels.add(this);
   }
 
+  public static void addWin(Player p) {
+    PersistentDataContainer container = p.getPersistentDataContainer();
+
+    int wins = container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
+
+    container.set(winStreakKey, PersistentDataType.INTEGER, wins + 1);
+  }
+
+  public static void resetStreak(Player p) {
+    PersistentDataContainer container = p.getPersistentDataContainer();
+
+    container.set(winStreakKey, PersistentDataType.INTEGER, 0);
+  }
+
+  public static int getWins(Player p) {
+    PersistentDataContainer container = p.getPersistentDataContainer();
+
+    return container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
+  }
+
   public static Kit getDuelKit(Player p) {
     PersistentDataContainer container = p.getPersistentDataContainer();
 
-    return Kit.getKit(p, container.get(key, PersistentDataType.STRING));
+    return Kit.getKit(p, container.get(duelKitKey, PersistentDataType.STRING));
   }
 
   public static void setLastDuel(Player p, Duel duel) {
@@ -111,7 +132,7 @@ public abstract class Duel {
   public static void setDuelKit(Player p, String kitName) {
     PersistentDataContainer container = p.getPersistentDataContainer();
 
-    container.set(key, PersistentDataType.STRING, kitName);
+    container.set(duelKitKey, PersistentDataType.STRING, kitName);
 
     p.sendMessage(Lang.getComponent("duel-kit"));
   }

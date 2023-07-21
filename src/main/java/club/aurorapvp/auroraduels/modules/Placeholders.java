@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -42,7 +44,7 @@ public class Placeholders extends PlaceholderExpansion {
     return getResult(p, params);
   }
 
-  private String getResult(OfflinePlayer p, String params) {
+  private String getResult(OfflinePlayer player, String params) {
     if (params.startsWith("in_duels")) {
       return String.valueOf(Duel.inDuels());
     }
@@ -61,47 +63,46 @@ public class Placeholders extends PlaceholderExpansion {
       return String.valueOf(Duel.inDuel(queueName));
     }
 
-    if (!p.isOnline()) {
+    if (!(player instanceof Player p)) {
       return "Player offline";
     }
 
+    if (params.startsWith("winstreak")) {
+      return String.valueOf(Duel.getWins(p));
+    }
+
     if (params.startsWith("opponent_ping")) {
-      if (!Duel.inDuel(p.getPlayer())) {
+      if (!Duel.inDuel(p)) {
         return "Not in duel";
       }
 
-        for (Player player : Objects.requireNonNull(Duel.getDuel(p.getPlayer())).getPlayers()) {
-          if (player != p.getPlayer()) {
-            return String.valueOf(player.getPing());
+        for (Player duelPlayer : Objects.requireNonNull(Duel.getDuel(p)).getPlayers()) {
+          if (player != duelPlayer) {
+            return String.valueOf(duelPlayer.getPing());
           }
         }
-      }
     }
 
     if (params.startsWith("opponent")) {
-      if (!(Duel.inDuel(p.getPlayer()))) {
+      if (!(Duel.inDuel(p))) {
         return "Not in duel";
       }
 
-      if (Duel.inDuel(p.getPlayer())) {
-        for (Player player : Objects.requireNonNull(Duel.getDuel(p.getPlayer())).getPlayers()) {
-          if (player != p.getPlayer()) {
-            return player.getName();
-          }
-        }
+      if (Duel.getDuel(p) instanceof StandardDuel duel) {
+        return duel.getOpponent(p).getName();
       }
 
-      Duel duel = Duel.getDuel(p.getPlayer());
+      Duel duel = Duel.getDuel(p);
       Set<String> opponentNames = new HashSet<>();
 
       if (duel instanceof TeamDuel teamDuel) {
-        for (Player opponent : teamDuel.getOpponents(p.getPlayer())) {
+        for (Player opponent : teamDuel.getOpponents(p)) {
           opponentNames.add(opponent.getName());
         }
       }
 
       if (duel instanceof PartyDuel partyDuel) {
-        for (Player opponent : partyDuel.getOpponents(p.getPlayer())) {
+        for (Player opponent : partyDuel.getOpponents(p)) {
           opponentNames.add(opponent.getName());
         }
       }
@@ -110,8 +111,8 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("duel_duration")) {
-      if (StandardDuel.inDuel(p.getPlayer())) {
-        Long elapsed = Objects.requireNonNull(Duel.getDuel(p.getPlayer())).getElapsed();
+      if (StandardDuel.inDuel(p)) {
+        Long elapsed = Objects.requireNonNull(Duel.getDuel(p)).getElapsed();
 
         return String.format("%d min, %d sec",
             TimeUnit.MILLISECONDS.toMinutes(elapsed),
