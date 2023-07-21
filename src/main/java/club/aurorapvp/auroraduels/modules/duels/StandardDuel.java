@@ -66,22 +66,6 @@ public class StandardDuel extends Duel implements Listener {
       }
     }
 
-    if (kit != null) {
-      Kit.giveKit(kit, playerOne);
-      Kit.giveKit(kit, playerTwo);
-    } else {
-      Kit kit1 = Duel.getDuelKit(playerOne);
-      Kit kit2 = Duel.getDuelKit(playerTwo);
-
-      if (kit1 != null) {
-        Kit.giveKit(kit1, playerOne);
-      }
-
-      if (kit2 != null) {
-        Kit.giveKit(kit2, playerTwo);
-      }
-    }
-
     Location spawn1 =
         new Location(arena.getWorld(),
             arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
@@ -92,12 +76,8 @@ public class StandardDuel extends Duel implements Listener {
             arena.getSecondSpawn().getZ());
 
     playerOne.teleportAsync(spawn1);
-    playerOne.setGlowing(true);
     playerTwo.teleportAsync(spawn2);
-    playerTwo.setGlowing(true);
 
-    this.setActive(true);
-    arena.setOccupied(true);
     taskId = Bukkit.getScheduler()
         .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
@@ -131,9 +111,6 @@ public class StandardDuel extends Duel implements Listener {
     }, Config.get().getInt("duels.max-duration"));
 
     task = new BukkitRunnable() {
-      int seconds =
-          club.aurorapvp.auroracombat.config.Config.get().getInt("combat-tag.duration") / 1000;
-
       @Override
       public void run() {
         if (playerOneBar[0] != null) {
@@ -228,24 +205,9 @@ public class StandardDuel extends Duel implements Listener {
         Title.title(Lang.getComponent("you-lost"),
             Component.text("Opponent: " + winner[0].getName())));
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        playerOne.teleportAsync(respawnLocation);
-        playerTwo.setGlowing(false);
-        playerTwo.teleportAsync(respawnLocation);
-        playerTwo.setGlowing(false);
-        arena.resetAsync();
-        arena.setOccupied(false);
-        this.cancel();
-      }
-    }, 3000);
-
     task.cancel();
     playerOne.hideBossBar(playerOneBar[0]);
     playerTwo.hideBossBar(playerTwoBar[0]);
-
-    this.setActive(false);
 
     Duel thisDuel = this;
 

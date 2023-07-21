@@ -74,20 +74,6 @@ public class FFADuel extends Duel {
   public void startDuel(Arena arena) {
     this.arena = arena;
 
-    if (kit != null) {
-      for (Player p : this.getPlayers()) {
-        Kit.giveKit(kit, p);
-      }
-    } else {
-      for (Player p : this.getPlayers()) {
-        Kit playerKit = Duel.getDuelKit(p);
-
-        if (playerKit != null) {
-          Kit.giveKit(playerKit, p);
-        }
-      }
-    }
-
     Location spawn1 =
         new Location(arena.getWorld(),
             arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
@@ -99,11 +85,8 @@ public class FFADuel extends Duel {
 
     for (Player p : this.getPlayers()) {
       p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2)));
-      p.setGlowing(true);
     }
 
-    this.setActive(true);
-    arena.setOccupied(true);
     taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     StringBuilder sb;
@@ -187,21 +170,6 @@ public class FFADuel extends Duel {
     }
 
     Duel thisDuel = this;
-
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(thisDuel.getRespawnLocation());
-          p.setGlowing(false);
-        }
-        arena.resetAsync();
-        arena.setOccupied(false);
-        this.cancel();
-      }
-    }, 3000);
-
-    this.setActive(false);
 
     new BukkitRunnable() {
       @Override
