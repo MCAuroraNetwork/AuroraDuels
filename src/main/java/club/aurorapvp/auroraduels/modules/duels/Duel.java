@@ -34,7 +34,7 @@ public abstract class Duel {
   protected int currentRound = 1;
   private Queue queue;
   private boolean active = false;
-  protected int taskId;
+  protected int checkBoundTaskId;
   protected final Runnable checkBounds = () -> {
     for (Player p : this.getPlayers()) {
       Arena arena = this.getArena();

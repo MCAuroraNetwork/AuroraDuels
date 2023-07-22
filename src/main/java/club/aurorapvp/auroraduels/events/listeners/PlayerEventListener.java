@@ -71,11 +71,6 @@ public class PlayerEventListener implements Listener {
   }
 
   @EventHandler
-  public void onPlayerJoin(PlayerJoinEvent event) {
-    Duel.setupPlayer(event.getPlayer());
-  }
-
-  @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
     if (AuroraDuels.isAuroraKitsInstalled()) {
       DuelKitGui.remove(event.getPlayer());

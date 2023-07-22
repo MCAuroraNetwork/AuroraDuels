@@ -87,7 +87,7 @@ public class FFADuel extends Duel {
       p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2)));
     }
 
-    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    checkBoundTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     StringBuilder sb;
     String names;
@@ -145,7 +145,7 @@ public class FFADuel extends Duel {
   }
 
   public void endDuel(Player[] player, Player[] losers) {
-    Bukkit.getScheduler().cancelTask(taskId);
+    Bukkit.getScheduler().cancelTask(checkBoundTaskId);
 
     Player winner = player[0];
 
@@ -257,7 +257,7 @@ public class FFADuel extends Duel {
 
   @Override
   public void draw() {
-    Bukkit.getScheduler().cancelTask(taskId);
+    Bukkit.getScheduler().cancelTask(checkBoundTaskId);
 
     for (Player p : this.getPlayers()) {
       p.sendMessage(Lang.getComponent("draw"));

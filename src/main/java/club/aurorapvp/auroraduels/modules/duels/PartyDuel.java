@@ -165,7 +165,7 @@ public class PartyDuel extends Duel {
       p.teleportAsync(spawn2);
     }
 
-    taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    checkBoundTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < team2.length; i++) {
@@ -228,7 +228,7 @@ public class PartyDuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    Bukkit.getScheduler().cancelTask(taskId);
+    Bukkit.getScheduler().cancelTask(checkBoundTaskId);
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < winners.length; i++) {
@@ -273,7 +273,7 @@ public class PartyDuel extends Duel {
 
   @Override
   public void draw() {
-    Bukkit.getScheduler().cancelTask(taskId);
+    Bukkit.getScheduler().cancelTask(checkBoundTaskId);
 
     for (Player p : this.getPlayers()) {
       p.sendMessage(Lang.getComponent("draw"));

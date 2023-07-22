@@ -1,6 +1,5 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
-import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
@@ -28,7 +27,7 @@ public class StandardDuel extends Duel implements Listener {
   private final Map<Player, Integer> wins = new HashMap<>();
   private final BossBar[] playerOneBar = new BossBar[1];
   private final BossBar[] playerTwoBar = new BossBar[1];
-  private BukkitTask task;
+  private int bossbarTaskId;
   private final Player playerOne;
   private final Player playerTwo;
 
@@ -78,7 +77,7 @@ public class StandardDuel extends Duel implements Listener {
     playerOne.teleportAsync(spawn1);
     playerTwo.teleportAsync(spawn2);
 
-    taskId = Bukkit.getScheduler()
+    checkBoundTaskId = Bukkit.getScheduler()
         .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     final Title title1 =
@@ -110,7 +109,7 @@ public class StandardDuel extends Duel implements Listener {
       }
     }, Config.get().getInt("duels.max-duration"));
 
-    task = new BukkitRunnable() {
+    bossbarTaskId = new BukkitRunnable() {
       @Override
       public void run() {
         if (playerOneBar[0] != null) {
@@ -118,12 +117,12 @@ public class StandardDuel extends Duel implements Listener {
         }
 
         playerOneBar[0] = BossBar.bossBar(
-            Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
-                (int) playerTwo.getHealth(),
-                (int) playerTwo.getLocation().distance(playerOne.getLocation())),
-            1.0f,
-            BossBar.Color.RED,
-            BossBar.Overlay.PROGRESS
+                Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
+                        (int) playerTwo.getHealth(),
+                        (int) playerTwo.getLocation().distance(playerOne.getLocation())),
+                1.0f,
+                BossBar.Color.RED,
+                BossBar.Overlay.PROGRESS
         );
 
         playerOne.showBossBar(playerOneBar[0]);
@@ -133,17 +132,18 @@ public class StandardDuel extends Duel implements Listener {
         }
 
         playerTwoBar[0] = BossBar.bossBar(
-            Lang.formatComponent("opponent-bossbar", playerOne.getName(),
-                (int) playerOne.getHealth(),
-                (int) playerOne.getLocation().distance(playerTwo.getLocation())),
-            1.0f,
-            BossBar.Color.RED,
-            BossBar.Overlay.PROGRESS
+                Lang.formatComponent("opponent-bossbar", playerOne.getName(),
+                        (int) playerOne.getHealth(),
+                        (int) playerOne.getLocation().distance(playerTwo.getLocation())),
+                1.0f,
+                BossBar.Color.RED,
+                BossBar.Overlay.PROGRESS
         );
 
         playerTwo.showBossBar(playerTwoBar[0]);
       }
-    }.runTaskTimer(AuroraCombat.INSTANCE, 0, 20);
+    }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L).getTaskId();
+
 
     timeStarted = System.currentTimeMillis();
 
@@ -196,7 +196,8 @@ public class StandardDuel extends Duel implements Listener {
       }
     }
 
-    Bukkit.getScheduler().cancelTask(taskId);
+    Bukkit.getScheduler().cancelTask(checkBoundTaskId);
+    Bukkit.getScheduler().cancelTask(bossbarTaskId);
 
     winner[0].showTitle(
         Title.title(Lang.getComponent("you-won"),
@@ -205,7 +206,6 @@ public class StandardDuel extends Duel implements Listener {
         Title.title(Lang.getComponent("you-lost"),
             Component.text("Opponent: " + winner[0].getName())));
 
-    task.cancel();
     playerOne.hideBossBar(playerOneBar[0]);
     playerTwo.hideBossBar(playerTwoBar[0]);
 
@@ -229,7 +229,8 @@ public class StandardDuel extends Duel implements Listener {
       return;
     }
 
-    Bukkit.getScheduler().cancelTask(taskId);
+    Bukkit.getScheduler().cancelTask(checkBoundTaskId);
+    Bukkit.getScheduler().cancelTask(bossbarTaskId);
 
     for (Player p : this.getPlayers()) {
       p.sendMessage(Lang.getComponent("draw"));
@@ -248,7 +249,6 @@ public class StandardDuel extends Duel implements Listener {
       }
     }, 3000);
 
-    task.cancel();
     playerOne.hideBossBar(playerOneBar[0]);
     playerTwo.hideBossBar(playerTwoBar[0]);
 
