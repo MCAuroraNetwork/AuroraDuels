@@ -69,7 +69,7 @@ public class Queue {
     }
 
     if (AuroraDuels.isAuroraCombatInstalled()) {
-      Rating.setupRating(name + "_duels", false);
+      new Rating(name + "_duels", Rating.RatingType.CUSTOM, true).create();
     }
   }
 

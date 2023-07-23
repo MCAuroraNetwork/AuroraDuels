@@ -2,6 +2,7 @@ package club.aurorapvp.auroraduels.events.listeners;
 
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
+import club.aurorapvp.auroracombat.modules.Score;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
@@ -20,12 +21,13 @@ public class DuelEventListener implements Listener {
     }
 
     for (Player p : event.getDuel().getPlayers()) {
-      if (Config.get().getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
-        Rating.getRating(p, "default_duels").setUpdating(true);
+      if (Config.get()
+          .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
+        Rating.getRating("default_duels").setEnabled(true);
       }
 
-      Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels").setUpdating(true);
-      Rating.getRating(p, "default").setUpdating(false);
+      Rating.getRating(event.getDuel().getQueue().getName() + "_duels").setEnabled(true);
+      Rating.getRating("default").setEnabled(false);
       CombatTag.setTaggable(p, false);
     }
   }
@@ -40,39 +42,52 @@ public class DuelEventListener implements Listener {
       if (!p.isOnline()) {
         break;
       }
-      if (Config.get().getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
-        Rating.getRating(p, "default_duels").setUpdating(false);
+      if (Config.get()
+          .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
+        Rating.getRating("default_duels").setEnabled(false);
       }
 
-      Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels").setUpdating(false);
-      Rating.getRating(p, "default").setUpdating(true);
+      Rating.getRating(event.getDuel().getQueue().getName() + "_duels").setEnabled(false);
+      Rating.getRating("default").setEnabled(true);
       CombatTag.setTaggable(p, true);
 
       Duel.setLastDuel(p, event.getDuel());
     }
 
     if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() == 2) {
-      Rating.changeRating(event.getLosers()[0], event.getWinners()[0],
-          event.getDuel().getQueue().getName() + "_duels");
+      Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
+          .updateElo(event.getLosers()[0], event.getWinners()[0]);
     } else if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() > 2) {
       Player[] losers = event.getLosers();
       Player[] winners = event.getWinners();
 
-      double loserAvgRating = Arrays.stream(losers)
-          .mapToDouble(p -> Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels")
-              .getPoints()).average().orElse(0.0);
-      double winnerAvgRating = Arrays.stream(winners)
-          .mapToDouble(p -> Rating.getRating(p, event.getDuel().getQueue().getName() + "_duels")
-              .getPoints()).average().orElse(0.0);
+      double loserAvgRating =
+          Arrays.stream(losers)
+              .mapToDouble(
+                  p ->
+                      Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
+                          .getScore(p)
+                          .getPoints())
+              .average()
+              .orElse(0.0);
+      double winnerAvgRating =
+          Arrays.stream(winners)
+              .mapToDouble(
+                  p ->
+                      Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
+                          .getScore(p)
+                          .getPoints())
+              .average()
+              .orElse(0.0);
 
       for (Player loser : losers) {
-        Rating.changeRating(loser, (int) winnerAvgRating,
-            event.getDuel().getQueue().getName() + "_duels");
+        Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
+            .updateElo(loser, (int) winnerAvgRating, false);
       }
 
       for (Player winner : winners) {
-        Rating.changeRating(winner, (int) loserAvgRating,
-            event.getDuel().getQueue().getName() + "_duels");
+        Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
+            .updateElo(winner, (int) loserAvgRating, true);
       }
     }
 
