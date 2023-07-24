@@ -10,7 +10,6 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.util.ItemStackUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
-import club.aurorapvp.aurorateleports.modules.WorldSpawn;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +24,8 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,20 +45,21 @@ public class Queue {
   private final QueueDataHandler data;
   private ItemStack displayItem;
   private Kit kit;
-  private final Runnable checkQueue = () -> {
-    Set<Arena> arenasSet = this.getArenas();
-    List<Arena> arenasList = new ArrayList<>(arenasSet);
-    Collections.shuffle(arenasList);
-    Iterator<Arena> arenaIterator = arenasList.iterator();
+  private final Runnable checkQueue =
+      () -> {
+        Set<Arena> arenasSet = this.getArenas();
+        List<Arena> arenasList = new ArrayList<>(arenasSet);
+        Collections.shuffle(arenasList);
+        Iterator<Arena> arenaIterator = arenasList.iterator();
 
-    while (arenaIterator.hasNext() && duelQueue.size() > 0) {
-      Arena arena = arenaIterator.next();
-      if (!arena.isOccupied()) {
-        duelQueue.getLast().startDuel(arena);
-        duelQueue.remove(duelQueue.getLast());
-      }
-    }
-  };
+        while (arenaIterator.hasNext() && duelQueue.size() > 0) {
+          Arena arena = arenaIterator.next();
+          if (!arena.isOccupied()) {
+            duelQueue.getLast().startDuel(arena);
+            duelQueue.remove(duelQueue.getLast());
+          }
+        }
+      };
 
   public Queue(String queueName) {
     this.name = queueName;
@@ -166,8 +168,7 @@ public class Queue {
       }
 
       this.enterDuelQueue(
-          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(), loc,
-              ranked, 1));
+          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked, 1));
       p.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.clear();
@@ -242,11 +243,13 @@ public class Queue {
       arenasSet = false;
       currentCreator = p;
       unFinishedQueue = this;
-      displayItem = ItemStackUtil.createDisplayItem(p.getInventory().getItemInMainHand().getType(),
-          this.getName());
+      displayItem =
+          ItemStackUtil.createDisplayItem(
+              p.getInventory().getItemInMainHand().getType(), this.getName());
 
-      p.sendMessage(MiniMessage.miniMessage().deserialize(
-          String.format(Lang.getString("add-arena"), arenas.size())));
+      p.sendMessage(
+          MiniMessage.miniMessage()
+              .deserialize(String.format(Lang.getString("add-arena"), arenas.size())));
     } else if (this.exists()) {
       p.sendMessage(Lang.getComponent("queue-already-exists"));
     } else {
