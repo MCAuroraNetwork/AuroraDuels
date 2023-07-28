@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -158,11 +160,13 @@ public class PartyDuel extends Duel {
     for (Player p : team1) {
       team1Dead.put(p, false);
       p.teleportAsync(spawn1);
+      p.lookAt(spawn2, LookAnchor.EYES);
     }
 
     for (Player p : team2) {
       team2Dead.put(p, false);
       p.teleportAsync(spawn2);
+      p.lookAt(spawn1, LookAnchor.EYES);
     }
 
     checkBoundTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);

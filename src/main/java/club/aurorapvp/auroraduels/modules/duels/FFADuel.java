@@ -16,6 +16,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -83,8 +85,15 @@ public class FFADuel extends Duel {
             arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
+    double x = (spawn1.getX() + spawn2.getX()) / 2;
+    double y = (spawn1.getY() + spawn2.getY()) / 2;
+    double z = (spawn1.getZ() + spawn2.getZ()) / 2;
+
+    Location center = new Location(spawn1.getWorld(), x, y, z);
+
     for (Player p : this.getPlayers()) {
-      p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2)));
+      p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2, center)));
+      p.lookAt(center, LookAnchor.EYES);
     }
 
     checkBoundTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
@@ -182,12 +191,7 @@ public class FFADuel extends Duel {
     duels.remove(this);
   }
 
-  private Location findSafeSpawnLocation(Location spawn1, Location spawn2) {
-    double x = (spawn1.getX() + spawn2.getX()) / 2;
-    double y = (spawn1.getY() + spawn2.getY()) / 2;
-    double z = (spawn1.getZ() + spawn2.getZ()) / 2;
-
-    Location center = new Location(spawn1.getWorld(), x, y, z);
+  private Location findSafeSpawnLocation(Location spawn1, Location spawn2, Location center) {
     int radius = (int) Math.floor(spawn1.distance(spawn2));
 
     World world = center.getWorld();
@@ -198,8 +202,8 @@ public class FFADuel extends Duel {
     while (attempts < maxAttempts) {
       double angle = random.nextDouble() * Math.PI * 2;
       double distance = random.nextDouble() * radius;
-      x = center.getX() + distance * Math.cos(angle);
-      z = center.getZ() + distance * Math.sin(angle);
+      double x = center.getX() + distance * Math.cos(angle);
+      double z = center.getZ() + distance * Math.sin(angle);
 
       Location spawnLocation = new Location(world, x, center.getY(), z);
 

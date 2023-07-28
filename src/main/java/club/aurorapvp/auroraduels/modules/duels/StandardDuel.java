@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
@@ -74,7 +76,9 @@ public class StandardDuel extends Duel implements Listener {
             arena.getSecondSpawn().getZ());
 
     playerOne.teleportAsync(spawn1);
+    playerOne.lookAt(spawn2, LookAnchor.EYES);
     playerTwo.teleportAsync(spawn2);
+    playerTwo.lookAt(spawn1, LookAnchor.EYES);
 
     checkBoundTaskId = Bukkit.getScheduler()
         .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
