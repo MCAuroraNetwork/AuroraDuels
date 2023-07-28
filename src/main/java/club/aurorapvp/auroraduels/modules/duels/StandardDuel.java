@@ -21,7 +21,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 public class StandardDuel extends Duel implements Listener {
   private final Map<Player, Integer> wins = new HashMap<>();
