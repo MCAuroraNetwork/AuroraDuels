@@ -35,10 +35,6 @@ public class DuelStartEvent extends Event {
 
     duel.setActive(true);
     duel.getArena().setOccupied(true);
-
-    for (Player p : duel.getPlayers()) {
-      p.setGlowing(true);
-    }
   }
 
   @SuppressWarnings("unused")
