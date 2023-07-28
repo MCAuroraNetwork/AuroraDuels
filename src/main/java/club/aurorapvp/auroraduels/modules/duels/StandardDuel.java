@@ -80,7 +80,7 @@ public class StandardDuel extends Duel implements Listener {
     playerTwo.teleportAsync(spawn2);
     playerTwo.lookAt(spawn1, LookAnchor.EYES);
 
-    checkBoundTaskId = Bukkit.getScheduler()
+    checkBoundsId = Bukkit.getScheduler()
         .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     final Title title1 =
@@ -199,7 +199,7 @@ public class StandardDuel extends Duel implements Listener {
       }
     }
 
-    Bukkit.getScheduler().cancelTask(checkBoundTaskId);
+    Bukkit.getScheduler().cancelTask(checkBoundsId);
     Bukkit.getScheduler().cancelTask(bossbarTaskId);
 
     winner[0].showTitle(
@@ -232,7 +232,7 @@ public class StandardDuel extends Duel implements Listener {
       return;
     }
 
-    Bukkit.getScheduler().cancelTask(checkBoundTaskId);
+    Bukkit.getScheduler().cancelTask(checkBoundsId);
     Bukkit.getScheduler().cancelTask(bossbarTaskId);
 
     for (Player p : this.getPlayers()) {
