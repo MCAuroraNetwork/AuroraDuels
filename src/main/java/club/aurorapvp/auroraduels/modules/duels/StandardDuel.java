@@ -240,9 +240,7 @@ public class StandardDuel extends Duel implements Listener {
       @Override
       public void run() {
         playerOne.teleportAsync(respawnLocation);
-        playerTwo.setGlowing(false);
         playerTwo.teleportAsync(respawnLocation);
-        playerTwo.setGlowing(false);
         arena.resetAsync();
         arena.setOccupied(false);
         this.cancel();

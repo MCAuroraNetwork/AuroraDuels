@@ -270,7 +270,6 @@ public class FFADuel extends Duel {
       public void run() {
         for (Player p : thisDuel.getPlayers()) {
           p.teleportAsync(thisDuel.getRespawnLocation());
-          p.setGlowing(false);
         }
         arena.resetAsync();
         arena.setOccupied(false);

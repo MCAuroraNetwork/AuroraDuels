@@ -28,7 +28,6 @@ public class DuelEndEvent extends Event {
       public void run() {
         for (Player p : duel.getPlayers()) {
           p.teleportAsync(duel.getRespawnLocation());
-          p.setGlowing(false);
         }
         duel.getArena().resetAsync();
         duel.getArena().setOccupied(false);
