@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.modules.duels;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -278,7 +279,7 @@ public class TeamDuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelEndEvent(thisDuel, null, null));
+        Bukkit.getServer().getPluginManager().callEvent(new DuelDrawEvent(thisDuel));
       }
     }.runTask(AuroraDuels.INSTANCE);
 
