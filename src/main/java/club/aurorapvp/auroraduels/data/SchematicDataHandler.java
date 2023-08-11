@@ -32,8 +32,10 @@ public class SchematicDataHandler {
   public SchematicDataHandler(Arena arena) {
     SchematicDataHandler.arena = arena;
 
-    FILE = new File(AuroraDuels.INSTANCE.getDataFolder(),
-        "/arenas/schematics/" + arena.getName() + ".schem");
+    FILE =
+        new File(
+            AuroraDuels.INSTANCE.getDataFolder(),
+            "/arenas/schematics/" + arena.getName() + ".schem");
   }
 
   public File getFile() {
@@ -46,7 +48,9 @@ public class SchematicDataHandler {
         WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(arena.getWorld()));
 
     CuboidRegion region =
-        new CuboidRegion(BukkitAdapter.adapt(arena.getWorld()), arena.getFirstPosition(),
+        new CuboidRegion(
+            BukkitAdapter.adapt(arena.getWorld()),
+            arena.getFirstPosition(),
             arena.getSecondPosition());
     BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     ForwardExtentCopy forwardExtentCopy =
@@ -68,7 +72,7 @@ public class SchematicDataHandler {
     }
 
     try (ClipboardWriter writer =
-             BuiltInClipboardFormat.FAST.getWriter(new FileOutputStream(FILE))) {
+        BuiltInClipboardFormat.FAST.getWriter(new FileOutputStream(FILE))) {
       writer.write(clipboard);
     } catch (IOException e) {
       AuroraDuels.INSTANCE.getLogger().severe("Failed to save schematic file");
@@ -78,8 +82,7 @@ public class SchematicDataHandler {
   public void pasteAsync() {
     Clipboard clipboard;
 
-    World world =
-        BukkitAdapter.adapt(arena.getWorld());
+    World world = BukkitAdapter.adapt(arena.getWorld());
     ClipboardFormat format = ClipboardFormats.findByFile(FILE);
 
     try {
@@ -87,19 +90,22 @@ public class SchematicDataHandler {
       try (ClipboardReader reader = format.getReader(new FileInputStream(FILE))) {
         clipboard = reader.read();
 
-        Bukkit.getScheduler().runTaskAsynchronously(AuroraDuels.INSTANCE, () -> {
-          try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
-            Operation operation =
-                new ClipboardHolder(clipboard)
-                    .createPaste(editSession)
-                    .to(clipboard.getOrigin())
-                    .build();
+        Bukkit.getScheduler()
+            .runTaskAsynchronously(
+                AuroraDuels.INSTANCE,
+                () -> {
+                  try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
+                    Operation operation =
+                        new ClipboardHolder(clipboard)
+                            .createPaste(editSession)
+                            .to(clipboard.getOrigin())
+                            .build();
 
-            Operations.complete(operation);
-          } catch (WorldEditException e) {
-            AuroraDuels.INSTANCE.getLogger().severe("Failed to paste schematic file");
-          }
-        });
+                    Operations.complete(operation);
+                  } catch (WorldEditException e) {
+                    AuroraDuels.INSTANCE.getLogger().severe("Failed to paste schematic file");
+                  }
+                });
       }
     } catch (IOException e) {
       AuroraDuels.INSTANCE.getLogger().severe("Failed to read schematic file");
@@ -109,8 +115,7 @@ public class SchematicDataHandler {
   public void paste() {
     Clipboard clipboard;
 
-    World world =
-        BukkitAdapter.adapt(arena.getWorld());
+    World world = BukkitAdapter.adapt(arena.getWorld());
     ClipboardFormat format = ClipboardFormats.findByFile(FILE);
 
     try {

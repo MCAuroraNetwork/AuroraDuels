@@ -10,8 +10,9 @@ public class Wand {
   }
 
   public static boolean isActive(Action action) {
-    return ((activity == WandActivity.LEFT && action.isLeftClick()) ||
-        (activity == WandActivity.RIGHT && action.isRightClick()) || activity == WandActivity.BOTH);
+    return ((activity == WandActivity.LEFT && action.isLeftClick())
+        || (activity == WandActivity.RIGHT && action.isRightClick())
+        || activity == WandActivity.BOTH);
   }
 
   public static void setActive(WandActivity value) {

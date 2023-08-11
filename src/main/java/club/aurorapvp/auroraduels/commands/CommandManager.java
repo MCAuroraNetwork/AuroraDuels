@@ -1,6 +1,5 @@
 package club.aurorapvp.auroraduels.commands;
 
-
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.commands.duels.RematchCommand;
 import club.aurorapvp.auroraduels.commands.duels.matchmaking.RankedCommands;
@@ -38,39 +37,45 @@ public class CommandManager {
     CommandCompletions<BukkitCommandCompletionContext> commandCompletions =
         MANAGER.getCommandCompletions();
 
-    commandCompletions.registerCompletion("queues", c -> {
-      List<String> queueNames = new ArrayList<>();
+    commandCompletions.registerCompletion(
+        "queues",
+        c -> {
+          List<String> queueNames = new ArrayList<>();
 
-      for (Queue queue : Queue.getQueues()) {
-        queueNames.add(queue.getName());
-      }
+          for (Queue queue : Queue.getQueues()) {
+            queueNames.add(queue.getName());
+          }
 
-      return queueNames;
-    });
+          return queueNames;
+        });
 
-    commandCompletions.registerCompletion("arenas", c -> {
-      List<String> arenaNames = new ArrayList<>();
+    commandCompletions.registerCompletion(
+        "arenas",
+        c -> {
+          List<String> arenaNames = new ArrayList<>();
 
-      for (Arena arena : Arena.getArenas()) {
-        arenaNames.add(arena.getName());
-      }
+          for (Arena arena : Arena.getArenas()) {
+            arenaNames.add(arena.getName());
+          }
 
-      return arenaNames;
-    });
+          return arenaNames;
+        });
 
-    commandCompletions.registerCompletion("int",
-        c -> List.of("1", "2", "3", "4", "5", "6", "7", "8", "9"));
+    commandCompletions.registerCompletion(
+        "int", c -> List.of("1", "2", "3", "4", "5", "6", "7", "8", "9"));
 
     if (AuroraDuels.isAuroraKitsInstalled()) {
-      commandCompletions.registerCompletion("kits", c -> {
-        List<String> kitNames = new ArrayList<>();
+      commandCompletions.registerCompletion(
+          "kits",
+          c -> {
+            List<String> kitNames = new ArrayList<>();
 
-        for (Kit kit : Kit.getKits()) {
-          kitNames.add(kit.getName());
-        }
+            for (Kit kit : Kit.getKits()) {
+              kitNames.add(kit.getName());
+            }
 
-        return kitNames;
-      });
+            return kitNames;
+          });
     }
   }
 }

@@ -8,6 +8,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
+import io.papermc.paper.entity.LookAnchor;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -16,8 +17,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -35,7 +34,8 @@ public class FFADuel extends Duel {
     super(players, respawnLocation, ranked);
   }
 
-  public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
+  public FFADuel(
+      Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, queue, kit, ranked);
   }
 
@@ -77,12 +77,16 @@ public class FFADuel extends Duel {
     this.arena = arena;
 
     Location spawn1 =
-        new Location(arena.getWorld(),
-            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
+        new Location(
+            arena.getWorld(),
+            arena.getFirstSpawn().getX(),
+            arena.getFirstSpawn().getY(),
             arena.getFirstSpawn().getZ());
     Location spawn2 =
-        new Location(arena.getWorld(),
-            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
+        new Location(
+            arena.getWorld(),
+            arena.getSecondSpawn().getX(),
+            arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
     double x = (spawn1.getX() + spawn2.getX()) / 2;
@@ -96,7 +100,9 @@ public class FFADuel extends Duel {
       p.lookAt(center, LookAnchor.EYES);
     }
 
-    checkBoundsId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    checkBoundsId =
+        Bukkit.getScheduler()
+            .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     StringBuilder sb;
     String names;
@@ -121,27 +127,29 @@ public class FFADuel extends Duel {
         names = names.substring(0, names.length() - 2);
       }
 
-      title = Title.title(Lang.getComponent("duel-started"),
-          Component.text("Opponents: " + names));
+      title = Title.title(Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
       currentPlayer.showTitle(title);
     }
 
     FFADuel thisDuel = this;
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        if (thisDuel.isActive()) {
-          for (Player p : thisDuel.getPlayers()) {
-            p.sendMessage(Lang.getComponent("duel-time-expired"));
-            p.sendMessage(Lang.getComponent("duel-time-expired"));
-          }
-          thisDuel.draw();
-        }
-        this.cancel();
-      }
-    }, Config.get().getInt("duels.max-duration"));
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                if (thisDuel.isActive()) {
+                  for (Player p : thisDuel.getPlayers()) {
+                    p.sendMessage(Lang.getComponent("duel-time-expired"));
+                    p.sendMessage(Lang.getComponent("duel-time-expired"));
+                  }
+                  thisDuel.draw();
+                }
+                this.cancel();
+              }
+            },
+            Config.get().getInt("duels.max-duration"));
 
     timeStarted = System.currentTimeMillis();
 
@@ -183,7 +191,8 @@ public class FFADuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager()
+        Bukkit.getServer()
+            .getPluginManager()
             .callEvent(new DuelEndEvent(thisDuel, new Player[] {winner}, losers));
       }
     }.runTask(AuroraDuels.INSTANCE);
@@ -224,10 +233,14 @@ public class FFADuel extends Duel {
 
     boolean isAir = blockType == Material.AIR;
     boolean isNotDangerous =
-        !blockType.isOccluding() && !blockType.isSolid() && blockType != Material.LAVA &&
-            blockType != Material.MAGMA_BLOCK;
-    boolean isOnSolidGround = belowBlockType.isSolid() && belowBlockType != Material.LAVA &&
-        belowBlockType != Material.MAGMA_BLOCK;
+        !blockType.isOccluding()
+            && !blockType.isSolid()
+            && blockType != Material.LAVA
+            && blockType != Material.MAGMA_BLOCK;
+    boolean isOnSolidGround =
+        belowBlockType.isSolid()
+            && belowBlockType != Material.LAVA
+            && belowBlockType != Material.MAGMA_BLOCK;
     boolean hasEnoughHeadroom = aboveBlockType == Material.AIR;
 
     if (!isAir && !(isNotDangerous && isOnSolidGround && hasEnoughHeadroom)) {
@@ -242,10 +255,14 @@ public class FFADuel extends Duel {
 
         isAir = blockType == Material.AIR;
         isNotDangerous =
-            !blockType.isOccluding() && !blockType.isSolid() && blockType != Material.LAVA &&
-                blockType != Material.MAGMA_BLOCK;
-        isOnSolidGround = belowBlockType.isSolid() && belowBlockType != Material.LAVA &&
-            belowBlockType != Material.MAGMA_BLOCK;
+            !blockType.isOccluding()
+                && !blockType.isSolid()
+                && blockType != Material.LAVA
+                && blockType != Material.MAGMA_BLOCK;
+        isOnSolidGround =
+            belowBlockType.isSolid()
+                && belowBlockType != Material.LAVA
+                && belowBlockType != Material.MAGMA_BLOCK;
         hasEnoughHeadroom = aboveBlockType == Material.AIR;
 
         if (isAir || (isNotDangerous && isOnSolidGround && hasEnoughHeadroom)) {
@@ -269,17 +286,20 @@ public class FFADuel extends Duel {
 
     Duel thisDuel = this;
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(thisDuel.getRespawnLocation());
-        }
-        arena.resetAsync();
-        arena.setOccupied(false);
-        this.cancel();
-      }
-    }, 3000);
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                for (Player p : thisDuel.getPlayers()) {
+                  p.teleportAsync(thisDuel.getRespawnLocation());
+                }
+                arena.resetAsync();
+                arena.setOccupied(false);
+                this.cancel();
+              }
+            },
+            3000);
 
     this.setActive(false);
 

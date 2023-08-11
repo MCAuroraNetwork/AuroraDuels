@@ -19,14 +19,16 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public abstract class Duel {
-  private static final NamespacedKey duelKitKey = new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
+  private static final NamespacedKey duelKitKey =
+      new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
   private static final HashMap<Player, Duel> LAST_DUEL = new HashMap<>();
   protected static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   protected final Location respawnLocation;
   private final boolean ranked;
-  private static final NamespacedKey winStreakKey = new NamespacedKey(AuroraDuels.INSTANCE, "duel-winstreak");
+  private static final NamespacedKey winStreakKey =
+      new NamespacedKey(AuroraDuels.INSTANCE, "duel-winstreak");
   protected Long timeStarted;
   protected Kit kit;
   protected Arena arena;
@@ -35,26 +37,27 @@ public abstract class Duel {
   private Queue queue;
   private boolean active = false;
   protected int checkBoundsId;
-  protected final Runnable checkBounds = () -> {
-    for (Player p : this.getPlayers()) {
-      Arena arena = this.getArena();
-      if (!Arena.isInBounds(p.getLocation(), arena)) {
-        p.setHealth(0);
-        p.sendMessage(Lang.getComponent("no-leaving-arena"));
-      }
-    }
-
-    for (Player p : this.getSpectators()) {
-      if (!Arena.isInBounds(p.getLocation(), arena)) {
-        for (Player player : this.getPlayers()) {
-          if (!this.isSpectator(player)) {
-            p.teleportAsync(player.getLocation());
+  protected final Runnable checkBounds =
+      () -> {
+        for (Player p : this.getPlayers()) {
+          Arena arena = this.getArena();
+          if (!Arena.isInBounds(p.getLocation(), arena)) {
+            p.setHealth(0);
+            p.sendMessage(Lang.getComponent("no-leaving-arena"));
           }
         }
-        p.sendMessage(Lang.getComponent("no-leaving-arena"));
-      }
-    }
-  };
+
+        for (Player p : this.getSpectators()) {
+          if (!Arena.isInBounds(p.getLocation(), arena)) {
+            for (Player player : this.getPlayers()) {
+              if (!this.isSpectator(player)) {
+                p.teleportAsync(player.getLocation());
+              }
+            }
+            p.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+      };
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked) {
     this.respawnLocation = respawnLocation;
@@ -80,8 +83,13 @@ public abstract class Duel {
     duels.add(this);
   }
 
-  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked,
-              int rounds) {
+  public Duel(
+      Set<Player> players,
+      Location respawnLocation,
+      Queue queue,
+      Kit kit,
+      boolean ranked,
+      int rounds) {
     this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;

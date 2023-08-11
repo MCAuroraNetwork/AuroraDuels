@@ -10,8 +10,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -76,11 +74,11 @@ public class Placeholders extends PlaceholderExpansion {
         return "Not in duel";
       }
 
-        for (Player duelPlayer : Objects.requireNonNull(Duel.getDuel(p)).getPlayers()) {
-          if (player != duelPlayer) {
-            return String.valueOf(duelPlayer.getPing());
-          }
+      for (Player duelPlayer : Objects.requireNonNull(Duel.getDuel(p)).getPlayers()) {
+        if (player != duelPlayer) {
+          return String.valueOf(duelPlayer.getPing());
         }
+      }
     }
 
     if (params.startsWith("opponent")) {
@@ -114,12 +112,11 @@ public class Placeholders extends PlaceholderExpansion {
       if (StandardDuel.inDuel(p)) {
         Long elapsed = Objects.requireNonNull(Duel.getDuel(p)).getElapsed();
 
-        return String.format("%d min, %d sec",
+        return String.format(
+            "%d min, %d sec",
             TimeUnit.MILLISECONDS.toMinutes(elapsed),
-            TimeUnit.MILLISECONDS.toSeconds(elapsed) -
-                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsed))
-        );
-
+            TimeUnit.MILLISECONDS.toSeconds(elapsed)
+                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsed)));
       }
     }
 

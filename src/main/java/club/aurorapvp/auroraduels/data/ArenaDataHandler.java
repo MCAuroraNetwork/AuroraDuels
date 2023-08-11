@@ -52,14 +52,30 @@ public class ArenaDataHandler {
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
   public void create() {
-    Location spawn1 = new Location(arena.getWorld(), arena.getFirstSpawn().getBlockX(),
-        arena.getFirstSpawn().getBlockY(), arena.getFirstSpawn().getBlockZ());
-    Location spawn2 = new Location(arena.getWorld(), arena.getSecondSpawn().getBlockX(),
-        arena.getSecondSpawn().getBlockY(), arena.getSecondSpawn().getBlockZ());
-    Location pos1 = new Location(arena.getWorld(), arena.getFirstPosition().getX(),
-        arena.getFirstPosition().getY(), arena.getFirstPosition().getZ());
-    Location pos2 = new Location(arena.getWorld(), arena.getSecondPosition().getX(),
-        arena.getSecondPosition().getY(), arena.getSecondPosition().getZ());
+    Location spawn1 =
+        new Location(
+            arena.getWorld(),
+            arena.getFirstSpawn().getBlockX(),
+            arena.getFirstSpawn().getBlockY(),
+            arena.getFirstSpawn().getBlockZ());
+    Location spawn2 =
+        new Location(
+            arena.getWorld(),
+            arena.getSecondSpawn().getBlockX(),
+            arena.getSecondSpawn().getBlockY(),
+            arena.getSecondSpawn().getBlockZ());
+    Location pos1 =
+        new Location(
+            arena.getWorld(),
+            arena.getFirstPosition().getX(),
+            arena.getFirstPosition().getY(),
+            arena.getFirstPosition().getZ());
+    Location pos2 =
+        new Location(
+            arena.getWorld(),
+            arena.getSecondPosition().getX(),
+            arena.getSecondPosition().getY(),
+            arena.getSecondPosition().getZ());
 
     arenaData.set("arena.world", arena.getWorld().getName());
     arenaData.set("arena.spawns.spawn1", spawn1);
@@ -74,9 +90,7 @@ public class ArenaDataHandler {
         arenaData.save(FILE);
       } catch (IOException e) {
         AuroraDuels.INSTANCE.getLogger().severe("Failed to save arena data");
-
       }
     }
   }
 }
-

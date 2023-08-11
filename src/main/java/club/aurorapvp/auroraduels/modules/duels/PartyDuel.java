@@ -9,6 +9,7 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import com.google.common.collect.Iterables;
+import io.papermc.paper.entity.LookAnchor;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,8 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -49,8 +48,7 @@ public class PartyDuel extends Duel {
       size--;
     }
 
-    Iterable<List<Player>>
-        partitions = Iterables.partition(this.getPlayers(), (size / 2));
+    Iterable<List<Player>> partitions = Iterables.partition(this.getPlayers(), (size / 2));
 
     Player[] temp = new HashSet<>(partitions.iterator().next()).toArray(new Player[0]);
 
@@ -67,7 +65,8 @@ public class PartyDuel extends Duel {
     }
   }
 
-  public PartyDuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
+  public PartyDuel(
+      Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, queue, kit, ranked);
 
     int size = this.getPlayers().size();
@@ -83,8 +82,7 @@ public class PartyDuel extends Duel {
       size--;
     }
 
-    Iterable<List<Player>>
-        partitions = Iterables.partition(this.getPlayers(), (size / 2));
+    Iterable<List<Player>> partitions = Iterables.partition(this.getPlayers(), (size / 2));
 
     Player[] temp = new HashSet<>(partitions.iterator().next()).toArray(new Player[0]);
 
@@ -149,12 +147,16 @@ public class PartyDuel extends Duel {
     this.arena = arena;
 
     Location spawn1 =
-        new Location(arena.getWorld(),
-            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
+        new Location(
+            arena.getWorld(),
+            arena.getFirstSpawn().getX(),
+            arena.getFirstSpawn().getY(),
             arena.getFirstSpawn().getZ());
     Location spawn2 =
-        new Location(arena.getWorld(),
-            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
+        new Location(
+            arena.getWorld(),
+            arena.getSecondSpawn().getX(),
+            arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
     for (Player p : team1) {
@@ -169,7 +171,9 @@ public class PartyDuel extends Duel {
       p.lookAt(spawn1, LookAnchor.EYES);
     }
 
-    checkBoundsId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    checkBoundsId =
+        Bukkit.getScheduler()
+            .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < team2.length; i++) {
@@ -181,8 +185,7 @@ public class PartyDuel extends Duel {
     String names = sb.toString();
 
     final Title title1 =
-        Title.title(Lang.getComponent("duel-started"),
-            Component.text("Opponents: " + names));
+        Title.title(Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
     sb = new StringBuilder();
     for (int i = 0; i < team1.length; i++) {
@@ -194,8 +197,7 @@ public class PartyDuel extends Duel {
     names = sb.toString();
 
     final Title title2 =
-        Title.title(Lang.getComponent("duel-started"),
-            Component.text("Opponents: " + names));
+        Title.title(Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
     for (Player p : team1) {
       p.showTitle(title1);
@@ -207,19 +209,22 @@ public class PartyDuel extends Duel {
 
     PartyDuel thisDuel = this;
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        if (thisDuel.isActive()) {
-          for (Player p : thisDuel.getPlayers()) {
-            p.sendMessage(Lang.getComponent("duel-time-expired"));
-            p.sendMessage(Lang.getComponent("duel-time-expired"));
-          }
-          thisDuel.draw();
-        }
-        this.cancel();
-      }
-    }, Config.get().getInt("duels.max-duration"));
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                if (thisDuel.isActive()) {
+                  for (Player p : thisDuel.getPlayers()) {
+                    p.sendMessage(Lang.getComponent("duel-time-expired"));
+                    p.sendMessage(Lang.getComponent("duel-time-expired"));
+                  }
+                  thisDuel.draw();
+                }
+                this.cancel();
+              }
+            },
+            Config.get().getInt("duels.max-duration"));
 
     timeStarted = System.currentTimeMillis();
 
@@ -267,7 +272,8 @@ public class PartyDuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager()
+        Bukkit.getServer()
+            .getPluginManager()
             .callEvent(new DuelEndEvent(thisDuel, winners, losers));
       }
     }.runTask(AuroraDuels.INSTANCE);
@@ -285,17 +291,20 @@ public class PartyDuel extends Duel {
 
     Duel thisDuel = this;
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(thisDuel.getRespawnLocation());
-        }
-        arena.resetAsync();
-        arena.setOccupied(false);
-        this.cancel();
-      }
-    }, 3000);
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                for (Player p : thisDuel.getPlayers()) {
+                  p.teleportAsync(thisDuel.getRespawnLocation());
+                }
+                arena.resetAsync();
+                arena.setOccupied(false);
+                this.cancel();
+              }
+            },
+            3000);
 
     this.setActive(false);
 

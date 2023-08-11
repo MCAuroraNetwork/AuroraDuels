@@ -41,8 +41,8 @@ dependencies {
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit'
     compileOnly 'me.clip:placeholderapi:2.11.1'
     compileOnly ':AuroraKits:1.6.2'
-    compileOnly ':AuroraCombat:1.6.3'
-    compileOnly ':AuroraWarps:1.0.0'
+    compileOnly ':AuroraCombat:1.7.0'
+    compileOnly ':AuroraWarps:1.1.0'
 }
 
 build {

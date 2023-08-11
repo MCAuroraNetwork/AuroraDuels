@@ -83,16 +83,19 @@ public class Arena {
     Player p = event.getPlayer();
     p.setCooldown(Material.IRON_HOE, 20);
     Action action = event.getAction();
-    BlockVector3 vector = BukkitAdapter.asBlockVector(
-        Objects.requireNonNull(event.getClickedBlock()).getLocation());
+    BlockVector3 vector =
+        BukkitAdapter.asBlockVector(Objects.requireNonNull(event.getClickedBlock()).getLocation());
 
     switch (unfinishedArena.getState()) {
       case SPAWN_1, SPAWN_2 -> unfinishedArena.setSpawns(p, action, vector);
       case CORNER_1, CORNER_2 -> unfinishedArena.setCorners(p, action, vector);
       default -> {
-        AuroraDuels.INSTANCE.getLogger().warning(
-            "Invalid ArenaState value " + unfinishedArena.getState().toString() +
-                "! Resetting to idle");
+        AuroraDuels.INSTANCE
+            .getLogger()
+            .warning(
+                "Invalid ArenaState value "
+                    + unfinishedArena.getState().toString()
+                    + "! Resetting to idle");
         unfinishedArena.state = ArenaState.IDLE;
       }
     }
@@ -193,10 +196,16 @@ public class Arena {
       spawn1 = vector.add(0, 1, 0);
 
       p.sendMessage(
-          MiniMessage.miniMessage().deserialize(Lang.getString("spawn1-set") +
-              " (" + spawn1.getBlockX() + ", " + spawn1.getBlockY() + ", " +
-              spawn1.getBlockZ() +
-              ")"));
+          MiniMessage.miniMessage()
+              .deserialize(
+                  Lang.getString("spawn1-set")
+                      + " ("
+                      + spawn1.getBlockX()
+                      + ", "
+                      + spawn1.getBlockY()
+                      + ", "
+                      + spawn1.getBlockZ()
+                      + ")"));
 
       p.sendMessage(Lang.getComponent("set-spawn2"));
       state = ArenaState.SPAWN_2;
@@ -207,9 +216,16 @@ public class Arena {
       spawn2 = vector.add(0, 1, 0);
 
       p.sendMessage(
-          MiniMessage.miniMessage().deserialize(Lang.getString("spawn2-set") +
-              " (" + spawn2.getBlockX() + ", " + spawn2.getBlockY() + ", " +
-              spawn2.getBlockZ() + ")"));
+          MiniMessage.miniMessage()
+              .deserialize(
+                  Lang.getString("spawn2-set")
+                      + " ("
+                      + spawn2.getBlockX()
+                      + ", "
+                      + spawn2.getBlockY()
+                      + ", "
+                      + spawn2.getBlockZ()
+                      + ")"));
 
       p.sendMessage(Lang.getComponent("spawns-set"));
       p.sendMessage(Lang.getComponent("set-pos1"));
@@ -226,9 +242,16 @@ public class Arena {
       corner1 = new Location(this.getWorld(), vector.getX(), vector.getY(), vector.getZ());
 
       p.sendMessage(
-          MiniMessage.miniMessage().deserialize(Lang.getString("pos1-set") +
-              " (" + pos1.getBlockX() + ", " + pos1.getBlockY() + ", " + pos1.getBlockZ() +
-              ")"));
+          MiniMessage.miniMessage()
+              .deserialize(
+                  Lang.getString("pos1-set")
+                      + " ("
+                      + pos1.getBlockX()
+                      + ", "
+                      + pos1.getBlockY()
+                      + ", "
+                      + pos1.getBlockZ()
+                      + ")"));
 
       p.sendMessage(Lang.getComponent("set-pos2"));
       state = ArenaState.CORNER_2;
@@ -241,9 +264,16 @@ public class Arena {
       corner2 = new Location(this.getWorld(), vector.getX(), vector.getY(), vector.getZ());
 
       p.sendMessage(
-          MiniMessage.miniMessage().deserialize(Lang.getString("pos2-set") +
-              " (" + pos2.getBlockX() + ", " + pos2.getBlockY() + ", " + pos2.getBlockZ() +
-              ")"));
+          MiniMessage.miniMessage()
+              .deserialize(
+                  Lang.getString("pos2-set")
+                      + " ("
+                      + pos2.getBlockX()
+                      + ", "
+                      + pos2.getBlockY()
+                      + ", "
+                      + pos2.getBlockZ()
+                      + ")"));
 
       p.sendMessage(Lang.getComponent("arena-created"));
       Wand.setActive(Wand.WandActivity.INACTIVE);
@@ -266,13 +296,17 @@ public class Arena {
   public void resetAsync() {
     Arena thisArena = this;
 
-    Bukkit.getScheduler().runTask(AuroraDuels.INSTANCE, () -> {
-      for (Entity entity : thisArena.getWorld().getEntities()) {
-        if (Arena.isInBounds(entity.getLocation(), thisArena) && !(entity instanceof Player)) {
-          entity.remove();
-        }
-      }
-    });
+    Bukkit.getScheduler()
+        .runTask(
+            AuroraDuels.INSTANCE,
+            () -> {
+              for (Entity entity : thisArena.getWorld().getEntities()) {
+                if (Arena.isInBounds(entity.getLocation(), thisArena)
+                    && !(entity instanceof Player)) {
+                  entity.remove();
+                }
+              }
+            });
 
     if (this.exists()) {
       new SchematicDataHandler(this).pasteAsync();
@@ -315,8 +349,12 @@ public class Arena {
     double maxY = Math.max(corner1.getY(), corner2.getY());
     double maxZ = Math.max(corner1.getZ(), corner2.getZ());
 
-    return loc.getX() >= minX && loc.getX() <= maxX && loc.getY() >= minY && loc.getY() <= maxY &&
-        loc.getZ() >= minZ && loc.getZ() <= maxZ;
+    return loc.getX() >= minX
+        && loc.getX() <= maxX
+        && loc.getY() >= minY
+        && loc.getY() <= maxY
+        && loc.getZ() >= minZ
+        && loc.getZ() <= maxZ;
   }
 
   private enum ArenaState {

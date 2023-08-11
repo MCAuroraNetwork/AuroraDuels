@@ -23,10 +23,10 @@ public class Lang {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
     for (Object path : get().getKeys(false).toArray()) {
-      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~") &&
-          Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
-        PLACEHOLDERS.put((String) path, Objects.requireNonNull(get().getString((String) path))
-            .replace("~", ""));
+      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~")
+          && Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
+        PLACEHOLDERS.put(
+            (String) path, Objects.requireNonNull(get().getString((String) path)).replace("~", ""));
       }
     }
 
@@ -44,21 +44,24 @@ public class Lang {
     DEFAULTS.put("arena-reset", "prefix <gradient:#FFAA00:#FF55FF>Arena reset successfully!");
     DEFAULTS.put("arena-deleted", "prefix <gradient:#FFAA00:#FF55FF>Arena deleted");
     DEFAULTS.put("arena-does-not-exist", "prefix <gradient:#FFAA00:#FF55FF>Arena does not exist!");
-    DEFAULTS.put("arena-already-being-created",
+    DEFAULTS.put(
+        "arena-already-being-created",
         "prefix <gradient:#FFAA00:#FF55FF>There is already an Arena being created!");
-    DEFAULTS.put("arena-already-exists",
-        "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
+    DEFAULTS.put(
+        "arena-already-exists", "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
     DEFAULTS.put("unknown-opponent", "prefix <gradient:#FFAA00:#FF55FF>Cannot find opponent");
-    DEFAULTS.put("unknown-duel",
-        "prefix <gradient:#FFAA00:#FF55FF>Cannot find specified duel match");
+    DEFAULTS.put(
+        "unknown-duel", "prefix <gradient:#FFAA00:#FF55FF>Cannot find specified duel match");
     DEFAULTS.put("player-in-duel", "prefix <gradient:#FFAA00:#FF55FF>That player is in a duel!");
     DEFAULTS.put("duel-started", "<bold><gradient:#FFAA00:#FF55FF>Duel started!");
-    DEFAULTS.put("even-rounds",
+    DEFAULTS.put(
+        "even-rounds",
         "prefix <gradient:#FFAA00:#FF55FF>A duel must have an odd number of rounds!");
-    DEFAULTS.put("entered-queue",
-        "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
+    DEFAULTS.put(
+        "entered-queue", "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
-    DEFAULTS.put("received-request",
+    DEFAULTS.put(
+        "received-request",
         "prefix <gradient:#FFAA00:#FF55FF>You have received a request from %s use /duel accept to accept, or /duel deny to deny");
     DEFAULTS.put("request-timed-out", "prefix <gradient:#FFAA00:#FF55FF>Duel request timed out");
     DEFAULTS.put("no-requests", "prefix <gradient:#FFAA00:#FF55FF>No pending requests");
@@ -68,41 +71,51 @@ public class Lang {
     DEFAULTS.put("you-lost", "<gradient:#FFAA00:#FF55FF>You lost the duel");
     DEFAULTS.put("rounds-remaining", "<gradient:#FFAA00:#FF55FF>Round %1$s out of %2$s rounds");
     DEFAULTS.put("draw", "prefix <gradient:#FFAA00:#FF55FF>The duel was a draw!");
-    DEFAULTS.put("no-leaving-arena", "prefix <gradient:#FFAA00:#FF55FF>You cannot leave the arena!");
+    DEFAULTS.put(
+        "no-leaving-arena", "prefix <gradient:#FFAA00:#FF55FF>You cannot leave the arena!");
     DEFAULTS.put("duel-time-expired", "prefix <gradient:#FFAA00:#FF55FF>The duel ran out of time");
     DEFAULTS.put("looking-match", "prefix <gradient:#FFAA00:#FF55FF>Searching for an opponent");
-    DEFAULTS.put("not-looking-match", "prefix <gradient:#FFAA00:#FF55FF>No longer searching for an opponent");
+    DEFAULTS.put(
+        "not-looking-match",
+        "prefix <gradient:#FFAA00:#FF55FF>No longer searching for an opponent");
     DEFAULTS.put("match-found", "prefix <gradient:#FFAA00:#FF55FF>Opponent found!");
     DEFAULTS.put("in-queue", "prefix <gradient:#FFAA00:#FF55FF>You're already in a queue!");
     DEFAULTS.put("queue-already-exists", "prefix <gradient:#FFAA00:#FF55FF>Queue already exists!");
-    DEFAULTS.put("queue-being-created",
-        "prefix <gradient:#FFAA00:#FF55FF>Queue already being created!");
-    DEFAULTS.put("queue-invalid-item", "prefix <gradient:#FFAA00:#FF55FF>Invalid queue display item!");
+    DEFAULTS.put(
+        "queue-being-created", "prefix <gradient:#FFAA00:#FF55FF>Queue already being created!");
+    DEFAULTS.put(
+        "queue-invalid-item", "prefix <gradient:#FFAA00:#FF55FF>Invalid queue display item!");
     DEFAULTS.put("queue-created", "prefix <gradient:#FFAA00:#FF55FF>Queue successfully created!");
     DEFAULTS.put("queue-not-found", "prefix <gradient:#FFAA00:#FF55FF>Queue not found!");
-    DEFAULTS.put("you-have-request",
-        "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request!");
-    DEFAULTS.put("already-has-request",
+    DEFAULTS.put(
+        "you-have-request", "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request!");
+    DEFAULTS.put(
+        "already-has-request",
         "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request to that player!");
-    DEFAULTS.put("add-arena",
+    DEFAULTS.put(
+        "add-arena",
         "prefix <gradient:#FFAA00:#FF55FF>What arena would you like to add to the queue? Type its name into chat. You have added %s arenas so far");
-    DEFAULTS.put("no-teleport",
-        "prefix <gradient:#FFAA00:#FF55FF>You cannot teleport during a duel!");
-    DEFAULTS.put("commands-disabled",
+    DEFAULTS.put(
+        "no-teleport", "prefix <gradient:#FFAA00:#FF55FF>You cannot teleport during a duel!");
+    DEFAULTS.put(
+        "commands-disabled",
         "prefix <gradient:#FFAA00:#FF55FF>You cannot use commands during a duel!");
     DEFAULTS.put("duel-kit", "prefix <gradient:#FFAA00:#FF55FF>Duel kit set!");
-    DEFAULTS.put("start-spectating",
-        "prefix <gradient:#FFAA00:#FF55FF>You are now spectating!");
-    DEFAULTS.put("stop-spectating",
-        "prefix <gradient:#FFAA00:#FF55FF>You are no longer spectating");
+    DEFAULTS.put("start-spectating", "prefix <gradient:#FFAA00:#FF55FF>You are now spectating!");
+    DEFAULTS.put(
+        "stop-spectating", "prefix <gradient:#FFAA00:#FF55FF>You are no longer spectating");
     DEFAULTS.put("no-last-duel", "prefix <gradient:#FFAA00:#FF55FF>No previous duel found!");
-    DEFAULTS.put("unknown-duel-command",
+    DEFAULTS.put(
+        "unknown-duel-command",
         "prefix <gradient:#FFAA00:#FF55FF>Unknown Duel Command! Use /help for help!");
-    DEFAULTS.put("unknown-matchmaking-command",
+    DEFAULTS.put(
+        "unknown-matchmaking-command",
         "prefix <gradient:#FFAA00:#FF55FF>Unknown Matchmaking Command! Use /help for help!");
-    DEFAULTS.put("unknown-arena-command",
+    DEFAULTS.put(
+        "unknown-arena-command",
         "prefix <gradient:#FFAA00:#FF55FF>Unknown Arena Command! Use /help for help!");
-    DEFAULTS.put("unknown-queue-command",
+    DEFAULTS.put(
+        "unknown-queue-command",
         "prefix <gradient:#FFAA00:#FF55FF>Unknown Arena Command! Use /help for help!");
     DEFAULTS.put("queue-menu", "<gradient:#FFAA00:#FF55FF><bold>Select Duel Type");
     DEFAULTS.put("duel-kit-gui", "<gradient:#FFAA00:#FF55FF><bold>Select Duel Kit");
@@ -111,9 +124,12 @@ public class Lang {
     DEFAULTS.put("no-kit", "<gradient:#FFAA00:#FF55FF>No kit");
     DEFAULTS.put("kit-invalid-name", "prefix <gradient:#FFAA00:#FF55FF>Invalid kit name!");
     DEFAULTS.put("reloaded", "prefix <gradient:#FFAA00:#FF55FF>Plugin reloaded!");
-    DEFAULTS.put("opponent-bossbar",
+    DEFAULTS.put(
+        "opponent-bossbar",
         "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><blue> %3$s Blocks Away");
-    DEFAULTS.put("help-command", """
+    DEFAULTS.put(
+        "help-command",
+        """
         prefix <gradient:#FFAA00:#FF55FF>All Commands:\s
         <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player\s
         <blue><bold>/ranked [name]: <reset><yellow>Joins a ranked queue, or the default one if no name is given\s
@@ -134,10 +150,10 @@ public class Lang {
     }
 
     for (Object path : get().getKeys(false).toArray()) {
-      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~") &&
-          Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
-        PLACEHOLDERS.put((String) path, Objects.requireNonNull(get().getString((String) path))
-            .replace("~", ""));
+      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~")
+          && Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
+        PLACEHOLDERS.put(
+            (String) path, Objects.requireNonNull(get().getString((String) path)).replace("~", ""));
       }
     }
   }
@@ -147,8 +163,7 @@ public class Lang {
     for (String placeholder : PLACEHOLDERS.keySet()) {
       assert pathString != null;
       if (pathString.contains(placeholder)) {
-        pathString = pathString.replace(placeholder,
-            PLACEHOLDERS.get(placeholder));
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
     return pathString;
@@ -159,8 +174,7 @@ public class Lang {
     assert pathString != null;
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
-        pathString = pathString.replace(placeholder,
-            PLACEHOLDERS.get(placeholder));
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
 
@@ -175,8 +189,7 @@ public class Lang {
 
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
-        pathString = pathString.replace(placeholder,
-            PLACEHOLDERS.get(placeholder));
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
     return MiniMessage.miniMessage().deserialize(pathString);

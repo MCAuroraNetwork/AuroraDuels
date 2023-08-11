@@ -1,17 +1,14 @@
 package club.aurorapvp.auroraduels.events.custom;
 
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-/**
- * Event that is fired after a duel ends
- */
+/** Event that is fired after a duel ends */
 public class DuelEndEvent extends Event {
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player[] winners;
@@ -23,17 +20,20 @@ public class DuelEndEvent extends Event {
     this.winners = winners;
     this.losers = losers;
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        for (Player p : duel.getPlayers()) {
-          p.teleportAsync(duel.getRespawnLocation());
-        }
-        duel.getArena().resetAsync();
-        duel.getArena().setOccupied(false);
-        this.cancel();
-      }
-    }, 3000);
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                for (Player p : duel.getPlayers()) {
+                  p.teleportAsync(duel.getRespawnLocation());
+                }
+                duel.getArena().resetAsync();
+                duel.getArena().setOccupied(false);
+                this.cancel();
+              }
+            },
+            3000);
 
     for (Player p : winners) {
       Duel.addWin(p);

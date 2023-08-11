@@ -21,8 +21,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Request {
-  protected static final LinkedList<Request>
-      PENDING_REQUESTS = new LinkedList<>();
+  protected static final LinkedList<Request> PENDING_REQUESTS = new LinkedList<>();
   private final HashMap<Player, Boolean> playersAccepted = new HashMap<>();
   private final Player requester;
   private final Set<Player> requested = new HashSet<>();
@@ -106,8 +105,8 @@ public class Request {
       return;
     }
 
-    if (QueueGUI.isQueueGUI(event.getInventory()) &&
-        Objects.requireNonNull(Duel.getDuel(p)).getQueue() == null) {
+    if (QueueGUI.isQueueGUI(event.getInventory())
+        && Objects.requireNonNull(Duel.getDuel(p)).getQueue() == null) {
       Duel.getDuels().remove(Duel.getDuel(p));
       PENDING_REQUESTS.remove(Request.getRequest(p));
     }
@@ -192,22 +191,24 @@ public class Request {
 
     Request thisRequest = this;
 
-    new Timer().schedule(new TimerTask() {
-                           @Override
-                           public void run() {
-                             if (PENDING_REQUESTS.contains(thisRequest)) {
-                               requester.sendMessage(Lang.getComponent("request-timed-out"));
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                if (PENDING_REQUESTS.contains(thisRequest)) {
+                  requester.sendMessage(Lang.getComponent("request-timed-out"));
 
-                               for (Player p : requested) {
-                                 p.sendMessage(Lang.getComponent("request-timed-out"));
-                               }
+                  for (Player p : requested) {
+                    p.sendMessage(Lang.getComponent("request-timed-out"));
+                  }
 
-                               PENDING_REQUESTS.remove(thisRequest);
-                               this.cancel();
-                             }
-                           }
-                         }, Config.get().getInt("requests.expiry-time")
-    );
+                  PENDING_REQUESTS.remove(thisRequest);
+                  this.cancel();
+                }
+              }
+            },
+            Config.get().getInt("requests.expiry-time"));
   }
 
   public void accept(Player p) {

@@ -12,9 +12,11 @@ public class ItemStackUtil {
     final ItemMeta meta = item.getItemMeta();
 
     meta.displayName(
-        MiniMessage.miniMessage().deserialize(
-                "<gradient:#FFAA00:#FF55FF><bold>" + name.substring(0, 1).toUpperCase() +
-                    name.substring(1))
+        MiniMessage.miniMessage()
+            .deserialize(
+                "<gradient:#FFAA00:#FF55FF><bold>"
+                    + name.substring(0, 1).toUpperCase()
+                    + name.substring(1))
             .decoration(TextDecoration.ITALIC, false));
 
     item.setItemMeta(meta);

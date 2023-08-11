@@ -19,7 +19,6 @@ public final class AuroraDuels extends JavaPlugin {
   private static boolean auroraCombatInstalled = false;
   private static boolean auroraWarpsInstalled = false;
 
-
   public static boolean isAuroraKitsInstalled() {
     return auroraKitsInstalled;
   }
@@ -48,18 +47,18 @@ public final class AuroraDuels extends JavaPlugin {
       new Placeholders().register();
     }
 
-    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null &&
-        Config.get().getBoolean("optional-plugins.aurorakits-compatibility")) {
+    if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null
+        && Config.get().getBoolean("optional-plugins.aurorakits-compatibility")) {
       auroraKitsInstalled = true;
     }
 
-    if (Bukkit.getPluginManager().getPlugin("AuroraCombat") != null &&
-        Config.get().getBoolean("optional-plugins.auroracombat-compatibility.enabled")) {
+    if (Bukkit.getPluginManager().getPlugin("AuroraCombat") != null
+        && Config.get().getBoolean("optional-plugins.auroracombat-compatibility.enabled")) {
       auroraCombatInstalled = true;
     }
 
-    if (Bukkit.getPluginManager().getPlugin("AuroraWarps") != null &&
-        Config.get().getBoolean("optional-plugins.aurorawarps-compatibility")) {
+    if (Bukkit.getPluginManager().getPlugin("AuroraWarps") != null
+        && Config.get().getBoolean("optional-plugins.aurorawarps-compatibility")) {
       auroraWarpsInstalled = true;
     }
 
@@ -71,9 +70,7 @@ public final class AuroraDuels extends JavaPlugin {
     QueueGUI.init();
     Wand.init();
 
-    getLogger().info(
-        "AuroraDuels enabled in " + (System.currentTimeMillis() - startTime) +
-            "ms");
+    getLogger().info("AuroraDuels enabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
   @Override
@@ -86,8 +83,6 @@ public final class AuroraDuels extends JavaPlugin {
       }
     }
 
-    getLogger().info(
-        "AuroraDuels disabled in " + (System.currentTimeMillis() - startTime) +
-            "ms");
+    getLogger().info("AuroraDuels disabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 }

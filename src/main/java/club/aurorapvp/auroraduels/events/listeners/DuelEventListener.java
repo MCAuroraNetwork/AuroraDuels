@@ -2,7 +2,6 @@ package club.aurorapvp.auroraduels.events.listeners;
 
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
-import club.aurorapvp.auroracombat.modules.Score;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;

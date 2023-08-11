@@ -8,13 +8,12 @@ import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
+import io.papermc.paper.entity.LookAnchor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
@@ -39,8 +38,14 @@ public class StandardDuel extends Duel implements Listener {
     this.rounds = rounds;
   }
 
-  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, Location respawnLocation,
-                      boolean ranked, int rounds) {
+  public StandardDuel(
+      Player p1,
+      Player p2,
+      Queue queue,
+      Kit kit,
+      Location respawnLocation,
+      boolean ranked,
+      int rounds) {
     super(Set.of(p1, p2), respawnLocation, queue, kit, ranked);
     this.playerOne = p1;
     this.playerTwo = p2;
@@ -67,12 +72,16 @@ public class StandardDuel extends Duel implements Listener {
     }
 
     Location spawn1 =
-        new Location(arena.getWorld(),
-            arena.getFirstSpawn().getX(), arena.getFirstSpawn().getY(),
+        new Location(
+            arena.getWorld(),
+            arena.getFirstSpawn().getX(),
+            arena.getFirstSpawn().getY(),
             arena.getFirstSpawn().getZ());
     Location spawn2 =
-        new Location(arena.getWorld(),
-            arena.getSecondSpawn().getX(), arena.getSecondSpawn().getY(),
+        new Location(
+            arena.getWorld(),
+            arena.getSecondSpawn().getX(),
+            arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
     playerOne.teleportAsync(spawn1);
@@ -80,15 +89,16 @@ public class StandardDuel extends Duel implements Listener {
     playerTwo.teleportAsync(spawn2);
     playerTwo.lookAt(spawn1, LookAnchor.EYES);
 
-    checkBoundsId = Bukkit.getScheduler()
-        .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    checkBoundsId =
+        Bukkit.getScheduler()
+            .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
     final Title title1 =
-        Title.title(Lang.getComponent("duel-started"),
-            Component.text("Opponent: " + playerTwo.getName()));
+        Title.title(
+            Lang.getComponent("duel-started"), Component.text("Opponent: " + playerTwo.getName()));
     final Title title2 =
-        Title.title(Lang.getComponent("duel-started"),
-            Component.text("Opponent: " + playerOne.getName()));
+        Title.title(
+            Lang.getComponent("duel-started"), Component.text("Opponent: " + playerOne.getName()));
 
     if (rounds > 1) {
       playerOne.sendActionBar(Lang.formatComponent("rounds-remaining", currentRound, rounds));
@@ -100,53 +110,60 @@ public class StandardDuel extends Duel implements Listener {
 
     StandardDuel thisDuel = this;
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        if (thisDuel.isActive()) {
-          playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
-          playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
-          thisDuel.draw();
-        }
-        this.cancel();
-      }
-    }, Config.get().getInt("duels.max-duration"));
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                if (thisDuel.isActive()) {
+                  playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
+                  playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
+                  thisDuel.draw();
+                }
+                this.cancel();
+              }
+            },
+            Config.get().getInt("duels.max-duration"));
 
-    bossbarTaskId = new BukkitRunnable() {
-      @Override
-      public void run() {
-        if (playerOneBar[0] != null) {
-          playerOne.hideBossBar(playerOneBar[0]);
-        }
+    bossbarTaskId =
+        new BukkitRunnable() {
+          @Override
+          public void run() {
+            if (playerOneBar[0] != null) {
+              playerOne.hideBossBar(playerOneBar[0]);
+            }
 
-        playerOneBar[0] = BossBar.bossBar(
-                Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
+            playerOneBar[0] =
+                BossBar.bossBar(
+                    Lang.formatComponent(
+                        "opponent-bossbar",
+                        playerTwo.getName(),
                         (int) playerTwo.getHealth(),
                         (int) playerTwo.getLocation().distance(playerOne.getLocation())),
-                1.0f,
-                BossBar.Color.RED,
-                BossBar.Overlay.PROGRESS
-        );
+                    1.0f,
+                    BossBar.Color.RED,
+                    BossBar.Overlay.PROGRESS);
 
-        playerOne.showBossBar(playerOneBar[0]);
+            playerOne.showBossBar(playerOneBar[0]);
 
-        if (playerTwoBar[0] != null) {
-          playerTwo.hideBossBar(playerTwoBar[0]);
-        }
+            if (playerTwoBar[0] != null) {
+              playerTwo.hideBossBar(playerTwoBar[0]);
+            }
 
-        playerTwoBar[0] = BossBar.bossBar(
-                Lang.formatComponent("opponent-bossbar", playerOne.getName(),
+            playerTwoBar[0] =
+                BossBar.bossBar(
+                    Lang.formatComponent(
+                        "opponent-bossbar",
+                        playerOne.getName(),
                         (int) playerOne.getHealth(),
                         (int) playerOne.getLocation().distance(playerTwo.getLocation())),
-                1.0f,
-                BossBar.Color.RED,
-                BossBar.Overlay.PROGRESS
-        );
+                    1.0f,
+                    BossBar.Color.RED,
+                    BossBar.Overlay.PROGRESS);
 
-        playerTwo.showBossBar(playerTwoBar[0]);
-      }
-    }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L).getTaskId();
-
+            playerTwo.showBossBar(playerTwoBar[0]);
+          }
+        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L).getTaskId();
 
     timeStarted = System.currentTimeMillis();
 
@@ -203,11 +220,11 @@ public class StandardDuel extends Duel implements Listener {
     Bukkit.getScheduler().cancelTask(bossbarTaskId);
 
     winner[0].showTitle(
-        Title.title(Lang.getComponent("you-won"),
-            Component.text("Opponent: " + loser[0].getName())));
+        Title.title(
+            Lang.getComponent("you-won"), Component.text("Opponent: " + loser[0].getName())));
     loser[0].showTitle(
-        Title.title(Lang.getComponent("you-lost"),
-            Component.text("Opponent: " + winner[0].getName())));
+        Title.title(
+            Lang.getComponent("you-lost"), Component.text("Opponent: " + winner[0].getName())));
 
     playerOne.hideBossBar(playerOneBar[0]);
     playerTwo.hideBossBar(playerTwoBar[0]);
@@ -239,16 +256,19 @@ public class StandardDuel extends Duel implements Listener {
       p.sendMessage(Lang.getComponent("draw"));
     }
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        playerOne.teleportAsync(respawnLocation);
-        playerTwo.teleportAsync(respawnLocation);
-        arena.resetAsync();
-        arena.setOccupied(false);
-        this.cancel();
-      }
-    }, 3000);
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                playerOne.teleportAsync(respawnLocation);
+                playerTwo.teleportAsync(respawnLocation);
+                arena.resetAsync();
+                arena.setOccupied(false);
+                this.cancel();
+              }
+            },
+            3000);
 
     playerOne.hideBossBar(playerOneBar[0]);
     playerTwo.hideBossBar(playerTwoBar[0]);

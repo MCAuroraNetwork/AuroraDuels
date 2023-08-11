@@ -46,8 +46,9 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerChat(AsyncChatEvent event) {
     if (Queue.isCreator(event.getPlayer()) && !Queue.isArenasSet()) {
-      Queue.getUnFinishedQueue().createArenaList(event.getPlayer(),
-          MiniMessage.miniMessage().serialize(event.originalMessage()));
+      Queue.getUnFinishedQueue()
+          .createArenaList(
+              event.getPlayer(), MiniMessage.miniMessage().serialize(event.originalMessage()));
       event.setCancelled(true);
     }
   }
@@ -87,14 +88,12 @@ public class PlayerEventListener implements Listener {
     Duel duel = Duel.getDuel(p);
 
     if (duel instanceof StandardDuel standardDuel) {
-      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(p)},
-          new Player[] {p});
+      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(p)}, new Player[] {p});
     } else if (duel instanceof PartyDuel partyDuel) {
       partyDuel.setDead(p);
 
       if (partyDuel.teamDead(p)) {
-        duel.endDuel(partyDuel.getOpponents(p),
-            partyDuel.getTeammates(p));
+        duel.endDuel(partyDuel.getOpponents(p), partyDuel.getTeammates(p));
       } else {
         duel.setSpectator(p, true);
       }
@@ -102,8 +101,7 @@ public class PlayerEventListener implements Listener {
       teamDuel.setDead(p);
 
       if ((teamDuel.teamDead(p))) {
-        duel.endDuel(teamDuel.getOpponents(p),
-            teamDuel.getTeammates(p));
+        duel.endDuel(teamDuel.getOpponents(p), teamDuel.getTeammates(p));
       } else {
         duel.setSpectator(p, true);
       }

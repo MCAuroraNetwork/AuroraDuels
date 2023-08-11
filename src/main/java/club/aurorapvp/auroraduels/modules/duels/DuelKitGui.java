@@ -65,8 +65,8 @@ public class DuelKitGui {
     if (event.getCurrentItem().getItemMeta().displayName() == null) {
       p.sendMessage(Lang.getComponent("kit-invalid-name"));
     } else {
-      String itemName = PlainTextComponentSerializer.plainText()
-          .serialize(event.getCurrentItem().displayName());
+      String itemName =
+          PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
       String kitName = itemName.substring(1, itemName.length() - 1);
 
       Kit kit = Kit.getKit(p, kitName);

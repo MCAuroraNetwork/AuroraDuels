@@ -25,12 +25,17 @@ public class QueueGUI {
       ItemMeta meta = displayItem.getItemMeta();
 
       if (queue.getKit() != null) {
-        meta.lore(List.of(MiniMessage.miniMessage()
-            .deserialize("<gradient:#FFAA00:#FF55FF>Kit: " + queue.getKit().getName())));
+        meta.lore(
+            List.of(
+                MiniMessage.miniMessage()
+                    .deserialize("<gradient:#FFAA00:#FF55FF>Kit: " + queue.getKit().getName())));
       }
 
-      meta.lore(List.of(MiniMessage.miniMessage()
-          .deserialize("<gradient:#FFAA00:#FF55FF>Currently in Queue: " + queue.inQueue())));
+      meta.lore(
+          List.of(
+              MiniMessage.miniMessage()
+                  .deserialize(
+                      "<gradient:#FFAA00:#FF55FF>Currently in Queue: " + queue.inQueue())));
       displayItem.setItemMeta(meta);
 
       itemStacks[i] = displayItem;
@@ -88,8 +93,11 @@ public class QueueGUI {
         ItemMeta meta = itemStack.getItemMeta();
         assert queue != null;
 
-        meta.lore(List.of(MiniMessage.miniMessage()
-            .deserialize("<gradient:#FFAA00:#FF55FF>Currently in Queue: " + queue.inQueue())));
+        meta.lore(
+            List.of(
+                MiniMessage.miniMessage()
+                    .deserialize(
+                        "<gradient:#FFAA00:#FF55FF>Currently in Queue: " + queue.inQueue())));
         itemStack.setItemMeta(meta);
       }
     }

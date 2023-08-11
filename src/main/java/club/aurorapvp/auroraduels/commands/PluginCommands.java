@@ -29,8 +29,9 @@ public class PluginCommands extends BaseCommand {
 
     p.sendMessage(Lang.getComponent("reloaded"));
 
-    AuroraDuels.INSTANCE.getLogger().info(
-        "AuroraDuels reloaded in " + (System.currentTimeMillis() - startTime) + "ms");
+    AuroraDuels.INSTANCE
+        .getLogger()
+        .info("AuroraDuels reloaded in " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
   @CatchUnknown
