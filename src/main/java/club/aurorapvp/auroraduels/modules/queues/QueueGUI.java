@@ -49,15 +49,16 @@ public class QueueGUI {
     int itemStacksCount = displayItems.length;
     int startingSlotInMiddleRow = 9;
 
-    int slotsBetweenItems = (9 - itemStacksCount % 9) / (itemStacksCount % 9 + 1);
+    int slotsBetweenItems = Math.max(0, (9 - itemStacksCount) / (itemStacksCount + 1));
 
     int startingSlot = startingSlotInMiddleRow + slotsBetweenItems;
+    int slotsBetweenColumns = slotsBetweenItems + 1;
 
     for (int i = 0; i < displayItems.length; i++) {
       int row = i / 9;
       int col = i % 9;
 
-      int slotIndex = startingSlot + row * 9 + (slotsBetweenItems + 1) * col;
+      int slotIndex = startingSlot + row * 9 + slotsBetweenColumns * col;
       inventory.setItem(slotIndex, displayItems[i]);
     }
   }
