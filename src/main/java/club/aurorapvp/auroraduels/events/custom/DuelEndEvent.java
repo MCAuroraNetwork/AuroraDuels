@@ -8,7 +8,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-/** Event that is fired after a duel ends */
+/* Event that is fired after a duel ends */
 public class DuelEndEvent extends Event {
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player[] winners;

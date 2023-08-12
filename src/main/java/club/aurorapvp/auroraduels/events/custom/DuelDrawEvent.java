@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.bukkit.entity.Player;
@@ -16,17 +15,20 @@ public class DuelDrawEvent extends Event {
   public DuelDrawEvent(Duel duel) {
     this.duel = duel;
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        for (Player p : duel.getPlayers()) {
-          p.teleportAsync(duel.getRespawnLocation());
-        }
-        duel.getArena().resetAsync();
-        duel.getArena().setOccupied(false);
-        this.cancel();
-      }
-    }, 3000);
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                for (Player p : duel.getPlayers()) {
+                  p.teleportAsync(duel.getRespawnLocation());
+                }
+                duel.getArena().resetAsync();
+                duel.getArena().setOccupied(false);
+                this.cancel();
+              }
+            },
+            3000);
 
     duel.setActive(false);
   }

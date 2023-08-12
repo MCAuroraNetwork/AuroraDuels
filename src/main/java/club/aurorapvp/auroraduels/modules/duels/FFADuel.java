@@ -8,6 +8,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.util.LocationUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
 import java.util.HashMap;
@@ -22,8 +23,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -97,7 +96,8 @@ public class FFADuel extends Duel {
     Location center = new Location(spawn1.getWorld(), x, y, z);
 
     for (Player p : this.getPlayers()) {
-      p.teleportAsync(Objects.requireNonNull(findSafeSpawnLocation(spawn1, spawn2, center)));
+      p.teleportAsync(
+          Objects.requireNonNull(LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center)));
       p.lookAt(center, LookAnchor.EYES);
     }
 
@@ -199,82 +199,6 @@ public class FFADuel extends Duel {
     }.runTask(AuroraDuels.INSTANCE);
 
     duels.remove(this);
-  }
-
-  private Location findSafeSpawnLocation(Location spawn1, Location spawn2, Location center) {
-    int radius = (int) Math.floor(spawn1.distance(spawn2));
-
-    World world = center.getWorld();
-
-    int maxAttempts = 100;
-    int attempts = 0;
-
-    while (attempts < maxAttempts) {
-      double angle = random.nextDouble() * Math.PI * 2;
-      double distance = random.nextDouble() * radius;
-      double x = center.getX() + distance * Math.cos(angle);
-      double z = center.getZ() + distance * Math.sin(angle);
-
-      Location spawnLocation = new Location(world, x, center.getY(), z);
-
-      if (isSafeSpawnLocation(spawnLocation)) {
-        return spawnLocation;
-      }
-
-      attempts++;
-    }
-
-    return null;
-  }
-
-  private boolean isSafeSpawnLocation(Location location) {
-    Material blockType = location.getBlock().getType();
-    Material belowBlockType = location.clone().add(0, -1, 0).getBlock().getType();
-    Material aboveBlockType = location.clone().add(0, 1, 0).getBlock().getType();
-
-    boolean isAir = blockType == Material.AIR;
-    boolean isNotDangerous =
-        !blockType.isOccluding()
-            && !blockType.isSolid()
-            && blockType != Material.LAVA
-            && blockType != Material.MAGMA_BLOCK;
-    boolean isOnSolidGround =
-        belowBlockType.isSolid()
-            && belowBlockType != Material.LAVA
-            && belowBlockType != Material.MAGMA_BLOCK;
-    boolean hasEnoughHeadroom = aboveBlockType == Material.AIR;
-
-    if (!isAir && !(isNotDangerous && isOnSolidGround && hasEnoughHeadroom)) {
-      int maxAdjustments = 5;
-      int adjustments = 0;
-
-      while (adjustments < maxAdjustments) {
-        location.setY(location.getY() + 1);
-        blockType = location.getBlock().getType();
-        belowBlockType = location.clone().add(0, -1, 0).getBlock().getType();
-        aboveBlockType = location.clone().add(0, 1, 0).getBlock().getType();
-
-        isAir = blockType == Material.AIR;
-        isNotDangerous =
-            !blockType.isOccluding()
-                && !blockType.isSolid()
-                && blockType != Material.LAVA
-                && blockType != Material.MAGMA_BLOCK;
-        isOnSolidGround =
-            belowBlockType.isSolid()
-                && belowBlockType != Material.LAVA
-                && belowBlockType != Material.MAGMA_BLOCK;
-        hasEnoughHeadroom = aboveBlockType == Material.AIR;
-
-        if (isAir || (isNotDangerous && isOnSolidGround && hasEnoughHeadroom)) {
-          return true;
-        }
-
-        adjustments++;
-      }
-    }
-
-    return isAir || (isNotDangerous && isOnSolidGround && hasEnoughHeadroom);
   }
 
   @Override
