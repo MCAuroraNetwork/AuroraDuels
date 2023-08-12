@@ -140,7 +140,8 @@ public class StandardDuel extends Duel implements Listener {
                         "opponent-bossbar",
                         playerTwo.getName(),
                         (int) playerTwo.getHealth(),
-                        (int) playerTwo.getLocation().distance(playerOne.getLocation())),
+                        (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                        playerTwo.getPing()),
                     1.0f,
                     BossBar.Color.RED,
                     BossBar.Overlay.PROGRESS);
@@ -157,7 +158,8 @@ public class StandardDuel extends Duel implements Listener {
                         "opponent-bossbar",
                         playerOne.getName(),
                         (int) playerOne.getHealth(),
-                        (int) playerOne.getLocation().distance(playerTwo.getLocation())),
+                        (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                        playerOne.getPing()),
                     1.0f,
                     BossBar.Color.RED,
                     BossBar.Overlay.PROGRESS);
