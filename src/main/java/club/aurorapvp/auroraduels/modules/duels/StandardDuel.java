@@ -166,7 +166,7 @@ public class StandardDuel extends Duel implements Listener {
 
             playerTwo.showBossBar(playerTwoBar[0]);
           }
-        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L).getTaskId();
+        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L).getTaskId();
 
     timeStarted = System.currentTimeMillis();
 
