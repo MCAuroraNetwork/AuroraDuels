@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
@@ -95,45 +96,59 @@ public class FFADuel extends Duel {
 
     Location center = new Location(spawn1.getWorld(), x, y, z);
 
-    for (Player p : this.getPlayers()) {
-      p.teleportAsync(
-          Objects.requireNonNull(LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center)));
-      p.lookAt(center, LookAnchor.EYES);
-    }
+    FFADuel thisDuel = this;
+    new BukkitRunnable() {
+      int seconds = 3;
+
+      @Override
+      public void run() {
+        for (Player p : thisDuel.getPlayers()) {
+          p.teleportAsync(
+              Objects.requireNonNull(LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center)));
+          p.lookAt(center, LookAnchor.EYES);
+
+          p.showTitle(Title.title(Component.text(seconds), Component.text("")));
+
+          if ((seconds -= 1) == 0) {
+            StringBuilder sb;
+            String names;
+            Title title;
+
+            sb = new StringBuilder();
+
+            for (Player opponent : thisDuel.getPlayers()) {
+              if (p != opponent) {
+                sb.append(opponent.getName());
+                sb.append(", ");
+              }
+            }
+
+            names = sb.toString();
+            if (names.length() > 2) {
+              names = names.substring(0, names.length() - 2);
+            }
+
+            title =
+                Title.title(
+                    Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+
+            p.showTitle(title);
+
+            this.cancel();
+          }
+        }
+      }
+    }.runTaskTimer(AuroraCombat.INSTANCE, 1L, 1L);
 
     checkBoundsId =
         Bukkit.getScheduler()
             .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
-    StringBuilder sb;
-    String names;
-    Title title;
-
     Set<Player> players = this.getPlayers();
 
-    for (Player currentPlayer : players) {
-      deadPlayers.put(currentPlayer, false);
-
-      sb = new StringBuilder();
-
-      for (Player opponent : players) {
-        if (currentPlayer != opponent) {
-          sb.append(opponent.getName());
-          sb.append(", ");
-        }
-      }
-
-      names = sb.toString();
-      if (names.length() > 2) {
-        names = names.substring(0, names.length() - 2);
-      }
-
-      title = Title.title(Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
-
-      currentPlayer.showTitle(title);
+    for (Player p : players) {
+      deadPlayers.put(p, false);
     }
-
-    FFADuel thisDuel = this;
 
     new Timer()
         .schedule(

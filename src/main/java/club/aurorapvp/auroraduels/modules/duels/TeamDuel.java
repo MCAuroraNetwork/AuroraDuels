@@ -129,51 +129,77 @@ public class TeamDuel extends Duel {
 
     for (Player p : team1) {
       team1Dead.put(p, false);
-      p.teleportAsync(spawn1);
-      p.lookAt(spawn2, LookAnchor.EYES);
     }
 
     for (Player p : team2) {
       team2Dead.put(p, false);
-      p.teleportAsync(spawn2);
-      p.lookAt(spawn1, LookAnchor.EYES);
     }
 
-    checkBoundsId =
-        Bukkit.getScheduler()
-            .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    new BukkitRunnable() {
+      int seconds = 3;
 
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < team2.length; i++) {
-      sb.append(team2[i].getName());
-      if (i < team2.length - 1) {
-        sb.append(", ");
+      @Override
+      public void run() {
+        for (Player p : team1) {
+          p.teleportAsync(spawn1);
+          p.lookAt(spawn2, LookAnchor.EYES);
+
+          p.showTitle(Title.title(Component.text(seconds), Component.text("")));
+
+          if ((seconds -= 1) == 0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < team1.length; i++) {
+              sb.append(team2[i].getName());
+              if (i < team2.length - 1) {
+                sb.append(", ");
+              }
+            }
+            String names = sb.toString();
+
+            final Title title =
+                Title.title(
+                    Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+
+            p.showTitle(title);
+
+            this.cancel();
+          }
+        }
       }
-    }
-    String names = sb.toString();
+    };
 
-    final Title title1 =
-        Title.title(Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+    new BukkitRunnable() {
+      int seconds = 3;
 
-    sb = new StringBuilder();
-    for (int i = 0; i < team1.length; i++) {
-      sb.append(team1[i].getName());
-      if (i < team1.length - 1) {
-        sb.append(", ");
+      @Override
+      public void run() {
+        for (Player p : team2) {
+          p.teleportAsync(spawn2);
+          p.lookAt(spawn1, LookAnchor.EYES);
+
+          p.showTitle(Title.title(Component.text(seconds), Component.text("")));
+
+          if ((seconds -= 1) == 0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < team1.length; i++) {
+              sb.append(team1[i].getName());
+              if (i < team1.length - 1) {
+                sb.append(", ");
+              }
+            }
+            String names = sb.toString();
+
+            final Title title =
+                Title.title(
+                    Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+
+            p.showTitle(title);
+
+            this.cancel();
+          }
+        }
       }
-    }
-    names = sb.toString();
-
-    final Title title2 =
-        Title.title(Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
-
-    for (Player p : team1) {
-      p.showTitle(title1);
-    }
-
-    for (Player p : team2) {
-      p.showTitle(title2);
-    }
+    };
 
     TeamDuel thisDuel = this;
 
