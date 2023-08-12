@@ -1,6 +1,5 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
-import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
@@ -16,7 +15,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,7 +27,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class FFADuel extends Duel {
   private final Map<Player, Boolean> deadPlayers = new HashMap<>();
-  private final Random random = new Random();
 
   public FFADuel(Set<Player> players, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, ranked);
@@ -138,7 +135,7 @@ public class FFADuel extends Duel {
           }
         }
       }
-    }.runTaskTimer(AuroraCombat.INSTANCE, 1L, 1L);
+    }.runTaskTimer(AuroraDuels.INSTANCE, 1L, 1L);
 
     checkBoundsId =
         Bukkit.getScheduler()

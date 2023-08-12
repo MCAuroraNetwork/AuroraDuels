@@ -1,6 +1,5 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
-import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
@@ -9,12 +8,10 @@ import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.auroraduels.util.LocationUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -106,14 +103,18 @@ public class StandardDuel extends Duel implements Listener {
           if ((seconds -= 1) == 0) {
             final Title title1 =
                 Title.title(
-                    Lang.getComponent("duel-started"), Component.text("Opponent: " + playerTwo.getName()));
+                    Lang.getComponent("duel-started"),
+                    Component.text("Opponent: " + playerTwo.getName()));
             final Title title2 =
                 Title.title(
-                    Lang.getComponent("duel-started"), Component.text("Opponent: " + playerOne.getName()));
+                    Lang.getComponent("duel-started"),
+                    Component.text("Opponent: " + playerOne.getName()));
 
             if (rounds > 1) {
-              playerOne.sendActionBar(Lang.formatComponent("rounds-remaining", currentRound, rounds));
-              playerTwo.sendActionBar(Lang.formatComponent("rounds-remaining", currentRound, rounds));
+              playerOne.sendActionBar(
+                  Lang.formatComponent("rounds-remaining", currentRound, rounds));
+              playerTwo.sendActionBar(
+                  Lang.formatComponent("rounds-remaining", currentRound, rounds));
             }
 
             playerOne.showTitle(title1);
@@ -123,7 +124,7 @@ public class StandardDuel extends Duel implements Listener {
           }
         }
       }
-    }.runTaskTimer(AuroraCombat.INSTANCE, 1L, 1L);
+    }.runTaskTimer(AuroraDuels.INSTANCE, 1L, 1L);
 
     checkBoundsId =
         Bukkit.getScheduler()
