@@ -5,6 +5,7 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.data.QueueDataHandler;
+import club.aurorapvp.auroraduels.events.custom.QueueJoinEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
@@ -284,6 +285,8 @@ public class Queue {
     }
 
     executor.scheduleAtFixedRate(checkQueue, 0L, 1L, TimeUnit.SECONDS);
+
+    new QueueJoinEvent(duel).callEvent();
   }
 
   public static boolean inQueue(Player p) {
