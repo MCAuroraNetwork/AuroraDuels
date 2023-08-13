@@ -117,7 +117,7 @@ public class DuelKitGui {
     meta.displayName(Lang.getComponent("previous-page"));
     previousPage.setItemMeta(meta);
 
-    ItemStack noKit = new ItemStack(Material.RED_WOOL);
+    ItemStack noKit = new ItemStack(Material.BARRIER);
     meta = noKit.getItemMeta();
     meta.displayName(Lang.getComponent("no-kit"));
     noKit.setItemMeta(meta);
