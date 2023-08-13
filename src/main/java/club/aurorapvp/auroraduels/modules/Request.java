@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.modules;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
@@ -221,6 +222,8 @@ public class Request {
 
       duel.getQueue().enterDuelQueue(duel);
     }
+
+    new DuelRequestAcceptEvent(p, duel).callEvent();
   }
 
   public void deny() {
