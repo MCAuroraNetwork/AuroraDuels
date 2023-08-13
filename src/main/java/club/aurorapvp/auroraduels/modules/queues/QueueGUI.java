@@ -9,14 +9,16 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
-public class QueueGUI {
-  private static final Inventory inventory =
-      Bukkit.createInventory(null, 27, Lang.getComponent("queue-menu"));
+public class QueueGUI implements InventoryHolder {
+  private final Inventory inventory =
+      Bukkit.createInventory(this, 27, Lang.getComponent("queue-menu"));
 
-  public static void init() {
+  public QueueGUI() {
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
 
     int i = 0;
@@ -45,7 +47,7 @@ public class QueueGUI {
     populateGUI(itemStacks);
   }
 
-  public static void populateGUI(ItemStack[] displayItems) {
+  public void populateGUI(ItemStack[] displayItems) {
     int itemStacksCount = displayItems.length;
     int startingSlotInMiddleRow = 9;
 
@@ -63,7 +65,7 @@ public class QueueGUI {
     }
   }
 
-  public static void addItem(ItemStack newItem) {
+  public void addItem(ItemStack newItem) {
     ItemStack[] currentItems = inventory.getContents();
 
     long nonNullItemCount = Arrays.stream(currentItems).filter(Objects::nonNull).count();
@@ -83,7 +85,7 @@ public class QueueGUI {
     populateGUI(updatedItems);
   }
 
-  public static void reload() {
+  public void reload() {
     for (ItemStack itemStack : inventory.getContents()) {
       if (itemStack != null && !itemStack.getType().isAir()) {
         String itemName =
@@ -104,12 +106,13 @@ public class QueueGUI {
     }
   }
 
-  public static void open(Player p) {
+  public void open(Player p) {
     reload();
     p.openInventory(inventory);
   }
 
-  public static boolean isQueueGUI(Inventory inv) {
-    return inv == inventory;
+  @Override
+  public @NotNull Inventory getInventory() {
+    return inventory;
   }
 }

@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraDuels extends JavaPlugin {
   public static JavaPlugin INSTANCE;
+  private static QueueGUI queueGUI;
   private static boolean auroraKitsInstalled = false;
   private static boolean auroraCombatInstalled = false;
   private static boolean auroraWarpsInstalled = false;
@@ -30,6 +31,10 @@ public final class AuroraDuels extends JavaPlugin {
   // TODO actually use this
   public static boolean isAuroraWarpsInstalled() {
     return auroraWarpsInstalled;
+  }
+
+  public static QueueGUI getQueueGUI() {
+    return queueGUI;
   }
 
   @Override
@@ -67,8 +72,9 @@ public final class AuroraDuels extends JavaPlugin {
     EventManager.init();
     Arena.init();
     Queue.init();
-    QueueGUI.init();
     Wand.init();
+
+    queueGUI = new QueueGUI();
 
     getLogger().info("AuroraDuels enabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }

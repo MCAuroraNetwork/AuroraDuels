@@ -7,7 +7,6 @@ import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -52,7 +51,7 @@ public class Request {
       }
     }
 
-    QueueGUI.open(requester);
+    AuroraDuels.getQueueGUI().open(requester);
 
     PENDING_REQUESTS.add(this);
   }
@@ -60,7 +59,10 @@ public class Request {
   public static void onInventoryClicked(InventoryClickEvent event) {
     Player p = (Player) event.getWhoClicked();
 
-    if (!QueueGUI.isQueueGUI(event.getClickedInventory()) || !Request.hasPendingRequest(p)) {
+    if (!(Objects.equals(
+            Objects.requireNonNull(event.getClickedInventory()).getHolder(),
+            AuroraDuels.getQueueGUI())
+        || !Request.hasPendingRequest(p))) {
       return;
     }
 
@@ -106,17 +108,13 @@ public class Request {
       return;
     }
 
-    if (QueueGUI.isQueueGUI(event.getInventory())
+    if (Objects.equals(event.getInventory().getHolder(), AuroraDuels.getQueueGUI())
         && Objects.requireNonNull(Duel.getDuel(p)).getQueue() == null) {
       Duel.getDuels().remove(Duel.getDuel(p));
       PENDING_REQUESTS.remove(Request.getRequest(p));
     }
 
-    if (DuelKitGui.getGui(p) == null) {
-      return;
-    }
-
-    if (Objects.requireNonNull(DuelKitGui.getGui(p)).isGuiInventory(event.getInventory())) {
+    if (event.getInventory().getHolder() instanceof DuelKitGui.KitGuiPage) {
       Objects.requireNonNull(Request.getRequest(p)).sendRequest();
     }
   }

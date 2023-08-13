@@ -2,8 +2,9 @@ package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -11,35 +12,112 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 public class DuelKitGui {
-  private static final Set<DuelKitGui> KITS_GUIS = new HashSet<>();
+  private static final Map<Player, DuelKitGui> KITS_GUIS = new HashMap<>();
   private final Player p;
-  private Inventory[] inventories;
+  private KitGuiPage[] pages;
   private int currentPage = 0;
-  private int pages;
+  private int index;
 
   public DuelKitGui(Player p) {
     this.p = p;
 
     reload();
 
-    KITS_GUIS.add(this);
+    KITS_GUIS.put(p, this);
 
     open();
+  }
+
+  public Player getPlayer() {
+    return p;
+  }
+
+  public static void remove(Player p) {
+    KITS_GUIS.remove(p);
+  }
+
+  public void nextPage() {
+    if (currentPage <= index) {
+      currentPage++;
+    } else {
+      currentPage = 0;
+    }
+    this.open();
+  }
+
+  public void previousPage() {
+    if (currentPage >= 1) {
+      currentPage--;
+    } else {
+      currentPage = index;
+    }
+    this.open();
+  }
+
+  public Inventory getCurrentPage() {
+    return pages[currentPage].getInventory();
+  }
+
+  public void reload() {
+    Set<Kit> kitSet = Kit.getKits(this.getPlayer(), true);
+
+    for (int i = 0; i < kitSet.size(); i++) {
+      if (i % 44 == 0 && i != 0) {
+        index++;
+      }
+    }
+
+    pages = new KitGuiPage[index + 1];
+
+    int currentPages = index + 1;
+
+    for (int i = 0; i < currentPages; i++) {
+      int numKits = kitSet.size() - i * 45;
+      Kit[] kits = new Kit[Math.max(numKits, 0)];
+
+      Iterator<Kit> iterator = kitSet.iterator();
+
+      int counter = 0;
+
+      while (iterator.hasNext()) {
+        if (counter < i * 45) {
+          iterator.next();
+          counter++;
+          continue;
+        }
+
+        if (counter - i * 45 >= kits.length) {
+          break;
+        }
+
+        kits[counter - i * 45] = iterator.next();
+        counter++;
+      }
+
+      pages[index] = new KitGuiPage(kits);
+      index++;
+    }
+  }
+
+  private void open() {
+    p.openInventory(this.getCurrentPage());
   }
 
   public static void onInventoryClicked(InventoryClickEvent event) {
     Player p = (Player) event.getWhoClicked();
 
-    DuelKitGui duelGUI = DuelKitGui.getGui(p);
+    DuelKitGui duelGUI = KITS_GUIS.get(p);
 
     Duel duel = Duel.getDuel(p);
     assert duel != null;
 
-    if (duelGUI == null || !duelGUI.isGuiInventory(event.getInventory())) {
+    if (duelGUI == null || !(event.getInventory().getHolder() instanceof KitGuiPage)) {
       return;
     }
 
@@ -66,7 +144,8 @@ public class DuelKitGui {
       p.sendMessage(Lang.getComponent("kit-invalid-name"));
     } else {
       String itemName =
-          PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
+          PlainTextComponentSerializer.plainText()
+              .serialize(event.getCurrentItem().displayName());
       String kitName = itemName.substring(1, itemName.length() - 1);
 
       Kit kit = Kit.getKit(p, kitName);
@@ -77,131 +156,42 @@ public class DuelKitGui {
     }
   }
 
-  public static DuelKitGui getGui(Player p) {
-    for (DuelKitGui kitsGui : KITS_GUIS) {
-      if (kitsGui.getPlayer() == p) {
-        return kitsGui;
-      }
-    }
-    return null;
-  }
+  public static class KitGuiPage implements InventoryHolder {
 
-  public Player getPlayer() {
-    return p;
-  }
+    private final Inventory inventory;
 
-  public static void remove(Player p) {
-    DuelKitGui kitGui = DuelKitGui.getGui(p);
+    private KitGuiPage(Kit[] kits) {
+      inventory = Bukkit.createInventory(null, 54, Lang.getComponent("duel-kit-gui"));
 
-    if (kitGui != null) {
-      KITS_GUIS.remove(kitGui);
-    }
-  }
-
-  public void addPage(Kit[] kits) {
-    Inventory inventory = Bukkit.createInventory(null, 54, Lang.getComponent("duel-kit-gui"));
-
-    for (Kit kit : kits) {
-      inventory.addItem(kit.getDisplayItem());
-    }
-
-    ItemMeta meta;
-
-    ItemStack nextPage = new ItemStack(Material.PAPER);
-    meta = nextPage.getItemMeta();
-    meta.displayName(Lang.getComponent("next-page"));
-    nextPage.setItemMeta(meta);
-
-    ItemStack previousPage = new ItemStack(Material.PAPER);
-    meta = previousPage.getItemMeta();
-    meta.displayName(Lang.getComponent("previous-page"));
-    previousPage.setItemMeta(meta);
-
-    ItemStack noKit = new ItemStack(Material.BARRIER);
-    meta = noKit.getItemMeta();
-    meta.displayName(Lang.getComponent("no-kit"));
-    noKit.setItemMeta(meta);
-
-    inventory.setItem(49, noKit);
-    inventory.setItem(45, previousPage);
-    inventory.setItem(53, nextPage);
-
-    inventories[pages] = inventory;
-    pages++;
-  }
-
-  public void nextPage() {
-    if (currentPage <= pages) {
-      currentPage++;
-    } else {
-      currentPage = 0;
-    }
-    this.open();
-  }
-
-  public void previousPage() {
-    if (currentPage >= 1) {
-      currentPage--;
-    } else {
-      currentPage = pages;
-    }
-    this.open();
-  }
-
-  public Inventory getCurrentPage() {
-    return inventories[currentPage];
-  }
-
-  public boolean isGuiInventory(Inventory inventory) {
-    for (Inventory guiInventory : inventories) {
-      if (inventory.equals(guiInventory)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public void reload() {
-    Set<Kit> kitSet = Kit.getKits(this.getPlayer(), true);
-
-    for (int i = 0; i < kitSet.size(); i++) {
-      if (i % 44 == 0 && i != 0) {
-        pages++;
-      }
-    }
-
-    inventories = new Inventory[pages + 1];
-
-    int currentPages = pages + 1;
-
-    for (int i = 0; i < currentPages; i++) {
-      int numKits = kitSet.size() - i * 45;
-      Kit[] kits = new Kit[Math.max(numKits, 0)];
-
-      Iterator<Kit> iterator = kitSet.iterator();
-
-      int counter = 0;
-
-      while (iterator.hasNext()) {
-        if (counter < i * 45) {
-          iterator.next();
-          counter++;
-          continue;
-        }
-
-        if (counter - i * 45 >= kits.length) {
-          break;
-        }
-
-        kits[counter - i * 45] = iterator.next();
-        counter++;
+      for (Kit kit : kits) {
+        inventory.addItem(kit.getDisplayItem());
       }
 
-      addPage(kits);
-    }
-  }
+      ItemMeta meta;
 
-  private void open() {
-    p.openInventory(this.getCurrentPage());
+      ItemStack nextPage = new ItemStack(Material.PAPER);
+      meta = nextPage.getItemMeta();
+      meta.displayName(Lang.getComponent("next-page"));
+      nextPage.setItemMeta(meta);
+
+      ItemStack previousPage = new ItemStack(Material.PAPER);
+      meta = previousPage.getItemMeta();
+      meta.displayName(Lang.getComponent("previous-page"));
+      previousPage.setItemMeta(meta);
+
+      ItemStack noKit = new ItemStack(Material.BARRIER);
+      meta = noKit.getItemMeta();
+      meta.displayName(Lang.getComponent("no-kit"));
+      noKit.setItemMeta(meta);
+
+      inventory.setItem(49, noKit);
+      inventory.setItem(45, previousPage);
+      inventory.setItem(53, nextPage);
+    }
+
+    @Override
+    public @NotNull Inventory getInventory() {
+      return inventory;
+    }
   }
 }
