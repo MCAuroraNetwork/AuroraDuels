@@ -161,7 +161,7 @@ public class DuelKitGui {
     private final Inventory inventory;
 
     private KitGuiPage(Kit[] kits) {
-      inventory = Bukkit.createInventory(null, 54, Lang.getComponent("duel-kit-gui"));
+      inventory = Bukkit.createInventory(this, 54, Lang.getComponent("duel-kit-gui"));
 
       for (Kit kit : kits) {
         inventory.addItem(kit.getDisplayItem());

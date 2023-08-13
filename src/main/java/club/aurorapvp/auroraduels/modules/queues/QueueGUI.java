@@ -20,7 +20,7 @@ public class QueueGUI implements InventoryHolder {
 
   public QueueGUI() {
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
-
+    
     int i = 0;
     for (Queue queue : Queue.getQueues()) {
       ItemStack displayItem = queue.getDisplayItem();
