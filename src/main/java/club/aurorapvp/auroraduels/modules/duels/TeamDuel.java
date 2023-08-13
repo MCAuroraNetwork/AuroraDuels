@@ -225,7 +225,7 @@ public class TeamDuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelStartEvent(thisDuel));
+        new DuelStartEvent(thisDuel).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
   }
@@ -266,9 +266,7 @@ public class TeamDuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer()
-            .getPluginManager()
-            .callEvent(new DuelEndEvent(thisDuel, winners, losers));
+        new DuelEndEvent(thisDuel, winners, losers).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
 
@@ -305,7 +303,7 @@ public class TeamDuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelDrawEvent(thisDuel));
+        new DuelDrawEvent(thisDuel).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
 

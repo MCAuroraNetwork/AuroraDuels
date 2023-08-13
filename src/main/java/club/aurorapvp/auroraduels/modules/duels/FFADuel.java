@@ -169,7 +169,7 @@ public class FFADuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelStartEvent(thisDuel));
+        new DuelStartEvent(thisDuel).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
   }
@@ -204,9 +204,7 @@ public class FFADuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer()
-            .getPluginManager()
-            .callEvent(new DuelEndEvent(thisDuel, new Player[] {winner}, losers));
+        new DuelEndEvent(thisDuel, new Player[] {winner}, losers).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
 
@@ -243,7 +241,7 @@ public class FFADuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        Bukkit.getServer().getPluginManager().callEvent(new DuelDrawEvent(thisDuel));
+        new DuelDrawEvent(thisDuel).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
 
