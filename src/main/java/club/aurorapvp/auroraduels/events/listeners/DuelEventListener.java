@@ -77,7 +77,7 @@ public class DuelEventListener implements Listener {
                           .getScore(p)
                           .getPoints())
               .average()
-              .orElse(0.0);
+              .orElse(club.aurorapvp.auroracombat.config.Config.get().getInt("elo.default-points"));
       double winnerAvgRating =
           Arrays.stream(winners)
               .mapToDouble(
@@ -86,7 +86,7 @@ public class DuelEventListener implements Listener {
                           .getScore(p)
                           .getPoints())
               .average()
-              .orElse(0.0);
+              .orElse(club.aurorapvp.auroracombat.config.Config.get().getInt("elo.default-points"));
 
       for (Player loser : losers) {
         Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
