@@ -50,10 +50,6 @@ public class DuelEventListener implements Listener {
       Duel.setLastDuel(p, event.getDuel());
     }
 
-    for (Player p : event.getDuel().getSpectators()) {
-      event.getDuel().setSpectator(p, false);
-    }
-
     if (!event.getDuel().isRanked()) {
       return;
     }

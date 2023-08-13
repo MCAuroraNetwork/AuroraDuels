@@ -35,6 +35,10 @@ public class DuelEndEvent extends Event {
             },
             3000);
 
+    for (Player p : duel.getSpectators()) {
+      duel.setSpectator(p, false);
+    }
+
     duel.setActive(false);
   }
 
