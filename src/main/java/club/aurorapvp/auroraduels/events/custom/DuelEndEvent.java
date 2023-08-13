@@ -35,14 +35,6 @@ public class DuelEndEvent extends Event {
             },
             3000);
 
-    for (Player p : winners) {
-      Duel.addWin(p);
-    }
-
-    for (Player p : losers) {
-      Duel.resetStreak(p);
-    }
-
     duel.setActive(false);
   }
 

@@ -38,9 +38,6 @@ public class DuelEventListener implements Listener {
     }
 
     for (Player p : event.getDuel().getPlayers()) {
-      if (!p.isOnline()) {
-        break;
-      }
       if (Config.get()
           .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
         Rating.getRating("default_duels").setEnabled(false);
@@ -53,10 +50,26 @@ public class DuelEventListener implements Listener {
       Duel.setLastDuel(p, event.getDuel());
     }
 
-    if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() == 2) {
+    for (Player p : event.getDuel().getSpectators()) {
+      event.getDuel().setSpectator(p, false);
+    }
+
+    if (!event.getDuel().isRanked()) {
+      return;
+    }
+
+    for (Player p : event.getWinners()) {
+      Duel.addWin(p);
+    }
+
+    for (Player p : event.getLosers()) {
+      Duel.resetStreak(p);
+    }
+
+    if (event.getDuel().getPlayers().size() == 2) {
       Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
           .updateElo(event.getLosers()[0], event.getWinners()[0]);
-    } else if (event.getDuel().isRanked() && event.getDuel().getPlayers().size() > 2) {
+    } else if (event.getDuel().getPlayers().size() > 2) {
       Player[] losers = event.getLosers();
       Player[] winners = event.getWinners();
 
@@ -88,10 +101,6 @@ public class DuelEventListener implements Listener {
         Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
             .updateElo(winner, (int) loserAvgRating, true);
       }
-    }
-
-    for (Player p : event.getDuel().getSpectators()) {
-      event.getDuel().setSpectator(p, false);
     }
   }
 }
