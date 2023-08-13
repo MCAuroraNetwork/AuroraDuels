@@ -7,6 +7,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -59,9 +60,7 @@ public class Request {
   public static void onInventoryClicked(InventoryClickEvent event) {
     Player p = (Player) event.getWhoClicked();
 
-    if (!(Objects.equals(
-            Objects.requireNonNull(event.getClickedInventory()).getHolder(),
-            AuroraDuels.getQueueGUI())
+    if (!(Objects.requireNonNull(event.getClickedInventory()).getHolder() instanceof QueueGUI
         || !Request.hasPendingRequest(p))) {
       return;
     }
@@ -108,7 +107,7 @@ public class Request {
       return;
     }
 
-    if (Objects.equals(event.getInventory().getHolder(), AuroraDuels.getQueueGUI())
+    if (event.getInventory().getHolder() instanceof QueueGUI
         && Objects.requireNonNull(Duel.getDuel(p)).getQueue() == null) {
       Duel.getDuels().remove(Duel.getDuel(p));
       PENDING_REQUESTS.remove(Request.getRequest(p));
