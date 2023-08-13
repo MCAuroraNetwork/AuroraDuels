@@ -108,10 +108,16 @@ public abstract class Duel {
     int wins = container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
 
     container.set(winStreakKey, PersistentDataType.INTEGER, wins + 1);
+
+    p.sendMessage(Lang.formatComponent("new-win", wins + 1));
   }
 
   public static void resetStreak(Player p) {
     PersistentDataContainer container = p.getPersistentDataContainer();
+
+    int wins = container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
+
+    p.sendMessage(Lang.formatComponent("new-loss", wins));
 
     container.set(winStreakKey, PersistentDataType.INTEGER, 0);
   }

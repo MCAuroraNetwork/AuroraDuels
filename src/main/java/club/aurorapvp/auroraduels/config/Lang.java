@@ -76,7 +76,9 @@ public class Lang {
     DEFAULTS.put("queue-not-found", "prefix <red>Queue not found");
     DEFAULTS.put("you-have-request", "prefix <red>You have a pending request");
     DEFAULTS.put("already-has-request", "prefix <red>You have a request pending to this player");
-    DEFAULTS.put("add-arena", "prefix <aqua>Type the name of the arena you want to add arena to queue. Added %s so far");
+    DEFAULTS.put(
+        "add-arena",
+        "prefix <aqua>Type the name of the arena you want to add arena to queue. Added %s so far");
     DEFAULTS.put("no-teleport", "prefix <red>Can't teleport during duel");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled during duel");
     DEFAULTS.put("duel-kit", "prefix <green>Duel kit set");
@@ -95,6 +97,8 @@ public class Lang {
     DEFAULTS.put("no-kit", "<aqua>No kit");
     DEFAULTS.put("kit-invalid-name", "prefix <red>Invalid kit name");
     DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set");
+    DEFAULTS.put("new-win", "prefix <bold><green>+1 Win<reset><green>, Winstreak: %s");
+    DEFAULTS.put("new-loss", "prefix <bold><red>Lost %s Winstreak");
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
         "opponent-bossbar",
