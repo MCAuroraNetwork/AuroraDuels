@@ -2,6 +2,7 @@ package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
@@ -45,15 +46,22 @@ public class TeamDuelCommands extends BaseCommand {
       i++;
     }
 
-    WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
-    Location loc = null;
-
-    if (worldSpawn != null) {
-      loc = worldSpawn.getSpawn();
-    }
+    Location loc = Duel.getDuelLobby();
 
     if (loc == null) {
-      loc = WorldSpawn.getGlobalSpawn();
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+
+      if (worldSpawn != null) {
+        loc = worldSpawn.getSpawn();
+      }
+
+      if (loc == null) {
+        loc = WorldSpawn.getGlobalSpawn();
+      }
+
+      if (loc == null) {
+        loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+      }
     }
 
     new Request(p, new TeamDuel(team1, team2, loc, false));

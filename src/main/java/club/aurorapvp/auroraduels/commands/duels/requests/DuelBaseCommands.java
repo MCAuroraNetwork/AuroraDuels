@@ -8,6 +8,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Subcommand;
@@ -124,6 +125,15 @@ public class DuelBaseCommands extends BaseCommand {
     } else {
       Duel.setDuelKit(p, Kit.getLastUsedKit(p).getName());
     }
+  }
+
+  @Subcommand("lobby")
+  @Description("Sets the duel lobby")
+  @CommandPermission("auroraduels.admin")
+  @SuppressWarnings("unused")
+  public void onLobbySet(Player p) {
+    Duel.setDuelLobby(p.getLocation());
+    p.sendMessage(Lang.getComponent("duel-lobby-set"));
   }
 
   @CatchUnknown

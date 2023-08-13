@@ -1,11 +1,14 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
+import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import com.sk89q.worldedit.math.BlockVector3;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
@@ -143,6 +146,20 @@ public abstract class Duel {
     container.set(duelKitKey, PersistentDataType.STRING, kitName);
 
     p.sendMessage(Lang.getComponent("duel-kit"));
+  }
+
+  public static Location getDuelLobby() {
+    return Config.get().getLocation("lobby");
+  }
+
+  public static void setDuelLobby(Location loc) {
+    Config.get().set("lobby", loc);
+
+    try {
+      Config.get().save(new File(AuroraDuels.INSTANCE.getDataFolder(), "config.yml"));
+    } catch (IOException e) {
+      AuroraDuels.INSTANCE.getLogger().severe("Failed to save config file");
+    }
   }
 
   public static int inDuels() {
