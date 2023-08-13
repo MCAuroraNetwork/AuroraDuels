@@ -31,103 +31,74 @@ public class Lang {
     }
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
-    DEFAULTS.put("set-spawn1", "prefix <gradient:#FFAA00:#FF55FF>Left click to set first spawn");
-    DEFAULTS.put("set-spawn2", "prefix <gradient:#FFAA00:#FF55FF>Right click to set second spawn");
-    DEFAULTS.put("spawn1-set", "prefix <gradient:#FFAA00:#FF55FF>First spawn set!");
-    DEFAULTS.put("spawn2-set", "prefix <gradient:#FFAA00:#FF55FF>Second spawn set!");
-    DEFAULTS.put("spawns-set", "prefix <gradient:#FFAA00:#FF55FF>Arena spawn-points set!");
-    DEFAULTS.put("set-pos1", "prefix <gradient:#FFAA00:#FF55FF>Left click to set Position 1");
-    DEFAULTS.put("set-pos2", "prefix <gradient:#FFAA00:#FF55FF>Right click to set Position 2");
-    DEFAULTS.put("pos1-set", "prefix <gradient:#FFAA00:#FF55FF>Position 1 set!");
-    DEFAULTS.put("pos2-set", "prefix <gradient:#FFAA00:#FF55FF>Position 2 set!");
-    DEFAULTS.put("arena-created", "prefix <gradient:#FFAA00:#FF55FF>Arena created successfully!");
-    DEFAULTS.put("arena-reset", "prefix <gradient:#FFAA00:#FF55FF>Arena reset successfully!");
-    DEFAULTS.put("arena-deleted", "prefix <gradient:#FFAA00:#FF55FF>Arena deleted");
-    DEFAULTS.put("arena-does-not-exist", "prefix <gradient:#FFAA00:#FF55FF>Arena does not exist!");
+    DEFAULTS.put("set-spawn1", "prefix <aqua>Set first spawn: Left click");
+    DEFAULTS.put("set-spawn2", "prefix <aqua>Set second spawn: Right click");
+    DEFAULTS.put("spawn1-set", "prefix <aqua>Spawn 1 set!");
+    DEFAULTS.put("spawn2-set", "prefix <aqua>Spawn 2 set!");
+    DEFAULTS.put("spawns-set", "prefix <aqua>Spawns set!");
+    DEFAULTS.put("set-pos1", "prefix <aqua>Set Pos 1: Left click");
+    DEFAULTS.put("set-pos2", "prefix <aqua>Set Pos 2: Right click");
+    DEFAULTS.put("pos1-set", "prefix <aqua>Pos 1 set!");
+    DEFAULTS.put("pos2-set", "prefix <aqua>Pos 2 set!");
+    DEFAULTS.put("arena-created", "prefix <aqua>Arena created!");
+    DEFAULTS.put("arena-reset", "prefix <aqua>Arena reset!");
+    DEFAULTS.put("arena-deleted", "prefix <aqua>Arena deleted");
+    DEFAULTS.put("arena-does-not-exist", "prefix <aqua>No arena");
+    DEFAULTS.put("arena-already-being-created", "prefix <aqua>Arena creation in progress");
+    DEFAULTS.put("arena-already-exists", "prefix <aqua>Arena exists");
+    DEFAULTS.put("unknown-opponent", "prefix <aqua>Opponent not found");
+    DEFAULTS.put("unknown-duel", "prefix <aqua>Duel not found");
+    DEFAULTS.put("player-in-duel", "prefix <aqua>Player in duel");
+    DEFAULTS.put("duel-started", "<bold><aqua>Duel started!");
+    DEFAULTS.put("even-rounds", "prefix <aqua>Odd rounds required for duel");
+    DEFAULTS.put("entered-queue", "prefix <aqua>In duel queue");
+    DEFAULTS.put("sent-request", "prefix <aqua>Request sent");
     DEFAULTS.put(
-        "arena-already-being-created",
-        "prefix <gradient:#FFAA00:#FF55FF>There is already an Arena being created!");
+        "received-request", "prefix <aqua>Request from %s. Use /duel accept or /duel deny");
+    DEFAULTS.put("request-timed-out", "prefix <aqua>Request timed out");
+    DEFAULTS.put("no-requests", "prefix <aqua>No requests");
+    DEFAULTS.put("request-denied", "prefix <aqua>Request denied");
+    DEFAULTS.put("request-accepted", "prefix <aqua>Request accepted");
+    DEFAULTS.put("you-won", "<aqua>You won!");
+    DEFAULTS.put("you-lost", "<aqua>You lost");
+    DEFAULTS.put("rounds-remaining", "<aqua>Round %1$s of %2$s");
+    DEFAULTS.put("draw", "prefix <aqua>Draw!");
+    DEFAULTS.put("no-leaving-arena", "prefix <aqua>Can't leave arena");
+    DEFAULTS.put("duel-time-expired", "prefix <aqua>Duel time expired");
+    DEFAULTS.put("looking-match", "prefix <aqua>Searching opponent");
+    DEFAULTS.put("not-looking-match", "prefix <aqua>Stopped searching opponent");
+    DEFAULTS.put("match-found", "prefix <aqua>Opponent found");
+    DEFAULTS.put("in-queue", "prefix <aqua>In queue");
+    DEFAULTS.put("queue-already-exists", "prefix <aqua>Queue exists");
+    DEFAULTS.put("queue-being-created", "prefix <aqua>Queue creation in progress");
+    DEFAULTS.put("queue-invalid-item", "prefix <aqua>Invalid queue item");
+    DEFAULTS.put("queue-created", "prefix <aqua>Queue created");
+    DEFAULTS.put("queue-not-found", "prefix <aqua>Queue not found");
+    DEFAULTS.put("you-have-request", "prefix <aqua>Pending request");
+    DEFAULTS.put("already-has-request", "prefix <aqua>Request pending to player");
+    DEFAULTS.put("add-arena", "prefix <aqua>Add arena to queue? Type name. Added %s so far");
+    DEFAULTS.put("no-teleport", "prefix <aqua>Can't teleport during duel");
+    DEFAULTS.put("commands-disabled", "prefix <aqua>Commands disabled during duel");
+    DEFAULTS.put("duel-kit", "prefix <aqua>Duel kit set");
+    DEFAULTS.put("start-spectating", "prefix <aqua>Spectating");
+    DEFAULTS.put("stop-spectating", "prefix <aqua>Stopped spectating");
+    DEFAULTS.put("no-last-duel", "prefix <aqua>No previous duel");
+    DEFAULTS.put("unknown-duel-command", "prefix <aqua>Unknown Duel Command! Use /help");
     DEFAULTS.put(
-        "arena-already-exists", "prefix <gradient:#FFAA00:#FF55FF>That arena already exists!");
-    DEFAULTS.put("unknown-opponent", "prefix <gradient:#FFAA00:#FF55FF>Cannot find opponent");
-    DEFAULTS.put(
-        "unknown-duel", "prefix <gradient:#FFAA00:#FF55FF>Cannot find specified duel match");
-    DEFAULTS.put("player-in-duel", "prefix <gradient:#FFAA00:#FF55FF>That player is in a duel!");
-    DEFAULTS.put("duel-started", "<bold><gradient:#FFAA00:#FF55FF>Duel started!");
-    DEFAULTS.put(
-        "even-rounds",
-        "prefix <gradient:#FFAA00:#FF55FF>A duel must have an odd number of rounds!");
-    DEFAULTS.put(
-        "entered-queue", "prefix <gradient:#FFAA00:#FF55FF>You have entered the duel queue");
-    DEFAULTS.put("sent-request", "prefix <gradient:#FFAA00:#FF55FF>Request sent!");
-    DEFAULTS.put(
-        "received-request",
-        "prefix <gradient:#FFAA00:#FF55FF>You have received a request from %s use /duel accept to accept, or /duel deny to deny");
-    DEFAULTS.put("request-timed-out", "prefix <gradient:#FFAA00:#FF55FF>Duel request timed out");
-    DEFAULTS.put("no-requests", "prefix <gradient:#FFAA00:#FF55FF>No pending requests");
-    DEFAULTS.put("request-denied", "prefix <gradient:#FFAA00:#FF55FF>Duel request denied!");
-    DEFAULTS.put("request-accepted", "prefix <gradient:#FFAA00:#FF55FF>Duel request accepted!");
-    DEFAULTS.put("you-won", "<gradient:#FFAA00:#FF55FF>You won the duel!");
-    DEFAULTS.put("you-lost", "<gradient:#FFAA00:#FF55FF>You lost the duel");
-    DEFAULTS.put("rounds-remaining", "<gradient:#FFAA00:#FF55FF>Round %1$s out of %2$s rounds");
-    DEFAULTS.put("draw", "prefix <gradient:#FFAA00:#FF55FF>The duel was a draw!");
-    DEFAULTS.put(
-        "no-leaving-arena", "prefix <gradient:#FFAA00:#FF55FF>You cannot leave the arena!");
-    DEFAULTS.put("duel-time-expired", "prefix <gradient:#FFAA00:#FF55FF>The duel ran out of time");
-    DEFAULTS.put("looking-match", "prefix <gradient:#FFAA00:#FF55FF>Searching for an opponent");
-    DEFAULTS.put(
-        "not-looking-match",
-        "prefix <gradient:#FFAA00:#FF55FF>No longer searching for an opponent");
-    DEFAULTS.put("match-found", "prefix <gradient:#FFAA00:#FF55FF>Opponent found!");
-    DEFAULTS.put("in-queue", "prefix <gradient:#FFAA00:#FF55FF>You're already in a queue!");
-    DEFAULTS.put("queue-already-exists", "prefix <gradient:#FFAA00:#FF55FF>Queue already exists!");
-    DEFAULTS.put(
-        "queue-being-created", "prefix <gradient:#FFAA00:#FF55FF>Queue already being created!");
-    DEFAULTS.put(
-        "queue-invalid-item", "prefix <gradient:#FFAA00:#FF55FF>Invalid queue display item!");
-    DEFAULTS.put("queue-created", "prefix <gradient:#FFAA00:#FF55FF>Queue successfully created!");
-    DEFAULTS.put("queue-not-found", "prefix <gradient:#FFAA00:#FF55FF>Queue not found!");
-    DEFAULTS.put(
-        "you-have-request", "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request!");
-    DEFAULTS.put(
-        "already-has-request",
-        "prefix <gradient:#FFAA00:#FF55FF>You already have a pending request to that player!");
-    DEFAULTS.put(
-        "add-arena",
-        "prefix <gradient:#FFAA00:#FF55FF>What arena would you like to add to the queue? Type its name into chat. You have added %s arenas so far");
-    DEFAULTS.put(
-        "no-teleport", "prefix <gradient:#FFAA00:#FF55FF>You cannot teleport during a duel!");
-    DEFAULTS.put(
-        "commands-disabled",
-        "prefix <gradient:#FFAA00:#FF55FF>You cannot use commands during a duel!");
-    DEFAULTS.put("duel-kit", "prefix <gradient:#FFAA00:#FF55FF>Duel kit set!");
-    DEFAULTS.put("start-spectating", "prefix <gradient:#FFAA00:#FF55FF>You are now spectating!");
-    DEFAULTS.put(
-        "stop-spectating", "prefix <gradient:#FFAA00:#FF55FF>You are no longer spectating");
-    DEFAULTS.put("no-last-duel", "prefix <gradient:#FFAA00:#FF55FF>No previous duel found!");
-    DEFAULTS.put(
-        "unknown-duel-command",
-        "prefix <gradient:#FFAA00:#FF55FF>Unknown Duel Command! Use /help for help!");
-    DEFAULTS.put(
-        "unknown-matchmaking-command",
-        "prefix <gradient:#FFAA00:#FF55FF>Unknown Matchmaking Command! Use /help for help!");
-    DEFAULTS.put(
-        "unknown-arena-command",
-        "prefix <gradient:#FFAA00:#FF55FF>Unknown Arena Command! Use /help for help!");
-    DEFAULTS.put(
-        "unknown-queue-command",
-        "prefix <gradient:#FFAA00:#FF55FF>Unknown Arena Command! Use /help for help!");
-    DEFAULTS.put("queue-menu", "<gradient:#FFAA00:#FF55FF><bold>Select Duel Type");
-    DEFAULTS.put("duel-kit-gui", "<gradient:#FFAA00:#FF55FF><bold>Select Duel Kit");
-    DEFAULTS.put("next-page", "<gradient:#FFAA00:#FF55FF>Next page");
-    DEFAULTS.put("previous-page", "<gradient:#FFAA00:#FF55FF>Previous page");
-    DEFAULTS.put("no-kit", "<gradient:#FFAA00:#FF55FF>No kit");
-    DEFAULTS.put("kit-invalid-name", "prefix <gradient:#FFAA00:#FF55FF>Invalid kit name!");
-    DEFAULTS.put("duel-lobby-set", "prefix <gradient:#FFAA00:#FF55FF>Duel lobby set!");
-    DEFAULTS.put("reloaded", "prefix <gradient:#FFAA00:#FF55FF>Plugin reloaded!");
+        "unknown-matchmaking-command", "prefix <aqua>Unknown Matchmaking Command! Use /help");
+    DEFAULTS.put("unknown-arena-command", "prefix <aqua>Unknown Arena Command! Use /help");
+    DEFAULTS.put("unknown-queue-command", "prefix <aqua>Unknown Queue Command! Use /help");
+    DEFAULTS.put("queue-menu", "<aqua><bold>Select Duel Type");
+    DEFAULTS.put("duel-kit-gui", "<aqua><bold>Select Duel Kit");
+    DEFAULTS.put("next-page", "<aqua>Next");
+    DEFAULTS.put("previous-page", "<aqua>Previous");
+    DEFAULTS.put("no-kit", "<aqua>No kit");
+    DEFAULTS.put("kit-invalid-name", "prefix <aqua>Invalid kit name");
+    DEFAULTS.put("duel-lobby-set", "prefix <aqua>Duel lobby set");
+    DEFAULTS.put("reloaded", "prefix <aqua>Reloaded");
     DEFAULTS.put(
         "opponent-bossbar",
-        "<gradient:#FFAA00:#FF55FF><bold>%1$s <reset><red>| %2$s❤ |<reset><aqua> %3$sm |<reset><yellow> %4$sms");
+        "<aqua><bold>%1$s <reset><red>| %2$s❤ |<reset><aqua> %3$sm |<reset><yellow> %4$sms");
     DEFAULTS.put(
         "help-command",
         """
