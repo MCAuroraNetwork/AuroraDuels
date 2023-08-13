@@ -4,7 +4,6 @@ import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
-import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import co.aikar.commands.BaseCommand;
@@ -66,16 +65,6 @@ public class RematchCommand extends BaseCommand {
           new TeamDuel(
               team1,
               team2,
-              lastDuel.getQueue(),
-              lastDuel.getKit(),
-              lastDuel.getRespawnLocation(),
-              false));
-    } else if (lastDuel instanceof PartyDuel partyDuel) {
-
-      new Request(
-          p,
-          new PartyDuel(
-              partyDuel.getPlayers(),
               lastDuel.getQueue(),
               lastDuel.getKit(),
               lastDuel.getRespawnLocation(),

@@ -6,7 +6,6 @@ import club.aurorapvp.auroraduels.commands.duels.matchmaking.RankedCommands;
 import club.aurorapvp.auroraduels.commands.duels.matchmaking.UnrankedCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.DuelBaseCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.FFADuelCommands;
-import club.aurorapvp.auroraduels.commands.duels.requests.PartyDuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.StandardDuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.TeamDuelCommands;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -28,7 +27,6 @@ public class CommandManager {
     MANAGER.registerCommand(new TeamDuelCommands());
     MANAGER.registerCommand(new UnrankedCommands());
     MANAGER.registerCommand(new RankedCommands());
-    MANAGER.registerCommand(new PartyDuelCommands());
     MANAGER.registerCommand(new PluginCommands());
     MANAGER.registerCommand(new QueueCommands());
     MANAGER.registerCommand(new RematchCommand());

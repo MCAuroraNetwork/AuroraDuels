@@ -22,7 +22,7 @@ public class FFADuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @players @players @players")
   @Syntax("[player1 player2 player3]")
-  @Description("Sends a duel request to another player")
+  @Description("Sends a duel request to other players")
   @SuppressWarnings("unused")
   public void onNewRequest(Player p, String[] playerNames) {
     if (playerNames.length < 1) {

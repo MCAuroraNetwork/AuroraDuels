@@ -11,7 +11,14 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Split;
+import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import com.google.common.collect.Iterables;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -20,8 +27,8 @@ import org.bukkit.entity.Player;
 public class TeamDuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @players")
-  @Syntax("[player1,player2,player3] [player4,player5,player6] [param] [queue/kit]")
-  @Description("Sends a duel request to another player")
+  @Syntax("[player1,player2,player3] [player4,player5,player6]")
+  @Description("Sends a duel request to a set of two teams of players")
   @SuppressWarnings("unused")
   public void onNewRequest(Player p, @Split String[] team1Names, @Split String[] team2Names) {
     if (team1Names.length == 0 || team2Names.length == 0) {
@@ -45,6 +52,74 @@ public class TeamDuelCommands extends BaseCommand {
       team2[i] = Bukkit.getPlayer(playerName);
       i++;
     }
+
+    Location loc = Duel.getDuelLobby();
+
+    if (loc == null) {
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+
+      if (worldSpawn != null) {
+        loc = worldSpawn.getSpawn();
+      }
+
+      if (loc == null) {
+        loc = WorldSpawn.getGlobalSpawn();
+      }
+
+      if (loc == null) {
+        loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+      }
+    }
+
+    new Request(p, new TeamDuel(team1, team2, loc, false));
+  }
+
+  @Subcommand("random")
+  @CommandCompletion("@players")
+  @Syntax("[player1,player2,player3,player4,player5,player6]")
+  @Description("Sends a duel request to other players")
+  @SuppressWarnings("unused")
+  public void onNewRandRequest(Player p, String[] playerNames) {
+    if (playerNames.length < 1) {
+      p.sendMessage(Lang.getComponent("not-enough-players"));
+      return;
+    }
+
+    Player[] requested = new Player[playerNames.length];
+
+    int i = 0;
+    for (String playerName : playerNames) {
+      requested[i] = Bukkit.getPlayer(playerName);
+      i++;
+    }
+
+    Set<Player> players = new HashSet<>(Set.of(requested));
+    players.add(p);
+
+    int size = players.size();
+    Player extra = null;
+
+    if (size % 2 == 1) {
+      Iterator<Player> iterator = players.iterator();
+      for (i = 0; i < size - 1; i++) {
+        iterator.next();
+      }
+      extra = iterator.next();
+      iterator.remove();
+      size--;
+    }
+
+    Iterable<List<Player>> partitions = Iterables.partition(players, (size / 2));
+
+    Player[] temp = new HashSet<>(partitions.iterator().next()).toArray(new Player[0]);
+
+    if (extra != null) {
+      temp = Arrays.copyOf(temp, temp.length + 1);
+      temp[temp.length - 1] = extra;
+    }
+
+    Player[] team1 = temp;
+    Player[] team2 = new HashSet<>(Iterables.getLast(partitions)).toArray(new Player[0]);
 
     Location loc = Duel.getDuelLobby();
 

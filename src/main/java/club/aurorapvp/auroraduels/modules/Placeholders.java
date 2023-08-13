@@ -2,7 +2,6 @@ package club.aurorapvp.auroraduels.modules;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
@@ -95,12 +94,6 @@ public class Placeholders extends PlaceholderExpansion {
 
       if (duel instanceof TeamDuel teamDuel) {
         for (Player opponent : teamDuel.getOpponents(p)) {
-          opponentNames.add(opponent.getName());
-        }
-      }
-
-      if (duel instanceof PartyDuel partyDuel) {
-        for (Player opponent : partyDuel.getOpponents(p)) {
           opponentNames.add(opponent.getName());
         }
       }

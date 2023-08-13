@@ -8,7 +8,6 @@ import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
-import club.aurorapvp.auroraduels.modules.duels.PartyDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
@@ -89,14 +88,6 @@ public class PlayerEventListener implements Listener {
 
     if (duel instanceof StandardDuel standardDuel) {
       standardDuel.endDuel(new Player[] {standardDuel.getOpponent(p)}, new Player[] {p});
-    } else if (duel instanceof PartyDuel partyDuel) {
-      partyDuel.setDead(p);
-
-      if (partyDuel.teamDead(p)) {
-        duel.endDuel(partyDuel.getOpponents(p), partyDuel.getTeammates(p));
-      } else {
-        duel.setSpectator(p, true);
-      }
     } else if (duel instanceof TeamDuel teamDuel) {
       teamDuel.setDead(p);
 
