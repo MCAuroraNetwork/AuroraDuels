@@ -17,9 +17,5 @@ public class InventoryEventListener implements Listener {
   @EventHandler
   public void onInventoryClick(InventoryClickEvent event) {
     Request.onInventoryClicked(event);
-
-    if (AuroraDuels.isAuroraKitsInstalled()) {
-      DuelKitGui.onInventoryClicked(event);
-    }
   }
 }

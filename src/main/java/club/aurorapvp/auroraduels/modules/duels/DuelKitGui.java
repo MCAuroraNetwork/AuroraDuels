@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.HashMap;
@@ -10,14 +11,16 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class DuelKitGui {
+public class DuelKitGui implements Listener {
   private static final Map<Player, DuelKitGui> KITS_GUIS = new HashMap<>();
   private final Player p;
   private Page[] pages;
@@ -30,6 +33,8 @@ public class DuelKitGui {
     reload();
 
     KITS_GUIS.put(p, this);
+
+    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
 
     open();
   }
@@ -100,7 +105,7 @@ public class DuelKitGui {
         counter++;
       }
 
-      pages[index] = new Page(kits);
+      pages[index] = new Page(kits, this);
       index++;
     }
   }
@@ -109,17 +114,17 @@ public class DuelKitGui {
     p.openInventory(this.getCurrentPage());
   }
 
-  public static void onInventoryClicked(InventoryClickEvent event) {
-    Player p = (Player) event.getWhoClicked();
-
-    DuelKitGui duelGUI = KITS_GUIS.get(p);
-
-    Duel duel = Duel.getDuel(p);
-    assert duel != null;
-
-    if (duelGUI == null || !(event.getInventory().getHolder() instanceof Page)) {
+  @EventHandler
+  public void onInventoryClicked(InventoryClickEvent event) {
+    if (!(event.getInventory().getHolder() instanceof Page page)) {
       return;
     }
+
+    Player p = (Player) event.getWhoClicked();
+    DuelKitGui duelGUI = page.getGui();
+    Duel duel = Duel.getDuel(p);
+
+    assert duel != null;
 
     event.setCancelled(true);
 
@@ -156,11 +161,17 @@ public class DuelKitGui {
     }
   }
 
+  public static DuelKitGui getGui(Player p) {
+    return KITS_GUIS.getOrDefault(p, new DuelKitGui(p));
+  }
+
   public static class Page implements InventoryHolder {
     private final Inventory inventory;
+    private final DuelKitGui gui;
 
-    private Page(Kit[] kits) {
+    private Page(Kit[] kits, DuelKitGui gui) {
       inventory = Bukkit.createInventory(this, 54, Lang.getComponent("duel-kit-gui"));
+      this.gui = gui;
 
       for (Kit kit : kits) {
         inventory.addItem(kit.getDisplayItem());
@@ -188,8 +199,13 @@ public class DuelKitGui {
       inventory.setItem(53, nextPage);
     }
 
+    public DuelKitGui getGui() {
+      return gui;
+    }
+
     @Override
-    public @NotNull Inventory getInventory() {
+    @NonNull
+    public Inventory getInventory() {
       return inventory;
     }
   }

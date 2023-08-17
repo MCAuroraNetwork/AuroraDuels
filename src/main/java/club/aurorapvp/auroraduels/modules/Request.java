@@ -89,7 +89,7 @@ public class Request {
       Objects.requireNonNull(Duel.getDuel(p)).setQueue(queue);
 
       if (AuroraDuels.isAuroraKitsInstalled()) {
-        new DuelKitGui(p);
+        DuelKitGui.getGui(p);
         return;
       }
 
