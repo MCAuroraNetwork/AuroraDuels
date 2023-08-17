@@ -60,8 +60,7 @@ public class Request {
   public static void onInventoryClicked(InventoryClickEvent event) {
     Player p = (Player) event.getWhoClicked();
 
-    if (!(Objects.requireNonNull(event.getClickedInventory()).getHolder() instanceof QueueGUI
-        || !Request.hasPendingRequest(p))) {
+    if (Objects.equals(Objects.requireNonNull(event.getClickedInventory()).getHolder(), AuroraDuels.getQueueGUI()) || !Request.hasPendingRequest(p)) {
       return;
     }
 
@@ -113,7 +112,7 @@ public class Request {
       PENDING_REQUESTS.remove(Request.getRequest(p));
     }
 
-    if (event.getInventory().getHolder() instanceof DuelKitGui.KitGuiPage) {
+    if (event.getInventory().getHolder() instanceof DuelKitGui.Page) {
       Objects.requireNonNull(Request.getRequest(p)).sendRequest();
     }
   }

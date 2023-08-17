@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class DuelKitGui {
   private static final Map<Player, DuelKitGui> KITS_GUIS = new HashMap<>();
   private final Player p;
-  private KitGuiPage[] pages;
+  private Page[] pages;
   private int currentPage = 0;
   private int index;
 
@@ -73,7 +73,7 @@ public class DuelKitGui {
       }
     }
 
-    pages = new KitGuiPage[index + 1];
+    pages = new Page[index + 1];
 
     int currentPages = index + 1;
 
@@ -100,7 +100,7 @@ public class DuelKitGui {
         counter++;
       }
 
-      pages[index] = new KitGuiPage(kits);
+      pages[index] = new Page(kits);
       index++;
     }
   }
@@ -117,7 +117,7 @@ public class DuelKitGui {
     Duel duel = Duel.getDuel(p);
     assert duel != null;
 
-    if (duelGUI == null || !(event.getInventory().getHolder() instanceof KitGuiPage)) {
+    if (duelGUI == null || !(event.getInventory().getHolder() instanceof Page)) {
       return;
     }
 
@@ -156,11 +156,10 @@ public class DuelKitGui {
     }
   }
 
-  public static class KitGuiPage implements InventoryHolder {
-
+  public static class Page implements InventoryHolder {
     private final Inventory inventory;
 
-    private KitGuiPage(Kit[] kits) {
+    private Page(Kit[] kits) {
       inventory = Bukkit.createInventory(this, 54, Lang.getComponent("duel-kit-gui"));
 
       for (Kit kit : kits) {
