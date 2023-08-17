@@ -119,8 +119,13 @@ public class DuelKitGui implements Listener {
       return;
     }
 
-    Player p = (Player) event.getWhoClicked();
     DuelKitGui gui = page.getGui();
+
+    if (gui != this) {
+      return;
+    }
+
+    Player p = (Player) event.getWhoClicked();
 
     event.setCancelled(true);
 

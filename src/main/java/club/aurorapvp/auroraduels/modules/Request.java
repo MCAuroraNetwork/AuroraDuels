@@ -12,17 +12,13 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class Request implements Listener {
   protected static final LinkedList<Request> PENDING_REQUESTS = new LinkedList<>();
