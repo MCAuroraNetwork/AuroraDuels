@@ -4,17 +4,25 @@ import club.aurorapvp.auroraduels.config.Lang;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
+import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
+import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
+import club.aurorapvp.aurorakits.modules.kits.Kit;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-public class QueueGUI implements InventoryHolder {
+public class QueueGUI implements InventoryHolder, Listener {
   private final Inventory inventory =
       Bukkit.createInventory(this, 27, Lang.getComponent("queue-menu"));
 
@@ -45,6 +53,40 @@ public class QueueGUI implements InventoryHolder {
     }
 
     populateGUI(itemStacks);
+  }
+
+  @EventHandler
+  public void onInventoryClicked(InventoryClickEvent event) {
+    if (!Objects.equals(event.getInventory(), this)) {
+      return;
+    }
+
+    Player p = (Player) event.getWhoClicked();
+
+    final ItemStack clickedItem = event.getCurrentItem();
+
+    if (clickedItem == null || clickedItem.getType().isAir()) {
+      return;
+    }
+
+    event.setCancelled(true);
+
+    if (event.getCurrentItem().getItemMeta().displayName() == null) {
+      p.sendMessage(Lang.getComponent("queue-not-found"));
+    } else {
+      String itemName =
+              PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
+      String queueName = itemName.substring(1, itemName.length() - 1);
+
+      Queue queue = Queue.getQueue(queueName.toLowerCase());
+
+      if (queue == null) {
+        p.sendMessage(Lang.getComponent("queue-not-found"));
+        return;
+      }
+
+      new QueueSelectEvent(p, queue).callEvent();
+    }
   }
 
   public void populateGUI(ItemStack[] displayItems) {

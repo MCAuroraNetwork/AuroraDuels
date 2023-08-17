@@ -3,11 +3,12 @@ package club.aurorapvp.auroraduels.modules;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
+import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,12 +17,14 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class Request {
+public class Request implements Listener {
   protected static final LinkedList<Request> PENDING_REQUESTS = new LinkedList<>();
   private final HashMap<Player, Boolean> playersAccepted = new HashMap<>();
   private final Player requester;
@@ -55,66 +58,35 @@ public class Request {
     AuroraDuels.getQueueGUI().open(requester);
 
     PENDING_REQUESTS.add(this);
+
+    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
   }
 
-  public static void onInventoryClicked(InventoryClickEvent event) {
-    Player p = (Player) event.getWhoClicked();
+  @EventHandler
+  public void onQueueSelect(QueueSelectEvent event) {
+    if (requester != event.getPlayer()) {
+      return;
+    }
+    
+    duel.setQueue(event.getQueue());
 
-    if (Objects.equals(Objects.requireNonNull(event.getClickedInventory()).getHolder(), AuroraDuels.getQueueGUI()) || !Request.hasPendingRequest(p)) {
+    if (AuroraDuels.isAuroraKitsInstalled()) {
+      DuelKitGui.getGui(event.getPlayer()).open();
       return;
     }
 
-    final ItemStack clickedItem = event.getCurrentItem();
-
-    if (clickedItem == null || clickedItem.getType().isAir()) {
-      return;
-    }
-
-    event.setCancelled(true);
-
-    if (event.getCurrentItem().getItemMeta().displayName() == null) {
-      p.sendMessage(Lang.getComponent("queue-not-found"));
-    } else {
-      String itemName =
-          PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
-      String queueName = itemName.substring(1, itemName.length() - 1);
-
-      Queue queue = Queue.getQueue(queueName.toLowerCase());
-
-      if (queue == null) {
-        p.sendMessage(Lang.getComponent("queue-not-found"));
-        return;
-      }
-
-      Objects.requireNonNull(Duel.getDuel(p)).setQueue(queue);
-
-      if (AuroraDuels.isAuroraKitsInstalled()) {
-        DuelKitGui.getGui(p);
-        return;
-      }
-
-      Objects.requireNonNull(Request.getRequest(p)).sendRequest();
-    }
+    this.sendRequest();
   }
 
-  public static void onInventoryClose(InventoryCloseEvent event) {
-    if (!(event.getPlayer() instanceof Player p)) {
+  @EventHandler
+  public void onKitSelect(DuelKitSelectEvent event) {
+    if (requester != event.getPlayer()) {
       return;
     }
 
-    if (!Request.hasPendingRequest(p)) {
-      return;
-    }
+    duel.setKit(event.getKit());
 
-    if (event.getInventory().getHolder() instanceof QueueGUI
-        && Objects.requireNonNull(Duel.getDuel(p)).getQueue() == null) {
-      Duel.getDuels().remove(Duel.getDuel(p));
-      PENDING_REQUESTS.remove(Request.getRequest(p));
-    }
-
-    if (event.getInventory().getHolder() instanceof DuelKitGui.Page) {
-      Objects.requireNonNull(Request.getRequest(p)).sendRequest();
-    }
+    this.sendRequest();
   }
 
   public static Request getRequest(Player p) {

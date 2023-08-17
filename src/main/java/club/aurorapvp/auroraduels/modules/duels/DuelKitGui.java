@@ -2,6 +2,7 @@ package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,8 +36,6 @@ public class DuelKitGui implements Listener {
     KITS_GUIS.put(p, this);
 
     Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
-
-    open();
   }
 
   public Player getPlayer() {
@@ -110,7 +109,7 @@ public class DuelKitGui implements Listener {
     }
   }
 
-  private void open() {
+  public void open() {
     p.openInventory(this.getCurrentPage());
   }
 
@@ -121,18 +120,15 @@ public class DuelKitGui implements Listener {
     }
 
     Player p = (Player) event.getWhoClicked();
-    DuelKitGui duelGUI = page.getGui();
-    Duel duel = Duel.getDuel(p);
-
-    assert duel != null;
+    DuelKitGui gui = page.getGui();
 
     event.setCancelled(true);
 
     if (event.getSlot() == 45) {
-      duelGUI.previousPage();
+      gui.previousPage();
       return;
     } else if (event.getSlot() == 53) {
-      duelGUI.nextPage();
+      gui.nextPage();
       return;
     } else if (event.getSlot() == 49) {
       p.closeInventory();
@@ -156,8 +152,9 @@ public class DuelKitGui implements Listener {
       Kit kit = Kit.getKit(p, kitName);
 
       assert kit != null;
-      duel.setKit(kit);
       p.closeInventory();
+
+      new DuelKitSelectEvent(p, kit).callEvent();
     }
   }
 
