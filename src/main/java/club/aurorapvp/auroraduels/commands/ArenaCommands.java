@@ -21,8 +21,8 @@ public class ArenaCommands extends BaseCommand {
   @Syntax("[name]")
   @Description("Creates an arena")
   @SuppressWarnings("unused")
-  public void onCreate(Player p, String name) {
-    new Arena(name).startCreation(p);
+  public void onCreate(Player player, String name) {
+    new Arena(name).startCreation(player);
   }
 
   @Subcommand("delete")
@@ -30,13 +30,13 @@ public class ArenaCommands extends BaseCommand {
   @Syntax("[name]")
   @Description("Deletes an arena")
   @SuppressWarnings("unused")
-  public void onDelete(Player p, String name) {
+  public void onDelete(Player player, String name) {
     Arena arena = Arena.getArena(name);
 
     if (arena != null) {
-      arena.delete(p);
+      arena.delete(player);
     } else {
-      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
@@ -45,21 +45,21 @@ public class ArenaCommands extends BaseCommand {
   @Syntax("[name]")
   @Description("Resets an arena")
   @SuppressWarnings("unused")
-  public void onReset(Player p, String name) {
+  public void onReset(Player player, String name) {
     Arena arena = Arena.getArena(name);
 
     if (arena != null) {
-      arena.resetAsync(p);
+      arena.resetAsync(player);
     } else {
-      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
   @Subcommand("list")
   @SuppressWarnings("unused")
-  public void onList(Player p) {
+  public void onList(Player player) {
     // TODO clean up or remove
-    p.sendMessage(MiniMessage.miniMessage().deserialize("<yellow><bold>Arenas:"));
+    player.sendMessage(MiniMessage.miniMessage().deserialize("<yellow><bold>Arenas:"));
 
     Set<String> arenaNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
@@ -72,12 +72,12 @@ public class ArenaCommands extends BaseCommand {
       str.append("\n").append(name);
     }
 
-    p.sendMessage(Component.text(str.toString()));
+    player.sendMessage(Component.text(str.toString()));
   }
 
   @CatchUnknown
   @SuppressWarnings("unused")
-  public void onUnknown(Player p) {
-    p.sendMessage(Lang.getComponent("unknown-arena-command"));
+  public void onUnknown(Player player) {
+    player.sendMessage(Lang.getComponent("unknown-arena-command"));
   }
 }

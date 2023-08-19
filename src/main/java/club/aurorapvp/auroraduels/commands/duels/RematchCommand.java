@@ -16,11 +16,11 @@ import org.bukkit.entity.Player;
 public class RematchCommand extends BaseCommand {
   @Default
   @SuppressWarnings("unused")
-  public void onRematch(Player p) {
-    Duel lastDuel = Duel.getLastDuel(p);
+  public void onRematch(Player player) {
+    Duel lastDuel = Duel.getLastDuel(player);
 
     if (lastDuel == null) {
-      p.sendMessage(Lang.getComponent("no-last-duel"));
+      player.sendMessage(Lang.getComponent("no-last-duel"));
       return;
     }
 
@@ -32,11 +32,11 @@ public class RematchCommand extends BaseCommand {
 
     if (lastDuel.getPlayers().size() == 2) {
       for (Player requested : lastDuel.getPlayers()) {
-        if (!requested.equals(p)) {
+        if (!requested.equals(player)) {
           new Request(
-              p,
+              player,
               new StandardDuel(
-                  p,
+                  player,
                   requested,
                   lastDuel.getQueue(),
                   lastDuel.getKit(),
@@ -46,22 +46,22 @@ public class RematchCommand extends BaseCommand {
         }
       }
     } else if (lastDuel instanceof TeamDuel teamDuel) {
-      boolean isInTeam1 = Arrays.asList(teamDuel.getTeam1()).contains(p);
+      boolean isInTeam1 = Arrays.asList(teamDuel.getTeam1()).contains(player);
       Player[] team1 =
           isInTeam1
               ? Arrays.stream(teamDuel.getTeam1())
-                  .filter(player -> !player.equals(p))
+                  .filter(teamMember -> !teamMember.equals(player))
                   .toArray(Player[]::new)
               : teamDuel.getTeam1();
       Player[] team2 =
           isInTeam1
               ? teamDuel.getTeam2()
               : Arrays.stream(teamDuel.getTeam2())
-                  .filter(player -> !player.equals(p))
+                  .filter(teamMember -> !teamMember.equals(player))
                   .toArray(Player[]::new);
 
       new Request(
-          p,
+          player,
           new TeamDuel(
               team1,
               team2,
@@ -71,7 +71,7 @@ public class RematchCommand extends BaseCommand {
               false));
     } else if (lastDuel instanceof FFADuel ffaDuel) {
       new Request(
-          p,
+          player,
           new FFADuel(
               ffaDuel.getPlayers(),
               lastDuel.getQueue(),

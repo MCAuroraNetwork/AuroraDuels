@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 /* Event that is fired when a duel enters the duel queue */
 public class DuelRequestAcceptEvent extends Event {
   private static final HandlerList HANDLERS = new HandlerList();
-  private final Player p;
+  private final Player player;
   private final Duel duel;
 
-  public DuelRequestAcceptEvent(Player p, Duel duel) {
-    this.p = p;
+  public DuelRequestAcceptEvent(Player player, Duel duel) {
+    this.player = player;
     this.duel = duel;
   }
 
@@ -28,7 +28,7 @@ public class DuelRequestAcceptEvent extends Event {
   }
 
   public Player getPlayer() {
-    return p;
+    return player;
   }
 
   public Duel getDuel() {

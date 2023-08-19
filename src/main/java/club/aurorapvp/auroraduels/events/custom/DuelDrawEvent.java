@@ -21,8 +21,8 @@ public class DuelDrawEvent extends Event {
             new TimerTask() {
               @Override
               public void run() {
-                for (Player p : duel.getPlayers()) {
-                  p.teleportAsync(duel.getRespawnLocation());
+                for (Player player : duel.getPlayers()) {
+                  player.teleportAsync(duel.getRespawnLocation());
                 }
                 duel.getArena().resetAsync();
                 duel.getArena().setOccupied(false);

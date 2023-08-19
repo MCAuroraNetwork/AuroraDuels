@@ -10,16 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class QueueSelectEvent extends Event {
   private static final HandlerList HANDLERS = new HandlerList();
-  private final Player p;
+  private final Player player;
   private final Queue queue;
 
-  public QueueSelectEvent(Player p, Queue queue) {
+  public QueueSelectEvent(Player player, Queue queue) {
     this.queue = queue;
-    this.p = p;
+    this.player = player;
   }
 
   public Player getPlayer() {
-    return p;
+    return player;
   }
 
   public Queue getQueue() {

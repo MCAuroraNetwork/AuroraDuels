@@ -19,7 +19,7 @@ public class PluginCommands extends BaseCommand {
   @CommandPermission("auroraduels.admin")
   @Description("Reloads all plugin data")
   @SuppressWarnings("unused")
-  public void onReload(Player p) {
+  public void onReload(Player player) {
     long startTime = System.currentTimeMillis();
 
     Config.reload();
@@ -27,7 +27,7 @@ public class PluginCommands extends BaseCommand {
     Arena.reloadAll();
     Queue.reloadAll();
 
-    p.sendMessage(Lang.getComponent("reloaded"));
+    player.sendMessage(Lang.getComponent("reloaded"));
 
     AuroraDuels.INSTANCE
         .getLogger()
@@ -38,7 +38,7 @@ public class PluginCommands extends BaseCommand {
   @Subcommand("help")
   @Description("Lists all available plugin commands and their function")
   @SuppressWarnings("unused")
-  public void onHelp(Player p) {
-    p.sendMessage(Lang.getComponent("help-command"));
+  public void onHelp(Player player) {
+    player.sendMessage(Lang.getComponent("help-command"));
   }
 }

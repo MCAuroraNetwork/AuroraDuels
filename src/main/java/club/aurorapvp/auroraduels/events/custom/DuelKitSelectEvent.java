@@ -8,16 +8,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class DuelKitSelectEvent extends Event {
   private static final HandlerList HANDLERS = new HandlerList();
-  private final Player p;
+  private final Player player;
   private final Kit kit;
 
-  public DuelKitSelectEvent(Player p, Kit kit) {
+  public DuelKitSelectEvent(Player player, Kit kit) {
     this.kit = kit;
-    this.p = p;
+    this.player = player;
   }
 
   public Player getPlayer() {
-    return p;
+    return player;
   }
 
   public Kit getKit() {

@@ -80,15 +80,15 @@ public class Arena {
 
   public static void onWandUse(PlayerInteractEvent event) {
     event.setCancelled(true);
-    Player p = event.getPlayer();
-    p.setCooldown(Material.IRON_HOE, 20);
+    Player player = event.getPlayer();
+    player.setCooldown(Material.IRON_HOE, 20);
     Action action = event.getAction();
     BlockVector3 vector =
         BukkitAdapter.asBlockVector(Objects.requireNonNull(event.getClickedBlock()).getLocation());
 
     switch (unfinishedArena.getState()) {
-      case SPAWN_1, SPAWN_2 -> unfinishedArena.setSpawns(p, action, vector);
-      case CORNER_1, CORNER_2 -> unfinishedArena.setCorners(p, action, vector);
+      case SPAWN_1, SPAWN_2 -> unfinishedArena.setSpawns(player, action, vector);
+      case CORNER_1, CORNER_2 -> unfinishedArena.setCorners(player, action, vector);
       default -> {
         AuroraDuels.INSTANCE
             .getLogger()
@@ -174,28 +174,28 @@ public class Arena {
     world = this.data.getWorld();
   }
 
-  public void startCreation(Player p) {
+  public void startCreation(Player player) {
     if (state == ArenaState.IDLE && !this.exists()) {
       state = ArenaState.SPAWN_1;
       Wand.setActive(Wand.WandActivity.LEFT);
       unfinishedArena = this;
 
-      p.getInventory()
-          .setItem(p.getInventory().getHeldItemSlot(), new ItemStack(Material.IRON_HOE));
+      player.getInventory()
+          .setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.IRON_HOE));
 
-      p.sendMessage(Lang.getComponent("set-spawn1"));
+      player.sendMessage(Lang.getComponent("set-spawn1"));
     } else if (state != ArenaState.IDLE) {
-      p.sendMessage(Lang.getComponent("arena-already-being-created"));
+      player.sendMessage(Lang.getComponent("arena-already-being-created"));
     } else {
-      p.sendMessage(Lang.getComponent("arena-already-exists"));
+      player.sendMessage(Lang.getComponent("arena-already-exists"));
     }
   }
 
-  public void setSpawns(Player p, Action action, BlockVector3 vector) {
+  public void setSpawns(Player player, Action action, BlockVector3 vector) {
     if (action.isLeftClick() && state == ArenaState.SPAWN_1) {
       spawn1 = vector.add(0, 1, 0);
 
-      p.sendMessage(
+      player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
                   Lang.getString("spawn1-set")
@@ -207,7 +207,7 @@ public class Arena {
                       + spawn1.getBlockZ()
                       + ")"));
 
-      p.sendMessage(Lang.getComponent("set-spawn2"));
+      player.sendMessage(Lang.getComponent("set-spawn2"));
       state = ArenaState.SPAWN_2;
       Wand.setActive(Wand.WandActivity.RIGHT);
     }
@@ -215,7 +215,7 @@ public class Arena {
     if (action.isRightClick() && state == ArenaState.SPAWN_2) {
       spawn2 = vector.add(0, 1, 0);
 
-      p.sendMessage(
+      player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
                   Lang.getString("spawn2-set")
@@ -227,21 +227,21 @@ public class Arena {
                       + spawn2.getBlockZ()
                       + ")"));
 
-      p.sendMessage(Lang.getComponent("spawns-set"));
-      p.sendMessage(Lang.getComponent("set-pos1"));
-      world = p.getWorld();
+      player.sendMessage(Lang.getComponent("spawns-set"));
+      player.sendMessage(Lang.getComponent("set-pos1"));
+      world = player.getWorld();
       state = ArenaState.CORNER_1;
       Wand.setActive(Wand.WandActivity.LEFT);
     }
   }
 
-  public void setCorners(Player p, Action action, BlockVector3 vector) {
+  public void setCorners(Player player, Action action, BlockVector3 vector) {
     if (action.isLeftClick() && state == ArenaState.CORNER_1) {
       pos1 = vector;
 
       corner1 = new Location(this.getWorld(), vector.getX(), vector.getY(), vector.getZ());
 
-      p.sendMessage(
+      player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
                   Lang.getString("pos1-set")
@@ -253,7 +253,7 @@ public class Arena {
                       + pos1.getBlockZ()
                       + ")"));
 
-      p.sendMessage(Lang.getComponent("set-pos2"));
+      player.sendMessage(Lang.getComponent("set-pos2"));
       state = ArenaState.CORNER_2;
       Wand.setActive(Wand.WandActivity.RIGHT);
     }
@@ -263,7 +263,7 @@ public class Arena {
 
       corner2 = new Location(this.getWorld(), vector.getX(), vector.getY(), vector.getZ());
 
-      p.sendMessage(
+      player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
                   Lang.getString("pos2-set")
@@ -275,7 +275,7 @@ public class Arena {
                       + pos2.getBlockZ()
                       + ")"));
 
-      p.sendMessage(Lang.getComponent("arena-created"));
+      player.sendMessage(Lang.getComponent("arena-created"));
       Wand.setActive(Wand.WandActivity.INACTIVE);
       schematic.create();
       data.create();
@@ -284,12 +284,12 @@ public class Arena {
     }
   }
 
-  public void resetAsync(Player p) {
+  public void resetAsync(Player player) {
     if (this.exists()) {
       this.resetAsync();
-      p.sendMessage(Lang.getComponent("arena-reset"));
+      player.sendMessage(Lang.getComponent("arena-reset"));
     } else {
-      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
@@ -326,15 +326,15 @@ public class Arena {
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
-  public void delete(Player p) {
+  public void delete(Player player) {
     if (this.exists()) {
       this.data.getFile().delete();
       this.schematic.getFile().delete();
       arenas.remove(this);
 
-      p.sendMessage(Lang.getComponent("arena-deleted"));
+      player.sendMessage(Lang.getComponent("arena-deleted"));
     } else {
-      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 

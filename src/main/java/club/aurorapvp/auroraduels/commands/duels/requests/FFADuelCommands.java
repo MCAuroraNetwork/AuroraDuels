@@ -24,9 +24,9 @@ public class FFADuelCommands extends BaseCommand {
   @Syntax("[player1 player2 player3]")
   @Description("Sends a duel request to other players")
   @SuppressWarnings("unused")
-  public void onNewRequest(Player p, String[] playerNames) {
+  public void onNewRequest(Player player, String[] playerNames) {
     if (playerNames.length < 1) {
-      p.sendMessage(Lang.getComponent("not-enough-players"));
+      player.sendMessage(Lang.getComponent("not-enough-players"));
       return;
     }
 
@@ -39,12 +39,12 @@ public class FFADuelCommands extends BaseCommand {
     }
 
     Set<Player> players = new HashSet<>(Set.of(requested));
-    players.add(p);
+    players.add(player);
 
     Location loc = Duel.getDuelLobby();
 
     if (loc == null) {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
 
       if (worldSpawn != null) {
         loc = worldSpawn.getSpawn();
@@ -59,6 +59,6 @@ public class FFADuelCommands extends BaseCommand {
       }
     }
 
-    new Request(p, new FFADuel(players, loc, false));
+    new Request(player, new FFADuel(players, loc, false));
   }
 }

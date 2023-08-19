@@ -18,17 +18,17 @@ public class QueueCommands extends BaseCommand {
   @Syntax("[name]")
   @Description("Creates a queue")
   @SuppressWarnings("unused")
-  public void onCreate(Player p, String name, @Optional String kitName) {
+  public void onCreate(Player player, String name, @Optional String kitName) {
     if (kitName != null && AuroraDuels.isAuroraKitsInstalled()) {
-      new Queue(name).create(p, kitName);
+      new Queue(name).create(player, kitName);
     } else {
-      new Queue(name).create(p);
+      new Queue(name).create(player);
     }
   }
 
   @CatchUnknown
   @SuppressWarnings("unused")
-  public void onUnknown(Player p) {
-    p.sendMessage(Lang.getComponent("unknown-queue-command"));
+  public void onUnknown(Player player) {
+    player.sendMessage(Lang.getComponent("unknown-queue-command"));
   }
 }

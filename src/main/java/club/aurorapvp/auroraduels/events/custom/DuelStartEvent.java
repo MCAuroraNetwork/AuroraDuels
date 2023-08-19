@@ -18,15 +18,15 @@ public class DuelStartEvent extends Event {
     Kit kit = duel.getKit();
 
     if (kit != null) {
-      for (Player p : duel.getPlayers()) {
-        Kit.giveKit(kit, p);
+      for (Player player : duel.getPlayers()) {
+        Kit.giveKit(kit, player);
       }
     } else {
-      for (Player p : duel.getPlayers()) {
-        Kit playerKit = Duel.getDuelKit(p);
+      for (Player player : duel.getPlayers()) {
+        Kit playerKit = Duel.getDuelKit(player);
 
         if (playerKit != null) {
-          Kit.giveKit(playerKit, p);
+          Kit.giveKit(playerKit, player);
         }
       }
     }

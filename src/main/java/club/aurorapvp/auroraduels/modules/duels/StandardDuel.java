@@ -53,10 +53,10 @@ public class StandardDuel extends Duel implements Listener {
     this.rounds = rounds;
   }
 
-  public Player getOpponent(Player p) {
-    if (p == playerOne) {
+  public Player getOpponent(Player player) {
+    if (player == playerOne) {
       return playerTwo;
-    } else if (p == playerTwo) {
+    } else if (player == playerTwo) {
       return playerOne;
     } else {
       return null;
@@ -67,8 +67,8 @@ public class StandardDuel extends Duel implements Listener {
     this.arena = arena;
 
     if (rounds % 2 == 0) {
-      for (Player p : this.players) {
-        p.sendMessage(Lang.getComponent("even-rounds"));
+      for (Player player : this.players) {
+        player.sendMessage(Lang.getComponent("even-rounds"));
       }
     }
 
@@ -92,13 +92,13 @@ public class StandardDuel extends Duel implements Listener {
 
       @Override
       public void run() {
-        for (Player p : thisDuel.getPlayers()) {
+        for (Player player : thisDuel.getPlayers()) {
           playerOne.teleportAsync(spawn1);
           playerOne.lookAt(spawn2, LookAnchor.EYES);
           playerTwo.teleportAsync(spawn2);
           playerTwo.lookAt(spawn1, LookAnchor.EYES);
 
-          p.showTitle(Title.title(Component.text(seconds), Component.text("")));
+          player.showTitle(Title.title(Component.text(seconds), Component.text("")));
 
           if ((seconds -= 1) == 0) {
             final Title title1 =
@@ -274,8 +274,8 @@ public class StandardDuel extends Duel implements Listener {
     Bukkit.getScheduler().cancelTask(checkBoundsId);
     Bukkit.getScheduler().cancelTask(bossbarTaskId);
 
-    for (Player p : this.getPlayers()) {
-      p.sendMessage(Lang.getComponent("draw"));
+    for (Player player : this.getPlayers()) {
+      player.sendMessage(Lang.getComponent("draw"));
     }
 
     new Timer()

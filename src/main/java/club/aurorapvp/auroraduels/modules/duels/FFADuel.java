@@ -38,15 +38,15 @@ public class FFADuel extends Duel {
   }
 
   @SuppressWarnings("unused")
-  public Player[] getOpponents(Player p) {
+  public Player[] getOpponents(Player player) {
     Set<Player> opponents = new HashSet<>(this.getPlayers());
-    opponents.remove(p);
+    opponents.remove(player);
 
     return opponents.toArray(new Player[0]);
   }
 
-  public void setDead(Player p) {
-    deadPlayers.put(p, true);
+  public void setDead(Player player) {
+    deadPlayers.put(player, true);
   }
 
   public boolean onePlayerAlive() {
@@ -63,9 +63,9 @@ public class FFADuel extends Duel {
 
   // TODO janky method
   public Player getFirstAlive() {
-    for (Player p : deadPlayers.keySet()) {
-      if (!deadPlayers.get(p)) {
-        return p;
+    for (Player player : deadPlayers.keySet()) {
+      if (!deadPlayers.get(player)) {
+        return player;
       }
     }
     return null;
@@ -99,12 +99,12 @@ public class FFADuel extends Duel {
 
       @Override
       public void run() {
-        for (Player p : thisDuel.getPlayers()) {
-          p.teleportAsync(
+        for (Player player : thisDuel.getPlayers()) {
+          player.teleportAsync(
               Objects.requireNonNull(LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center)));
-          p.lookAt(center, LookAnchor.EYES);
+          player.lookAt(center, LookAnchor.EYES);
 
-          p.showTitle(Title.title(Component.text(seconds), Component.text("")));
+          player.showTitle(Title.title(Component.text(seconds), Component.text("")));
 
           if ((seconds -= 1) == 0) {
             StringBuilder sb;
@@ -114,7 +114,7 @@ public class FFADuel extends Duel {
             sb = new StringBuilder();
 
             for (Player opponent : thisDuel.getPlayers()) {
-              if (p != opponent) {
+              if (player != opponent) {
                 sb.append(opponent.getName());
                 sb.append(", ");
               }
@@ -129,7 +129,7 @@ public class FFADuel extends Duel {
                 Title.title(
                     Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
-            p.showTitle(title);
+            player.showTitle(title);
 
             this.cancel();
           }
@@ -143,8 +143,8 @@ public class FFADuel extends Duel {
 
     Set<Player> players = this.getPlayers();
 
-    for (Player p : players) {
-      deadPlayers.put(p, false);
+    for (Player player : players) {
+      deadPlayers.put(player, false);
     }
 
     new Timer()
@@ -153,9 +153,9 @@ public class FFADuel extends Duel {
               @Override
               public void run() {
                 if (thisDuel.isActive()) {
-                  for (Player p : thisDuel.getPlayers()) {
-                    p.sendMessage(Lang.getComponent("duel-time-expired"));
-                    p.sendMessage(Lang.getComponent("duel-time-expired"));
+                  for (Player player : thisDuel.getPlayers()) {
+                    player.sendMessage(Lang.getComponent("duel-time-expired"));
+                    player.sendMessage(Lang.getComponent("duel-time-expired"));
                   }
                   thisDuel.draw();
                 }
@@ -174,10 +174,10 @@ public class FFADuel extends Duel {
     }.runTask(AuroraDuels.INSTANCE);
   }
 
-  public void endDuel(Player[] player, Player[] losers) {
+  public void endDuel(Player[] winners, Player[] losers) {
     Bukkit.getScheduler().cancelTask(checkBoundsId);
 
-    Player winner = player[0];
+    Player winner = winners[0];
 
     String winnerName = winner.getName();
 
@@ -194,8 +194,8 @@ public class FFADuel extends Duel {
     winner.showTitle(
         Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + loserNames)));
 
-    for (Player p : losers) {
-      p.showTitle(
+    for (Player player : losers) {
+      player.showTitle(
           Title.title(Lang.getComponent("you-lost"), Component.text("Winner: " + winnerName)));
     }
 
@@ -215,8 +215,8 @@ public class FFADuel extends Duel {
   public void draw() {
     Bukkit.getScheduler().cancelTask(checkBoundsId);
 
-    for (Player p : this.getPlayers()) {
-      p.sendMessage(Lang.getComponent("draw"));
+    for (Player player : this.getPlayers()) {
+      player.sendMessage(Lang.getComponent("draw"));
     }
 
     Duel thisDuel = this;
@@ -226,8 +226,8 @@ public class FFADuel extends Duel {
             new TimerTask() {
               @Override
               public void run() {
-                for (Player p : thisDuel.getPlayers()) {
-                  p.teleportAsync(thisDuel.getRespawnLocation());
+                for (Player player : thisDuel.getPlayers()) {
+                  player.teleportAsync(thisDuel.getRespawnLocation());
                 }
                 arena.resetAsync();
                 arena.setOccupied(false);

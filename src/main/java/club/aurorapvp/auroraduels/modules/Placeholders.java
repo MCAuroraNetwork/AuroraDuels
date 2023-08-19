@@ -37,11 +37,11 @@ public class Placeholders extends PlaceholderExpansion {
   }
 
   @Override
-  public String onRequest(OfflinePlayer p, @NotNull String params) {
-    return getResult(p, params);
+  public String onRequest(OfflinePlayer player, @NotNull String params) {
+    return getResult(player, params);
   }
 
-  private String getResult(OfflinePlayer player, String params) {
+  private String getResult(OfflinePlayer offlinePlayer, String params) {
     if (params.startsWith("in_duels")) {
       return String.valueOf(Duel.inDuels());
     }
@@ -60,20 +60,20 @@ public class Placeholders extends PlaceholderExpansion {
       return String.valueOf(Duel.inDuel(queueName));
     }
 
-    if (!(player instanceof Player p)) {
+    if (!(offlinePlayer instanceof Player player)) {
       return "Player offline";
     }
 
     if (params.startsWith("winstreak")) {
-      return String.valueOf(Duel.getWins(p));
+      return String.valueOf(Duel.getWins(player));
     }
 
     if (params.startsWith("opponent_ping")) {
-      if (!Duel.inDuel(p)) {
+      if (!Duel.inDuel(player)) {
         return "Not in duel";
       }
 
-      for (Player duelPlayer : Objects.requireNonNull(Duel.getDuel(p)).getPlayers()) {
+      for (Player duelPlayer : Objects.requireNonNull(Duel.getDuel(player)).getPlayers()) {
         if (player != duelPlayer) {
           return String.valueOf(duelPlayer.getPing());
         }
@@ -81,19 +81,19 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("opponent")) {
-      if (!(Duel.inDuel(p))) {
+      if (!(Duel.inDuel(player))) {
         return "Not in duel";
       }
 
-      if (Duel.getDuel(p) instanceof StandardDuel duel) {
-        return duel.getOpponent(p).getName();
+      if (Duel.getDuel(player) instanceof StandardDuel duel) {
+        return duel.getOpponent(player).getName();
       }
 
-      Duel duel = Duel.getDuel(p);
+      Duel duel = Duel.getDuel(player);
       Set<String> opponentNames = new HashSet<>();
 
       if (duel instanceof TeamDuel teamDuel) {
-        for (Player opponent : teamDuel.getOpponents(p)) {
+        for (Player opponent : teamDuel.getOpponents(player)) {
           opponentNames.add(opponent.getName());
         }
       }
@@ -102,8 +102,8 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("duel_duration")) {
-      if (StandardDuel.inDuel(p)) {
-        Long elapsed = Objects.requireNonNull(Duel.getDuel(p)).getElapsed();
+      if (StandardDuel.inDuel(player)) {
+        Long elapsed = Objects.requireNonNull(Duel.getDuel(player)).getElapsed();
 
         return String.format(
             "%d min, %d sec",

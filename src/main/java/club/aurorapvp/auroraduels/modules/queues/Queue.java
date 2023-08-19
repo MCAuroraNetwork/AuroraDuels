@@ -128,8 +128,8 @@ public class Queue {
     AuroraDuels.INSTANCE.getLogger().info("ALl queues reloaded!");
   }
 
-  public static boolean isCreator(Player p) {
-    return p == currentCreator;
+  public static boolean isCreator(Player player) {
+    return player == currentCreator;
   }
 
   public static Set<Queue> getQueues() {
@@ -145,18 +145,18 @@ public class Queue {
     return null;
   }
 
-  public void findMatch(Player p, boolean ranked) {
-    if (lookingForMatch.containsValue(p)) {
+  public void findMatch(Player player, boolean ranked) {
+    if (lookingForMatch.containsValue(player)) {
       lookingForMatch.clear();
-      p.sendMessage(Lang.getComponent("not-looking-match"));
+      player.sendMessage(Lang.getComponent("not-looking-match"));
       return;
     }
 
-    p.sendMessage(Lang.getComponent("looking-match"));
+    player.sendMessage(Lang.getComponent("looking-match"));
     if (lookingForMatch.get(ranked) == null) {
-      lookingForMatch.put(ranked, p);
+      lookingForMatch.put(ranked, player);
     } else {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
       Location loc = null;
 
       if (worldSpawn != null) {
@@ -168,8 +168,8 @@ public class Queue {
       }
 
       this.enterDuelQueue(
-          new StandardDuel(p, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked, 1));
-      p.sendMessage(Lang.getComponent("match-found"));
+          new StandardDuel(player, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked, 1));
+      player.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.clear();
     }
@@ -218,58 +218,58 @@ public class Queue {
     }
   }
 
-  public void create(Player p, String kitName) {
+  public void create(Player player, String kitName) {
     if (!this.exists() && arenasSet) {
       if (kitName != null && AuroraDuels.isAuroraKitsInstalled()) {
         this.kit = Kit.getKit(kitName);
       }
 
-      create(p);
+      create(player);
     } else if (this.exists()) {
-      p.sendMessage(Lang.getComponent("queue-already-exists"));
+      player.sendMessage(Lang.getComponent("queue-already-exists"));
     } else {
-      p.sendMessage(Lang.getComponent("queue-being-created"));
+      player.sendMessage(Lang.getComponent("queue-being-created"));
     }
   }
 
-  public void create(Player p) {
-    if (p.getInventory().getItemInMainHand().getItemMeta() == null) {
-      p.sendMessage(Lang.getComponent("queue-invalid-item"));
+  public void create(Player player) {
+    if (player.getInventory().getItemInMainHand().getItemMeta() == null) {
+      player.sendMessage(Lang.getComponent("queue-invalid-item"));
       queues.remove(this);
       return;
     }
 
     if (!this.exists() && arenasSet) {
       arenasSet = false;
-      currentCreator = p;
+      currentCreator = player;
       unFinishedQueue = this;
       displayItem =
           ItemStackUtil.createDisplayItem(
-              p.getInventory().getItemInMainHand().getType(), this.getName());
+              player.getInventory().getItemInMainHand().getType(), this.getName());
 
-      p.sendMessage(
+      player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(String.format(Lang.getString("add-arena"), arenas.size())));
     } else if (this.exists()) {
-      p.sendMessage(Lang.getComponent("queue-already-exists"));
+      player.sendMessage(Lang.getComponent("queue-already-exists"));
     } else {
-      p.sendMessage(Lang.getComponent("queue-being-created"));
+      player.sendMessage(Lang.getComponent("queue-being-created"));
     }
   }
 
-  public void createArenaList(Player p, String str) {
+  public void createArenaList(Player player, String str) {
     if (str.equals("stop")) {
       arenasSet = true;
       queues.add(this);
       data.create();
       AuroraDuels.getQueueGUI().addItem(this.getDisplayItem());
 
-      p.sendMessage(Lang.getComponent("queue-created"));
+      player.sendMessage(Lang.getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
       arenas.add(Arena.getArena(str));
-      p.sendMessage(Lang.formatComponent("add-arena", arenas.size()));
+      player.sendMessage(Lang.formatComponent("add-arena", arenas.size()));
     } else {
-      p.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
@@ -280,8 +280,8 @@ public class Queue {
   public void enterDuelQueue(Duel duel) {
     duelQueue.add(duel);
 
-    for (Player p : duel.getPlayers()) {
-      p.sendMessage(Lang.getComponent("entered-queue"));
+    for (Player player : duel.getPlayers()) {
+      player.sendMessage(Lang.getComponent("entered-queue"));
     }
 
     executor.scheduleAtFixedRate(checkQueue, 0L, 1L, TimeUnit.SECONDS);
@@ -289,14 +289,14 @@ public class Queue {
     new QueueJoinEvent(duel).callEvent();
   }
 
-  public static boolean inQueue(Player p) {
+  public static boolean inQueue(Player player) {
     for (Queue queue : Queue.getQueues()) {
-      if (queue.lookingForMatch.containsValue(p)) {
+      if (queue.lookingForMatch.containsValue(player)) {
         return true;
       }
 
-      for (Player player : queue.getPlayers()) {
-        if (p == player) {
+      for (Player queuedPlayer : queue.getPlayers()) {
+        if (player == queuedPlayer) {
           return true;
         }
       }

@@ -24,9 +24,9 @@ public class DuelBaseCommands extends BaseCommand {
   @CommandCompletion("@players")
   @Description("Accepts the duel request")
   @SuppressWarnings("unused")
-  public void onAccept(Player p, @Optional String requesterName) {
-    if (!Request.hasPendingRequest(p)) {
-      p.sendMessage(Lang.getComponent("no-requests"));
+  public void onAccept(Player player, @Optional String requesterName) {
+    if (!Request.hasPendingRequest(player)) {
+      player.sendMessage(Lang.getComponent("no-requests"));
       return;
     }
 
@@ -37,34 +37,34 @@ public class DuelBaseCommands extends BaseCommand {
     }
 
     if (requester == null) {
-      Request request = Request.getRequest(p);
+      Request request = Request.getRequest(player);
 
-      for (Request pendingRequest : Request.getRequests(p)) {
+      for (Request pendingRequest : Request.getRequests(player)) {
         if (pendingRequest != request) {
           pendingRequest.deny();
         }
       }
 
       assert request != null;
-      request.accept(p);
+      request.accept(player);
       return;
     }
 
-    if (!Request.hasPendingRequest(requester, p)) {
-      p.sendMessage(Lang.getComponent("no-requests"));
+    if (!Request.hasPendingRequest(requester, player)) {
+      player.sendMessage(Lang.getComponent("no-requests"));
       return;
     }
 
-    Request request = Request.getRequest(requester, p);
+    Request request = Request.getRequest(requester, player);
 
-    for (Request pendingRequest : Request.getRequests(p)) {
+    for (Request pendingRequest : Request.getRequests(player)) {
       if (pendingRequest != request) {
         pendingRequest.deny();
       }
     }
 
     assert request != null;
-    request.accept(p);
+    request.accept(player);
   }
 
   @Subcommand("deny")
@@ -72,9 +72,9 @@ public class DuelBaseCommands extends BaseCommand {
   @CommandCompletion("@players")
   @Description("Denies the duel request")
   @SuppressWarnings("unused")
-  public void onDeny(Player p, @Optional String requesterName) {
-    if (!Request.hasPendingRequest(p)) {
-      p.sendMessage(Lang.getComponent("no-requests"));
+  public void onDeny(Player player, @Optional String requesterName) {
+    if (!Request.hasPendingRequest(player)) {
+      player.sendMessage(Lang.getComponent("no-requests"));
       return;
     }
 
@@ -85,19 +85,19 @@ public class DuelBaseCommands extends BaseCommand {
     }
 
     if (requester == null) {
-      Request request = Request.getRequest(p);
+      Request request = Request.getRequest(player);
 
       assert request != null;
       request.deny();
       return;
     }
 
-    if (!Request.hasPendingRequest(requester, p)) {
-      p.sendMessage(Lang.getComponent("no-requests"));
+    if (!Request.hasPendingRequest(requester, player)) {
+      player.sendMessage(Lang.getComponent("no-requests"));
       return;
     }
 
-    Objects.requireNonNull(Request.getRequest(requester, p)).deny();
+    Objects.requireNonNull(Request.getRequest(requester, player)).deny();
   }
 
   @Subcommand("spectate")
@@ -105,13 +105,13 @@ public class DuelBaseCommands extends BaseCommand {
   @Syntax("[player]")
   @Description("Spectates the duel of a given player")
   @SuppressWarnings("unused")
-  public void onSetSpectator(Player p, String player) {
-    Duel duel = Duel.getDuel(Bukkit.getPlayer(player));
+  public void onSetSpectator(Player player, String playerName) {
+    Duel duel = Duel.getDuel(Bukkit.getPlayer(playerName));
 
-    if (!Duel.inDuel(p) && duel != null) {
-      duel.setSpectator(p, true);
+    if (!Duel.inDuel(player) && duel != null) {
+      duel.setSpectator(player, true);
     } else {
-      p.sendMessage(Lang.getComponent("unknown-duel"));
+      player.sendMessage(Lang.getComponent("unknown-duel"));
     }
   }
 
@@ -119,11 +119,11 @@ public class DuelBaseCommands extends BaseCommand {
   @CommandCompletion("@kits")
   @Description("Sets the duel kit")
   @SuppressWarnings("unused")
-  public void onKitSet(Player p, @Optional String kitName) {
-    if (kitName != null && Kit.getKit(p, kitName) != null) {
-      Duel.setDuelKit(p, kitName);
+  public void onKitSet(Player player, @Optional String kitName) {
+    if (kitName != null && Kit.getKit(player, kitName) != null) {
+      Duel.setDuelKit(player, kitName);
     } else {
-      Duel.setDuelKit(p, Kit.getLastUsedKit(p).getName());
+      Duel.setDuelKit(player, Kit.getLastUsedKit(player).getName());
     }
   }
 
@@ -131,14 +131,14 @@ public class DuelBaseCommands extends BaseCommand {
   @Description("Sets the duel lobby")
   @CommandPermission("auroraduels.admin")
   @SuppressWarnings("unused")
-  public void onLobbySet(Player p) {
-    Duel.setDuelLobby(p.getLocation());
-    p.sendMessage(Lang.getComponent("duel-lobby-set"));
+  public void onLobbySet(Player player) {
+    Duel.setDuelLobby(player.getLocation());
+    player.sendMessage(Lang.getComponent("duel-lobby-set"));
   }
 
   @CatchUnknown
   @SuppressWarnings("unused")
-  public void onUnknown(Player p) {
-    p.sendMessage(Lang.getComponent("unknown-duel-command"));
+  public void onUnknown(Player player) {
+    player.sendMessage(Lang.getComponent("unknown-duel-command"));
   }
 }

@@ -67,9 +67,9 @@ public class TeamDuel extends Duel {
   }
 
   @SuppressWarnings("unused")
-  public Player[] getOpponents(Player p) {
-    for (Player player : team1) {
-      if (player == p) {
+  public Player[] getOpponents(Player player) {
+    for (Player teamMember : team1) {
+      if (teamMember == player) {
         return team2;
       }
     }
@@ -77,25 +77,25 @@ public class TeamDuel extends Duel {
   }
 
   @SuppressWarnings("unused")
-  public Player[] getTeammates(Player p) {
-    for (Player player : team1) {
-      if (player == p) {
+  public Player[] getTeammates(Player player) {
+    for (Player teamMember : team1) {
+      if (teamMember == player) {
         return team1;
       }
     }
     return team2;
   }
 
-  public void setDead(Player p) {
-    if (team1Dead.containsKey(p)) {
-      team1Dead.put(p, true);
+  public void setDead(Player player) {
+    if (team1Dead.containsKey(player)) {
+      team1Dead.put(player, true);
     } else {
-      team2Dead.put(p, true);
+      team2Dead.put(player, true);
     }
   }
 
-  public boolean teamDead(Player p) {
-    if (team1Dead.containsKey(p)) {
+  public boolean teamDead(Player player) {
+    if (team1Dead.containsKey(player)) {
       for (boolean dead : team1Dead.values()) {
         if (!dead) {
           return false;
@@ -127,12 +127,12 @@ public class TeamDuel extends Duel {
             arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
-    for (Player p : team1) {
-      team1Dead.put(p, false);
+    for (Player player : team1) {
+      team1Dead.put(player, false);
     }
 
-    for (Player p : team2) {
-      team2Dead.put(p, false);
+    for (Player player : team2) {
+      team2Dead.put(player, false);
     }
 
     new BukkitRunnable() {
@@ -140,11 +140,11 @@ public class TeamDuel extends Duel {
 
       @Override
       public void run() {
-        for (Player p : team1) {
-          p.teleportAsync(spawn1);
-          p.lookAt(spawn2, LookAnchor.EYES);
+        for (Player player : team1) {
+          player.teleportAsync(spawn1);
+          player.lookAt(spawn2, LookAnchor.EYES);
 
-          p.showTitle(Title.title(Component.text(seconds), Component.text("")));
+          player.showTitle(Title.title(Component.text(seconds), Component.text("")));
 
           if ((seconds -= 1) == 0) {
             StringBuilder sb = new StringBuilder();
@@ -160,7 +160,7 @@ public class TeamDuel extends Duel {
                 Title.title(
                     Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
-            p.showTitle(title);
+            player.showTitle(title);
 
             this.cancel();
           }
@@ -173,11 +173,11 @@ public class TeamDuel extends Duel {
 
       @Override
       public void run() {
-        for (Player p : team2) {
-          p.teleportAsync(spawn2);
-          p.lookAt(spawn1, LookAnchor.EYES);
+        for (Player player : team2) {
+          player.teleportAsync(spawn2);
+          player.lookAt(spawn1, LookAnchor.EYES);
 
-          p.showTitle(Title.title(Component.text(seconds), Component.text("")));
+          player.showTitle(Title.title(Component.text(seconds), Component.text("")));
 
           if ((seconds -= 1) == 0) {
             StringBuilder sb = new StringBuilder();
@@ -193,7 +193,7 @@ public class TeamDuel extends Duel {
                 Title.title(
                     Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
-            p.showTitle(title);
+            player.showTitle(title);
 
             this.cancel();
           }
@@ -209,9 +209,9 @@ public class TeamDuel extends Duel {
               @Override
               public void run() {
                 if (thisDuel.isActive()) {
-                  for (Player p : thisDuel.getPlayers()) {
-                    p.sendMessage(Lang.getComponent("duel-time-expired"));
-                    p.sendMessage(Lang.getComponent("duel-time-expired"));
+                  for (Player player : thisDuel.getPlayers()) {
+                    player.sendMessage(Lang.getComponent("duel-time-expired"));
+                    player.sendMessage(Lang.getComponent("duel-time-expired"));
                   }
                   thisDuel.draw();
                 }
@@ -251,13 +251,13 @@ public class TeamDuel extends Duel {
     }
     String loserNames = sb.toString();
 
-    for (Player p : winners) {
-      p.showTitle(
+    for (Player player : winners) {
+      player.showTitle(
           Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + loserNames)));
     }
 
-    for (Player p : losers) {
-      p.showTitle(
+    for (Player player : losers) {
+      player.showTitle(
           Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
     }
 
@@ -277,8 +277,8 @@ public class TeamDuel extends Duel {
   public void draw() {
     Bukkit.getScheduler().cancelTask(checkBoundsId);
 
-    for (Player p : this.getPlayers()) {
-      p.sendMessage(Lang.getComponent("draw"));
+    for (Player player : this.getPlayers()) {
+      player.sendMessage(Lang.getComponent("draw"));
     }
 
     Duel thisDuel = this;
@@ -288,8 +288,8 @@ public class TeamDuel extends Duel {
             new TimerTask() {
               @Override
               public void run() {
-                for (Player p : thisDuel.getPlayers()) {
-                  p.teleportAsync(thisDuel.getRespawnLocation());
+                for (Player player : thisDuel.getPlayers()) {
+                  player.teleportAsync(thisDuel.getRespawnLocation());
                 }
                 arena.resetAsync();
                 arena.setOccupied(false);

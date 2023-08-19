@@ -25,8 +25,8 @@ public class DuelEndEvent extends Event {
             new TimerTask() {
               @Override
               public void run() {
-                for (Player p : duel.getPlayers()) {
-                  p.teleportAsync(duel.getRespawnLocation());
+                for (Player player : duel.getPlayers()) {
+                  player.teleportAsync(duel.getRespawnLocation());
                 }
                 duel.getArena().resetAsync();
                 duel.getArena().setOccupied(false);
@@ -35,8 +35,8 @@ public class DuelEndEvent extends Event {
             },
             3000);
 
-    for (Player p : duel.getSpectators()) {
-      duel.setSpectator(p, false);
+    for (Player player : duel.getSpectators()) {
+      duel.setSpectator(player, false);
     }
 
     duel.setActive(false);

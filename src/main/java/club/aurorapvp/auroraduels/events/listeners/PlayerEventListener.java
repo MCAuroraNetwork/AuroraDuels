@@ -83,21 +83,21 @@ public class PlayerEventListener implements Listener {
     checkIfDuelOver(event.getPlayer());
   }
 
-  public void checkIfDuelOver(Player p) {
-    Duel duel = Duel.getDuel(p);
+  public void checkIfDuelOver(Player player) {
+    Duel duel = Duel.getDuel(player);
 
     if (duel instanceof StandardDuel standardDuel) {
-      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(p)}, new Player[] {p});
+      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(player)}, new Player[] {player});
     } else if (duel instanceof TeamDuel teamDuel) {
-      teamDuel.setDead(p);
+      teamDuel.setDead(player);
 
-      if ((teamDuel.teamDead(p))) {
-        duel.endDuel(teamDuel.getOpponents(p), teamDuel.getTeammates(p));
+      if ((teamDuel.teamDead(player))) {
+        duel.endDuel(teamDuel.getOpponents(player), teamDuel.getTeammates(player));
       } else {
-        duel.setSpectator(p, true);
+        duel.setSpectator(player, true);
       }
     } else if (duel instanceof FFADuel ffaDuel) {
-      ffaDuel.setDead(p);
+      ffaDuel.setDead(player);
 
       if (ffaDuel.onePlayerAlive()) {
         Set<Player> losers = new HashSet<>(ffaDuel.getPlayers());
@@ -105,7 +105,7 @@ public class PlayerEventListener implements Listener {
 
         duel.endDuel(new Player[] {ffaDuel.getFirstAlive()}, losers.toArray(new Player[0]));
       } else {
-        duel.setSpectator(p, true);
+        duel.setSpectator(player, true);
       }
     }
   }

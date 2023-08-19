@@ -30,16 +30,16 @@ public class TeamDuelCommands extends BaseCommand {
   @Syntax("[player1,player2,player3] [player4,player5,player6]")
   @Description("Sends a duel request to a set of two teams of players")
   @SuppressWarnings("unused")
-  public void onNewRequest(Player p, @Split String[] team1Names, @Split String[] team2Names) {
+  public void onNewRequest(Player player, @Split String[] team1Names, @Split String[] team2Names) {
     if (team1Names.length == 0 || team2Names.length == 0) {
-      p.sendMessage(Lang.getComponent("not-enough-players"));
+      player.sendMessage(Lang.getComponent("not-enough-players"));
       return;
     }
 
     Player[] team1 = new Player[team1Names.length + 1];
     Player[] team2 = new Player[team2Names.length];
 
-    team1[team1Names.length - 1] = p;
+    team1[team1Names.length - 1] = player;
 
     int i = 0;
     for (String playerName : team1Names) {
@@ -56,7 +56,7 @@ public class TeamDuelCommands extends BaseCommand {
     Location loc = Duel.getDuelLobby();
 
     if (loc == null) {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
 
       if (worldSpawn != null) {
         loc = worldSpawn.getSpawn();
@@ -71,7 +71,7 @@ public class TeamDuelCommands extends BaseCommand {
       }
     }
 
-    new Request(p, new TeamDuel(team1, team2, loc, false));
+    new Request(player, new TeamDuel(team1, team2, loc, false));
   }
 
   @Subcommand("random")
@@ -79,9 +79,9 @@ public class TeamDuelCommands extends BaseCommand {
   @Syntax("[player1,player2,player3,player4,player5,player6]")
   @Description("Sends a duel request to other players")
   @SuppressWarnings("unused")
-  public void onNewRandRequest(Player p, String[] playerNames) {
+  public void onNewRandRequest(Player player, String[] playerNames) {
     if (playerNames.length < 1) {
-      p.sendMessage(Lang.getComponent("not-enough-players"));
+      player.sendMessage(Lang.getComponent("not-enough-players"));
       return;
     }
 
@@ -94,7 +94,7 @@ public class TeamDuelCommands extends BaseCommand {
     }
 
     Set<Player> players = new HashSet<>(Set.of(requested));
-    players.add(p);
+    players.add(player);
 
     int size = players.size();
     Player extra = null;
@@ -124,7 +124,7 @@ public class TeamDuelCommands extends BaseCommand {
     Location loc = Duel.getDuelLobby();
 
     if (loc == null) {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
 
       if (worldSpawn != null) {
         loc = worldSpawn.getSpawn();
@@ -139,6 +139,6 @@ public class TeamDuelCommands extends BaseCommand {
       }
     }
 
-    new Request(p, new TeamDuel(team1, team2, loc, false));
+    new Request(player, new TeamDuel(team1, team2, loc, false));
   }
 }

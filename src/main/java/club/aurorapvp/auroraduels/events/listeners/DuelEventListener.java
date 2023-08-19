@@ -19,7 +19,7 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    for (Player p : event.getDuel().getPlayers()) {
+    for (Player player : event.getDuel().getPlayers()) {
       if (Config.get()
           .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
         Rating.getRating("default_duels").setEnabled(true);
@@ -27,7 +27,7 @@ public class DuelEventListener implements Listener {
 
       Rating.getRating(event.getDuel().getQueue().getName() + "_duels").setEnabled(true);
       Rating.getRating("default").setEnabled(false);
-      CombatTag.setTaggable(p, false);
+      CombatTag.setTaggable(player, false);
     }
   }
 
@@ -37,7 +37,7 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    for (Player p : event.getDuel().getPlayers()) {
+    for (Player player : event.getDuel().getPlayers()) {
       if (Config.get()
           .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
         Rating.getRating("default_duels").setEnabled(false);
@@ -45,21 +45,21 @@ public class DuelEventListener implements Listener {
 
       Rating.getRating(event.getDuel().getQueue().getName() + "_duels").setEnabled(false);
       Rating.getRating("default").setEnabled(true);
-      CombatTag.setTaggable(p, true);
+      CombatTag.setTaggable(player, true);
 
-      Duel.setLastDuel(p, event.getDuel());
+      Duel.setLastDuel(player, event.getDuel());
     }
 
     if (!event.getDuel().isRanked()) {
       return;
     }
 
-    for (Player p : event.getWinners()) {
-      Duel.addWin(p);
+    for (Player player : event.getWinners()) {
+      Duel.addWin(player);
     }
 
-    for (Player p : event.getLosers()) {
-      Duel.resetStreak(p);
+    for (Player player : event.getLosers()) {
+      Duel.resetStreak(player);
     }
 
     if (event.getDuel().getPlayers().size() == 2) {
@@ -72,18 +72,18 @@ public class DuelEventListener implements Listener {
       double loserAvgRating =
           Arrays.stream(losers)
               .mapToDouble(
-                  p ->
+                  player ->
                       Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
-                          .getScore(p)
+                          .getScore(player)
                           .getPoints())
               .average()
               .orElse(club.aurorapvp.auroracombat.config.Config.get().getInt("elo.default-points"));
       double winnerAvgRating =
           Arrays.stream(winners)
               .mapToDouble(
-                  p ->
+                  player ->
                       Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
-                          .getScore(p)
+                          .getScore(player)
                           .getPoints())
               .average()
               .orElse(club.aurorapvp.auroracombat.config.Config.get().getInt("elo.default-points"));

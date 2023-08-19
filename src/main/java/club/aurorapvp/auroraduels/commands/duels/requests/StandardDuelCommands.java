@@ -23,18 +23,18 @@ public class StandardDuelCommands extends BaseCommand {
   @Syntax("[player]")
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
-  public void onNewRequest(Player p, String playerName, @Optional String rounds) {
+  public void onNewRequest(Player player, String playerName, @Optional String rounds) {
     Player requested = Bukkit.getPlayer(playerName);
 
     if (requested == null) {
-      p.sendMessage(Lang.getComponent("unknown-opponent"));
+      player.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
     }
 
     Location loc = Duel.getDuelLobby();
 
     if (loc == null) {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(p.getWorld());
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
 
       if (worldSpawn != null) {
         loc = worldSpawn.getSpawn();
@@ -51,10 +51,10 @@ public class StandardDuelCommands extends BaseCommand {
 
     try {
       if (Integer.parseInt(rounds) > 1) {
-        new Request(p, new StandardDuel(p, requested, loc, false, Integer.parseInt(rounds)));
+        new Request(player, new StandardDuel(player, requested, loc, false, Integer.parseInt(rounds)));
       }
     } catch (NumberFormatException e) {
-      new Request(p, new StandardDuel(p, requested, loc, false, 1));
+      new Request(player, new StandardDuel(player, requested, loc, false, 1));
     }
   }
 }

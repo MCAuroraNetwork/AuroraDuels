@@ -42,22 +42,21 @@ public abstract class Duel {
   protected int checkBoundsId;
   protected final Runnable checkBounds =
       () -> {
-        for (Player p : this.getPlayers()) {
+        for (Player player : this.getPlayers()) {
           Arena arena = this.getArena();
-          if (!Arena.isInBounds(p.getLocation(), arena)) {
-            p.setHealth(0);
-            p.sendMessage(Lang.getComponent("no-leaving-arena"));
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            player.setHealth(0);
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
           }
         }
 
-        for (Player p : this.getSpectators()) {
-          if (!Arena.isInBounds(p.getLocation(), arena)) {
-            for (Player player : this.getPlayers()) {
-              if (!this.isSpectator(player)) {
-                p.teleportAsync(player.getLocation());
-              }
+        for (Player player : this.getSpectators()) {
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            for (Player duelingPlayer : this.getPlayers()) {
+              player.teleportAsync(duelingPlayer.getLocation());
+              break;
             }
-            p.sendMessage(Lang.getComponent("no-leaving-arena"));
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
           }
         }
       };
@@ -102,56 +101,56 @@ public abstract class Duel {
     duels.add(this);
   }
 
-  public static void addWin(Player p) {
-    PersistentDataContainer container = p.getPersistentDataContainer();
+  public static void addWin(Player player) {
+    PersistentDataContainer container = player.getPersistentDataContainer();
 
     int wins = container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
 
     container.set(winStreakKey, PersistentDataType.INTEGER, wins + 1);
 
-    p.sendMessage(Lang.formatComponent("new-win", wins + 1));
+    player.sendMessage(Lang.formatComponent("new-win", wins + 1));
   }
 
-  public static void resetStreak(Player p) {
-    PersistentDataContainer container = p.getPersistentDataContainer();
+  public static void resetStreak(Player player) {
+    PersistentDataContainer container = player.getPersistentDataContainer();
 
     int wins = container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
 
-    p.sendMessage(Lang.formatComponent("new-loss", wins));
+    player.sendMessage(Lang.formatComponent("new-loss", wins));
 
     container.set(winStreakKey, PersistentDataType.INTEGER, 0);
   }
 
-  public static int getWins(Player p) {
-    PersistentDataContainer container = p.getPersistentDataContainer();
+  public static int getWins(Player player) {
+    PersistentDataContainer container = player.getPersistentDataContainer();
 
     return container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
   }
 
-  public static Kit getDuelKit(Player p) {
-    PersistentDataContainer container = p.getPersistentDataContainer();
+  public static Kit getDuelKit(Player player) {
+    PersistentDataContainer container = player.getPersistentDataContainer();
 
-    return Kit.getKit(p, container.get(duelKitKey, PersistentDataType.STRING));
+    return Kit.getKit(player, container.get(duelKitKey, PersistentDataType.STRING));
   }
 
-  public static void setLastDuel(Player p, Duel duel) {
-    LAST_DUEL.put(p, duel);
+  public static void setLastDuel(Player player, Duel duel) {
+    LAST_DUEL.put(player, duel);
   }
 
-  public static Duel getLastDuel(Player p) {
-    if (LAST_DUEL.containsKey(p)) {
-      return LAST_DUEL.get(p);
+  public static Duel getLastDuel(Player player) {
+    if (LAST_DUEL.containsKey(player)) {
+      return LAST_DUEL.get(player);
     }
 
     return null;
   }
 
-  public static void setDuelKit(Player p, String kitName) {
-    PersistentDataContainer container = p.getPersistentDataContainer();
+  public static void setDuelKit(Player player, String kitName) {
+    PersistentDataContainer container = player.getPersistentDataContainer();
 
     container.set(duelKitKey, PersistentDataType.STRING, kitName);
 
-    p.sendMessage(Lang.getComponent("duel-kit"));
+    player.sendMessage(Lang.getComponent("duel-kit"));
   }
 
   public static Location getDuelLobby() {
@@ -196,18 +195,18 @@ public abstract class Duel {
     return inDuel;
   }
 
-  public static boolean inDuel(Player p) {
+  public static boolean inDuel(Player player) {
     for (Duel duel : duels) {
-      if ((duel.contains(p) || duel.isSpectator(p)) && duel.isActive()) {
+      if ((duel.contains(player) || duel.isSpectator(player)) && duel.isActive()) {
         return true;
       }
     }
     return false;
   }
 
-  public static Duel getDuel(Player p) {
+  public static Duel getDuel(Player player) {
     for (Duel duel : duels) {
-      if (duel.contains(p)) {
+      if (duel.contains(player)) {
         return duel;
       }
     }
@@ -276,31 +275,31 @@ public abstract class Duel {
     return this.getPlayers().size();
   }
 
-  public void setSpectator(Player p, boolean spectator) {
+  public void setSpectator(Player player, boolean spectator) {
     if (spectator) {
       BlockVector3 midpoint = arena.getFirstSpawn().add(arena.getSecondSpawn()).divide(2);
       Location loc =
           new Location(arena.getWorld(), midpoint.getX(), midpoint.getY(), midpoint.getZ());
 
-      p.teleportAsync(loc);
-      p.setGameMode(GameMode.SPECTATOR);
-      p.sendMessage(Lang.getComponent("start-spectating"));
+      player.teleportAsync(loc);
+      player.setGameMode(GameMode.SPECTATOR);
+      player.sendMessage(Lang.getComponent("start-spectating"));
 
-      spectators.add(p);
+      spectators.add(player);
     } else {
-      p.teleportAsync(Bukkit.getWorlds().get(0).getSpawnLocation());
-      p.setGameMode(Bukkit.getDefaultGameMode());
-      p.sendMessage(Lang.getComponent("stop-spectating"));
+      player.teleportAsync(Bukkit.getWorlds().get(0).getSpawnLocation());
+      player.setGameMode(Bukkit.getDefaultGameMode());
+      player.sendMessage(Lang.getComponent("stop-spectating"));
 
-      spectators.remove(p);
+      spectators.remove(player);
     }
   }
 
-  public boolean contains(Player p) {
-    return players.contains(p);
+  public boolean contains(Player player) {
+    return players.contains(player);
   }
 
-  public boolean isSpectator(Player p) {
-    return spectators.contains(p);
+  public boolean isSpectator(Player player) {
+    return spectators.contains(player);
   }
 }

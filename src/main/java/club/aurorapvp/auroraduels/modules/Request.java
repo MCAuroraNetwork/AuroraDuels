@@ -38,14 +38,14 @@ public class Request implements Listener {
       requester.sendMessage(Lang.getComponent("in-queue"));
     }
 
-    for (Player p : duel.getPlayers()) {
-      if (hasPendingRequest(requester, p)) {
+    for (Player player : duel.getPlayers()) {
+      if (hasPendingRequest(requester, player)) {
         requester.sendMessage(Lang.getComponent("already-has-request"));
         return;
-      } else if (Duel.inDuel(p)) {
+      } else if (Duel.inDuel(player)) {
         requester.sendMessage(Lang.getComponent("player-in-duel"));
         return;
-      } else if (Queue.inQueue(p)) {
+      } else if (Queue.inQueue(player)) {
         requester.sendMessage(Lang.getComponent("player-in-duel"));
         return;
       }
@@ -85,9 +85,9 @@ public class Request implements Listener {
     this.sendRequest();
   }
 
-  public static Request getRequest(Player p) {
+  public static Request getRequest(Player player) {
     for (Request request : PENDING_REQUESTS) {
-      if (request.requester == p || request.requested.contains(p)) {
+      if (request.requester == player || request.requested.contains(player)) {
         return request;
       }
     }
@@ -103,11 +103,11 @@ public class Request implements Listener {
     return null;
   }
 
-  public static Set<Request> getRequests(Player p) {
+  public static Set<Request> getRequests(Player player) {
     Set<Request> matchingRequests = new HashSet<>();
 
     for (Request request : PENDING_REQUESTS) {
-      if (request.requester == p || request.requested.contains(p)) {
+      if (request.requester == player || request.requested.contains(player)) {
         matchingRequests.add(request);
       }
     }
@@ -124,9 +124,9 @@ public class Request implements Listener {
     return false;
   }
 
-  public static boolean hasPendingRequest(Player p) {
+  public static boolean hasPendingRequest(Player player) {
     for (Request request : PENDING_REQUESTS) {
-      if (request.requester == p || request.requested.contains(p)) {
+      if (request.requester == player || request.requested.contains(player)) {
         return true;
       }
     }
@@ -146,12 +146,12 @@ public class Request implements Listener {
 
     requester.sendMessage(Lang.getComponent("sent-request"));
 
-    for (Player p : requested) {
-      p.sendMessage(Lang.formatComponent("received-request", requester.getName()));
+    for (Player player : requested) {
+      player.sendMessage(Lang.formatComponent("received-request", requester.getName()));
     }
 
-    for (Player p : requested) {
-      playersAccepted.put(p, false);
+    for (Player player : requested) {
+      playersAccepted.put(player, false);
     }
 
     Request thisRequest = this;
@@ -164,8 +164,8 @@ public class Request implements Listener {
                 if (PENDING_REQUESTS.contains(thisRequest)) {
                   requester.sendMessage(Lang.getComponent("request-timed-out"));
 
-                  for (Player p : requested) {
-                    p.sendMessage(Lang.getComponent("request-timed-out"));
+                  for (Player player : requested) {
+                    player.sendMessage(Lang.getComponent("request-timed-out"));
                   }
 
                   PENDING_REQUESTS.remove(thisRequest);
@@ -176,9 +176,9 @@ public class Request implements Listener {
             Config.get().getInt("requests.expiry-time"));
   }
 
-  public void accept(Player p) {
-    p.sendMessage(Lang.getComponent("request-accepted"));
-    playersAccepted.put(p, true);
+  public void accept(Player player) {
+    player.sendMessage(Lang.getComponent("request-accepted"));
+    playersAccepted.put(player, true);
 
     if (!playersAccepted.containsValue(false)) {
       PENDING_REQUESTS.remove(this);
@@ -187,7 +187,7 @@ public class Request implements Listener {
       duel.getQueue().enterDuelQueue(duel);
     }
 
-    new DuelRequestAcceptEvent(p, duel).callEvent();
+    new DuelRequestAcceptEvent(player, duel).callEvent();
   }
 
   public void deny() {
@@ -195,8 +195,8 @@ public class Request implements Listener {
     Duel.getDuels().remove(duel);
     requester.sendMessage(Lang.getComponent("request-denied"));
 
-    for (Player p : requested) {
-      p.sendMessage(Lang.getComponent("request-denied"));
+    for (Player player : requested) {
+      player.sendMessage(Lang.getComponent("request-denied"));
     }
   }
 }

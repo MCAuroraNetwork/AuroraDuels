@@ -58,7 +58,7 @@ public class QueueGUI implements InventoryHolder, Listener {
       return;
     }
 
-    Player p = (Player) event.getWhoClicked();
+    Player player = (Player) event.getWhoClicked();
 
     final ItemStack clickedItem = event.getCurrentItem();
 
@@ -69,7 +69,7 @@ public class QueueGUI implements InventoryHolder, Listener {
     event.setCancelled(true);
 
     if (event.getCurrentItem().getItemMeta().displayName() == null) {
-      p.sendMessage(Lang.getComponent("queue-not-found"));
+      player.sendMessage(Lang.getComponent("queue-not-found"));
     } else {
       String itemName =
               PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
@@ -78,11 +78,11 @@ public class QueueGUI implements InventoryHolder, Listener {
       Queue queue = Queue.getQueue(queueName.toLowerCase());
 
       if (queue == null) {
-        p.sendMessage(Lang.getComponent("queue-not-found"));
+        player.sendMessage(Lang.getComponent("queue-not-found"));
         return;
       }
 
-      new QueueSelectEvent(p, queue).callEvent();
+      new QueueSelectEvent(player, queue).callEvent();
     }
   }
 
@@ -145,9 +145,9 @@ public class QueueGUI implements InventoryHolder, Listener {
     }
   }
 
-  public void open(Player p) {
+  public void open(Player player) {
     reload();
-    p.openInventory(inventory);
+    player.openInventory(inventory);
   }
 
   @Override

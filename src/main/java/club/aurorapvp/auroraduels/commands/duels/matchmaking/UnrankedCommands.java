@@ -20,20 +20,20 @@ public class UnrankedCommands extends BaseCommand {
   @Syntax("[queue]")
   @Description("Joins a provided queue")
   @SuppressWarnings("unused")
-  public void onFindMatch(Player p, @Optional String name) {
+  public void onFindMatch(Player player, @Optional String name) {
     Queue queue = Queue.getQueue(Objects.requireNonNullElse(name, "default"));
 
     if (queue == null) {
-      p.sendMessage(Lang.getComponent("queue-not-found"));
+      player.sendMessage(Lang.getComponent("queue-not-found"));
       return;
     }
 
-    queue.findMatch(p, false);
+    queue.findMatch(player, false);
   }
 
   @CatchUnknown
   @SuppressWarnings("unused")
-  public void onUnknown(Player p) {
-    p.sendMessage(Lang.getComponent("unknown-matchmaking-command"));
+  public void onUnknown(Player player) {
+    player.sendMessage(Lang.getComponent("unknown-matchmaking-command"));
   }
 }

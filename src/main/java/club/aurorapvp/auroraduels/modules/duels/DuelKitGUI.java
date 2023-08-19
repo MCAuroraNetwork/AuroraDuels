@@ -23,27 +23,27 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class DuelKitGUI implements Listener {
   private static final Map<Player, DuelKitGUI> KITS_GUIS = new HashMap<>();
-  private final Player p;
+  private final Player player;
   private Page[] pages;
   private int currentPage = 0;
   private int index;
 
-  public DuelKitGUI(Player p) {
-    this.p = p;
+  public DuelKitGUI(Player player) {
+    this.player = player;
 
     reload();
 
-    KITS_GUIS.put(p, this);
+    KITS_GUIS.put(player, this);
 
     Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
   }
 
   public Player getPlayer() {
-    return p;
+    return player;
   }
 
-  public static void remove(Player p) {
-    KITS_GUIS.remove(p);
+  public static void remove(Player player) {
+    KITS_GUIS.remove(player);
   }
 
   public void nextPage() {
@@ -110,7 +110,7 @@ public class DuelKitGUI implements Listener {
   }
 
   public void open() {
-    p.openInventory(this.getCurrentPage());
+    player.openInventory(this.getCurrentPage());
   }
 
   @EventHandler
@@ -125,7 +125,7 @@ public class DuelKitGUI implements Listener {
       return;
     }
 
-    Player p = (Player) event.getWhoClicked();
+    Player player = (Player) event.getWhoClicked();
 
     event.setCancelled(true);
 
@@ -136,7 +136,7 @@ public class DuelKitGUI implements Listener {
       gui.nextPage();
       return;
     } else if (event.getSlot() == 49) {
-      p.closeInventory();
+      player.closeInventory();
       return;
     }
 
@@ -147,24 +147,24 @@ public class DuelKitGUI implements Listener {
     }
 
     if (event.getCurrentItem().getItemMeta().displayName() == null) {
-      p.sendMessage(Lang.getComponent("kit-invalid-name"));
+      player.sendMessage(Lang.getComponent("kit-invalid-name"));
     } else {
       String itemName =
           PlainTextComponentSerializer.plainText()
               .serialize(event.getCurrentItem().displayName());
       String kitName = itemName.substring(1, itemName.length() - 1);
 
-      Kit kit = Kit.getKit(p, kitName);
+      Kit kit = Kit.getKit(player, kitName);
 
       assert kit != null;
-      p.closeInventory();
+      player.closeInventory();
 
-      new DuelKitSelectEvent(p, kit).callEvent();
+      new DuelKitSelectEvent(player, kit).callEvent();
     }
   }
 
-  public static DuelKitGUI getGUI(Player p) {
-    return KITS_GUIS.getOrDefault(p, new DuelKitGUI(p));
+  public static DuelKitGUI getGUI(Player player) {
+    return KITS_GUIS.getOrDefault(player, new DuelKitGUI(player));
   }
 
   public static class Page implements InventoryHolder {
