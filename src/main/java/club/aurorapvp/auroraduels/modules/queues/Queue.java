@@ -52,7 +52,7 @@ public class Queue {
         Collections.shuffle(arenasList);
         Iterator<Arena> arenaIterator = arenasList.iterator();
 
-        while (arenaIterator.hasNext() && duelQueue.size() > 0) {
+        while (arenaIterator.hasNext() && !duelQueue.isEmpty()) {
           Arena arena = arenaIterator.next();
           if (!arena.isOccupied()) {
             duelQueue.getLast().startDuel(arena);
