@@ -4,10 +4,7 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,7 +21,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class DuelKitGUI implements Listener {
   private static final Map<Player, DuelKitGUI> KITS_GUIS = new HashMap<>();
   private final Player player;
-  private Page[] pages;
+  private List<Page> pages = new ArrayList<>();
   private int currentPage = 0;
   private int index;
 
@@ -65,7 +62,7 @@ public class DuelKitGUI implements Listener {
   }
 
   public Inventory getCurrentPage() {
-    return pages[currentPage].getInventory();
+    return pages.get(currentPage).getInventory();
   }
 
   public void reload() {
@@ -76,8 +73,6 @@ public class DuelKitGUI implements Listener {
         index++;
       }
     }
-
-    pages = new Page[index + 1];
 
     int currentPages = index + 1;
 
@@ -104,7 +99,7 @@ public class DuelKitGUI implements Listener {
         counter++;
       }
 
-      pages[index] = new Page(kits, this);
+      pages.add(new Page(kits, this));
       index++;
     }
   }
