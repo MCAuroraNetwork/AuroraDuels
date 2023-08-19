@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 public class StandardDuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @int")
-  @Syntax("[player]")
+  @Syntax("<player>")
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
   public void onNewRequest(Player player, String playerName, @Optional String rounds) {

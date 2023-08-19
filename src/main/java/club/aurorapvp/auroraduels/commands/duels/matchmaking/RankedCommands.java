@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 public class RankedCommands extends BaseCommand {
   @Default
   @CommandCompletion("@queues")
-  @Syntax("[queue]")
+  @Syntax("<queue>")
   @Description("Joins a provided queue")
   @SuppressWarnings("unused")
   public void onFindMatch(Player player, @Optional String name) {

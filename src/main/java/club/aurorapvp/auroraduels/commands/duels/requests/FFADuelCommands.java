@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 public class FFADuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @players @players @players")
-  @Syntax("[player1 player2 player3]")
+  @Syntax("<player1 player2 player3>")
   @Description("Sends a duel request to other players")
   @SuppressWarnings("unused")
   public void onNewRequest(Player player, String[] playerNames) {

@@ -14,11 +14,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import com.google.common.collect.Iterables;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,7 +24,7 @@ import org.bukkit.entity.Player;
 public class TeamDuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @players")
-  @Syntax("[player1,player2,player3] [player4,player5,player6]")
+  @Syntax("<player1,player2,player3> <player4,player5,player6>")
   @Description("Sends a duel request to a set of two teams of players")
   @SuppressWarnings("unused")
   public void onNewRequest(Player player, @Split String[] team1Names, @Split String[] team2Names) {
@@ -77,7 +73,7 @@ public class TeamDuelCommands extends BaseCommand {
 
   @Subcommand("random")
   @CommandCompletion("@players")
-  @Syntax("[player1,player2,player3,player4,player5,player6]")
+  @Syntax("<player1 player2 player3>")
   @Description("Sends a duel request to other players")
   @SuppressWarnings("unused")
   public void onNewRandRequest(Player player, String[] playerNames) {

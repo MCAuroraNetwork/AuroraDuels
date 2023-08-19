@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("duel|teamduel|partyduel")
 public class DuelBaseCommands extends BaseCommand {
   @Subcommand("accept")
-  @Syntax("[player]")
+  @Syntax("<player>")
   @CommandCompletion("@players")
   @Description("Accepts the duel request")
   @SuppressWarnings("unused")
@@ -68,7 +68,7 @@ public class DuelBaseCommands extends BaseCommand {
   }
 
   @Subcommand("deny")
-  @Syntax("[player]")
+  @Syntax("<player>")
   @CommandCompletion("@players")
   @Description("Denies the duel request")
   @SuppressWarnings("unused")
@@ -102,7 +102,7 @@ public class DuelBaseCommands extends BaseCommand {
 
   @Subcommand("spectate")
   @CommandCompletion("@players")
-  @Syntax("[player]")
+  @Syntax("<player>")
   @Description("Spectates the duel of a given player")
   @SuppressWarnings("unused")
   public void onSetSpectator(Player player, String playerName) {
