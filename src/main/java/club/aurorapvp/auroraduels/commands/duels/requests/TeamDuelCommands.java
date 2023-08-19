@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.commands.duels.requests;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
@@ -96,31 +97,6 @@ public class TeamDuelCommands extends BaseCommand {
     Set<Player> players = new HashSet<>(Set.of(requested));
     players.add(player);
 
-    int size = players.size();
-    Player extra = null;
-
-    if (size % 2 == 1) {
-      Iterator<Player> iterator = players.iterator();
-      for (i = 0; i < size - 1; i++) {
-        iterator.next();
-      }
-      extra = iterator.next();
-      iterator.remove();
-      size--;
-    }
-
-    Iterable<List<Player>> partitions = Iterables.partition(players, (size / 2));
-
-    Player[] temp = new HashSet<>(partitions.iterator().next()).toArray(new Player[0]);
-
-    if (extra != null) {
-      temp = Arrays.copyOf(temp, temp.length + 1);
-      temp[temp.length - 1] = extra;
-    }
-
-    Player[] team1 = temp;
-    Player[] team2 = new HashSet<>(Iterables.getLast(partitions)).toArray(new Player[0]);
-
     Location loc = Duel.getDuelLobby();
 
     if (loc == null) {
@@ -139,6 +115,6 @@ public class TeamDuelCommands extends BaseCommand {
       }
     }
 
-    new Request(player, new TeamDuel(team1, team2, loc, false));
+    new Request(player, new RandomTeamDuel(players, loc, false));
   }
 }

@@ -2,10 +2,7 @@ package club.aurorapvp.auroraduels.commands.duels;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
-import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.FFADuel;
-import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
-import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.auroraduels.modules.duels.*;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
@@ -45,6 +42,9 @@ public class RematchCommand extends BaseCommand {
                   lastDuel.getRounds()));
         }
       }
+    } else if (lastDuel instanceof RandomTeamDuel) {
+      new Request(
+          player, new RandomTeamDuel(lastDuel.getPlayers(), lastDuel.getRespawnLocation(), false));
     } else if (lastDuel instanceof TeamDuel teamDuel) {
       boolean isInTeam1 = Arrays.asList(teamDuel.getTeam1()).contains(player);
       Player[] team1 =
