@@ -49,6 +49,7 @@ public class StandardDuelCommands extends BaseCommand {
       }
     }
 
+    // TODO less jank
     try {
       if (Integer.parseInt(rounds) > 1) {
         new Request(player, new StandardDuel(player, requested, loc, false, Integer.parseInt(rounds)));

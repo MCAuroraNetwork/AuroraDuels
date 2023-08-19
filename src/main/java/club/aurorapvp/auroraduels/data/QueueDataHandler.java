@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -76,7 +78,7 @@ public class QueueDataHandler {
         FILE.createNewFile();
         queueData.save(FILE);
       } catch (IOException e) {
-        AuroraDuels.INSTANCE.getLogger().severe("Unable to save queue data");
+        AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Unable to save queue data", e);
       }
     }
   }

@@ -7,6 +7,8 @@ import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -89,7 +91,7 @@ public class ArenaDataHandler {
         FILE.createNewFile();
         arenaData.save(FILE);
       } catch (IOException e) {
-        AuroraDuels.INSTANCE.getLogger().severe("Failed to save arena data");
+        AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save arena data", e);
       }
     }
   }

@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -163,7 +165,7 @@ public abstract class Duel {
     try {
       Config.get().save(new File(AuroraDuels.INSTANCE.getDataFolder(), "config.yml"));
     } catch (IOException e) {
-      AuroraDuels.INSTANCE.getLogger().severe("Failed to save config file");
+      AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save config file", e);
     }
   }
 
