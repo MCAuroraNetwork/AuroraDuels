@@ -7,7 +7,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
+import club.aurorapvp.auroraduels.modules.duels.DuelKitGUI;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,7 +67,7 @@ public class Request implements Listener {
     duel.setQueue(event.getQueue());
 
     if (AuroraDuels.isAuroraKitsInstalled()) {
-      DuelKitGui.getGui(event.getPlayer()).open();
+      DuelKitGUI.getGUI(event.getPlayer()).open();
       return;
     }
 

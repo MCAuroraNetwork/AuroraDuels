@@ -21,14 +21,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class DuelKitGui implements Listener {
-  private static final Map<Player, DuelKitGui> KITS_GUIS = new HashMap<>();
+public class DuelKitGUI implements Listener {
+  private static final Map<Player, DuelKitGUI> KITS_GUIS = new HashMap<>();
   private final Player p;
   private Page[] pages;
   private int currentPage = 0;
   private int index;
 
-  public DuelKitGui(Player p) {
+  public DuelKitGUI(Player p) {
     this.p = p;
 
     reload();
@@ -119,7 +119,7 @@ public class DuelKitGui implements Listener {
       return;
     }
 
-    DuelKitGui gui = page.getGui();
+    DuelKitGUI gui = page.getGui();
 
     if (gui != this) {
       return;
@@ -163,15 +163,15 @@ public class DuelKitGui implements Listener {
     }
   }
 
-  public static DuelKitGui getGui(Player p) {
-    return KITS_GUIS.getOrDefault(p, new DuelKitGui(p));
+  public static DuelKitGUI getGUI(Player p) {
+    return KITS_GUIS.getOrDefault(p, new DuelKitGUI(p));
   }
 
   public static class Page implements InventoryHolder {
     private final Inventory inventory;
-    private final DuelKitGui gui;
+    private final DuelKitGUI gui;
 
-    private Page(Kit[] kits, DuelKitGui gui) {
+    private Page(Kit[] kits, DuelKitGUI gui) {
       inventory = Bukkit.createInventory(this, 54, Lang.getComponent("duel-kit-gui"));
       this.gui = gui;
 
@@ -201,7 +201,7 @@ public class DuelKitGui implements Listener {
       inventory.setItem(53, nextPage);
     }
 
-    public DuelKitGui getGui() {
+    public DuelKitGUI getGui() {
       return gui;
     }
 

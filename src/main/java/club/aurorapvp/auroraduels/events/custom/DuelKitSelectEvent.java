@@ -1,6 +1,5 @@
 package club.aurorapvp.auroraduels.events.custom;
 
-import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

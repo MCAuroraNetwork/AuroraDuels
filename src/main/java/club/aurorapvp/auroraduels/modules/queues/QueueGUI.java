@@ -5,10 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
-import club.aurorapvp.auroraduels.modules.duels.DuelKitGui;
-import club.aurorapvp.aurorakits.modules.kits.Kit;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
