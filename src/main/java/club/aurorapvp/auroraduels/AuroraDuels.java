@@ -28,7 +28,6 @@ public final class AuroraDuels extends JavaPlugin {
     return auroraCombatInstalled;
   }
 
-  // TODO actually use this
   public static boolean isAuroraWarpsInstalled() {
     return auroraWarpsInstalled;
   }

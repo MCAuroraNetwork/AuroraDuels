@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
@@ -54,7 +55,7 @@ public class TeamDuelCommands extends BaseCommand {
 
     Location loc = Duel.getDuelLobby();
 
-    if (loc == null) {
+    if (loc == null && AuroraDuels.isAuroraWarpsInstalled()) {
       WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
 
       if (worldSpawn != null) {
@@ -64,10 +65,10 @@ public class TeamDuelCommands extends BaseCommand {
       if (loc == null) {
         loc = WorldSpawn.getGlobalSpawn();
       }
+    }
 
-      if (loc == null) {
-        loc = Bukkit.getWorlds().get(0).getSpawnLocation();
-      }
+    if (loc == null) {
+      loc = Bukkit.getWorlds().get(0).getSpawnLocation();
     }
 
     new Request(player, new TeamDuel(team1, team2, loc, false));
@@ -98,7 +99,7 @@ public class TeamDuelCommands extends BaseCommand {
 
     Location loc = Duel.getDuelLobby();
 
-    if (loc == null) {
+    if (loc == null && AuroraDuels.isAuroraWarpsInstalled()) {
       WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
 
       if (worldSpawn != null) {
@@ -108,10 +109,10 @@ public class TeamDuelCommands extends BaseCommand {
       if (loc == null) {
         loc = WorldSpawn.getGlobalSpawn();
       }
+    }
 
-      if (loc == null) {
-        loc = Bukkit.getWorlds().get(0).getSpawnLocation();
-      }
+    if (loc == null) {
+      loc = Bukkit.getWorlds().get(0).getSpawnLocation();
     }
 
     new Request(player, new RandomTeamDuel(players, loc, false));
