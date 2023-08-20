@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Arena {
+
   private static final Set<Arena> arenas = new HashSet<>();
   private static Arena unfinishedArena;
   private final SchematicDataHandler schematic;

@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Queue {
+
   private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static final Set<Queue> queues = new HashSet<>();
   private static boolean arenasSet = true;
@@ -168,7 +169,8 @@ public class Queue {
       }
 
       this.enterDuelQueue(
-          new StandardDuel(player, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked, 1));
+          new StandardDuel(player, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked,
+              1));
       player.sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
       lookingForMatch.clear();

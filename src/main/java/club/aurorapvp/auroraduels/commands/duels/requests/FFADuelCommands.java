@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("ffaduel")
 @CommandPermission("auroraduels.command.ffaduel")
 public class FFADuelCommands extends BaseCommand {
+
   @Default
   @CommandCompletion("@players @players @players @players")
   @Syntax("<player1 player2 player3>")

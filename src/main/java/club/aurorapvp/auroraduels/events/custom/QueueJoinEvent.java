@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired when a duel enters the duel queue */
 public class QueueJoinEvent extends Event {
+
   private static final HandlerList HANDLERS = new HandlerList();
   private final Duel duel;
 

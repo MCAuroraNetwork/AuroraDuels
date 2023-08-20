@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("duel|teamduel|partyduel")
 @CommandPermission("auroraduels.command.duel")
 public class DuelBaseCommands extends BaseCommand {
+
   @Subcommand("accept")
   @CommandPermission("auroraduels.command.duel.accept")
   @Syntax("<player>")

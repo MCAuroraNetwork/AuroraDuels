@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("auroraduels")
 @CommandPermission("auroraduels.command.auroraduels")
 public class PluginCommands extends BaseCommand {
+
   @Subcommand("reload")
   @CommandPermission("auroraduels.command.auroraduels.reload")
   @Description("Reloads all plugin data")

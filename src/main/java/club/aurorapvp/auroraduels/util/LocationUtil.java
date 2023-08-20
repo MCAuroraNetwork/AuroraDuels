@@ -6,7 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 
 public class LocationUtil {
+
   private static final Random RANDOM = new Random();
+
   public static Location findSafeSpawnLocation(Location spawn1, Location spawn2, Location center) {
     int radius = (int) Math.floor(spawn1.distance(spawn2));
 

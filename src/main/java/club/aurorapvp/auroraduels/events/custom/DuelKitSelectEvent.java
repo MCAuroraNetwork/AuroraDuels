@@ -7,6 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 public class DuelKitSelectEvent extends Event {
+
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player player;
   private final Kit kit;

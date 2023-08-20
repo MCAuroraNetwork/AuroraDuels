@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.logging.Level;
-
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
+
   private static final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
   private static final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "lang.yml");
   private static YamlConfiguration lang;
@@ -104,12 +104,12 @@ public class Lang {
     DEFAULTS.put(
         "help-command",
         """
-        prefix <aqua><bold>All Commands:
-        
-        <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player
-        <blue><bold>/ranked or /unreanked [name]: <reset><yellow>Joins a ranked or unreanked queue, or the default one if no name is given
-        <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members
-        """);
+            prefix <aqua><bold>All Commands:
+                    
+            <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player
+            <blue><bold>/ranked or /unreanked [name]: <reset><yellow>Joins a ranked or unreanked queue, or the default one if no name is given
+            <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members
+            """);
 
     for (String path : DEFAULTS.keySet()) {
       if (!get().contains(path) || get().getString(path) == null) {

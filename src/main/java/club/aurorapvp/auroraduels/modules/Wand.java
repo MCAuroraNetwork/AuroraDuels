@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.modules;
 import org.bukkit.event.block.Action;
 
 public class Wand {
+
   private static WandActivity activity;
 
   public static void init() {

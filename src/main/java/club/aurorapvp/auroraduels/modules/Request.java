@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class Request implements Listener {
+
   protected static final LinkedList<Request> PENDING_REQUESTS = new LinkedList<>();
   private final HashMap<Player, Boolean> playersAccepted = new HashMap<>();
   private final Player requester;
@@ -70,7 +71,7 @@ public class Request implements Listener {
     if (requester != event.getPlayer()) {
       return;
     }
-    
+
     duel.setQueue(event.getQueue());
 
     if (AuroraDuels.isAuroraKitsInstalled()) {

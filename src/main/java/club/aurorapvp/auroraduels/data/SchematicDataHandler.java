@@ -24,10 +24,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 
 public class SchematicDataHandler {
+
   private static Arena arena;
   private final File FILE;
 
@@ -110,7 +110,8 @@ public class SchematicDataHandler {
 
                     Operations.complete(operation);
                   } catch (WorldEditException e) {
-                    AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to paste schematic file", e);
+                    AuroraDuels.INSTANCE.getLogger()
+                        .log(Level.SEVERE, "Failed to paste schematic file", e);
                   }
                 });
       }

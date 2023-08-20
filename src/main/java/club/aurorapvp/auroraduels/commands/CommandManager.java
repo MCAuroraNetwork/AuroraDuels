@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandManager {
+
   public static PaperCommandManager MANAGER = new PaperCommandManager(AuroraDuels.INSTANCE);
 
   public static void init() {

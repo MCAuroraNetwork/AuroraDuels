@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired after a duel ends in a draw */
 public class DuelDrawEvent extends Event {
+
   private static final HandlerList HANDLERS = new HandlerList();
   private final Duel duel;
 

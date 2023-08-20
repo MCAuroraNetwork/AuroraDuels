@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -24,6 +23,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public abstract class Duel {
+
   private static final NamespacedKey duelKitKey =
       new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
   private static final HashMap<Player, Duel> LAST_DUEL = new HashMap<>();
@@ -87,7 +87,8 @@ public abstract class Duel {
     duels.add(this);
   }
 
-  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked, int rounds) {
+  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked,
+      int rounds) {
     this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;

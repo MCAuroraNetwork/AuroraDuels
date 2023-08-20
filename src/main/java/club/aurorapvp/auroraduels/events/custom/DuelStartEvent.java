@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired when a duel starts */
 public class DuelStartEvent extends Event {
+
   private static final HandlerList HANDLERS = new HandlerList();
   private final Duel duel;
 

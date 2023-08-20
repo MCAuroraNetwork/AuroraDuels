@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("duel")
 @CommandPermission("auroraduels.command.duel")
 public class StandardDuelCommands extends BaseCommand {
+
   @Default
   @CommandCompletion("@players @int")
   @Syntax("<player>")

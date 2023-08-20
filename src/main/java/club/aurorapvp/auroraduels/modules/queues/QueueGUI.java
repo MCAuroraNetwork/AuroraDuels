@@ -1,11 +1,10 @@
 package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroraduels.config.Lang;
+import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -20,12 +19,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 public class QueueGUI implements InventoryHolder, Listener {
+
   private final Inventory inventory =
       Bukkit.createInventory(this, 27, Lang.getComponent("queue-menu"));
 
   public QueueGUI() {
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
-    
+
     int i = 0;
     for (Queue queue : Queue.getQueues()) {
       ItemStack displayItem = queue.getDisplayItem();
@@ -72,7 +72,7 @@ public class QueueGUI implements InventoryHolder, Listener {
       player.sendMessage(Lang.getComponent("queue-not-found"));
     } else {
       String itemName =
-              PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
+          PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
       String queueName = itemName.substring(1, itemName.length() - 1);
 
       Queue queue = Queue.getQueue(queueName.toLowerCase());

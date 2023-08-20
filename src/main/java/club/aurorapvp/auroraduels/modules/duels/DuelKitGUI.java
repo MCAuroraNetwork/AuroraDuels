@@ -4,7 +4,12 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,6 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class DuelKitGUI implements Listener {
+
   private static final Map<Player, DuelKitGUI> KITS_GUIS = new HashMap<>();
   private final Player player;
   private final List<Page> pages = new ArrayList<>();
@@ -163,6 +169,7 @@ public class DuelKitGUI implements Listener {
   }
 
   public static class Page implements InventoryHolder {
+
     private final Inventory inventory;
     private final DuelKitGUI gui;
 

@@ -8,13 +8,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ArenaDataHandler {
+
   private static Arena arena;
   private final File FILE;
   private final YamlConfiguration arenaData;

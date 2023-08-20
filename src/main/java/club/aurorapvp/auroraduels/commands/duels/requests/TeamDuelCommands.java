@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("teamduel")
 @CommandPermission("auroraduels.command.teamduel")
 public class TeamDuelCommands extends BaseCommand {
+
   @Default
   @CommandCompletion("@players @players")
   @Syntax("<player1,player2,player3> <player4,player5,player6>")
