@@ -76,16 +76,8 @@ permissions:
 
   auroraduels.command.ranked:
     default: false
-    children:
-      auroraduels.command.ranked.help: true
-  auroraduels.command.ranked.help:
-    default: false
 
   auroraduels.command.unranked:
-    default: false
-    children:
-      auroraduels.command.unranked.help: true
-  auroraduels.command.unranked.help:
     default: false
 
   auroraduels.default:
