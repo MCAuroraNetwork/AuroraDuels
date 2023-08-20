@@ -24,7 +24,7 @@ public class DuelDrawEvent extends Event {
                 for (Player player : duel.getPlayers()) {
                   player.teleportAsync(duel.getRespawnLocation());
                 }
-                duel.getArena().resetAsync();
+                duel.getArena().reset();
                 duel.getArena().setOccupied(false);
                 this.cancel();
               }

@@ -224,7 +224,7 @@ public class StandardDuel extends Duel implements Listener {
           }
         }.runTaskLater(AuroraDuels.INSTANCE, 1);
 
-        arena.resetAsync();
+        arena.reset();
 
         this.startDuel(arena);
         return;
@@ -258,7 +258,7 @@ public class StandardDuel extends Duel implements Listener {
 
   public void draw() {
     if (rounds > 1) {
-      arena.resetAsync();
+      arena.reset();
 
       this.startDuel(arena);
       return;
@@ -278,7 +278,7 @@ public class StandardDuel extends Duel implements Listener {
               public void run() {
                 playerOne.teleportAsync(respawnLocation);
                 playerTwo.teleportAsync(respawnLocation);
-                arena.resetAsync();
+                arena.reset();
                 arena.setOccupied(false);
                 this.cancel();
               }

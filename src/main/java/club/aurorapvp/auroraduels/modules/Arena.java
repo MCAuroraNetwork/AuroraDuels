@@ -284,16 +284,16 @@ public class Arena {
     }
   }
 
-  public void resetAsync(Player player) {
+  public void reset(Player player) {
     if (this.exists()) {
-      this.resetAsync();
+      this.reset();
       player.sendMessage(Lang.getComponent("arena-reset"));
     } else {
       player.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }
   }
 
-  public void resetAsync() {
+  public void reset() {
     Arena thisArena = this;
 
     Bukkit.getScheduler()
@@ -309,23 +309,10 @@ public class Arena {
             });
 
     if (this.exists()) {
-      new SchematicDataHandler(this).pasteAsync();
-    }
-  }
-
-  public void reset() {
-    for (Entity entity : this.getWorld().getEntities()) {
-      if (Arena.isInBounds(entity.getLocation(), this) && !(entity instanceof Player)) {
-        entity.remove();
-      }
-    }
-
-    if (this.exists()) {
       new SchematicDataHandler(this).paste();
     }
   }
 
-  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void delete(Player player) {
     if (this.exists()) {
       this.data.delete();

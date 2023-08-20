@@ -3,7 +3,6 @@ package club.aurorapvp.auroraduels.commands;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
@@ -19,6 +18,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("arena")
 @CommandPermission("auroaduels.command.arena")
 public class ArenaCommands extends BaseCommand {
+
   @Subcommand("create")
   @CommandPermission("auroraduels.command.arena.create")
   @Syntax("[name]")
@@ -54,7 +54,7 @@ public class ArenaCommands extends BaseCommand {
     Arena arena = Arena.getArena(name);
 
     if (arena != null) {
-      arena.resetAsync(player);
+      arena.reset(player);
     } else {
       player.sendMessage(Lang.getComponent("arena-does-not-exist"));
     }

@@ -145,7 +145,7 @@ public class Request implements Listener {
 
     requested.remove(requester);
 
-    if (requested.size() == 0) {
+    if (requested.isEmpty()) {
       requester.sendMessage(Lang.getComponent("unknown-opponent"));
       PENDING_REQUESTS.remove(this);
       return;

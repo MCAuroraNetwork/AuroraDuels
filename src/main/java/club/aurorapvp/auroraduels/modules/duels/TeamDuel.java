@@ -281,7 +281,7 @@ public class TeamDuel extends Duel {
                 for (Player player : thisDuel.getPlayers()) {
                   player.teleportAsync(thisDuel.getRespawnLocation());
                 }
-                arena.resetAsync();
+                arena.reset();
                 arena.setOccupied(false);
                 this.cancel();
               }

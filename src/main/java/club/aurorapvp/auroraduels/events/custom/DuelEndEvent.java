@@ -1,6 +1,5 @@
 package club.aurorapvp.auroraduels.events.custom;
 
-import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired after a duel ends */
 public class DuelEndEvent extends Event {
+
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player[] winners;
   private final Player[] losers;
@@ -29,7 +29,7 @@ public class DuelEndEvent extends Event {
                 for (Player player : duel.getPlayers()) {
                   player.teleportAsync(duel.getRespawnLocation());
                 }
-                duel.getArena().resetAsync();
+                duel.getArena().reset();
                 duel.getArena().setOccupied(false);
                 this.cancel();
               }
