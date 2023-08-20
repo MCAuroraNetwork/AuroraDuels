@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -178,17 +179,13 @@ public abstract class Duel {
   }
 
   public static int inDuel(String queueName) {
-    int inDuel = 0;
-
-    for (Duel duel : Duel.getDuels()) {
-      // TODO solve placeholder NPE more gracefully
-      Queue queue = duel.getQueue();
-
-      if (queue != null && Objects.equals(duel.getQueue().getName(), queueName)) {
-        inDuel = inDuel + duel.inDuel();
-      }
-    }
-    return inDuel;
+    return Duel.getDuels().stream()
+        .filter(duel -> Optional.ofNullable(duel.getQueue())
+            .map(Queue::getName)
+            .filter(queueName::equals)
+            .isPresent())
+        .mapToInt(Duel::inDuel)
+        .sum();
   }
 
   public static boolean inDuel(Player player) {
