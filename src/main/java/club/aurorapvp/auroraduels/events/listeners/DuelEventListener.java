@@ -50,18 +50,6 @@ public class DuelEventListener implements Listener {
       Duel.setLastDuel(player, event.getDuel());
     }
 
-    if (!event.getDuel().isRanked()) {
-      return;
-    }
-
-    for (Player player : event.getWinners()) {
-      Duel.addWin(player);
-    }
-
-    for (Player player : event.getLosers()) {
-      Duel.resetStreak(player);
-    }
-
     if (event.getDuel().getPlayers().size() == 2) {
       Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
           .updateElo(event.getLosers()[0], event.getWinners()[0]);

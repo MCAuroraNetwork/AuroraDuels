@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,6 +38,16 @@ public class DuelEndEvent extends Event {
 
     for (Player player : duel.getSpectators()) {
       duel.setSpectator(player, false);
+    }
+
+    if (duel.isRanked()) {
+      for (Player player : this.getWinners()) {
+        Duel.addWin(player);
+      }
+
+      for (Player player : this.getLosers()) {
+        Duel.resetStreak(player);
+      }
     }
 
     duel.setActive(false);
