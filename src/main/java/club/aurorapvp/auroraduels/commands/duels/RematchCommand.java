@@ -2,7 +2,11 @@ package club.aurorapvp.auroraduels.commands.duels;
 
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
-import club.aurorapvp.auroraduels.modules.duels.*;
+import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.FFADuel;
+import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
+import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
+import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
@@ -11,6 +15,7 @@ import org.bukkit.entity.Player;
 
 @CommandAlias("rematch")
 public class RematchCommand extends BaseCommand {
+
   @Default
   @SuppressWarnings("unused")
   public void onRematch(Player player) {
@@ -50,8 +55,8 @@ public class RematchCommand extends BaseCommand {
       Player[] team1 =
           isInTeam1
               ? Arrays.stream(teamDuel.getTeam1())
-                  .filter(teamMember -> !teamMember.equals(player))
-                  .toArray(Player[]::new)
+              .filter(teamMember -> !teamMember.equals(player))
+              .toArray(Player[]::new)
               : teamDuel.getTeam1();
       Player[] team2 =
           isInTeam1

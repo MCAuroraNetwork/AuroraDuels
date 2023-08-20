@@ -20,9 +20,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PlayerEventListener implements Listener {
+
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {
@@ -54,11 +58,21 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onCommandRun(PlayerCommandPreprocessEvent event) {
-    if (Duel.inDuel(event.getPlayer()) && !Config.get().getBoolean("duels.allow-commands")) {
-      event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
-
-      event.setCancelled(true);
+    if (!Duel.inDuel(event.getPlayer())) {
+      return;
     }
+
+    if (Config.get().getBoolean("duels.allow-commands")) {
+      return;
+    }
+
+    if (event.getPlayer().hasPermission("auroraduels.bypass.commands")) {
+      return;
+    }
+
+    event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
+
+    event.setCancelled(true);
   }
 
   @EventHandler
@@ -87,7 +101,7 @@ public class PlayerEventListener implements Listener {
     Duel duel = Duel.getDuel(player);
 
     if (duel instanceof StandardDuel standardDuel) {
-      standardDuel.endDuel(new Player[] {standardDuel.getOpponent(player)}, new Player[] {player});
+      standardDuel.endDuel(new Player[]{standardDuel.getOpponent(player)}, new Player[]{player});
     } else if (duel instanceof TeamDuel teamDuel) {
       teamDuel.setDead(player);
 
@@ -103,7 +117,7 @@ public class PlayerEventListener implements Listener {
         Set<Player> losers = new HashSet<>(ffaDuel.getPlayers());
         losers.remove(ffaDuel.getFirstAlive());
 
-        duel.endDuel(new Player[] {ffaDuel.getFirstAlive()}, losers.toArray(new Player[0]));
+        duel.endDuel(new Player[]{ffaDuel.getFirstAlive()}, losers.toArray(new Player[0]));
       } else {
         duel.setSpectator(player, true);
       }
@@ -112,13 +126,20 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerTeleport(PlayerTeleportEvent event) {
+    if (!Duel.inDuel(event.getPlayer())) {
+      return;
+    }
+
     if (Config.get().getBoolean("duels.enable-teleports")) {
       return;
     }
 
-    if (Duel.inDuel(event.getPlayer())) {
-      event.getPlayer().sendMessage(Lang.getComponent("no-teleport"));
-      event.setCancelled(true);
+    if (event.getPlayer().hasPermission("auroraduels.bypass.teleports")) {
+      return;
     }
+
+    event.getPlayer().sendMessage(Lang.getComponent("no-teleport"));
+
+    event.setCancelled(true);
   }
 }

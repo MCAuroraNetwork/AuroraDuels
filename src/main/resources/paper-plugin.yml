@@ -75,6 +75,12 @@ permissions:
       auroraduels.command.rematch: true
       auroraduels.command.ranked: true
       auroraduels.command.unranked: true
+  auroraduels.bypass.commands:
+    description: Allows bypassing duel command restrictions
+    default: op
+  auroraduels.bypass.teleports:
+    description: Allows bypassing duel teleport restrictions
+    default: op
   auroraduels.default:
     description: Enables use of AuroraDuels basic commands
     default: true
