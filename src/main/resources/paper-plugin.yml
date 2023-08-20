@@ -98,9 +98,10 @@ permissions:
     description: Enables use of AuroraDuels admin commands
     default: op
     children:
-      auroraduels.command.auroraduels.reload: true
       auroraduels.command.queue: true
       auroraduels.command.arena: true
+      auroraduels.command.auroraduels.reload: true
+      auroraduels.command.duel.lobby: true
 
   auroraduels.duel:
     description: Enables use of AuroraDuels duel commands
