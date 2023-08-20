@@ -34,12 +34,4 @@ public class RankedCommands extends BaseCommand {
 
     queue.findMatch(player, true);
   }
-
-  @CatchUnknown
-  @Subcommand("help")
-  @CommandPermission("auroraduels.command.ranked.help")
-  @SuppressWarnings("unused")
-  public void onUnknown(Player player) {
-    player.sendMessage(Lang.getComponent("unknown-matchmaking-command"));
-  }
 }

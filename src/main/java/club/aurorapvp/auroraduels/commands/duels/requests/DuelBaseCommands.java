@@ -143,7 +143,6 @@ public class DuelBaseCommands extends BaseCommand {
 
   // TODO
   @CatchUnknown
-  @Subcommand("help")
   @CommandPermission("auroraduels.command.duel.help")
   @SuppressWarnings("unused")
   public void onUnknown(Player player) {

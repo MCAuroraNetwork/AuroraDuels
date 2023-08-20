@@ -33,13 +33,4 @@ public class UnrankedCommands extends BaseCommand {
 
     queue.findMatch(player, false);
   }
-
-  // TODO
-  @CatchUnknown
-  @Subcommand("help")
-  @CommandPermission("auroraduels.command.unranked.help")
-  @SuppressWarnings("unused")
-  public void onUnknown(Player player) {
-    player.sendMessage(Lang.getComponent("unknown-matchmaking-command"));
-  }
 }

@@ -88,8 +88,6 @@ public class Lang {
     DEFAULTS.put("stop-spectating", "prefix <aqua>Stopped spectating");
     DEFAULTS.put("no-last-duel", "prefix <red>No previous duel");
     DEFAULTS.put("unknown-duel-command", "prefix <red>Unknown Duel Command! Use /help");
-    DEFAULTS.put(
-        "unknown-matchmaking-command", "prefix <red>Unknown Matchmaking Command! Use /help");
     DEFAULTS.put("queue-menu", "<aqua><bold>Select Duel Type");
     DEFAULTS.put("duel-kit-gui", "<aqua><bold>Select Duel Kit");
     DEFAULTS.put("next-page", "<aqua>Next");
@@ -106,10 +104,9 @@ public class Lang {
     DEFAULTS.put(
         "help-command",
         """
-        prefix <gradient:#FFAA00:#FF55FF>All Commands:\s
+        prefix <aquq><bold?All Commands:\s
         <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player\s
-        <blue><bold>/ranked [name]: <reset><yellow>Joins a ranked queue, or the default one if no name is given\s
-        <blue><bold>/unranked [name]: <reset><yellow>Joins a ranked queue, or the default one if no name is given\s
+        <blue><bold>/ranked or /unreanked [name]: <reset><yellow>Joins a ranked or unreanked queue, or the default one if no name is given\s
         <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members\s
         """);
 
