@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.modules.queues;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import java.util.Arrays;
@@ -50,6 +51,8 @@ public class QueueGUI implements InventoryHolder, Listener {
     }
 
     populateGUI(itemStacks);
+
+    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
   }
 
   @EventHandler
