@@ -57,7 +57,7 @@ public class QueueGUI implements InventoryHolder, Listener {
 
   @EventHandler
   public void onInventoryClicked(InventoryClickEvent event) {
-    if (!Objects.equals(event.getInventory(), this)) {
+    if (!Objects.equals(event.getInventory().getHolder(), this)) {
       return;
     }
 
