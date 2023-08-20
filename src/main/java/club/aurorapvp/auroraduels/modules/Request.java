@@ -51,11 +51,18 @@ public class Request implements Listener {
       }
     }
 
-    AuroraDuels.getQueueGUI().open(requester);
+    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
+
+    if (Queue.getQueues().size() > 1) {
+      AuroraDuels.getQueueGUI().open(requester);
+    } else if (AuroraDuels.isAuroraKitsInstalled()) {
+      DuelKitGUI.getGUI(requester).open();
+    } else {
+      this.sendRequest();
+      return;
+    }
 
     PENDING_REQUESTS.add(this);
-
-    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
   }
 
   @EventHandler

@@ -87,13 +87,7 @@ public abstract class Duel {
     duels.add(this);
   }
 
-  public Duel(
-      Set<Player> players,
-      Location respawnLocation,
-      Queue queue,
-      Kit kit,
-      boolean ranked,
-      int rounds) {
+  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked, int rounds) {
     this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;

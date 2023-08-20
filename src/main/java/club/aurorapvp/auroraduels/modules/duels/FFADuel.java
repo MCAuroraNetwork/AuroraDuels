@@ -32,8 +32,7 @@ public class FFADuel extends Duel {
     super(players, respawnLocation, ranked);
   }
 
-  public FFADuel(
-      Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
+  public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, queue, kit, ranked);
   }
 

@@ -21,7 +21,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class DuelKitGUI implements Listener {
   private static final Map<Player, DuelKitGUI> KITS_GUIS = new HashMap<>();
   private final Player player;
-  private List<Page> pages = new ArrayList<>();
+  private final List<Page> pages = new ArrayList<>();
   private int currentPage = 0;
   private int index;
 
