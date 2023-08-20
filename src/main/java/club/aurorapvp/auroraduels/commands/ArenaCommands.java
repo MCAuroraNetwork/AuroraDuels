@@ -64,7 +64,6 @@ public class ArenaCommands extends BaseCommand {
   @CommandPermission("auroraduels.command.arena.list")
   @SuppressWarnings("unused")
   public void onList(Player player) {
-    // TODO clean up or remove
     player.sendMessage(MiniMessage.miniMessage().deserialize("<yellow><bold>Arenas:"));
 
     Set<String> arenaNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);

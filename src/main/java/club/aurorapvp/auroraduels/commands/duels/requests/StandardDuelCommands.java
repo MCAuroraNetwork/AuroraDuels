@@ -26,7 +26,7 @@ public class StandardDuelCommands extends BaseCommand {
   @Syntax("<player>")
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
-  public void onNewRequest(Player player, String playerName, @Optional String rounds) {
+  public void onNewRequest(Player player, String playerName, @Optional String str) {
     Player requested = Bukkit.getPlayer(playerName);
 
     if (requested == null) {
@@ -52,13 +52,15 @@ public class StandardDuelCommands extends BaseCommand {
       loc = Bukkit.getWorlds().get(0).getSpawnLocation();
     }
 
-    // TODO less jank
-    try {
-      if (Integer.parseInt(rounds) > 1) {
-        new Request(player, new StandardDuel(player, requested, loc, false, Integer.parseInt(rounds)));
+    int rounds = 1;
+
+    if (str != null && str.matches("\\d+")) {
+      rounds = Integer.parseInt(str);
+      if (rounds <= 1) {
+        rounds = 1;
       }
-    } catch (NumberFormatException e) {
-      new Request(player, new StandardDuel(player, requested, loc, false, 1));
     }
+
+    new Request(player, new StandardDuel(player, requested, loc, false, rounds));
   }
 }
