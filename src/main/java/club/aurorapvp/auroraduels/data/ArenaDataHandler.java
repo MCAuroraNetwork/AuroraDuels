@@ -48,8 +48,13 @@ public class ArenaDataHandler {
     return arenaData.getLocation("arena.corners.pos2");
   }
 
-  public File getFile() {
-    return FILE;
+  public boolean exists() {
+    return FILE.exists();
+  }
+
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  public void delete() {
+    FILE.delete();
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")

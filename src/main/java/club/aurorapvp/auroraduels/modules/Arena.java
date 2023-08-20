@@ -163,7 +163,7 @@ public class Arena {
   }
 
   public boolean exists() {
-    return this.data.getFile().exists() && this.schematic.getFile().exists();
+    return this.data.exists() && this.schematic.exists();
   }
 
   public void reload() {
@@ -328,8 +328,8 @@ public class Arena {
   @SuppressWarnings("ResultOfMethodCallIgnored")
   public void delete(Player player) {
     if (this.exists()) {
-      this.data.getFile().delete();
-      this.schematic.getFile().delete();
+      this.data.delete();
+      this.schematic.delete();
       arenas.remove(this);
 
       player.sendMessage(Lang.getComponent("arena-deleted"));

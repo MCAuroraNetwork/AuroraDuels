@@ -40,8 +40,13 @@ public class SchematicDataHandler {
             "/arenas/schematics/" + arena.getName() + ".schem");
   }
 
-  public File getFile() {
-    return FILE;
+  public boolean exists() {
+    return FILE.exists();
+  }
+
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  public void delete() {
+    FILE.delete();
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
