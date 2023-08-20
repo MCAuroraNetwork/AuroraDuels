@@ -6,15 +6,18 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
+import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import java.util.Objects;
 import org.bukkit.entity.Player;
 
 // TODO implement Queue GUI for ranked commands
 @CommandAlias("ranked")
+@CommandPermission("auroraduels.command.ranked")
 public class RankedCommands extends BaseCommand {
   @Default
   @CommandCompletion("@queues")
@@ -33,6 +36,8 @@ public class RankedCommands extends BaseCommand {
   }
 
   @CatchUnknown
+  @Subcommand("help")
+  @CommandPermission("auroraduels.command.ranked.help")
   @SuppressWarnings("unused")
   public void onUnknown(Player player) {
     player.sendMessage(Lang.getComponent("unknown-matchmaking-command"));

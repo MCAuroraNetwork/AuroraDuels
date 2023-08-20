@@ -18,8 +18,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @CommandAlias("duel|teamduel|partyduel")
+@CommandPermission("auroraduels.command.duel")
 public class DuelBaseCommands extends BaseCommand {
   @Subcommand("accept")
+  @CommandPermission("auroraduels.command.duel.accept")
   @Syntax("<player>")
   @CommandCompletion("@players")
   @Description("Accepts the duel request")
@@ -68,6 +70,7 @@ public class DuelBaseCommands extends BaseCommand {
   }
 
   @Subcommand("deny")
+  @CommandPermission("auroraduels.command.duel.deny")
   @Syntax("<player>")
   @CommandCompletion("@players")
   @Description("Denies the duel request")
@@ -101,6 +104,7 @@ public class DuelBaseCommands extends BaseCommand {
   }
 
   @Subcommand("spectate")
+  @CommandPermission("auroraduels.command.duel.spectate")
   @CommandCompletion("@players")
   @Syntax("<player>")
   @Description("Spectates the duel of a given player")
@@ -116,6 +120,7 @@ public class DuelBaseCommands extends BaseCommand {
   }
 
   @Subcommand("kit")
+  @CommandPermission("auroraduels.command.duel.kit")
   @CommandCompletion("@kits")
   @Description("Sets the duel kit")
   @SuppressWarnings("unused")
@@ -128,15 +133,18 @@ public class DuelBaseCommands extends BaseCommand {
   }
 
   @Subcommand("lobby")
+  @CommandPermission("auroraduels.command.duel.lobby")
   @Description("Sets the duel lobby")
-  @CommandPermission("auroraduels.admin")
   @SuppressWarnings("unused")
   public void onLobbySet(Player player) {
     Duel.setDuelLobby(player.getLocation());
     player.sendMessage(Lang.getComponent("duel-lobby-set"));
   }
 
+  // TODO
   @CatchUnknown
+  @Subcommand("help")
+  @CommandPermission("auroraduels.command.duel.help")
   @SuppressWarnings("unused")
   public void onUnknown(Player player) {
     player.sendMessage(Lang.getComponent("unknown-duel-command"));

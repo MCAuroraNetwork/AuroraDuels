@@ -8,6 +8,7 @@ import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Optional;
@@ -17,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 @CommandAlias("duel")
+@CommandPermission("auroraduels.command.duel")
 public class StandardDuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @int")

@@ -14,9 +14,10 @@ import co.aikar.commands.annotation.Subcommand;
 import org.bukkit.entity.Player;
 
 @CommandAlias("auroraduels")
+@CommandPermission("auroraduels.command.auroraduels")
 public class PluginCommands extends BaseCommand {
   @Subcommand("reload")
-  @CommandPermission("auroraduels.admin")
+  @CommandPermission("auroraduels.command.auroraduels.reload")
   @Description("Reloads all plugin data")
   @SuppressWarnings("unused")
   public void onReload(Player player) {
@@ -35,6 +36,7 @@ public class PluginCommands extends BaseCommand {
   }
 
   @CatchUnknown
+  @CommandPermission("auroraduels.command.auroraduels.help")
   @Subcommand("help")
   @Description("Lists all available plugin commands and their function")
   @SuppressWarnings("unused")

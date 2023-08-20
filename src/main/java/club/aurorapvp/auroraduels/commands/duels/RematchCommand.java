@@ -9,11 +9,13 @@ import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import java.util.Arrays;
 import org.bukkit.entity.Player;
 
 @CommandAlias("rematch")
+@CommandPermission("auroraduels.command.rematch")
 public class RematchCommand extends BaseCommand {
 
   @Default

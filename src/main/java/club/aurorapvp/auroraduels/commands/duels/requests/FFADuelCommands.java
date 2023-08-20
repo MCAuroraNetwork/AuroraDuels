@@ -8,6 +8,7 @@ import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Syntax;
@@ -18,6 +19,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 @CommandAlias("ffaduel")
+@CommandPermission("auroraduels.command.ffaduel")
 public class FFADuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @players @players @players")

@@ -90,8 +90,6 @@ public class Lang {
     DEFAULTS.put("unknown-duel-command", "prefix <red>Unknown Duel Command! Use /help");
     DEFAULTS.put(
         "unknown-matchmaking-command", "prefix <red>Unknown Matchmaking Command! Use /help");
-    DEFAULTS.put("unknown-arena-command", "prefix <red>Unknown Arena Command! Use /help");
-    DEFAULTS.put("unknown-queue-command", "prefix <red>Unknown Queue Command! Use /help");
     DEFAULTS.put("queue-menu", "<aqua><bold>Select Duel Type");
     DEFAULTS.put("duel-kit-gui", "<aqua><bold>Select Duel Kit");
     DEFAULTS.put("next-page", "<aqua>Next");

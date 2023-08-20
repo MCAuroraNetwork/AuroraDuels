@@ -6,6 +6,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
@@ -16,8 +17,10 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
 @CommandAlias("arena")
+@CommandPermission("auroaduels.command.arena")
 public class ArenaCommands extends BaseCommand {
   @Subcommand("create")
+  @CommandPermission("auroraduels.command.arena.create")
   @Syntax("[name]")
   @Description("Creates an arena")
   @SuppressWarnings("unused")
@@ -26,6 +29,7 @@ public class ArenaCommands extends BaseCommand {
   }
 
   @Subcommand("delete")
+  @CommandPermission("auroraduels.command.arena.delete")
   @CommandCompletion("@arenas")
   @Syntax("[name]")
   @Description("Deletes an arena")
@@ -41,6 +45,7 @@ public class ArenaCommands extends BaseCommand {
   }
 
   @Subcommand("reset")
+  @CommandPermission("auroraduels.command.arena.reset")
   @CommandCompletion("@arenas")
   @Syntax("[name]")
   @Description("Resets an arena")
@@ -56,6 +61,7 @@ public class ArenaCommands extends BaseCommand {
   }
 
   @Subcommand("list")
+  @CommandPermission("auroraduels.command.arena.list")
   @SuppressWarnings("unused")
   public void onList(Player player) {
     // TODO clean up or remove
@@ -73,11 +79,5 @@ public class ArenaCommands extends BaseCommand {
     }
 
     player.sendMessage(Component.text(str.toString()));
-  }
-
-  @CatchUnknown
-  @SuppressWarnings("unused")
-  public void onUnknown(Player player) {
-    player.sendMessage(Lang.getComponent("unknown-arena-command"));
   }
 }

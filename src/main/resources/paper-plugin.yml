@@ -5,65 +5,103 @@ api-version: '1.20'
 authors: [ Villagers654 ]
 description: A Duels Plugin for the Aurora Network
 website: aurorapvp.club
-commands:
-  auroraduels:
-    description: AuroraDuels general plugin commands
-    permission: auroraduels.command.auroraduels
-  duel:
-    description: Starts a duel
-    permission: auroraduels.command.duel
-  ranked:
-    description: Finds a ranked duel
-    permission: auroraduels.command.ranked
-  unranked:
-    description: Finds an unranked duel
-    permission: auroraduels.command.unranked
-  rematch:
-    description: Allows for players to challenge other players to a rematch
-    permission: auroraduels.command.rematch
-  queue:
-    description: Manages custom queues
-    permission: auroraduels.command.queue
-  arena:
-    description: Manages custom arenas
-    permission: auroraduels.command.arena
-  partyduel:
-    description: Allows the formation of party duels
-    permission: auroraduels.command.partyduel
-  teamduel:
-    description: Allows the formation of team vs team duels
-    permission: auroraduels.command.teamduel
-  ffaduel:
-    description: Allows the formation of FFA "duels"
-    permission: auroraduels.command.ffaduel
 permissions:
-  auroraduels.command.auroraduels:
-    default: false
   auroraduels.command.queue:
     default: false
+    children:
+      auroraduels.command.queue.create: true
+  auroraduels.command.queue.create:
+    default: false
+
+  auroraduels.command.auroraduels:
+    default: false
+    children:
+      auroraduels.command.auroraduels.reload: false
+      auroraduels.command.auroraduels.help: true
+  auroraduels.command.auroraduels.reload:
+    default: false
+  auroraduels.command.auroraduels.help:
+    default: false
+
   auroraduels.command.arena:
     default: false
-  auroraduels.command.duel:
+    children:
+      auroraduels.command.arena.create: true
+      auroraduels.command.arena.delete: true
+      auroraduels.command.arena.reset: true
+      auroraduels.command.arena.list: true
+  auroraduels.command.arena.create:
     default: false
-  auroraduels.command.partyduel:
+  auroraduels.command.arena.delete:
     default: false
-  auroraduels.command.teamduel:
+  auroraduels.command.arena.reset:
     default: false
-  auroraduels.command.ffaduel:
+  auroraduels.command.arena.list:
     default: false
+
   auroraduels.command.rematch:
     default: false
+
+  auroraduels.command.duel:
+    default: false
+    children:
+      auroraduels.command.duel.accept: true
+      auroraduels.command.duel.deny: true
+      auroraduels.command.duel.spectate: true
+      auroraduels.command.duel.kit: true
+      auroraduels.command.duel.lobby: false
+      auroraduels.command.duel.help: true
+  auroraduels.command.duel.accept:
+    default: false
+  auroraduels.command.duel.deny:
+    default: false
+  auroraduels.command.duel.spectate:
+    default: false
+  auroraduels.command.duel.kit:
+    default: false
+  auroraduels.command.duel.lobby:
+    default: false
+  auroraduels.command.duel.help:
+    default: false
+
+  auroraduels.command.teamduel:
+    default: false
+    children:
+      auroraduels.command.teamduel.random: true
+  auroraduels.command.teamduel.random:
+    default: false
+
+  auroraduels.command.ffaduel:
+    default: false
+
   auroraduels.command.ranked:
     default: false
+    children:
+      auroraduels.command.ranked.help: true
+  auroraduels.command.ranked.help:
+    default: false
+
   auroraduels.command.unranked:
     default: false
+    children:
+      auroraduels.command.unranked.help: true
+  auroraduels.command.unranked.help:
+    default: false
+
+  auroraduels.default:
+    description: Enables use of AuroraDuels basic commands
+    default: true
+    children:
+      auroraduels.command.auroraduels: true
+
   auroraduels.admin:
     description: Enables use of AuroraDuels admin commands
     default: op
     children:
-      auroraduels.command.auroraduels: true
+      auroraduels.command.auroraduels.reload: true
       auroraduels.command.queue: true
       auroraduels.command.arena: true
+
   auroraduels.duel:
     description: Enables use of AuroraDuels duel commands
     default: true
@@ -75,17 +113,14 @@ permissions:
       auroraduels.command.rematch: true
       auroraduels.command.ranked: true
       auroraduels.command.unranked: true
+
   auroraduels.bypass.commands:
     description: Allows bypassing duel command restrictions
     default: op
+
   auroraduels.bypass.teleports:
     description: Allows bypassing duel teleport restrictions
     default: op
-  auroraduels.default:
-    description: Enables use of AuroraDuels basic commands
-    default: true
-    children:
-      auroraduels.command.auroraduels: true
 
 dependencies:
   server:

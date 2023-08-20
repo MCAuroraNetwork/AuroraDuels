@@ -9,6 +9,7 @@ import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Split;
@@ -21,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 @CommandAlias("teamduel")
+@CommandPermission("auroraduels.command.teamduel")
 public class TeamDuelCommands extends BaseCommand {
   @Default
   @CommandCompletion("@players @players")
@@ -71,7 +73,8 @@ public class TeamDuelCommands extends BaseCommand {
     new Request(player, new TeamDuel(team1, team2, loc, false));
   }
 
-  @Subcommand("random")
+  @Subcommand("random|rand")
+  @CommandPermission("auroraduels.command.teamduel.random")
   @CommandCompletion("@players")
   @Syntax("<player1 player2 player3>")
   @Description("Sends a duel request to other players")
