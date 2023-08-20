@@ -7,6 +7,7 @@ import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Arrays;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,6 +34,12 @@ public class DuelEventListener implements Listener {
 
   @EventHandler
   public void onDuelEnd(DuelEndEvent event) {
+    if (AuroraDuels.isAuroraKitsInstalled()) {
+      for (Player player : event.getDuel().getPlayers()) {
+        Kit.getLastUsedKit(player).giveKit(player);
+      }
+    }
+
     if (!AuroraDuels.isAuroraCombatInstalled()) {
       return;
     }
