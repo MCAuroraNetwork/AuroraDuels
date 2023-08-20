@@ -11,9 +11,7 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.util.LocationUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
@@ -26,13 +24,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class FFADuel extends Duel {
-  private final Map<Player, Boolean> deadPlayers = new HashMap<>();
+
+  private final Set<Player> deadPlayers = new HashSet<>();
 
   public FFADuel(Set<Player> players, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, ranked);
   }
 
-  public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
+  public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation,
+      boolean ranked) {
     super(players, respawnLocation, queue, kit, ranked);
   }
 
@@ -45,14 +45,14 @@ public class FFADuel extends Duel {
   }
 
   public void setDead(Player player) {
-    deadPlayers.put(player, true);
+    deadPlayers.add(player);
   }
 
   public boolean onePlayerAlive() {
     int aliveCount = 0;
 
-    for (Boolean isDead : deadPlayers.values()) {
-      if (!isDead) {
+    for (Player player : this.getPlayers()) {
+      if (!deadPlayers.contains(player)) {
         aliveCount++;
       }
     }
@@ -60,10 +60,9 @@ public class FFADuel extends Duel {
     return aliveCount == 1;
   }
 
-  // TODO janky method
   public Player getFirstAlive() {
-    for (Player player : deadPlayers.keySet()) {
-      if (!deadPlayers.get(player)) {
+    for (Player player : this.getPlayers()) {
+      if (!deadPlayers.contains(player)) {
         return player;
       }
     }
@@ -140,12 +139,6 @@ public class FFADuel extends Duel {
         Bukkit.getScheduler()
             .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
 
-    Set<Player> players = this.getPlayers();
-
-    for (Player player : players) {
-      deadPlayers.put(player, false);
-    }
-
     new Timer()
         .schedule(
             new TimerTask() {
@@ -203,7 +196,7 @@ public class FFADuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        new DuelEndEvent(thisDuel, new Player[] {winner}, losers).callEvent();
+        new DuelEndEvent(thisDuel, new Player[]{winner}, losers).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
 
