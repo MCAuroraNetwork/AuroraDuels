@@ -150,17 +150,21 @@ public class StandardDuel extends Duel implements Listener {
               playerOne.hideBossBar(playerOneBar[0]);
             }
 
-            playerOneBar[0] =
-                BossBar.bossBar(
-                    Lang.formatComponent(
-                        "opponent-bossbar",
-                        playerTwo.getName(),
-                        (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                        (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                        playerTwo.getPing()),
-                    1.0f,
-                    BossBar.Color.RED,
-                    BossBar.Overlay.PROGRESS);
+            try {
+              playerOneBar[0] =
+                  BossBar.bossBar(
+                      Lang.formatComponent(
+                          "opponent-bossbar",
+                          playerTwo.getName(),
+                          (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
+                          (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                          playerTwo.getPing()),
+                      1.0f,
+                      BossBar.Color.RED,
+                      BossBar.Overlay.PROGRESS);
+            } catch (IllegalArgumentException e) {
+              this.cancel();
+            }
 
             playerOne.showBossBar(playerOneBar[0]);
 
@@ -168,17 +172,21 @@ public class StandardDuel extends Duel implements Listener {
               playerTwo.hideBossBar(playerTwoBar[0]);
             }
 
-            playerTwoBar[0] =
-                BossBar.bossBar(
-                    Lang.formatComponent(
-                        "opponent-bossbar",
-                        playerOne.getName(),
-                        (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                        (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                        playerOne.getPing()),
-                    1.0f,
-                    BossBar.Color.RED,
-                    BossBar.Overlay.PROGRESS);
+            try {
+              playerTwoBar[0] =
+                  BossBar.bossBar(
+                      Lang.formatComponent(
+                          "opponent-bossbar",
+                          playerOne.getName(),
+                          (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
+                          (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                          playerOne.getPing()),
+                      1.0f,
+                      BossBar.Color.RED,
+                      BossBar.Overlay.PROGRESS);
+            } catch (IllegalArgumentException e) {
+              this.cancel();
+            }
 
             playerTwo.showBossBar(playerTwoBar[0]);
           }
@@ -245,8 +253,13 @@ public class StandardDuel extends Duel implements Listener {
         Title.title(
             Lang.getComponent("you-lost"), Component.text("Opponent: " + winner[0].getName())));
 
-    playerOne.hideBossBar(playerOneBar[0]);
-    playerTwo.hideBossBar(playerTwoBar[0]);
+    if (playerOneBar[0] != null) {
+      playerOne.hideBossBar(playerOneBar[0]);
+    }
+
+    if (playerTwoBar[0] != null) {
+      playerTwo.hideBossBar(playerTwoBar[0]);
+    }
 
     Duel thisDuel = this;
 
@@ -289,8 +302,13 @@ public class StandardDuel extends Duel implements Listener {
             },
             3000);
 
-    playerOne.hideBossBar(playerOneBar[0]);
-    playerTwo.hideBossBar(playerTwoBar[0]);
+    if (playerOneBar[0] != null) {
+      playerOne.hideBossBar(playerOneBar[0]);
+    }
+
+    if (playerTwoBar[0] != null) {
+      playerTwo.hideBossBar(playerTwoBar[0]);
+    }
 
     this.setActive(false);
     Duel thisDuel = this;

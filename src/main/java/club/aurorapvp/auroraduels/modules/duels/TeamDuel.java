@@ -378,12 +378,16 @@ public class TeamDuel extends Duel {
       player.sendMessage(Lang.getComponent("draw"));
     }
 
-    for (Player player : team1Members) {
-      player.hideBossBar(team1Bar[0]);
+    if (team1Bar[0] != null) {
+      for (Player player : team1Members) {
+        player.hideBossBar(team1Bar[0]);
+      }
     }
 
-    for (Player player : team2Members) {
-      player.hideBossBar(team2Bar[0]);
+    if (team2Bar[0] != null) {
+      for (Player player : team2Members) {
+        player.hideBossBar(team2Bar[0]);
+      }
     }
 
     Duel thisDuel = this;
