@@ -100,7 +100,8 @@ public class Lang {
     DEFAULTS.put(
         "opponent-bossbar",
         "<yellow><bold>%1$s <reset><red>| %2$s❤ |<reset><green> %3$sm |<reset><aqua> %4$sms");
-    DEFAULTS.put("team-bossbar", "<red><bold>Enemy Team");
+    DEFAULTS.put("team1-bossbar", "<red><bold>Enemy Team");
+    DEFAULTS.put("team2-bossbar", "<blue><bold>Enemy Team");
     DEFAULTS.put(
         "help-command",
         """

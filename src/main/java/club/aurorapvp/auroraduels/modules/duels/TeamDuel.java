@@ -245,7 +245,7 @@ public class TeamDuel extends Duel {
 
               team1Bar[0] =
                   BossBar.bossBar(
-                      Lang.getComponent("team-bossbar"),
+                      Lang.getComponent("team2-bossbar"),
                       (float) Math.min(team2Health / team2MaxHealth, 1.0f),
                       Color.BLUE,
                       Overlay.PROGRESS);
@@ -271,7 +271,7 @@ public class TeamDuel extends Duel {
 
               team2Bar[0] =
                   BossBar.bossBar(
-                      Lang.getComponent("team-bossbar"),
+                      Lang.getComponent("team1-bossbar"),
                       (float) Math.min(team1Health / team1MaxHealth, 1.0f),
                       Color.RED,
                       Overlay.PROGRESS);
@@ -319,6 +319,7 @@ public class TeamDuel extends Duel {
 
   public void endDuel(Player[] winners, Player[] losers) {
     checkBounds.cancel();
+    bossbarTask.cancel();
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < winners.length; i++) {
@@ -363,6 +364,7 @@ public class TeamDuel extends Duel {
   @Override
   public void draw() {
     checkBounds.cancel();
+    bossbarTask.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));
