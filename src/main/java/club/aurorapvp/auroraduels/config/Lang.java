@@ -33,21 +33,21 @@ public class Lang {
     }
 
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
-    DEFAULTS.put("set-spawn1", "prefix <aqua>Set first spawn: Left click");
-    DEFAULTS.put("set-spawn2", "prefix <aqua>Set second spawn: Right click");
-    DEFAULTS.put("spawn1-set", "prefix <aqua>Spawn 1 set!");
-    DEFAULTS.put("spawn2-set", "prefix <aqua>Spawn 2 set!");
-    DEFAULTS.put("spawns-set", "prefix <aqua>Spawns set!");
-    DEFAULTS.put("set-pos1", "prefix <aqua>Set Pos 1: Left click");
-    DEFAULTS.put("set-pos2", "prefix <aqua>Set Pos 2: Right click");
-    DEFAULTS.put("pos1-set", "prefix <aqua>Pos 1 set!");
-    DEFAULTS.put("pos2-set", "prefix <aqua>Pos 2 set!");
+    DEFAULTS.put("set-spawn1", "prefix <yellow>Set first spawn: Left click");
+    DEFAULTS.put("set-spawn2", "prefix <yellow>Set second spawn: Right click");
+    DEFAULTS.put("spawn1-set", "prefix <yellow>Spawn 1 set!");
+    DEFAULTS.put("spawn2-set", "prefix <yellow>Spawn 2 set!");
+    DEFAULTS.put("spawns-set", "prefix <yellow>Spawns set!");
+    DEFAULTS.put("set-pos1", "prefix <yellow>Set Pos 1: Left click");
+    DEFAULTS.put("set-pos2", "prefix <yellow>Set Pos 2: Right click");
+    DEFAULTS.put("pos1-set", "prefix <yellow>Pos 1 set!");
+    DEFAULTS.put("pos2-set", "prefix <yellow>Pos 2 set!");
     DEFAULTS.put("arena-created", "prefix <green>Arena created!");
-    DEFAULTS.put("arena-reset", "prefix <aqua>Arena reset!");
+    DEFAULTS.put("arena-reset", "prefix <yellow>Arena reset!");
     DEFAULTS.put("arena-deleted", "prefix <red>Arena deleted");
     DEFAULTS.put("arena-does-not-exist", "prefix <red>No such arena");
-    DEFAULTS.put("arena-already-being-created", "prefix <aqua>Arena creation in progress");
-    DEFAULTS.put("arena-already-exists", "prefix <aqua>Arena exists");
+    DEFAULTS.put("arena-already-being-created", "prefix <yellow>Arena creation in progress");
+    DEFAULTS.put("arena-already-exists", "prefix <yellow>Arena exists");
     DEFAULTS.put("unknown-opponent", "prefix <red>Opponent not found");
     DEFAULTS.put("unknown-duel", "prefix <red>Duel not found");
     DEFAULTS.put("player-in-duel", "prefix <red>Player in duel");
@@ -56,23 +56,23 @@ public class Lang {
     DEFAULTS.put("entered-queue", "prefix <green>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <green>Request sent successfully!");
     DEFAULTS.put(
-        "received-request", "prefix <aqua>Request from %s. Use /duel accept or /duel deny");
-    DEFAULTS.put("request-timed-out", "prefix <aqua>Request timed out");
-    DEFAULTS.put("no-requests", "prefix <aqua>No requests");
+        "received-request", "prefix <yellow>Request from <bold>%s<reset><yellow>. Use <bold>/duel accept<reset><yellow> or <bold>/duel deny<reset><yellow>");
+    DEFAULTS.put("request-timed-out", "prefix <yellow>Request timed out");
+    DEFAULTS.put("no-requests", "prefix <yellow>No requests");
     DEFAULTS.put("request-denied", "prefix <red>Request denied");
     DEFAULTS.put("request-accepted", "prefix <green>Request accepted!");
     DEFAULTS.put("you-won", "<green>You won!");
     DEFAULTS.put("you-lost", "<red>You lost");
-    DEFAULTS.put("rounds-remaining", "<aqua>Round %1$s of %2$s");
+    DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s");
     DEFAULTS.put("draw", "prefix <yellow>Draw!");
     DEFAULTS.put("no-leaving-arena", "prefix <red>Can't leave arena");
     DEFAULTS.put("duel-time-expired", "prefix <red>Duel time expired");
-    DEFAULTS.put("looking-match", "prefix <aqua>Searching for opponent");
-    DEFAULTS.put("not-looking-match", "prefix <aqua>Stopped searching for an opponent");
+    DEFAULTS.put("looking-match", "prefix <yellow>Searching for opponent");
+    DEFAULTS.put("not-looking-match", "prefix <yellow>Stopped searching for an opponent");
     DEFAULTS.put("match-found", "prefix <green>Opponent found!");
-    DEFAULTS.put("in-queue", "prefix <aqua>Player is already in a queue");
-    DEFAULTS.put("queue-already-exists", "prefix <aqua>Queue exists");
-    DEFAULTS.put("queue-being-created", "prefix <aqua>Queue creation in progress");
+    DEFAULTS.put("in-queue", "prefix <yellow>Player is already in a queue");
+    DEFAULTS.put("queue-already-exists", "prefix <yellow>Queue exists");
+    DEFAULTS.put("queue-being-created", "prefix <yellow>Queue creation in progress");
     DEFAULTS.put("queue-invalid-item", "prefix <red>Invalid queue item");
     DEFAULTS.put("queue-created", "prefix <green>Queue created");
     DEFAULTS.put("queue-not-found", "prefix <red>Queue not found");
@@ -80,30 +80,30 @@ public class Lang {
     DEFAULTS.put("already-has-request", "prefix <red>You already have a request pending to this player");
     DEFAULTS.put(
         "add-arena",
-        "prefix <aqua>Type the name of the arena you want to add arena to queue. Added %s so far");
+        "prefix <yellow>Type the name of the arena you want to add arena to queue. Added %s so far");
     DEFAULTS.put("no-teleport", "prefix <red>Can't teleport during a duel");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled during duel");
     DEFAULTS.put("duel-kit", "prefix <green>Duel kit set!");
-    DEFAULTS.put("start-spectating", "prefix <aqua>Spectating!");
-    DEFAULTS.put("stop-spectating", "prefix <aqua>Stopped spectating");
+    DEFAULTS.put("start-spectating", "prefix <yellow>Spectating!");
+    DEFAULTS.put("stop-spectating", "prefix <yellow>Stopped spectating");
     DEFAULTS.put("no-last-duel", "prefix <red>No previous duel");
     DEFAULTS.put("unknown-duel-command", "prefix <red>Unknown Duel Command! Use /help");
-    DEFAULTS.put("queue-menu", "<aqua><bold>Select Duel Type");
-    DEFAULTS.put("duel-kit-gui", "<aqua><bold>Select Duel Kit");
-    DEFAULTS.put("next-page", "<aqua>Next");
-    DEFAULTS.put("previous-page", "<aqua>Previous");
-    DEFAULTS.put("no-kit", "<aqua>No kit");
+    DEFAULTS.put("queue-menu", "<yellow><bold>Select Duel Type");
+    DEFAULTS.put("duel-kit-gui", "<yellow><bold>Select Duel Kit");
+    DEFAULTS.put("next-page", "<yellow>Next");
+    DEFAULTS.put("previous-page", "<yellow>Previous");
+    DEFAULTS.put("no-kit", "<yellow>No kit");
     DEFAULTS.put("kit-invalid-name", "prefix <red>Invalid kit name");
     DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set");
     DEFAULTS.put("new-win", "prefix <bold><green>+1 Win");
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
         "opponent-bossbar",
-        "<aqua><bold>%1$s <reset><red>| %2$s❤ |<reset><aqua> %3$sm |<reset><yellow> %4$sms");
+        "<yellow><bold>%1$s <reset><red>| %2$s❤ |<reset><yellow> %3$sm |<reset><yellow> %4$sms");
     DEFAULTS.put(
         "help-command",
         """
-            prefix <aqua><bold>All Commands:
+            prefix <yellow><bold>All Commands:
                     
             <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player
             <blue><bold>/ranked or /unreanked [name]: <reset><yellow>Joins a ranked or unreanked queue, or the default one if no name is given
