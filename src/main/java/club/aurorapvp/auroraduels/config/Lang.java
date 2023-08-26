@@ -17,8 +17,8 @@ public class Lang {
   private static YamlConfiguration lang;
 
   public static void init() {
-    reload();
-    generateDefaults();
+    Lang.reload();
+    Lang.generateDefaults();
   }
 
   public static void generateDefaults() {
@@ -178,6 +178,10 @@ public class Lang {
       try {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
+
+        lang = YamlConfiguration.loadConfiguration(FILE);
+
+        Lang.generateDefaults();
       } catch (IOException e) {
         AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate lang file", e);
       }

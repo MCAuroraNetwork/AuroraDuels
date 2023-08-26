@@ -13,8 +13,8 @@ public class Config {
   private static YamlConfiguration config;
 
   public static void init() {
-    reload();
-    generateDefaults();
+    Config.reload();
+    Config.generateDefaults();
   }
 
   public static void generateDefaults() {
