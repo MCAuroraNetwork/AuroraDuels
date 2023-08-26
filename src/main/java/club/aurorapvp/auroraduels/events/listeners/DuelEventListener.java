@@ -27,7 +27,6 @@ public class DuelEventListener implements Listener {
         Rating.getRating("default_duels").setEnabled(true);
       }
 
-      Rating.getRating(event.getDuel().getQueue().getName() + "_duels").setEnabled(true);
       Rating.getRating("default").setEnabled(false);
       CombatTag.setTaggable(player, false);
     }
@@ -51,7 +50,6 @@ public class DuelEventListener implements Listener {
         Rating.getRating("default_duels").setEnabled(false);
       }
 
-      Rating.getRating(event.getDuel().getQueue().getName() + "_duels").setEnabled(false);
       Rating.getRating("default").setEnabled(true);
       CombatTag.setTaggable(player, true);
 

@@ -51,7 +51,7 @@ public class Lang {
     DEFAULTS.put("unknown-opponent", "prefix <red>Opponent not found");
     DEFAULTS.put("unknown-duel", "prefix <red>Duel not found");
     DEFAULTS.put("player-in-duel", "prefix <red>Player in duel");
-    DEFAULTS.put("duel-started", "<bold><aqua>Duel started!");
+    DEFAULTS.put("duel-started", "<bold><green>Duel started!");
     DEFAULTS.put("even-rounds", "prefix <red>Odd rounds required for duel");
     DEFAULTS.put("entered-queue", "prefix <green>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <green>Request sent successfully!");
