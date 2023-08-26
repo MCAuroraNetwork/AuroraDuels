@@ -160,7 +160,7 @@ public class TeamDuel extends Duel {
       }
     };
 
-    checkbounds = new BukkitRunnable() {
+    checkBounds = new BukkitRunnable() {
       @Override
       public void run() {
         for (Player player : thisDuel.getPlayers()) {
@@ -244,7 +244,7 @@ public class TeamDuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    checkbounds.cancel();
+    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < winners.length; i++) {
@@ -288,7 +288,7 @@ public class TeamDuel extends Duel {
 
   @Override
   public void draw() {
-    checkbounds.cancel();
+    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));

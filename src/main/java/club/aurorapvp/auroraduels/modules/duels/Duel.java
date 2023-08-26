@@ -42,7 +42,7 @@ public abstract class Duel {
   protected int currentRound = 1;
   private Queue queue;
   private boolean active = false;
-  protected BukkitTask checkbounds;
+  protected BukkitTask checkBounds;
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked) {
     this.respawnLocation = respawnLocation;

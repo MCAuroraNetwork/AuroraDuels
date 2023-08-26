@@ -122,7 +122,7 @@ public class StandardDuel extends Duel implements Listener {
       }
     }.runTaskTimer(AuroraDuels.INSTANCE, 1L, 1L);
 
-    checkbounds = new BukkitRunnable() {
+    checkBounds = new BukkitRunnable() {
       @Override
       public void run() {
         for (Player player : thisDuel.getPlayers()) {
@@ -253,8 +253,8 @@ public class StandardDuel extends Duel implements Listener {
       }
     }
 
-    checkbounds.cancel();
-    bossbarTask.cancel();
+    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
+    Bukkit.getScheduler().cancelTask(bossbarTask.getTaskId());
 
     winner[0].showTitle(
         Title.title(
@@ -286,8 +286,8 @@ public class StandardDuel extends Duel implements Listener {
       return;
     }
 
-    checkbounds.cancel();
-    bossbarTask.cancel();
+    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
+    Bukkit.getScheduler().cancelTask(bossbarTask.getTaskId());
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));
