@@ -17,6 +17,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.bossbar.BossBar.Color;
+import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -24,19 +27,27 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Team;
 
 public class TeamDuel extends Duel {
 
-  public static final Team team1 = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("team1");
-  public static final Team team2 = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("team2");
+  public static final Team team1 = Bukkit.getScoreboardManager().getMainScoreboard()
+      .registerNewTeam("team1");
+  public static final Team team2 = Bukkit.getScoreboardManager().getMainScoreboard()
+      .registerNewTeam("team2");
   private final Map<Player, Boolean> team1Dead = new HashMap<>();
   private final Map<Player, Boolean> team2Dead = new HashMap<>();
   private final Player[] team1Members;
   private final Player[] team2Members;
+  private final BossBar[] team1Bar = new BossBar[1];
+  private final BossBar[] team2Bar = new BossBar[1];
+  private BukkitTask bossbarTask;
 
-  public TeamDuel(Player[] team1Members, Player[] team2Members, Location respawnLocation, boolean ranked) {
-    super(Stream.concat(Arrays.stream(team1Members), Arrays.stream(team2Members)).collect(Collectors.toSet()),
+  public TeamDuel(Player[] team1Members, Player[] team2Members, Location respawnLocation,
+      boolean ranked) {
+    super(Stream.concat(Arrays.stream(team1Members), Arrays.stream(team2Members))
+            .collect(Collectors.toSet()),
         respawnLocation, ranked);
 
     team1.color(NamedTextColor.RED);
@@ -46,9 +57,11 @@ public class TeamDuel extends Duel {
     this.team2Members = team2Members;
   }
 
-  public TeamDuel(Player[] team1Members, Player[] team2Members, Queue queue, Kit kit, Location respawnLocation,
+  public TeamDuel(Player[] team1Members, Player[] team2Members, Queue queue, Kit kit,
+      Location respawnLocation,
       boolean ranked) {
-    super(Stream.concat(Arrays.stream(team1Members), Arrays.stream(team2Members)).collect(Collectors.toSet()),
+    super(Stream.concat(Arrays.stream(team1Members), Arrays.stream(team2Members))
+            .collect(Collectors.toSet()),
         respawnLocation, queue, kit, ranked);
 
     team1.color(NamedTextColor.RED);
@@ -206,6 +219,68 @@ public class TeamDuel extends Duel {
         }
       }
     }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
+
+    double team1MaxHealth = team1Members.length * 20;
+    double team2MaxHealth = team2Members.length * 20;
+
+    bossbarTask =
+        new BukkitRunnable() {
+          @Override
+          public void run() {
+            for (Player player : team1Members) {
+              if (team1Bar[0] != null) {
+                player.hideBossBar(team1Bar[0]);
+              }
+
+              double team2Health = 0;
+
+              for (Player team2Member : team2Members) {
+                team2Health =
+                    team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
+              }
+
+              team1Bar[0] =
+                  BossBar.bossBar(
+                      Lang.getComponent("team-bossbar"),
+                      (float) Math.min(team2Health / team2MaxHealth, 1.0f),
+                      Color.BLUE,
+                      Overlay.PROGRESS);
+
+              player.showBossBar(team1Bar[0]);
+            }
+
+            for (Player player : team2Members) {
+              if (team2Bar[0] != null) {
+                player.hideBossBar(team2Bar[0]);
+              }
+
+              double team1Health = 0;
+
+              for (Player team1Member : team1Members) {
+                team1Health =
+                    team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
+              }
+
+              team2Bar[0] =
+                  BossBar.bossBar(
+                      Lang.getComponent("team-bossbar"),
+                      (float) Math.min(team1Health / team1MaxHealth, 1.0f),
+                      Color.RED,
+                      Overlay.PROGRESS);
+
+              player.showBossBar(team2Bar[0]);
+            }
+          }
+        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
+
+    timeStarted = System.currentTimeMillis();
+
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        new DuelStartEvent(thisDuel).callEvent();
+      }
+    }.runTask(AuroraDuels.INSTANCE);
 
     new Timer()
         .schedule(
