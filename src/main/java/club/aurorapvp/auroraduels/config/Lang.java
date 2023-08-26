@@ -54,7 +54,7 @@ public class Lang {
     DEFAULTS.put("duel-started", "<bold><aqua>Duel started!");
     DEFAULTS.put("even-rounds", "prefix <red>Odd rounds required for duel");
     DEFAULTS.put("entered-queue", "prefix <green>You have entered the duel queue");
-    DEFAULTS.put("sent-request", "prefix <aqua>Request sent!");
+    DEFAULTS.put("sent-request", "prefix <green>Request sent successfully!");
     DEFAULTS.put(
         "received-request", "prefix <aqua>Request from %s. Use /duel accept or /duel deny");
     DEFAULTS.put("request-timed-out", "prefix <aqua>Request timed out");

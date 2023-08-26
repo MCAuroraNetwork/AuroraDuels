@@ -17,6 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -88,39 +89,42 @@ public class StandardDuel extends Duel implements Listener {
 
       @Override
       public void run() {
-        for (Player player : thisDuel.getPlayers()) {
-          playerOne.teleportAsync(spawn1);
-          playerOne.lookAt(spawn2, LookAnchor.EYES);
-          playerTwo.teleportAsync(spawn2);
-          playerTwo.lookAt(spawn1, LookAnchor.EYES);
+        playerOne.teleportAsync(spawn1);
+        playerOne.lookAt(spawn2, LookAnchor.EYES);
+        playerTwo.teleportAsync(spawn2);
+        playerTwo.lookAt(spawn1, LookAnchor.EYES);
 
-          player.showTitle(Title.title(Component.text(seconds), Component.text("")));
+        if ((seconds -= 1) == 0) {
+          final Title title1 =
+              Title.title(
+                  Lang.getComponent("duel-started"),
+                  Component.text("Opponent: " + playerTwo.getName()));
+          final Title title2 =
+              Title.title(
+                  Lang.getComponent("duel-started"),
+                  Component.text("Opponent: " + playerOne.getName()));
 
-          if ((seconds -= 1) == 0) {
-            final Title title1 =
-                Title.title(
-                    Lang.getComponent("duel-started"),
-                    Component.text("Opponent: " + playerTwo.getName()));
-            final Title title2 =
-                Title.title(
-                    Lang.getComponent("duel-started"),
-                    Component.text("Opponent: " + playerOne.getName()));
-
-            if (rounds > 1) {
-              playerOne.sendActionBar(
-                  Lang.formatComponent("rounds-remaining", currentRound, rounds));
-              playerTwo.sendActionBar(
-                  Lang.formatComponent("rounds-remaining", currentRound, rounds));
-            }
-
-            playerOne.showTitle(title1);
-            playerTwo.showTitle(title2);
-
-            this.cancel();
+          if (rounds > 1) {
+            playerOne.sendActionBar(
+                Lang.formatComponent("rounds-remaining", currentRound, rounds));
+            playerTwo.sendActionBar(
+                Lang.formatComponent("rounds-remaining", currentRound, rounds));
           }
+
+          playerOne.showTitle(title1);
+          playerTwo.showTitle(title2);
+
+          this.cancel();
+          return;
+        }
+
+        for (Player player : thisDuel.getPlayers()) {
+          player.showTitle(
+              Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                  Component.text("")));
         }
       }
-    }.runTaskTimer(AuroraDuels.INSTANCE, 1L, 1L);
+    }.runTaskTimer(AuroraDuels.INSTANCE, 20L, 20L);
 
     checkBounds = new BukkitRunnable() {
       @Override
