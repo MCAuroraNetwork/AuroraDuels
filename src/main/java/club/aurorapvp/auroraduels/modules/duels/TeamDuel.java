@@ -235,6 +235,10 @@ public class TeamDuel extends Duel {
               double team2Health = 0;
 
               for (Player team2Member : team2Members) {
+                if (team2Dead.get(team2Member)) {
+                  continue;
+                }
+
                 team2Health =
                     team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
               }
@@ -257,6 +261,10 @@ public class TeamDuel extends Duel {
               double team1Health = 0;
 
               for (Player team1Member : team1Members) {
+                if (team1Dead.get(team1Member)) {
+                  continue;
+                }
+
                 team1Health =
                     team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
               }
