@@ -23,18 +23,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Queue {
 
-  private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
   private static final Set<Queue> queues = new HashSet<>();
   private static boolean arenasSet = true;
   private static Player currentCreator;
@@ -46,21 +43,6 @@ public class Queue {
   private final QueueDataHandler data;
   private ItemStack displayItem;
   private Kit kit;
-  private final Runnable checkQueue =
-      () -> {
-        Set<Arena> arenasSet = this.getArenas();
-        List<Arena> arenasList = new ArrayList<>(arenasSet);
-        Collections.shuffle(arenasList);
-        Iterator<Arena> arenaIterator = arenasList.iterator();
-
-        while (arenaIterator.hasNext() && !duelQueue.isEmpty()) {
-          Arena arena = arenaIterator.next();
-          if (!arena.isOccupied()) {
-            duelQueue.getLast().startDuel(arena);
-            duelQueue.remove(duelQueue.getLast());
-          }
-        }
-      };
 
   public Queue(String queueName) {
     this.name = queueName;
@@ -286,7 +268,25 @@ public class Queue {
       player.sendMessage(Lang.getComponent("entered-queue"));
     }
 
-    executor.scheduleAtFixedRate(checkQueue, 0L, 1L, TimeUnit.SECONDS);
+    Queue thisQueue = this;
+
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        Set<Arena> arenasSet = thisQueue.getArenas();
+        List<Arena> arenasList = new ArrayList<>(arenasSet);
+        Collections.shuffle(arenasList);
+        Iterator<Arena> arenaIterator = arenasList.iterator();
+
+        while (arenaIterator.hasNext() && !duelQueue.isEmpty()) {
+          Arena arena = arenaIterator.next();
+          if (!arena.isOccupied()) {
+            duelQueue.getLast().startDuel(arena);
+            duelQueue.remove(duelQueue.getLast());
+          }
+        }
+      }
+    }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
     new QueueJoinEvent(duel).callEvent();
   }

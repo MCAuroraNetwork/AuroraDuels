@@ -125,6 +125,8 @@ public class TeamDuel extends Duel {
       team2Dead.put(player, false);
     }
 
+    Duel thisDuel = this;
+
     new BukkitRunnable() {
       int seconds = 3;
 
@@ -157,6 +159,29 @@ public class TeamDuel extends Duel {
         }
       }
     };
+
+    checkbounds = new BukkitRunnable() {
+      @Override
+      public void run() {
+        for (Player player : thisDuel.getPlayers()) {
+          Arena arena = thisDuel.getArena();
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            player.setHealth(0);
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+
+        for (Player player : thisDuel.getSpectators()) {
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            for (Player duelingPlayer : thisDuel.getPlayers()) {
+              player.teleportAsync(duelingPlayer.getLocation());
+              break;
+            }
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+      }
+    }.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
 
     new BukkitRunnable() {
       int seconds = 3;
@@ -191,8 +216,6 @@ public class TeamDuel extends Duel {
       }
     };
 
-    TeamDuel thisDuel = this;
-
     new Timer()
         .schedule(
             new TimerTask() {
@@ -221,7 +244,7 @@ public class TeamDuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    Bukkit.getScheduler().cancelTask(checkBoundsId);
+    checkbounds.cancel();
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < winners.length; i++) {
@@ -265,7 +288,7 @@ public class TeamDuel extends Duel {
 
   @Override
   public void draw() {
-    Bukkit.getScheduler().cancelTask(checkBoundsId);
+    checkbounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));

@@ -124,6 +124,7 @@ public class QueueGUI implements InventoryHolder, Listener {
     updatedItems[updatedItems.length - 1] = newItem;
 
     inventory.clear();
+
     populateGUI(updatedItems);
   }
 
@@ -150,6 +151,7 @@ public class QueueGUI implements InventoryHolder, Listener {
 
   public void open(Player player) {
     reload();
+
     player.openInventory(inventory);
   }
 

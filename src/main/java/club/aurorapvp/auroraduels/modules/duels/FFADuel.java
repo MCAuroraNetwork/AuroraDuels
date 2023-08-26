@@ -135,9 +135,28 @@ public class FFADuel extends Duel {
       }
     }.runTaskTimer(AuroraDuels.INSTANCE, 1L, 1L);
 
-    checkBoundsId =
-        Bukkit.getScheduler()
-            .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    checkbounds = new BukkitRunnable() {
+      @Override
+      public void run() {
+        for (Player player : thisDuel.getPlayers()) {
+          Arena arena = thisDuel.getArena();
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            player.setHealth(0);
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+
+        for (Player player : thisDuel.getSpectators()) {
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            for (Player duelingPlayer : thisDuel.getPlayers()) {
+              player.teleportAsync(duelingPlayer.getLocation());
+              break;
+            }
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+      }
+    }.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
 
     new Timer()
         .schedule(
@@ -167,7 +186,7 @@ public class FFADuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    Bukkit.getScheduler().cancelTask(checkBoundsId);
+    checkbounds.cancel();
 
     Player winner = winners[0];
 
@@ -205,7 +224,7 @@ public class FFADuel extends Duel {
 
   @Override
   public void draw() {
-    Bukkit.getScheduler().cancelTask(checkBoundsId);
+    checkbounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));

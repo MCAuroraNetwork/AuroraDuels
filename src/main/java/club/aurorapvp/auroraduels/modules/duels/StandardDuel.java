@@ -23,13 +23,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class StandardDuel extends Duel implements Listener {
 
   private final Map<Player, Integer> wins = new HashMap<>();
   private final BossBar[] playerOneBar = new BossBar[1];
   private final BossBar[] playerTwoBar = new BossBar[1];
-  private int bossbarTaskId;
+  private BukkitTask bossbarTask;
   private final Player playerOne;
   private final Player playerTwo;
 
@@ -121,9 +122,28 @@ public class StandardDuel extends Duel implements Listener {
       }
     }.runTaskTimer(AuroraDuels.INSTANCE, 1L, 1L);
 
-    checkBoundsId =
-        Bukkit.getScheduler()
-            .scheduleSyncRepeatingTask(AuroraDuels.INSTANCE, checkBounds, 200L, 200L);
+    checkbounds = new BukkitRunnable() {
+      @Override
+      public void run() {
+        for (Player player : thisDuel.getPlayers()) {
+          Arena arena = thisDuel.getArena();
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            player.setHealth(0);
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+
+        for (Player player : thisDuel.getSpectators()) {
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            for (Player duelingPlayer : thisDuel.getPlayers()) {
+              player.teleportAsync(duelingPlayer.getLocation());
+              break;
+            }
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+      }
+    }.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
 
     new Timer()
         .schedule(
@@ -140,7 +160,7 @@ public class StandardDuel extends Duel implements Listener {
             },
             Config.get().getInt("duels.max-duration"));
 
-    bossbarTaskId =
+    bossbarTask =
         new BukkitRunnable() {
           @Override
           public void run() {
@@ -180,7 +200,7 @@ public class StandardDuel extends Duel implements Listener {
 
             playerTwo.showBossBar(playerTwoBar[0]);
           }
-        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L).getTaskId();
+        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
     timeStarted = System.currentTimeMillis();
 
@@ -233,8 +253,8 @@ public class StandardDuel extends Duel implements Listener {
       }
     }
 
-    Bukkit.getScheduler().cancelTask(checkBoundsId);
-    Bukkit.getScheduler().cancelTask(bossbarTaskId);
+    checkbounds.cancel();
+    bossbarTask.cancel();
 
     winner[0].showTitle(
         Title.title(
@@ -266,8 +286,8 @@ public class StandardDuel extends Duel implements Listener {
       return;
     }
 
-    Bukkit.getScheduler().cancelTask(checkBoundsId);
-    Bukkit.getScheduler().cancelTask(bossbarTaskId);
+    checkbounds.cancel();
+    bossbarTask.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));
