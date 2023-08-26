@@ -69,7 +69,7 @@ public class Lang {
     DEFAULTS.put("duel-time-expired", "prefix <red>Duel time expired");
     DEFAULTS.put("looking-match", "prefix <aqua>Searching for opponent");
     DEFAULTS.put("not-looking-match", "prefix <aqua>Stopped searching for an opponent");
-    DEFAULTS.put("match-found", "prefix <green>Opponent found");
+    DEFAULTS.put("match-found", "prefix <green>Opponent found!");
     DEFAULTS.put("in-queue", "prefix <aqua>Player is already in a queue");
     DEFAULTS.put("queue-already-exists", "prefix <aqua>Queue exists");
     DEFAULTS.put("queue-being-created", "prefix <aqua>Queue creation in progress");

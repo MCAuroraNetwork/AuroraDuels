@@ -21,7 +21,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class Duel {
 
@@ -42,7 +42,33 @@ public abstract class Duel {
   protected int currentRound = 1;
   private Queue queue;
   private boolean active = false;
-  protected BukkitTask checkBounds;
+  private final Duel thisDuel = this;
+  protected final BukkitRunnable checkBounds = new BukkitRunnable() {
+    @Override
+    public void run() {
+      try {
+        for (Player player : thisDuel.getPlayers()) {
+          Arena arena = thisDuel.getArena();
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            player.setHealth(0);
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+
+        for (Player player : thisDuel.getSpectators()) {
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            for (Player duelingPlayer : thisDuel.getPlayers()) {
+              player.teleportAsync(duelingPlayer.getLocation());
+              break;
+            }
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+      } catch (IllegalArgumentException e) {
+        this.cancel();
+      }
+    }
+  };
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked) {
     this.respawnLocation = respawnLocation;
