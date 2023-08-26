@@ -112,7 +112,7 @@ public abstract class Duel {
 
     container.set(winStreakKey, PersistentDataType.INTEGER, wins + 1);
 
-    player.sendMessage(Lang.formatComponent("new-win", wins + 1));
+    player.sendMessage(Lang.getComponent("new-win"));
   }
 
   public static void resetStreak(Player player) {
