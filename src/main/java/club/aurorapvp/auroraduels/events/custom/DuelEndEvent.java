@@ -1,8 +1,10 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -41,7 +43,10 @@ public class DuelEndEvent extends Event {
     }
 
     if (duel.isRanked()) {
+      AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe1");
+
       for (Player player : this.getWinners()) {
+        AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe2");
         Duel.addWin(player);
       }
 

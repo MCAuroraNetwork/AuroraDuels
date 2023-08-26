@@ -95,8 +95,7 @@ public class Lang {
     DEFAULTS.put("no-kit", "<aqua>No kit");
     DEFAULTS.put("kit-invalid-name", "prefix <red>Invalid kit name");
     DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set");
-    DEFAULTS.put("new-win", "prefix <bold><green>+1 Win<reset><green>, Winstreak: %s");
-    DEFAULTS.put("new-loss", "prefix <bold><red>Lost %s Winstreak");
+    DEFAULTS.put("new-win", "prefix <bold><green>+1 Win");
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
         "opponent-bossbar",
