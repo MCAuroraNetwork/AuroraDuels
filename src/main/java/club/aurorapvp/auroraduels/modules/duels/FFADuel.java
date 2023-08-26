@@ -165,7 +165,7 @@ public class FFADuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
+    checkBounds.cancel();
 
     Player winner = winners[0];
 
@@ -203,7 +203,7 @@ public class FFADuel extends Duel {
 
   @Override
   public void draw() {
-    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
+    checkBounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));

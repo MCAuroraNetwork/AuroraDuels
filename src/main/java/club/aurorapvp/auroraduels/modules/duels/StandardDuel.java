@@ -236,8 +236,8 @@ public class StandardDuel extends Duel implements Listener {
       }
     }
 
-    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
-    Bukkit.getScheduler().cancelTask(bossbarTask.getTaskId());
+    checkBounds.cancel();
+    bossbarTask.cancel();
 
     winner[0].showTitle(
         Title.title(
@@ -269,8 +269,8 @@ public class StandardDuel extends Duel implements Listener {
       return;
     }
 
-    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
-    Bukkit.getScheduler().cancelTask(bossbarTask.getTaskId());
+    checkBounds.cancel();
+    bossbarTask.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));

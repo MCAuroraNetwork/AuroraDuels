@@ -224,7 +224,7 @@ public class TeamDuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
+    checkBounds.cancel();
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < winners.length; i++) {
@@ -268,7 +268,7 @@ public class TeamDuel extends Duel {
 
   @Override
   public void draw() {
-    Bukkit.getScheduler().cancelTask(checkBounds.getTaskId());
+    checkBounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));
