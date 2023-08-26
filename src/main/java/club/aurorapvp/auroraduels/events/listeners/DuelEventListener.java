@@ -21,13 +21,16 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    for (Player player : event.getDuel().getPlayers()) {
+    Rating.getRating("default").setEnabled(false);
+
+    if (event.getDuel().isRanked()) {
       if (Config.get()
           .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
         Rating.getRating("default_duels").setEnabled(true);
       }
+    }
 
-      Rating.getRating("default").setEnabled(false);
+    for (Player player : event.getDuel().getPlayers()) {
       CombatTag.setTaggable(player, false);
     }
   }
@@ -44,16 +47,21 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    for (Player player : event.getDuel().getPlayers()) {
-      if (Config.get()
-          .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
-        Rating.getRating("default_duels").setEnabled(false);
-      }
+    Rating.getRating("default").setEnabled(true);
 
-      Rating.getRating("default").setEnabled(true);
+    for (Player player : event.getDuel().getPlayers()) {
       CombatTag.setTaggable(player, true);
 
       Duel.setLastDuel(player, event.getDuel());
+    }
+
+    if (!event.getDuel().isRanked()) {
+      return;
+    }
+
+    if (Config.get()
+        .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
+      Rating.getRating("default_duels").setEnabled(false);
     }
 
     if (event.getDuel().getPlayers().size() == 2) {

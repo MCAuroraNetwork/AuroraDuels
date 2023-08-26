@@ -44,10 +44,7 @@ public class DuelEndEvent extends Event {
     }
 
     if (duel.isRanked()) {
-      AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe1");
-
       for (Player player : this.getWinners()) {
-        AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe2");
         Duel.addWin(player);
       }
 
