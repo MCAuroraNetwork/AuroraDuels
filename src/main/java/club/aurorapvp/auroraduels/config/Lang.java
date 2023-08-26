@@ -99,7 +99,7 @@ public class Lang {
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
         "opponent-bossbar",
-        "<yellow><bold>%1$s <reset><red>| %2$s❤ |<reset><yellow> %3$sm |<reset><yellow> %4$sms");
+        "<yellow><bold>%1$s <reset><red>| %2$s❤ |<reset><green> %3$sm |<reset><aqua> %4$sms");
     DEFAULTS.put(
         "help-command",
         """
