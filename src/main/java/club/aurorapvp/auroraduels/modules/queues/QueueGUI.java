@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public class QueueGUI implements InventoryHolder, Listener {
 
   private final Inventory inventory =
-      Bukkit.createInventory(this, 27, Lang.getComponent("queue-menu"));
+      Bukkit.createInventory(this, 54, Lang.getComponent("queue-menu"));
 
   public QueueGUI() {
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
@@ -90,20 +90,26 @@ public class QueueGUI implements InventoryHolder, Listener {
   }
 
   public void populateGUI(ItemStack[] displayItems) {
-    int itemStacksCount = displayItems.length;
-    int startingSlotInMiddleRow = 9;
+    int numItems = displayItems.length;
 
-    int slotsBetweenItems = Math.max(0, (9 - itemStacksCount) / (itemStacksCount + 1));
+    int itemsPerRow = (numItems + 1) / 2;
 
-    int startingSlot = startingSlotInMiddleRow + slotsBetweenItems;
-    int slotsBetweenColumns = slotsBetweenItems + 1;
+    int usedSlotsFirstRow = 2 * itemsPerRow - 1;
+    int unusedSlotsFirstRow = 9 - usedSlotsFirstRow;
+    int startSlotFirstRow = 9 + unusedSlotsFirstRow / 2;
+    for (int i = 0; i < itemsPerRow; i++) {
+      int slot = startSlotFirstRow + i * 2;
+      inventory.setItem(slot, displayItems[i]);
+    }
 
-    for (int i = 0; i < displayItems.length; i++) {
-      int row = i / 9;
-      int col = i % 9;
-
-      int slotIndex = startingSlot + row * 9 + slotsBetweenColumns * col;
-      inventory.setItem(slotIndex, displayItems[i]);
+    if (numItems > itemsPerRow) {
+      int usedSlotsSecondRow = 2 * (numItems - itemsPerRow) - 1;
+      int unusedSlotsSecondRow = 9 - usedSlotsSecondRow;
+      int startSlotSecondRow = 27 + unusedSlotsSecondRow / 2;
+      for (int i = itemsPerRow; i < numItems; i++) {
+        int slot = startSlotSecondRow + (i - itemsPerRow) * 2;
+        inventory.setItem(slot, displayItems[i]);
+      }
     }
   }
 

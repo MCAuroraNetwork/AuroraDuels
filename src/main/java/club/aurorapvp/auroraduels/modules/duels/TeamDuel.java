@@ -18,63 +18,72 @@ import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Team;
 
 public class TeamDuel extends Duel {
 
+  public static final Team team1 = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("team1");
+  public static final Team team2 = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("team2");
   private final Map<Player, Boolean> team1Dead = new HashMap<>();
   private final Map<Player, Boolean> team2Dead = new HashMap<>();
-  private final Player[] team1;
-  private final Player[] team2;
+  private final Player[] team1Members;
+  private final Player[] team2Members;
 
-  public TeamDuel(Player[] team1, Player[] team2, Location respawnLocation, boolean ranked) {
-    super(Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()),
+  public TeamDuel(Player[] team1Members, Player[] team2Members, Location respawnLocation, boolean ranked) {
+    super(Stream.concat(Arrays.stream(team1Members), Arrays.stream(team2Members)).collect(Collectors.toSet()),
         respawnLocation, ranked);
 
-    this.team1 = team1;
-    this.team2 = team2;
+    team1.color(NamedTextColor.RED);
+    team2.color(NamedTextColor.BLUE);
+
+    this.team1Members = team1Members;
+    this.team2Members = team2Members;
   }
 
-  public TeamDuel(Player[] team1, Player[] team2, Queue queue, Kit kit, Location respawnLocation,
+  public TeamDuel(Player[] team1Members, Player[] team2Members, Queue queue, Kit kit, Location respawnLocation,
       boolean ranked) {
-    super(Stream.concat(Arrays.stream(team1), Arrays.stream(team2)).collect(Collectors.toSet()),
+    super(Stream.concat(Arrays.stream(team1Members), Arrays.stream(team2Members)).collect(Collectors.toSet()),
         respawnLocation, queue, kit, ranked);
 
-    this.team1 = team1;
-    this.team2 = team2;
+    team1.color(NamedTextColor.RED);
+    team2.color(NamedTextColor.BLUE);
+
+    this.team1Members = team1Members;
+    this.team2Members = team2Members;
   }
 
-  public Player[] getTeam1() {
-    return team1;
+  public Player[] getTeam1Members() {
+    return team1Members;
   }
 
-  public Player[] getTeam2() {
-    return team2;
+  public Player[] getTeam2Members() {
+    return team2Members;
   }
 
   @SuppressWarnings("unused")
   public Player[] getOpponents(Player player) {
-    for (Player teamMember : team1) {
+    for (Player teamMember : team1Members) {
       if (teamMember == player) {
-        return team2;
+        return team2Members;
       }
     }
-    return team1;
+    return team1Members;
   }
 
   @SuppressWarnings("unused")
   public Player[] getTeammates(Player player) {
-    for (Player teamMember : team1) {
+    for (Player teamMember : team1Members) {
       if (teamMember == player) {
-        return team1;
+        return team1Members;
       }
     }
-    return team2;
+    return team2Members;
   }
 
   public void setDead(Player player) {
@@ -118,12 +127,14 @@ public class TeamDuel extends Duel {
             arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
-    for (Player player : team1) {
+    for (Player player : team1Members) {
       team1Dead.put(player, false);
+      team1.addPlayer(player);
     }
 
-    for (Player player : team2) {
+    for (Player player : team2Members) {
       team2Dead.put(player, false);
+      team2.addPlayer(player);
     }
 
     Duel thisDuel = this;
@@ -135,7 +146,7 @@ public class TeamDuel extends Duel {
 
       @Override
       public void run() {
-        for (Player player : team1) {
+        for (Player player : team1Members) {
           player.teleportAsync(spawn1);
           player.lookAt(spawn2, LookAnchor.EYES);
 
@@ -143,9 +154,9 @@ public class TeamDuel extends Duel {
 
           if ((seconds -= 1) == 0) {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < team1.length; i++) {
-              sb.append(team2[i].getName());
-              if (i < team2.length - 1) {
+            for (int i = 0; i < team1Members.length; i++) {
+              sb.append(team2Members[i].getName());
+              if (i < team2Members.length - 1) {
                 sb.append(", ");
               }
             }
@@ -168,7 +179,7 @@ public class TeamDuel extends Duel {
 
       @Override
       public void run() {
-        for (Player player : team2) {
+        for (Player player : team2Members) {
           player.teleportAsync(spawn2);
           player.lookAt(spawn1, LookAnchor.EYES);
 
@@ -176,9 +187,9 @@ public class TeamDuel extends Duel {
 
           if ((seconds -= 1) == 0) {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < team1.length; i++) {
-              sb.append(team1[i].getName());
-              if (i < team1.length - 1) {
+            for (int i = 0; i < team1Members.length; i++) {
+              sb.append(team1Members[i].getName());
+              if (i < team1Members.length - 1) {
                 sb.append(", ");
               }
             }
