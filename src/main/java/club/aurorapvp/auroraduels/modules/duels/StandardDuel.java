@@ -19,7 +19,6 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -156,7 +155,7 @@ public class StandardDuel extends Duel implements Listener {
                     Lang.formatComponent(
                         "opponent-bossbar",
                         playerTwo.getName(),
-                        (int) playerTwo.getHealth(),
+                        (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
                         (int) playerTwo.getLocation().distance(playerOne.getLocation()),
                         playerTwo.getPing()),
                     1.0f,
@@ -174,7 +173,7 @@ public class StandardDuel extends Duel implements Listener {
                     Lang.formatComponent(
                         "opponent-bossbar",
                         playerOne.getName(),
-                        (int) playerOne.getHealth(),
+                        (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
                         (int) playerOne.getLocation().distance(playerTwo.getLocation()),
                         playerOne.getPing()),
                     1.0f,
