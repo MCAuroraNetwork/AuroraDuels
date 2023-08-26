@@ -349,6 +349,14 @@ public class TeamDuel extends Duel {
           Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
     }
 
+    for (Player player : team1Members) {
+      player.hideBossBar(team1Bar[0]);
+    }
+
+    for (Player player : team2Members) {
+      player.hideBossBar(team2Bar[0]);
+    }
+
     Duel thisDuel = this;
 
     new BukkitRunnable() {
@@ -368,6 +376,14 @@ public class TeamDuel extends Duel {
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));
+    }
+
+    for (Player player : team1Members) {
+      player.hideBossBar(team1Bar[0]);
+    }
+
+    for (Player player : team2Members) {
+      player.hideBossBar(team2Bar[0]);
     }
 
     Duel thisDuel = this;
