@@ -93,7 +93,7 @@ public class FFADuel extends Duel {
 
     FFADuel thisDuel = this;
     new BukkitRunnable() {
-      int seconds = 3;
+      int seconds = 4;
 
       @Override
       public void run() {
@@ -133,7 +133,7 @@ public class FFADuel extends Duel {
           }
         }
       }
-    }.runTaskTimer(AuroraDuels.INSTANCE, 1L, 1L);
+    }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
 
     checkBounds = new BukkitRunnable() {
       @Override

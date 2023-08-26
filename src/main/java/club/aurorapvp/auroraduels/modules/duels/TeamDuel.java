@@ -18,6 +18,7 @@ import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -127,8 +128,31 @@ public class TeamDuel extends Duel {
 
     Duel thisDuel = this;
 
+    checkBounds = new BukkitRunnable() {
+      @Override
+      public void run() {
+        for (Player player : thisDuel.getPlayers()) {
+          Arena arena = thisDuel.getArena();
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            player.setHealth(0);
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+
+        for (Player player : thisDuel.getSpectators()) {
+          if (!Arena.isInBounds(player.getLocation(), arena)) {
+            for (Player duelingPlayer : thisDuel.getPlayers()) {
+              player.teleportAsync(duelingPlayer.getLocation());
+              break;
+            }
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+      }
+    }.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
+
     new BukkitRunnable() {
-      int seconds = 3;
+      int seconds = 4;
 
       @Override
       public void run() {
@@ -158,33 +182,10 @@ public class TeamDuel extends Duel {
           }
         }
       }
-    };
-
-    checkBounds = new BukkitRunnable() {
-      @Override
-      public void run() {
-        for (Player player : thisDuel.getPlayers()) {
-          Arena arena = thisDuel.getArena();
-          if (!Arena.isInBounds(player.getLocation(), arena)) {
-            player.setHealth(0);
-            player.sendMessage(Lang.getComponent("no-leaving-arena"));
-          }
-        }
-
-        for (Player player : thisDuel.getSpectators()) {
-          if (!Arena.isInBounds(player.getLocation(), arena)) {
-            for (Player duelingPlayer : thisDuel.getPlayers()) {
-              player.teleportAsync(duelingPlayer.getLocation());
-              break;
-            }
-            player.sendMessage(Lang.getComponent("no-leaving-arena"));
-          }
-        }
-      }
-    }.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
+    }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
 
     new BukkitRunnable() {
-      int seconds = 3;
+      int seconds = 4;
 
       @Override
       public void run() {
@@ -214,7 +215,7 @@ public class TeamDuel extends Duel {
           }
         }
       }
-    };
+    }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
 
     new Timer()
         .schedule(

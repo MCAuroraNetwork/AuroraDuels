@@ -85,7 +85,7 @@ public class StandardDuel extends Duel implements Listener {
     StandardDuel thisDuel = this;
 
     new BukkitRunnable() {
-      int seconds = 3;
+      int seconds = 4;
 
       @Override
       public void run() {
@@ -124,7 +124,7 @@ public class StandardDuel extends Duel implements Listener {
                   Component.text("")));
         }
       }
-    }.runTaskTimer(AuroraDuels.INSTANCE, 20L, 20L);
+    }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
 
     checkBounds = new BukkitRunnable() {
       @Override
