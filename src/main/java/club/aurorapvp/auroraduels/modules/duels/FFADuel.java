@@ -204,6 +204,10 @@ public class FFADuel extends Duel {
     checkBounds.cancel();
     bossbarTask.cancel();
 
+    for (Player player : this.getPlayers()) {
+      player.hideBossBar(bossBars.get(player));
+    }
+
     Player winner = winners[0];
 
     String winnerName = winner.getName();
@@ -242,6 +246,10 @@ public class FFADuel extends Duel {
   public void draw() {
     checkBounds.cancel();
     bossbarTask.cancel();
+
+    for (Player player : this.getPlayers()) {
+      player.hideBossBar(bossBars.get(player));
+    }
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));
