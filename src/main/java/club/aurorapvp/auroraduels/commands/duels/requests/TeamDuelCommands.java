@@ -5,6 +5,7 @@ import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
+import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
@@ -16,7 +17,9 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -72,6 +75,11 @@ public class TeamDuelCommands extends BaseCommand {
       loc = Bukkit.getWorlds().get(0).getSpawnLocation();
     }
 
+    if (team1.length == 1 && team2.length == 1) {
+      new Request(player, new StandardDuel(team1[0], team2[0], loc, false, 1));
+      return;
+    }
+
     new Request(player, new TeamDuel(team1, team2, loc, false));
   }
 
@@ -114,6 +122,13 @@ public class TeamDuelCommands extends BaseCommand {
 
     if (loc == null) {
       loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+    }
+
+    if (players.size() == 2) {
+      List<Player> list = new ArrayList<>(players);
+
+      new Request(player, new StandardDuel(list.get(1), list.get(2), loc, false, 1));
+      return;
     }
 
     new Request(player, new RandomTeamDuel(players, loc, false));

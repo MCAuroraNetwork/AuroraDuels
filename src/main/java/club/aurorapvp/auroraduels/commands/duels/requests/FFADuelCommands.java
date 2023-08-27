@@ -5,6 +5,7 @@ import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
+import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -61,6 +62,11 @@ public class FFADuelCommands extends BaseCommand {
 
     if (loc == null) {
       loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+    }
+
+    if (requested.length == 1) {
+      new Request(player, new StandardDuel(player, requested[0], loc, false, 1));
+      return;
     }
 
     new Request(player, new FFADuel(players, loc, false));
