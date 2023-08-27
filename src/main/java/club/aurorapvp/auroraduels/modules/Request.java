@@ -12,6 +12,7 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -19,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class Request implements Listener {
 
@@ -64,6 +66,17 @@ public class Request implements Listener {
     }
 
     PENDING_REQUESTS.add(this);
+  }
+
+  @EventHandler
+  public void onInventoryClose(InventoryCloseEvent event) {
+    if (!Objects.equals(event.getInventory().getHolder(), AuroraDuels.getQueueGUI())) {
+      return;
+    }
+
+    if (duel.getQueue() == null) {
+      PENDING_REQUESTS.remove(this);
+    }
   }
 
   @EventHandler
