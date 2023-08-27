@@ -159,7 +159,7 @@ public class StandardDuel extends Duel implements Listener {
                           (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
                           (int) playerTwo.getLocation().distance(playerOne.getLocation()),
                           playerTwo.getPing()),
-                      1.0f,
+                      (float) Math.min(playerTwo.getHealth() + playerTwo.getAbsorptionAmount() / 20, 1.0f),
                       BossBar.Color.RED,
                       BossBar.Overlay.PROGRESS);
             } catch (IllegalArgumentException e) {
@@ -181,7 +181,7 @@ public class StandardDuel extends Duel implements Listener {
                           (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
                           (int) playerOne.getLocation().distance(playerTwo.getLocation()),
                           playerOne.getPing()),
-                      1.0f,
+                      (float) Math.min(playerOne.getHealth() + playerOne.getAbsorptionAmount() / 20, 1.0f),
                       BossBar.Color.RED,
                       BossBar.Overlay.PROGRESS);
             } catch (IllegalArgumentException e) {
