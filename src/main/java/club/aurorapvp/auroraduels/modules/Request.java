@@ -16,13 +16,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
-public class Request implements Listener {
+public class Request {
 
   protected static final LinkedList<Request> PENDING_REQUESTS = new LinkedList<>();
   private final HashMap<Player, Boolean> playersAccepted = new HashMap<>();
@@ -54,8 +51,6 @@ public class Request implements Listener {
       }
     }
 
-    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
-
     if (Queue.getQueues().size() > 1) {
       AuroraDuels.getQueueGUI().open(requester);
     } else if (AuroraDuels.isAuroraKitsInstalled()) {
@@ -68,7 +63,6 @@ public class Request implements Listener {
     PENDING_REQUESTS.add(this);
   }
 
-  @EventHandler
   public void onInventoryClose(InventoryCloseEvent event) {
     if (!Objects.equals(event.getInventory().getHolder(), AuroraDuels.getQueueGUI())) {
       return;
@@ -79,7 +73,6 @@ public class Request implements Listener {
     }
   }
 
-  @EventHandler
   public void onQueueSelect(QueueSelectEvent event) {
     if (requester != event.getPlayer()) {
       return;
@@ -95,7 +88,6 @@ public class Request implements Listener {
     this.sendRequest();
   }
 
-  @EventHandler
   public void onKitSelect(DuelKitSelectEvent event) {
     if (requester != event.getPlayer()) {
       return;
@@ -104,6 +96,10 @@ public class Request implements Listener {
     duel.setKit(event.getKit());
 
     this.sendRequest();
+  }
+
+  public static LinkedList<Request> getPendingRequests() {
+    return PENDING_REQUESTS;
   }
 
   public static Request getRequest(Player player) {
