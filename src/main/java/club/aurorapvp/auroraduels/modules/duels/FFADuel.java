@@ -11,14 +11,19 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.util.LocationUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.bossbar.BossBar.Color;
+import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,6 +31,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class FFADuel extends Duel {
 
   private final Set<Player> deadPlayers = new HashSet<>();
+  private final Map<Player, BossBar> bossBars = new HashMap<>();
 
   public FFADuel(Set<Player> players, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, ranked);
@@ -135,6 +141,36 @@ public class FFADuel extends Duel {
       }
     }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
 
+    double playersMaxHealth = (this.getPlayers().size() - 1) * 20;
+
+    bossbarTask =
+        new BukkitRunnable() {
+          @Override
+          public void run() {
+            for (Player player : thisDuel.getPlayers()) {
+              double playersHealth = 0;
+
+              for (Player opp : thisDuel.getOpponents(player)) {
+                playersHealth = playersHealth + opp.getHealth() + opp.getAbsorptionAmount();
+              }
+
+              if (bossBars.get(player) != null) {
+                player.hideBossBar(bossBars.get(player));
+              }
+
+              BossBar bar = BossBar.bossBar(
+                  MiniMessage.miniMessage().deserialize("<red>Opponents"),
+                  (float) Math.min(playersHealth / playersMaxHealth, 1.0f),
+                  Color.RED,
+                  Overlay.PROGRESS);
+
+              player.showBossBar(bar);
+
+              bossBars.put(player, bar);
+            }
+          }
+        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
+
     checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
 
     new Timer()
@@ -166,6 +202,7 @@ public class FFADuel extends Duel {
 
   public void endDuel(Player[] winners, Player[] losers) {
     checkBounds.cancel();
+    bossbarTask.cancel();
 
     Player winner = winners[0];
 
@@ -204,6 +241,7 @@ public class FFADuel extends Duel {
   @Override
   public void draw() {
     checkBounds.cancel();
+    bossbarTask.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));

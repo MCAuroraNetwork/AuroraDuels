@@ -30,7 +30,6 @@ public class StandardDuel extends Duel implements Listener {
   private final Map<Player, Integer> wins = new HashMap<>();
   private final BossBar[] playerOneBar = new BossBar[1];
   private final BossBar[] playerTwoBar = new BossBar[1];
-  private BukkitTask bossbarTask;
   private final Player playerOne;
   private final Player playerTwo;
 

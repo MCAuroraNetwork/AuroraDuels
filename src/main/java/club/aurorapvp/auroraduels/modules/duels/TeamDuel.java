@@ -42,7 +42,6 @@ public class TeamDuel extends Duel {
   private final Player[] team2Members;
   private final BossBar[] team1Bar = new BossBar[1];
   private final BossBar[] team2Bar = new BossBar[1];
-  private BukkitTask bossbarTask;
 
   public TeamDuel(Player[] team1Members, Player[] team2Members, Location respawnLocation,
       boolean ranked) {

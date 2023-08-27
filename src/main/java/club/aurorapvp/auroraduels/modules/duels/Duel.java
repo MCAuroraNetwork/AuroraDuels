@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public abstract class Duel {
 
@@ -43,6 +44,7 @@ public abstract class Duel {
   private Queue queue;
   private boolean active = false;
   private final Duel thisDuel = this;
+  protected BukkitTask bossbarTask;
   protected final BukkitRunnable checkBounds = new BukkitRunnable() {
     @Override
     public void run() {
