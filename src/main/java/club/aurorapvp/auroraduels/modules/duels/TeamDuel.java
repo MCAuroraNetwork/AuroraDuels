@@ -276,7 +276,8 @@ public class TeamDuel extends Duel {
               player.showBossBar(team2Bar[0]);
             }
           }
-        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
+        };
+    bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
     timeStarted = System.currentTimeMillis();
 

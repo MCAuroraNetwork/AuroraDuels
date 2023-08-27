@@ -169,7 +169,8 @@ public class FFADuel extends Duel {
               bossBars.put(player, bar);
             }
           }
-        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
+        };
+    bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
     new Timer()
         .schedule(

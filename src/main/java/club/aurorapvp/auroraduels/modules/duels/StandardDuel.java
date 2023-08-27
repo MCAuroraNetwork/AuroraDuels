@@ -23,7 +23,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 public class StandardDuel extends Duel implements Listener {
 
@@ -156,7 +155,8 @@ public class StandardDuel extends Duel implements Listener {
                           (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
                           (int) playerTwo.getLocation().distance(playerOne.getLocation()),
                           playerTwo.getPing()),
-                      (float) Math.min(playerTwo.getHealth() + playerTwo.getAbsorptionAmount() / 20, 1.0f),
+                      (float) Math.min(playerTwo.getHealth() + playerTwo.getAbsorptionAmount() / 20,
+                          1.0f),
                       BossBar.Color.RED,
                       BossBar.Overlay.PROGRESS);
             } catch (IllegalArgumentException e) {
@@ -178,7 +178,8 @@ public class StandardDuel extends Duel implements Listener {
                           (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
                           (int) playerOne.getLocation().distance(playerTwo.getLocation()),
                           playerOne.getPing()),
-                      (float) Math.min(playerOne.getHealth() + playerOne.getAbsorptionAmount() / 20, 1.0f),
+                      (float) Math.min(playerOne.getHealth() + playerOne.getAbsorptionAmount() / 20,
+                          1.0f),
                       BossBar.Color.RED,
                       BossBar.Overlay.PROGRESS);
             } catch (IllegalArgumentException e) {
@@ -187,7 +188,8 @@ public class StandardDuel extends Duel implements Listener {
 
             playerTwo.showBossBar(playerTwoBar[0]);
           }
-        }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
+        };
+    bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
     timeStarted = System.currentTimeMillis();
 
