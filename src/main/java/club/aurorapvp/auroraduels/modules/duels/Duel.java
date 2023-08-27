@@ -48,15 +48,14 @@ public abstract class Duel {
     public void run() {
       try {
         for (Player player : thisDuel.getPlayers()) {
-          Arena arena = thisDuel.getArena();
-          if (!Arena.isInBounds(player.getLocation(), arena)) {
+          if (!Arena.isInBounds(player.getLocation(), thisDuel.getArena())) {
             player.setHealth(0);
             player.sendMessage(Lang.getComponent("no-leaving-arena"));
           }
         }
 
         for (Player player : thisDuel.getSpectators()) {
-          if (!Arena.isInBounds(player.getLocation(), arena)) {
+          if (!Arena.isInBounds(player.getLocation(), thisDuel.getArena())) {
             for (Player duelingPlayer : thisDuel.getPlayers()) {
               player.teleportAsync(duelingPlayer.getLocation());
               break;
@@ -273,9 +272,11 @@ public abstract class Duel {
 
   public void setSpectator(Player player, boolean spectator) {
     if (spectator) {
-      BlockVector3 midpoint = arena.getFirstSpawn().add(arena.getSecondSpawn()).divide(2);
+      BlockVector3 midpoint = this.getArena().getFirstSpawn().add(this.getArena().getSecondSpawn())
+          .divide(2);
       Location loc =
-          new Location(arena.getWorld(), midpoint.getX(), midpoint.getY(), midpoint.getZ());
+          new Location(this.getArena().getWorld(), midpoint.getX(), midpoint.getY(),
+              midpoint.getZ());
 
       player.teleportAsync(loc);
       player.setGameMode(GameMode.SPECTATOR);

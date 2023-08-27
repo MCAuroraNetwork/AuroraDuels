@@ -15,6 +15,7 @@ import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -118,7 +119,7 @@ public class PlayerEventListener implements Listener {
     }
 
     if (Request.hasPendingRequest(event.getPlayer())) {
-      Request.getRequest(event.getPlayer()).deny();
+      Objects.requireNonNull(Request.getRequest(event.getPlayer())).deny();
     }
 
     if (!Duel.inDuel(event.getPlayer())) {
