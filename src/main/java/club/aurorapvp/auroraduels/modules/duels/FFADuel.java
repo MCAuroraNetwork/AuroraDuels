@@ -171,8 +171,6 @@ public class FFADuel extends Duel {
           }
         }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
-    checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
-
     new Timer()
         .schedule(
             new TimerTask() {
@@ -201,7 +199,6 @@ public class FFADuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    checkBounds.cancel();
     bossbarTask.cancel();
 
     for (Player player : this.getPlayers()) {
@@ -244,7 +241,6 @@ public class FFADuel extends Duel {
 
   @Override
   public void draw() {
-    checkBounds.cancel();
     bossbarTask.cancel();
 
     for (Player player : this.getPlayers()) {

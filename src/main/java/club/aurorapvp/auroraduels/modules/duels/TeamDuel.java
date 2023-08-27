@@ -151,8 +151,6 @@ public class TeamDuel extends Duel {
 
     Duel thisDuel = this;
 
-    checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
-
     new BukkitRunnable() {
       int seconds = 4;
 
@@ -317,7 +315,6 @@ public class TeamDuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    checkBounds.cancel();
     bossbarTask.cancel();
 
     StringBuilder sb = new StringBuilder();
@@ -370,7 +367,6 @@ public class TeamDuel extends Duel {
 
   @Override
   public void draw() {
-    checkBounds.cancel();
     bossbarTask.cancel();
 
     for (Player player : this.getPlayers()) {

@@ -124,8 +124,6 @@ public class StandardDuel extends Duel implements Listener {
       }
     }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
 
-    checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
-
     new Timer()
         .schedule(
             new TimerTask() {
@@ -242,7 +240,6 @@ public class StandardDuel extends Duel implements Listener {
       }
     }
 
-    checkBounds.cancel();
     bossbarTask.cancel();
 
     winner[0].showTitle(
@@ -280,7 +277,6 @@ public class StandardDuel extends Duel implements Listener {
       return;
     }
 
-    checkBounds.cancel();
     bossbarTask.cancel();
 
     for (Player player : this.getPlayers()) {
