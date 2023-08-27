@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
+import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
@@ -74,6 +75,31 @@ public class PlayerEventListener implements Listener {
     event.getPlayer().sendMessage(Lang.getComponent("commands-disabled"));
 
     event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onPlayerDamaged(PlayerDamagedByPlayerEvent event) {
+    if (event.getDamaged().equals(event.getAttacker())) {
+      return;
+    }
+
+    if (!Duel.inDuel(event.getDamaged())) {
+      return;
+    }
+
+    Duel duel = Duel.getDuel(event.getDamaged());
+
+    if (!(duel instanceof TeamDuel teamDuel)) {
+      return;
+    }
+
+    Player[] teamMates = teamDuel.getTeammates(event.getDamaged());
+
+    for (Player teamMate : teamMates) {
+      if (teamMate.equals(event.getAttacker())) {
+        event.setCancelled(true);
+      }
+    }
   }
 
   @EventHandler
