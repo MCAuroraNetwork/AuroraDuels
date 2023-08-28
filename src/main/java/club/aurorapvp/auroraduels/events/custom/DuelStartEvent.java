@@ -1,6 +1,7 @@
 package club.aurorapvp.auroraduels.events.custom;
 
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -20,14 +21,38 @@ public class DuelStartEvent extends Event {
 
     if (kit != null) {
       for (Player player : duel.getPlayers()) {
-        Kit.giveKit(kit, player);
+        KitGiveEvent event = new KitGiveEvent(kit, player);
+
+        event.callEvent();
+
+        if (event.isCancelled()) {
+          return;
+        }
+
+        KitGiveEvent kitGiveEvent = new KitGiveEvent(kit, event.getPlayer());
+
+        kitGiveEvent.callEvent();
+
+        if (kitGiveEvent.isCancelled()) {
+          return;
+        }
+
+        kit.giveKit(event.getPlayer());
       }
     } else {
       for (Player player : duel.getPlayers()) {
         Kit playerKit = Duel.getDuelKit(player);
 
         if (playerKit != null) {
-          Kit.giveKit(playerKit, player);
+          KitGiveEvent event = new KitGiveEvent(playerKit, player);
+
+          event.callEvent();
+
+          if (event.isCancelled()) {
+            return;
+          }
+
+          playerKit.giveKit(player);
         }
       }
     }

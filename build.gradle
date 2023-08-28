@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'AuroraDuels'
-version = '1.12.11'
+version = '1.12.12'
 
 repositories {
     mavenCentral()
@@ -40,7 +40,7 @@ dependencies {
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Core'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit'
     compileOnly 'me.clip:placeholderapi:2.11.1'
-    compileOnly ':AuroraKits:1.6.5'
+    compileOnly ':AuroraKits:1.7.0'
     compileOnly ':AuroraCombat:1.7.4'
     compileOnly ':AuroraWarps:1.1.0'
 }
