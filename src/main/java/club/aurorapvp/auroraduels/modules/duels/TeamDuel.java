@@ -12,9 +12,12 @@ import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.kyori.adventure.bossbar.BossBar;
@@ -150,135 +153,154 @@ public class TeamDuel extends Duel {
 
     Duel thisDuel = this;
 
-    new BukkitRunnable() {
-      int seconds = 4;
+    Set<CompletableFuture<Boolean>> teleportFutures = new HashSet<>();
 
-      @Override
-      public void run() {
-        for (Player player : team1Members) {
-          player.teleportAsync(spawn1);
-          player.lookAt(spawn2, LookAnchor.EYES);
+    for (Player player : team1Members) {
+      CompletableFuture<Boolean> teleportFuture = player.teleportAsync(spawn1);
+      teleportFutures.add(teleportFuture);
+    }
 
-          player.showTitle(Title.title(Component.text(seconds), Component.text("")));
+    for (Player player : team2Members) {
+      CompletableFuture<Boolean> teleportFuture = player.teleportAsync(spawn1);
+      teleportFutures.add(teleportFuture);
+    }
 
-          if ((seconds -= 1) == 0) {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < team1Members.length; i++) {
-              sb.append(team2Members[i].getName());
-              if (i < team2Members.length - 1) {
-                sb.append(", ");
+    CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
+      if (!teleportFutures.stream()
+          .allMatch(CompletableFuture::join)) {
+        thisDuel.draw();
+        return;
+      }
+      new BukkitRunnable() {
+        int seconds = 4;
+
+        @Override
+        public void run() {
+          for (Player player : team1Members) {
+            player.teleportAsync(spawn1);
+            player.lookAt(spawn2, LookAnchor.EYES);
+
+            player.showTitle(Title.title(Component.text(seconds), Component.text("")));
+
+            if ((seconds -= 1) == 0) {
+              StringBuilder sb = new StringBuilder();
+              for (int i = 0; i < team1Members.length; i++) {
+                sb.append(team2Members[i].getName());
+                if (i < team2Members.length - 1) {
+                  sb.append(", ");
+                }
               }
+              String names = sb.toString();
+
+              final Title title =
+                  Title.title(
+                      Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+
+              player.showTitle(title);
+
+              this.cancel();
             }
-            String names = sb.toString();
-
-            final Title title =
-                Title.title(
-                    Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
-
-            player.showTitle(title);
-
-            this.cancel();
           }
         }
-      }
-    }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
+      }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
-    new BukkitRunnable() {
-      int seconds = 4;
+      new BukkitRunnable() {
+        int seconds = 4;
 
-      @Override
-      public void run() {
-        for (Player player : team2Members) {
-          player.teleportAsync(spawn2);
-          player.lookAt(spawn1, LookAnchor.EYES);
+        @Override
+        public void run() {
+          for (Player player : team2Members) {
+            player.teleportAsync(spawn2);
+            player.lookAt(spawn1, LookAnchor.EYES);
 
-          player.showTitle(Title.title(Component.text(seconds), Component.text("")));
+            player.showTitle(Title.title(Component.text(seconds), Component.text("")));
 
-          if ((seconds -= 1) == 0) {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < team1Members.length; i++) {
-              sb.append(team1Members[i].getName());
-              if (i < team1Members.length - 1) {
-                sb.append(", ");
+            if ((seconds -= 1) == 0) {
+              StringBuilder sb = new StringBuilder();
+              for (int i = 0; i < team1Members.length; i++) {
+                sb.append(team1Members[i].getName());
+                if (i < team1Members.length - 1) {
+                  sb.append(", ");
+                }
               }
+              String names = sb.toString();
+
+              final Title title =
+                  Title.title(
+                      Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+
+              player.showTitle(title);
+
+              this.cancel();
             }
-            String names = sb.toString();
-
-            final Title title =
-                Title.title(
-                    Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
-
-            player.showTitle(title);
-
-            this.cancel();
           }
         }
-      }
-    }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
+      }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
-    double team1MaxHealth = team1Members.length * 20;
-    double team2MaxHealth = team2Members.length * 20;
+      double team1MaxHealth = team1Members.length * 20;
+      double team2MaxHealth = team2Members.length * 20;
 
-    bossbarTask =
-        new BukkitRunnable() {
-          @Override
-          public void run() {
-            for (Player player : team1Members) {
-              if (team1Bar[0] != null) {
-                player.hideBossBar(team1Bar[0]);
-              }
-
-              double team2Health = 0;
-
-              for (Player team2Member : team2Members) {
-                if (team2Dead.get(team2Member) || thisDuel.isSpectator(team2Member)) {
-                  continue;
+      bossbarTask =
+          new BukkitRunnable() {
+            @Override
+            public void run() {
+              for (Player player : team1Members) {
+                if (team1Bar[0] != null) {
+                  player.hideBossBar(team1Bar[0]);
                 }
 
-                team2Health =
-                    team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
-              }
+                double team2Health = 0;
 
-              team1Bar[0] =
-                  BossBar.bossBar(
-                      Lang.getComponent("team2-bossbar"),
-                      (float) Math.min(team2Health / team2MaxHealth, 1.0f),
-                      Color.BLUE,
-                      Overlay.PROGRESS);
+                for (Player team2Member : team2Members) {
+                  if (team2Dead.get(team2Member) || thisDuel.isSpectator(team2Member)) {
+                    continue;
+                  }
 
-              player.showBossBar(team1Bar[0]);
-            }
-
-            for (Player player : team2Members) {
-              if (team2Bar[0] != null) {
-                player.hideBossBar(team2Bar[0]);
-              }
-
-              double team1Health = 0;
-
-              for (Player team1Member : team1Members) {
-                if (team1Dead.get(team1Member)) {
-                  continue;
+                  team2Health =
+                      team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
                 }
 
-                team1Health =
-                    team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
+                team1Bar[0] =
+                    BossBar.bossBar(
+                        Lang.getComponent("team2-bossbar"),
+                        (float) Math.min(team2Health / team2MaxHealth, 1.0f),
+                        Color.BLUE,
+                        Overlay.PROGRESS);
+
+                player.showBossBar(team1Bar[0]);
               }
 
-              team2Bar[0] =
-                  BossBar.bossBar(
-                      Lang.getComponent("team1-bossbar"),
-                      (float) Math.min(team1Health / team1MaxHealth, 1.0f),
-                      Color.RED,
-                      Overlay.PROGRESS);
+              for (Player player : team2Members) {
+                if (team2Bar[0] != null) {
+                  player.hideBossBar(team2Bar[0]);
+                }
 
-              player.showBossBar(team2Bar[0]);
+                double team1Health = 0;
+
+                for (Player team1Member : team1Members) {
+                  if (team1Dead.get(team1Member)) {
+                    continue;
+                  }
+
+                  team1Health =
+                      team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
+                }
+
+                team2Bar[0] =
+                    BossBar.bossBar(
+                        Lang.getComponent("team1-bossbar"),
+                        (float) Math.min(team1Health / team1MaxHealth, 1.0f),
+                        Color.RED,
+                        Overlay.PROGRESS);
+
+                player.showBossBar(team2Bar[0]);
+              }
             }
-          }
-        };
-    bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
+          };
+      bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
-    timeStarted = System.currentTimeMillis();
+      timeStarted = System.currentTimeMillis();
+    });
 
     new BukkitRunnable() {
       @Override

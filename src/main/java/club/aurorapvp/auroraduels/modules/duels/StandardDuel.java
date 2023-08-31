@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -82,117 +83,129 @@ public class StandardDuel extends Duel implements Listener {
 
     StandardDuel thisDuel = this;
 
-    new BukkitRunnable() {
-      int seconds = 4;
+    CompletableFuture<Boolean> teleport1 = playerOne.teleportAsync(spawn1);
+    CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
 
-      @Override
-      public void run() {
-        playerOne.teleportAsync(spawn1);
-        playerOne.lookAt(spawn2, LookAnchor.EYES);
-        playerTwo.teleportAsync(spawn2);
-        playerTwo.lookAt(spawn1, LookAnchor.EYES);
+    CompletableFuture.allOf(teleport1, teleport2).thenRun(() -> {
+      if (!teleport1.join() || !teleport2.join()) {
+        thisDuel.draw();
+        return;
+      }
 
-        if ((seconds -= 1) == 0) {
-          final Title title1 =
-              Title.title(
-                  Lang.getComponent("duel-started"),
-                  Component.text("Opponent: " + playerTwo.getName()));
-          final Title title2 =
-              Title.title(
-                  Lang.getComponent("duel-started"),
-                  Component.text("Opponent: " + playerOne.getName()));
+      new BukkitRunnable() {
+        int seconds = 4;
 
-          if (rounds > 1) {
-            playerOne.sendActionBar(
-                Lang.formatComponent("rounds-remaining", currentRound, rounds));
-            playerTwo.sendActionBar(
-                Lang.formatComponent("rounds-remaining", currentRound, rounds));
+        @Override
+        public void run() {
+          playerOne.teleportAsync(spawn1);
+          playerOne.lookAt(spawn2, LookAnchor.EYES);
+          playerTwo.teleportAsync(spawn2);
+          playerTwo.lookAt(spawn1, LookAnchor.EYES);
+
+          if ((seconds -= 1) == 0) {
+            final Title title1 =
+                Title.title(
+                    Lang.getComponent("duel-started"),
+                    Component.text("Opponent: " + playerTwo.getName()));
+            final Title title2 =
+                Title.title(
+                    Lang.getComponent("duel-started"),
+                    Component.text("Opponent: " + playerOne.getName()));
+
+            if (rounds > 1) {
+              playerOne.sendActionBar(
+                  Lang.formatComponent("rounds-remaining", currentRound, rounds));
+              playerTwo.sendActionBar(
+                  Lang.formatComponent("rounds-remaining", currentRound, rounds));
+            }
+
+            playerOne.showTitle(title1);
+            playerTwo.showTitle(title2);
+
+            this.cancel();
+            return;
           }
 
-          playerOne.showTitle(title1);
-          playerTwo.showTitle(title2);
-
-          this.cancel();
-          return;
+          for (Player player : thisDuel.getPlayers()) {
+            player.showTitle(
+                Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                    Component.text("")));
+          }
         }
+      }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
-        for (Player player : thisDuel.getPlayers()) {
-          player.showTitle(
-              Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
-                  Component.text("")));
-        }
-      }
-    }.runTaskTimer(AuroraDuels.INSTANCE, 40L, 20L);
-
-    new Timer()
-        .schedule(
-            new TimerTask() {
-              @Override
-              public void run() {
-                if (thisDuel.isActive()) {
-                  playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
-                  playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
-                  thisDuel.draw();
+      new Timer()
+          .schedule(
+              new TimerTask() {
+                @Override
+                public void run() {
+                  if (thisDuel.isActive()) {
+                    playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
+                    playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
+                    thisDuel.draw();
+                  }
+                  this.cancel();
                 }
+              },
+              Config.get().getInt("duels.max-duration"));
+
+      bossbarTask =
+          new BukkitRunnable() {
+            @Override
+            public void run() {
+              if (playerOneBar[0] != null) {
+                playerOne.hideBossBar(playerOneBar[0]);
+              }
+
+              try {
+                playerOneBar[0] =
+                    BossBar.bossBar(
+                        Lang.formatComponent(
+                            "opponent-bossbar",
+                            playerTwo.getName(),
+                            (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
+                            (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                            playerTwo.getPing()),
+                        (float) Math.min(
+                            (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+                            1.0f),
+                        BossBar.Color.RED,
+                        BossBar.Overlay.PROGRESS);
+              } catch (IllegalArgumentException e) {
                 this.cancel();
               }
-            },
-            Config.get().getInt("duels.max-duration"));
 
-    bossbarTask =
-        new BukkitRunnable() {
-          @Override
-          public void run() {
-            if (playerOneBar[0] != null) {
-              playerOne.hideBossBar(playerOneBar[0]);
+              playerOne.showBossBar(playerOneBar[0]);
+
+              if (playerTwoBar[0] != null) {
+                playerTwo.hideBossBar(playerTwoBar[0]);
+              }
+
+              try {
+                playerTwoBar[0] =
+                    BossBar.bossBar(
+                        Lang.formatComponent(
+                            "opponent-bossbar",
+                            playerOne.getName(),
+                            (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
+                            (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                            playerOne.getPing()),
+                        (float) Math.min(
+                            (playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+                            1.0f),
+                        BossBar.Color.RED,
+                        BossBar.Overlay.PROGRESS);
+              } catch (IllegalArgumentException e) {
+                this.cancel();
+              }
+
+              playerTwo.showBossBar(playerTwoBar[0]);
             }
+          };
+      bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
-            try {
-              playerOneBar[0] =
-                  BossBar.bossBar(
-                      Lang.formatComponent(
-                          "opponent-bossbar",
-                          playerTwo.getName(),
-                          (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                          (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                          playerTwo.getPing()),
-                      (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-                          1.0f),
-                      BossBar.Color.RED,
-                      BossBar.Overlay.PROGRESS);
-            } catch (IllegalArgumentException e) {
-              this.cancel();
-            }
-
-            playerOne.showBossBar(playerOneBar[0]);
-
-            if (playerTwoBar[0] != null) {
-              playerTwo.hideBossBar(playerTwoBar[0]);
-            }
-
-            try {
-              playerTwoBar[0] =
-                  BossBar.bossBar(
-                      Lang.formatComponent(
-                          "opponent-bossbar",
-                          playerOne.getName(),
-                          (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                          (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                          playerOne.getPing()),
-                      (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                          1.0f),
-                      BossBar.Color.RED,
-                      BossBar.Overlay.PROGRESS);
-            } catch (IllegalArgumentException e) {
-              this.cancel();
-            }
-
-            playerTwo.showBossBar(playerTwoBar[0]);
-          }
-        };
-    bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
-
-    timeStarted = System.currentTimeMillis();
+      timeStarted = System.currentTimeMillis();
+    });
 
     new BukkitRunnable() {
       @Override
