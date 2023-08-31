@@ -25,6 +25,7 @@ public class Config {
     DEFAULTS.put("optional-plugins.aurorawarps-compatibility", true);
     DEFAULTS.put("optional-plugins.auroracombat-compatibility.enabled", true);
     DEFAULTS.put("optional-plugins.auroracombat-compatibility.always-enable-default-elo", true);
+    DEFAULTS.put("optional-plugins.discordsrv-compatibility", true);
     DEFAULTS.put("duels.enable-teleports", true);
     DEFAULTS.put("duels.allow-commands", false);
     DEFAULTS.put("duels.max-duration", 600000);

@@ -17,6 +17,13 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven {
+        name 'm2-dv8tion'
+        url 'https://m2.dv8tion.net/releases'
+    }
+    maven {
+        url = 'https://nexus.scarsz.me/content/groups/public/'
+    }
+    maven {
         name = 'worldedit-bukkit'
         url = 'https://maven.enginehub.org/repo/'
     }
@@ -40,6 +47,7 @@ dependencies {
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Core'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit'
     compileOnly 'me.clip:placeholderapi:2.11.1'
+    compileOnly 'com.discordsrv:discordsrv:1.26.0'
     compileOnly ':AuroraKits:1.7.0'
     compileOnly ':AuroraCombat:1.7.4'
     compileOnly ':AuroraWarps:1.1.0'

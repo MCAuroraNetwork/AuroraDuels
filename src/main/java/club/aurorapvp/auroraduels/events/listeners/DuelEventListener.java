@@ -9,6 +9,9 @@ import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
+import github.scarsz.discordsrv.util.DiscordUtil;
 import java.util.Arrays;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -64,6 +67,35 @@ public class DuelEventListener implements Listener {
       CombatTag.setTaggable(player, true);
 
       Duel.setLastDuel(player, event.getDuel());
+    }
+
+    if (AuroraDuels.isDiscordSRVInstalled()) {
+      Player[] winners = event.getWinners();
+      Player[] losers = event.getLosers();
+
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < winners.length; i++) {
+        sb.append(winners[i].getName());
+        if (i < winners.length - 1) {
+          sb.append(", ");
+        }
+      }
+
+      String winnersText = sb.toString();
+
+      sb = new StringBuilder();
+      for (int i = 0; i < losers.length; i++) {
+        sb.append(losers[i].getName());
+        if (i < losers.length - 1) {
+          sb.append(", ");
+        }
+      }
+
+      String losersText = sb.toString();
+
+      DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
+          new EmbedBuilder().setTitle(winnersText + " won a duel against " + losersText + "!")
+              .build());
     }
 
     if (!event.getDuel().isRanked()) {

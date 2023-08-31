@@ -20,6 +20,7 @@ public final class AuroraDuels extends JavaPlugin {
   private static boolean auroraKitsInstalled = false;
   private static boolean auroraCombatInstalled = false;
   private static boolean auroraWarpsInstalled = false;
+  private static boolean discordSrvInstalled = false;
 
   public static boolean isAuroraKitsInstalled() {
     return auroraKitsInstalled;
@@ -32,6 +33,8 @@ public final class AuroraDuels extends JavaPlugin {
   public static boolean isAuroraWarpsInstalled() {
     return auroraWarpsInstalled;
   }
+
+  public static boolean isDiscordSRVInstalled() { return discordSrvInstalled; }
 
   public static QueueGUI getQueueGUI() {
     return queueGUI;
@@ -65,6 +68,11 @@ public final class AuroraDuels extends JavaPlugin {
     if (Bukkit.getPluginManager().getPlugin("AuroraWarps") != null
         && Config.get().getBoolean("optional-plugins.aurorawarps-compatibility")) {
       auroraWarpsInstalled = true;
+    }
+
+    if (Bukkit.getPluginManager().getPlugin("DiscordSRV") != null
+        && Config.get().getBoolean("optional-plugins.discordsrv-compatibility")) {
+      discordSrvInstalled = true;
     }
 
     // Initialize classes

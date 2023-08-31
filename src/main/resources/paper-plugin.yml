@@ -121,6 +121,8 @@ dependencies:
       required: true
     PlaceholderAPI:
       required: false
+    DiscordSRV:
+      required: false
     AuroraKits:
       required: false
     AuroraCombat:
