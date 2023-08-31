@@ -153,7 +153,9 @@ public class FFADuel extends Duel {
               double playersHealth = 0;
 
               for (Player opp : thisDuel.getOpponents(player)) {
-                playersHealth = playersHealth + opp.getHealth() + opp.getAbsorptionAmount();
+                if (!thisDuel.isSpectator(opp)) {
+                  playersHealth = playersHealth + opp.getHealth() + opp.getAbsorptionAmount();
+                }
               }
 
               if (bossBars.get(player) != null) {

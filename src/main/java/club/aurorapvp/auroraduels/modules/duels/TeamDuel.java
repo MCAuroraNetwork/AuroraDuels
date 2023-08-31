@@ -27,7 +27,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Team;
 
 public class TeamDuel extends Duel {
@@ -232,7 +231,7 @@ public class TeamDuel extends Duel {
               double team2Health = 0;
 
               for (Player team2Member : team2Members) {
-                if (team2Dead.get(team2Member)) {
+                if (team2Dead.get(team2Member) || thisDuel.isSpectator(team2Member)) {
                   continue;
                 }
 
