@@ -11,7 +11,7 @@ import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
-import github.scarsz.discordsrv.util.DiscordUtil;
+import java.awt.Color;
 import java.util.Arrays;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -94,8 +94,10 @@ public class DuelEventListener implements Listener {
       String losersText = sb.toString();
 
       DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
-          new EmbedBuilder().setTitle(winnersText + " won a duel against " + losersText + "!")
-              .build());
+          new EmbedBuilder().setAuthor(
+                  winnersText + " won a duel against " + losersText + "!", null,
+                  "https://cravatar.eu/helmavatar/" + event.getWinners()[0].getUniqueId())
+              .setColor(Color.BLACK).build()).queue();
     }
 
     if (!event.getDuel().isRanked()) {
