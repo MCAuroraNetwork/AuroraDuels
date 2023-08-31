@@ -7,6 +7,7 @@ import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.data.QueueDataHandler;
 import club.aurorapvp.auroraduels.events.custom.QueueJoinEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
+import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.util.ItemStackUtil;
@@ -129,6 +130,13 @@ public class Queue {
   }
 
   public void findMatch(Player player, boolean ranked) {
+    if (Request.hasPendingRequest(player)) {
+      player.sendMessage(Lang.getComponent("you-have-request"));
+      return;
+    } else if (Queue.inQueue(player)) {
+      player.sendMessage(Lang.getComponent("in-queue"));
+    }
+
     if (lookingForMatch.containsValue(player)) {
       lookingForMatch.clear();
       player.sendMessage(Lang.getComponent("not-looking-match"));
