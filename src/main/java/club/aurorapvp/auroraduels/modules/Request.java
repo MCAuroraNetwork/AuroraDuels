@@ -85,6 +85,7 @@ public class Request {
       return;
     }
 
+    event.getPlayer().closeInventory();
     this.sendRequest();
   }
 
