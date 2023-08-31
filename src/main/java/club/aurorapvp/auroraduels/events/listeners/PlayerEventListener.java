@@ -14,11 +14,14 @@ import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
+import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
+import com.sk89q.worldedit.WorldEdit;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -108,6 +111,27 @@ public class PlayerEventListener implements Listener {
       if (teamMate.equals(event.getAttacker())) {
         event.setCancelled(true);
       }
+    }
+  }
+
+  @EventHandler
+  public void onPlayerRespawn(PlayerPostRespawnEvent event) {
+    if (!Duel.inDuel(event.getPlayer())) {
+      return;
+    }
+
+    Duel duel = Duel.getDuel(event.getPlayer());
+
+    assert duel != null;
+    if (duel.isSpectator(event.getPlayer())) {
+      Location spawn1 =
+          new Location(
+              duel.getArena().getWorld(),
+              duel.getArena().getFirstSpawn().getBlockX(),
+              duel.getArena().getFirstSpawn().getBlockY(),
+              duel.getArena().getFirstSpawn().getBlockZ());
+
+      event.getPlayer().teleportAsync(spawn1);
     }
   }
 
