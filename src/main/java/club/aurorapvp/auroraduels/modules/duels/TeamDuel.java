@@ -300,40 +300,14 @@ public class TeamDuel extends Duel {
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
       timeStarted = System.currentTimeMillis();
+
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          new DuelStartEvent(thisDuel).callEvent();
+        }
+      }.runTask(AuroraDuels.INSTANCE);
     });
-
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        new DuelStartEvent(thisDuel).callEvent();
-      }
-    }.runTask(AuroraDuels.INSTANCE);
-
-    new Timer()
-        .schedule(
-            new TimerTask() {
-              @Override
-              public void run() {
-                if (thisDuel.isActive()) {
-                  for (Player player : thisDuel.getPlayers()) {
-                    player.sendMessage(Lang.getComponent("duel-time-expired"));
-                    player.sendMessage(Lang.getComponent("duel-time-expired"));
-                  }
-                  thisDuel.draw();
-                }
-                this.cancel();
-              }
-            },
-            Config.get().getInt("duels.max-duration"));
-
-    timeStarted = System.currentTimeMillis();
-
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        new DuelStartEvent(thisDuel).callEvent();
-      }
-    }.runTask(AuroraDuels.INSTANCE);
   }
 
   public void endDuel(Player[] winners, Player[] losers) {

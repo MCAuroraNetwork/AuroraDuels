@@ -134,21 +134,6 @@ public class StandardDuel extends Duel implements Listener {
         }
       }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
-      new Timer()
-          .schedule(
-              new TimerTask() {
-                @Override
-                public void run() {
-                  if (thisDuel.isActive()) {
-                    playerOne.sendMessage(Lang.getComponent("duel-time-expired"));
-                    playerTwo.sendMessage(Lang.getComponent("duel-time-expired"));
-                    thisDuel.draw();
-                  }
-                  this.cancel();
-                }
-              },
-              Config.get().getInt("duels.max-duration"));
-
       bossbarTask =
           new BukkitRunnable() {
             @Override
@@ -205,14 +190,14 @@ public class StandardDuel extends Duel implements Listener {
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
       timeStarted = System.currentTimeMillis();
-    });
 
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        new DuelStartEvent(thisDuel).callEvent();
-      }
-    }.runTask(AuroraDuels.INSTANCE);
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          new DuelStartEvent(thisDuel).callEvent();
+        }
+      }.runTask(AuroraDuels.INSTANCE);
+    });
   }
 
   public void endDuel(Player[] winner, Player[] loser) {

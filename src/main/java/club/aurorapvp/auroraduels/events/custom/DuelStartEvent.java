@@ -1,8 +1,12 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroraduels.config.Config;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -56,6 +60,23 @@ public class DuelStartEvent extends Event {
         }
       }
     }
+
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                if (duel.isActive()) {
+                  for (Player player : duel.getPlayers()) {
+                    player.sendMessage(Lang.getComponent("duel-time-expired"));
+                    player.sendMessage(Lang.getComponent("duel-time-expired"));
+                  }
+                  duel.draw();
+                }
+                this.cancel();
+              }
+            },
+            Config.get().getInt("duels.max-duration"));
 
     duel.setActive(true);
     duel.getArena().setOccupied(true);
