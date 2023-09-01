@@ -101,7 +101,7 @@ public class StandardDuel extends Duel implements Listener {
           CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
           teleport2.thenRun(() -> playerTwo.lookAt(spawn1, LookAnchor.EYES));
 
-          if ((seconds -= 1) == 0) {
+          if ((seconds -= 1) <= 0) {
             final Title title1 =
                 Title.title(
                     Lang.getComponent("duel-started"),

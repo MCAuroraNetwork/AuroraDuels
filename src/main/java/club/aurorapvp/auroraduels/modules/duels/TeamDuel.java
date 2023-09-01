@@ -24,6 +24,7 @@ import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -186,7 +187,7 @@ public class TeamDuel extends Duel {
       }
 
       new BukkitRunnable() {
-        int seconds = 4;
+        int seconds = 3;
 
         @Override
         public void run() {
@@ -195,9 +196,11 @@ public class TeamDuel extends Duel {
 
             teleport.thenRun(() -> player.lookAt(spawn2, LookAnchor.EYES));
 
-            player.showTitle(Title.title(Component.text(seconds), Component.text("")));
+            player.showTitle(
+                Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                    Component.text("")));
 
-            if ((seconds -= 1) == 0) {
+            if ((seconds -= 1) < 0) {
               StringBuilder sb = new StringBuilder();
               for (int i = 0; i < team2Members.length; i++) {
                 sb.append(team2Members[i].getName());
@@ -220,7 +223,7 @@ public class TeamDuel extends Duel {
       }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
       new BukkitRunnable() {
-        int seconds = 4;
+        int seconds = 3;
 
         @Override
         public void run() {
@@ -229,9 +232,11 @@ public class TeamDuel extends Duel {
 
             teleport.thenRun(() -> player.lookAt(spawn1, LookAnchor.EYES));
 
-            player.showTitle(Title.title(Component.text(seconds), Component.text("")));
+            player.showTitle(
+                Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                    Component.text("")));
 
-            if ((seconds -= 1) == 0) {
+            if ((seconds -= 1) < 0) {
               StringBuilder sb = new StringBuilder();
               for (int i = 0; i < team1Members.length; i++) {
                 sb.append(team1Members[i].getName());

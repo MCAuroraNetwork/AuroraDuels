@@ -117,7 +117,7 @@ public class FFADuel extends Duel {
       }
 
       new BukkitRunnable() {
-        int seconds = 4;
+        int seconds = 3;
 
         @Override
         public void run() {
@@ -127,9 +127,11 @@ public class FFADuel extends Duel {
 
             teleport.thenRun(() -> player.lookAt(center, LookAnchor.EYES));
 
-            player.showTitle(Title.title(Component.text(seconds), Component.text("")));
+            player.showTitle(
+                Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                    Component.text("")));
 
-            if ((seconds -= 1) == 0) {
+            if ((seconds -= 1) < 0) {
               StringBuilder sb;
               String names;
               Title title;
