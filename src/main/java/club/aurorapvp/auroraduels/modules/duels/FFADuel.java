@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
@@ -194,6 +193,8 @@ public class FFADuel extends Duel {
           };
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
+      checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
+
       timeStarted = System.currentTimeMillis();
 
       new BukkitRunnable() {
@@ -207,6 +208,7 @@ public class FFADuel extends Duel {
 
   public void endDuel(Player[] winners, Player[] losers) {
     bossbarTask.cancel();
+    checkBounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.hideBossBar(bossBars.get(player));
@@ -249,6 +251,7 @@ public class FFADuel extends Duel {
   @Override
   public void draw() {
     bossbarTask.cancel();
+    checkBounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.hideBossBar(bossBars.get(player));

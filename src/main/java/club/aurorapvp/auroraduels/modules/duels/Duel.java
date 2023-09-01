@@ -43,6 +43,33 @@ public abstract class Duel {
   private Queue queue;
   private boolean active = false;
   protected BukkitRunnable bossbarTask;
+  private final Duel thisDuel = this;
+  protected final BukkitRunnable checkBounds = new BukkitRunnable() {
+    @Override
+    public void run() {
+      try {
+        for (Player player : thisDuel.getPlayers()) {
+          if (!Arena.isInBounds(player.getLocation(), thisDuel.getArena()) && !thisDuel.isSpectator(
+              player)) {
+            player.setHealth(0);
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+
+        for (Player player : thisDuel.getSpectators()) {
+          if (!Arena.isInBounds(player.getLocation(), thisDuel.getArena())) {
+            for (Player duelingPlayer : thisDuel.getPlayers()) {
+              player.teleportAsync(duelingPlayer.getLocation());
+              break;
+            }
+            player.sendMessage(Lang.getComponent("no-leaving-arena"));
+          }
+        }
+      } catch (IllegalArgumentException e) {
+        this.cancel();
+      }
+    }
+  };
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked) {
     this.respawnLocation = respawnLocation;

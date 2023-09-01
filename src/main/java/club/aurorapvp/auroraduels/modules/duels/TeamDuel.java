@@ -319,7 +319,7 @@ public class TeamDuel extends Duel {
           };
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
-      bossbarTask.run();
+      checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
 
       timeStarted = System.currentTimeMillis();
 
@@ -334,6 +334,7 @@ public class TeamDuel extends Duel {
 
   public void endDuel(Player[] winners, Player[] losers) {
     bossbarTask.cancel();
+    checkBounds.cancel();
 
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < winners.length; i++) {
@@ -388,6 +389,7 @@ public class TeamDuel extends Duel {
   @Override
   public void draw() {
     bossbarTask.cancel();
+    checkBounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));

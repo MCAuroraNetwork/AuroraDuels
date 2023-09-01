@@ -188,6 +188,8 @@ public class StandardDuel extends Duel implements Listener {
           };
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
+      checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
+
       timeStarted = System.currentTimeMillis();
 
       new BukkitRunnable() {
@@ -240,6 +242,7 @@ public class StandardDuel extends Duel implements Listener {
     }
 
     bossbarTask.cancel();
+    checkBounds.cancel();
 
     winner[0].showTitle(
         Title.title(
@@ -277,6 +280,7 @@ public class StandardDuel extends Duel implements Listener {
     }
 
     bossbarTask.cancel();
+    checkBounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));
