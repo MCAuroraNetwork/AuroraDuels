@@ -8,7 +8,6 @@ import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
 import java.util.HashMap;
@@ -217,24 +216,6 @@ public class StandardDuel extends Duel implements Listener {
           @Override
           public void run() {
             if (kit != null) {
-              KitGiveEvent event = new KitGiveEvent(kit, playerOne);
-
-              event.callEvent();
-
-              if (event.isCancelled()) {
-                return;
-              }
-
-              kit.giveKit(playerOne);
-
-              event = new KitGiveEvent(kit, playerTwo);
-
-              event.callEvent();
-
-              if (event.isCancelled()) {
-                return;
-              }
-
               kit.giveKit(playerTwo);
             } else {
               Kit kit1 = Duel.getDuelKit(playerOne);

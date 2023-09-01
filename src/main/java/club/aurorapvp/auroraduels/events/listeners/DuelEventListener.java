@@ -7,7 +7,6 @@ import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
@@ -43,17 +42,7 @@ public class DuelEventListener implements Listener {
   public void onDuelEnd(DuelEndEvent event) {
     if (AuroraDuels.isAuroraKitsInstalled()) {
       for (Player player : event.getDuel().getPlayers()) {
-        Kit kit = Kit.getLastUsedKit(player);
-
-        KitGiveEvent kitGiveEvent = new KitGiveEvent(kit, player);
-
-        kitGiveEvent.callEvent();
-
-        if (kitGiveEvent.isCancelled()) {
-          return;
-        }
-
-        kit.giveKit(player);
+        Kit.getLastUsedKit(player).giveKit(player);
       }
     }
 
