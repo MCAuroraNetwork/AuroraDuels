@@ -35,9 +35,9 @@ import org.bukkit.scoreboard.Team;
 public class TeamDuel extends Duel {
 
   public static final Team team1 = Bukkit.getScoreboardManager().getMainScoreboard()
-      .registerNewTeam("team1");
+      .getTeam("team1");
   public static final Team team2 = Bukkit.getScoreboardManager().getMainScoreboard()
-      .registerNewTeam("team2");
+      .getTeam("team2");
   private final Map<Player, Boolean> team1Dead = new HashMap<>();
   private final Map<Player, Boolean> team2Dead = new HashMap<>();
   private final Player[] team1Members;
@@ -165,16 +165,12 @@ public class TeamDuel extends Duel {
       teleportFutures.add(teleportFuture);
     }
 
-    AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe1");
-
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
       if (!teleportFutures.stream()
           .allMatch(CompletableFuture::join)) {
         thisDuel.draw();
         return;
       }
-
-      AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe");
 
       new BukkitRunnable() {
         int seconds = 4;
@@ -286,17 +282,21 @@ public class TeamDuel extends Duel {
                       (float) Math.min(team1Health / team1MaxHealth, 1.0f),
                       Color.RED,
                       Overlay.PROGRESS);
+
+              for (Player player : team1Members) {
+                player.hideBossBar(team1Bar[0]);
+                player.showBossBar(team1Bar[0]);
+              }
+
+              for (Player player : team2Members) {
+                player.hideBossBar(team2Bar[0]);
+                player.showBossBar(team2Bar[0]);
+              }
             }
           };
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
-      for (Player player : team1Members) {
-        player.showBossBar(team2Bar[0]);
-      }
-
-      for (Player player : team2Members) {
-        player.showBossBar(team2Bar[0]);
-      }
+      bossbarTask.run();
 
       timeStarted = System.currentTimeMillis();
 
