@@ -4,7 +4,10 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
+import club.aurorapvp.aurorakits.modules.kits.KitsGUI;
+import club.aurorapvp.aurorakits.modules.kits.KitsGUI.Page;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -74,39 +77,34 @@ public class DuelKitGUI implements Listener {
   public void reload() {
     Set<Kit> kitSet = Kit.getKits(this.getPlayer(), true);
 
-    for (int i = 0; i < kitSet.size(); i++) {
-      if (i % 44 == 0 && i != 0) {
-        index++;
+    List<Kit> publicKits = new ArrayList<>();
+    List<Kit> privateKits = new ArrayList<>();
+
+    for (Kit kit : kitSet) {
+      if (kit.isPublic()) {
+        publicKits.add(kit);
+      } else {
+        privateKits.add(kit);
       }
     }
 
-    int currentPages = index + 1;
+    publicKits.sort(Comparator.comparing(Kit::getName));
+    privateKits.sort(Comparator.comparing(Kit::getName));
 
-    for (int i = 0; i < currentPages; i++) {
-      int numKits = kitSet.size() - i * 45;
-      Kit[] kits = new Kit[Math.max(numKits, 0)];
+    List<Kit> sortedKits = new ArrayList<>(publicKits);
+    sortedKits.addAll(privateKits);
 
-      Iterator<Kit> iterator = kitSet.iterator();
+    int pageSize = 45;
+    int totalPages = (int) Math.ceil((double) sortedKits.size() / pageSize);
 
-      int counter = 0;
+    for (int pageIndex = 0; pageIndex < totalPages; pageIndex++) {
+      int start = pageIndex * pageSize;
+      int end = Math.min(start + pageSize, sortedKits.size());
 
-      while (iterator.hasNext()) {
-        if (counter < i * 45) {
-          iterator.next();
-          counter++;
-          continue;
-        }
+      List<Kit> kitsOnPage = sortedKits.subList(start, end);
+      Kit[] kitsArray = kitsOnPage.toArray(new Kit[0]);
 
-        if (counter - i * 45 >= kits.length) {
-          break;
-        }
-
-        kits[counter - i * 45] = iterator.next();
-        counter++;
-      }
-
-      pages.add(new Page(kits, this));
-      index++;
+      pages.add(new DuelKitGUI.Page(kitsArray, this));
     }
   }
 
