@@ -127,6 +127,14 @@ public abstract class Duel {
     player.sendMessage(Lang.getComponent("duel-kit"));
   }
 
+  public static void unSetDuelKit(Player player) {
+    PersistentDataContainer container = player.getPersistentDataContainer();
+
+    container.remove(duelKitKey);
+
+    player.sendMessage(Lang.getComponent("duel-kit"));
+  }
+
   public static Location getDuelLobby() {
     return Config.get().getLocation("lobby");
   }

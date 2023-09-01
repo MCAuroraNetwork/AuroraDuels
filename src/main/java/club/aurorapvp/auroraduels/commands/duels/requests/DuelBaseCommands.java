@@ -133,6 +133,15 @@ public class DuelBaseCommands extends BaseCommand {
     }
   }
 
+  @Subcommand("kit unset")
+  @CommandPermission("auroraduels.command.duel.kit")
+  @CommandCompletion("@kits")
+  @Description("Sets the duel kit")
+  @SuppressWarnings("unused")
+  public void onKitSet(Player player) {
+    Duel.unSetDuelKit(player);
+  }
+
   @Subcommand("lobby")
   @CommandPermission("auroraduels.command.duel.lobby")
   @Description("Sets the duel lobby")
