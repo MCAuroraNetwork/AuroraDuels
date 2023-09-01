@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
@@ -18,6 +17,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.kyori.adventure.bossbar.BossBar;
@@ -165,12 +165,17 @@ public class TeamDuel extends Duel {
       teleportFutures.add(teleportFuture);
     }
 
+    AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe1");
+
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
       if (!teleportFutures.stream()
           .allMatch(CompletableFuture::join)) {
         thisDuel.draw();
         return;
       }
+
+      AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe");
+
       new BukkitRunnable() {
         int seconds = 4;
 
@@ -246,60 +251,52 @@ public class TeamDuel extends Duel {
           new BukkitRunnable() {
             @Override
             public void run() {
-              for (Player player : team1Members) {
-                if (team1Bar[0] != null) {
-                  player.hideBossBar(team1Bar[0]);
+              double team2Health = 0;
+
+              for (Player team2Member : team2Members) {
+                if (team2Dead.get(team2Member) || thisDuel.isSpectator(team2Member)) {
+                  continue;
                 }
 
-                double team2Health = 0;
-
-                for (Player team2Member : team2Members) {
-                  if (team2Dead.get(team2Member) || thisDuel.isSpectator(team2Member)) {
-                    continue;
-                  }
-
-                  team2Health =
-                      team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
-                }
-
-                team1Bar[0] =
-                    BossBar.bossBar(
-                        Lang.getComponent("team2-bossbar"),
-                        (float) Math.min(team2Health / team2MaxHealth, 1.0f),
-                        Color.BLUE,
-                        Overlay.PROGRESS);
-
-                player.showBossBar(team1Bar[0]);
+                team2Health =
+                    team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
               }
 
-              for (Player player : team2Members) {
-                if (team2Bar[0] != null) {
-                  player.hideBossBar(team2Bar[0]);
+              team1Bar[0] =
+                  BossBar.bossBar(
+                      Lang.getComponent("team2-bossbar"),
+                      (float) Math.min(team2Health / team2MaxHealth, 1.0f),
+                      Color.BLUE,
+                      Overlay.PROGRESS);
+
+              double team1Health = 0;
+
+              for (Player team1Member : team1Members) {
+                if (team1Dead.get(team1Member)) {
+                  continue;
                 }
 
-                double team1Health = 0;
-
-                for (Player team1Member : team1Members) {
-                  if (team1Dead.get(team1Member)) {
-                    continue;
-                  }
-
-                  team1Health =
-                      team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
-                }
-
-                team2Bar[0] =
-                    BossBar.bossBar(
-                        Lang.getComponent("team1-bossbar"),
-                        (float) Math.min(team1Health / team1MaxHealth, 1.0f),
-                        Color.RED,
-                        Overlay.PROGRESS);
-
-                player.showBossBar(team2Bar[0]);
+                team1Health =
+                    team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
               }
+
+              team2Bar[0] =
+                  BossBar.bossBar(
+                      Lang.getComponent("team1-bossbar"),
+                      (float) Math.min(team1Health / team1MaxHealth, 1.0f),
+                      Color.RED,
+                      Overlay.PROGRESS);
             }
           };
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
+
+      for (Player player : team1Members) {
+        player.showBossBar(team2Bar[0]);
+      }
+
+      for (Player player : team2Members) {
+        player.showBossBar(team2Bar[0]);
+      }
 
       timeStarted = System.currentTimeMillis();
 
@@ -344,10 +341,12 @@ public class TeamDuel extends Duel {
     }
 
     for (Player player : team1Members) {
+      TeamDuel.team1.removePlayer(player);
       player.hideBossBar(team1Bar[0]);
     }
 
     for (Player player : team2Members) {
+      TeamDuel.team2.removePlayer(player);
       player.hideBossBar(team2Bar[0]);
     }
 
@@ -371,16 +370,14 @@ public class TeamDuel extends Duel {
       player.sendMessage(Lang.getComponent("draw"));
     }
 
-    if (team1Bar[0] != null) {
-      for (Player player : team1Members) {
-        player.hideBossBar(team1Bar[0]);
-      }
+    for (Player player : team1Members) {
+      TeamDuel.team1.removePlayer(player);
+      player.hideBossBar(team1Bar[0]);
     }
 
-    if (team2Bar[0] != null) {
-      for (Player player : team2Members) {
-        player.hideBossBar(team2Bar[0]);
-      }
+    for (Player player : team2Members) {
+      TeamDuel.team2.removePlayer(player);
+      player.hideBossBar(team2Bar[0]);
     }
 
     Duel thisDuel = this;

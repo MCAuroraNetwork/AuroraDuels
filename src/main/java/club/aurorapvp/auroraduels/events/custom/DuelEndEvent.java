@@ -54,16 +54,6 @@ public class DuelEndEvent extends Event {
     }
 
     duel.setActive(false);
-
-    if (duel instanceof TeamDuel teamDuel) {
-      for (Player player : teamDuel.getTeam1Members()) {
-        TeamDuel.team1.removePlayer(player);
-      }
-
-      for (Player player : teamDuel.getTeam2Members()) {
-        TeamDuel.team2.removePlayer(player);
-      }
-    }
   }
 
   @SuppressWarnings("unused")

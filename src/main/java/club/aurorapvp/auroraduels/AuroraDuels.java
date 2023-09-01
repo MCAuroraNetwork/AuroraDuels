@@ -11,6 +11,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AuroraDuels extends JavaPlugin {
