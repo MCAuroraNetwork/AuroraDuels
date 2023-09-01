@@ -35,9 +35,9 @@ import org.bukkit.scoreboard.Team;
 public class TeamDuel extends Duel {
 
   public static final Team team1 = Bukkit.getScoreboardManager().getMainScoreboard()
-      .getTeam("team1");
+      .registerNewTeam("team1");
   public static final Team team2 = Bukkit.getScoreboardManager().getMainScoreboard()
-      .getTeam("team2");
+      .registerNewTeam("team2");
   private final Map<Player, Boolean> team1Dead = new HashMap<>();
   private final Map<Player, Boolean> team2Dead = new HashMap<>();
   private final Player[] team1Members;
