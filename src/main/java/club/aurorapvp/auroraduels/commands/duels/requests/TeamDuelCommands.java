@@ -76,11 +76,6 @@ public class TeamDuelCommands extends BaseCommand {
       loc = Bukkit.getWorlds().get(0).getSpawnLocation();
     }
 
-    if (team1.length == 1 && team2.length == 1) {
-      new Request(player, new StandardDuel(team1[0], team2[0], loc, false, 1));
-      return;
-    }
-
     new Request(player, new TeamDuel(team1, team2, loc, false));
   }
 

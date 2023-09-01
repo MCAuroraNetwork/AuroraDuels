@@ -172,8 +172,6 @@ public class TeamDuel extends Duel {
         return;
       }
 
-      AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe");
-
       new BukkitRunnable() {
         int seconds = 4;
 
@@ -188,7 +186,7 @@ public class TeamDuel extends Duel {
 
             if ((seconds -= 1) == 0) {
               StringBuilder sb = new StringBuilder();
-              for (int i = 0; i < team1Members.length; i++) {
+              for (int i = 0; i < team2Members.length; i++) {
                 sb.append(team2Members[i].getName());
                 if (i < team2Members.length - 1) {
                   sb.append(", ");
