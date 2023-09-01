@@ -3,7 +3,9 @@ package club.aurorapvp.auroraduels.config;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -27,7 +29,8 @@ public class Config {
     DEFAULTS.put("optional-plugins.auroracombat-compatibility.always-enable-default-elo", true);
     DEFAULTS.put("optional-plugins.discordsrv-compatibility", true);
     DEFAULTS.put("duels.enable-teleports", true);
-    DEFAULTS.put("duels.allow-commands", false);
+    DEFAULTS.put("duels.commands.allow-commands", false);
+    DEFAULTS.put("duels.commands.whitelisted", new ArrayList<>(List.of("kill")));
     DEFAULTS.put("duels.max-duration", 600000);
     DEFAULTS.put("requests.expiry-time", 600000);
     DEFAULTS.put("queues.enable-default-queue", true);

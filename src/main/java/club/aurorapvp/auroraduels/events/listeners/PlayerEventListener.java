@@ -69,7 +69,18 @@ public class PlayerEventListener implements Listener {
       return;
     }
 
-    if (Config.get().getBoolean("duels.allow-commands")) {
+    boolean commandMatched = false;
+
+    if (!Config.get().getBoolean("duels.commands.allow-commands")) {
+      for (String command : Config.get().getStringList("duels.commands.whitelisted")) {
+        if (event.getMessage().equals(command)) {
+          commandMatched = true;
+          break;
+        }
+      }
+    }
+
+    if (!commandMatched) {
       return;
     }
 
