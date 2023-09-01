@@ -8,11 +8,13 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Placeholders;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Team;
 
 public final class AuroraDuels extends JavaPlugin {
 
@@ -82,6 +84,7 @@ public final class AuroraDuels extends JavaPlugin {
     Arena.init();
     Queue.init();
     Wand.init();
+    TeamDuel.init();
 
     queueGUI = new QueueGUI();
 

@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.kyori.adventure.bossbar.BossBar;
@@ -34,10 +33,8 @@ import org.bukkit.scoreboard.Team;
 
 public class TeamDuel extends Duel {
 
-  public static final Team team1 = Bukkit.getScoreboardManager().getMainScoreboard()
-      .registerNewTeam("team1");
-  public static final Team team2 = Bukkit.getScoreboardManager().getMainScoreboard()
-      .registerNewTeam("team2");
+  public static Team team1;
+  public static Team team2;
   private final Map<Player, Boolean> team1Dead = new HashMap<>();
   private final Map<Player, Boolean> team2Dead = new HashMap<>();
   private final Player[] team1Members;
@@ -70,6 +67,22 @@ public class TeamDuel extends Duel {
 
     this.team1Members = team1Members;
     this.team2Members = team2Members;
+  }
+
+  public static void init() {
+    team1 = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team1");
+
+    if (team1 == null) {
+      team1 = Bukkit.getScoreboardManager().getMainScoreboard()
+          .registerNewTeam("team1");
+    }
+
+    team2 = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team1");
+
+    if (team2 == null) {
+      team2 = Bukkit.getScoreboardManager().getMainScoreboard()
+          .registerNewTeam("team1");
+    }
   }
 
   public Player[] getTeam1Members() {
@@ -258,6 +271,12 @@ public class TeamDuel extends Duel {
                     team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
               }
 
+              for (Player player : team1Members) {
+                if (team1Bar[0] != null) {
+                  player.hideBossBar(team1Bar[0]);
+                }
+              }
+
               team1Bar[0] =
                   BossBar.bossBar(
                       Lang.getComponent("team2-bossbar"),
@@ -276,6 +295,12 @@ public class TeamDuel extends Duel {
                     team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
               }
 
+              for (Player player : team2Members) {
+                if (team2Bar[0] != null) {
+                  player.hideBossBar(team2Bar[0]);
+                }
+              }
+
               team2Bar[0] =
                   BossBar.bossBar(
                       Lang.getComponent("team1-bossbar"),
@@ -284,12 +309,10 @@ public class TeamDuel extends Duel {
                       Overlay.PROGRESS);
 
               for (Player player : team1Members) {
-                player.hideBossBar(team1Bar[0]);
                 player.showBossBar(team1Bar[0]);
               }
 
               for (Player player : team2Members) {
-                player.hideBossBar(team2Bar[0]);
                 player.showBossBar(team2Bar[0]);
               }
             }
