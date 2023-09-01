@@ -90,9 +90,9 @@ public class Lang {
     DEFAULTS.put("unknown-duel-command", "prefix <red>Unknown Duel Command! Use /help");
     DEFAULTS.put("queue-menu", "<yellow><bold>Select Duel Type");
     DEFAULTS.put("duel-kit-gui", "<yellow><bold>Select Duel Kit");
-    DEFAULTS.put("next-page", "<yellow>Next");
-    DEFAULTS.put("previous-page", "<yellow>Previous");
-    DEFAULTS.put("no-kit", "<yellow>No kit");
+    DEFAULTS.put("next-page", "<yellow><bold>Next");
+    DEFAULTS.put("previous-page", "<yellow><bold>Previous");
+    DEFAULTS.put("no-kit", "<yellow><bold>No Kit");
     DEFAULTS.put("kit-invalid-name", "prefix <red>Invalid kit name");
     DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set");
     DEFAULTS.put("new-win", "prefix <bold><green>+1 Win");
