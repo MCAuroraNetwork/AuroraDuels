@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-@CommandAlias("duel|teamduel|partyduel")
+@CommandAlias("duel|teamduel|ffaduel")
 @CommandPermission("auroraduels.command.duel")
 public class DuelBaseCommands extends BaseCommand {
 
