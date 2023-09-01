@@ -4,6 +4,7 @@ import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
@@ -12,6 +13,7 @@ import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import java.awt.Color;
 import java.util.Arrays;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,33 +60,35 @@ public class DuelEventListener implements Listener {
       Duel.setLastDuel(player, event.getDuel());
     }
 
+    Player[] winners = event.getWinners();
+    Player[] losers = event.getLosers();
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < winners.length; i++) {
+      sb.append(winners[i].getName());
+      if (i < winners.length - 1) {
+        sb.append(", ");
+      }
+    }
+
+    String winnersText = sb.toString();
+
+    sb = new StringBuilder();
+    for (int i = 0; i < losers.length; i++) {
+      sb.append(losers[i].getName());
+      if (i < losers.length - 1) {
+        sb.append(", ");
+      }
+    }
+
+    String losersText = sb.toString();
+
+    Bukkit.broadcast(Lang.formatComponent("duel-won", winnersText, losersText));
+
     if (AuroraDuels.isDiscordSRVInstalled()) {
-      Player[] winners = event.getWinners();
-      Player[] losers = event.getLosers();
-
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < winners.length; i++) {
-        sb.append(winners[i].getName());
-        if (i < winners.length - 1) {
-          sb.append(", ");
-        }
-      }
-
-      String winnersText = sb.toString();
-
-      sb = new StringBuilder();
-      for (int i = 0; i < losers.length; i++) {
-        sb.append(losers[i].getName());
-        if (i < losers.length - 1) {
-          sb.append(", ");
-        }
-      }
-
-      String losersText = sb.toString();
-
       DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
           new EmbedBuilder().setAuthor(
-                  winnersText + " won a duel against " + losersText + "!", null,
+                  Lang.getString("duel-won").formatted(winnersText, losersText), null,
                   "https://cravatar.eu/helmavatar/" + event.getWinners()[0].getUniqueId())
               .setColor(Color.BLACK).build()).queue();
     }
@@ -102,9 +106,6 @@ public class DuelEventListener implements Listener {
       Rating.getRating(event.getDuel().getQueue().getName() + "_duels")
           .updateElo(event.getLosers()[0], event.getWinners()[0]);
     } else if (event.getDuel().getPlayers().size() > 2) {
-      Player[] losers = event.getLosers();
-      Player[] winners = event.getWinners();
-
       double loserAvgRating =
           Arrays.stream(losers)
               .mapToDouble(
