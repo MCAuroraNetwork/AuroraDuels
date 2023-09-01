@@ -261,6 +261,28 @@ public class TeamDuel extends Duel {
       double team1MaxHealth = team1Members.length * 20;
       double team2MaxHealth = team2Members.length * 20;
 
+      team1Bar[0] =
+          BossBar.bossBar(
+              Lang.getComponent("team2-bossbar"),
+              1.0f,
+              Color.BLUE,
+              Overlay.PROGRESS);
+
+      for (Player team1Member : team1Members) {
+        team1Member.showBossBar(team1Bar[0]);
+      }
+
+      team2Bar[0] =
+          BossBar.bossBar(
+              Lang.getComponent("team1-bossbar"),
+              1.0f,
+              Color.BLUE,
+              Overlay.PROGRESS);
+
+      for (Player team2Member : team2Members) {
+        team2Member.showBossBar(team2Bar[0]);
+      }
+
       bossbarTask =
           new BukkitRunnable() {
             @Override
@@ -276,18 +298,7 @@ public class TeamDuel extends Duel {
                     team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
               }
 
-              for (Player player : team1Members) {
-                if (team1Bar[0] != null) {
-                  player.hideBossBar(team1Bar[0]);
-                }
-              }
-
-              team1Bar[0] =
-                  BossBar.bossBar(
-                      Lang.getComponent("team2-bossbar"),
-                      (float) Math.min(team2Health / team2MaxHealth, 1.0f),
-                      Color.BLUE,
-                      Overlay.PROGRESS);
+              team1Bar[0].name(Lang.getComponent("team2-bossbar")).progress((float) Math.min(team2Health / team2MaxHealth, 1.0f));
 
               double team1Health = 0;
 
@@ -300,26 +311,7 @@ public class TeamDuel extends Duel {
                     team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
               }
 
-              for (Player player : team2Members) {
-                if (team2Bar[0] != null) {
-                  player.hideBossBar(team2Bar[0]);
-                }
-              }
-
-              team2Bar[0] =
-                  BossBar.bossBar(
-                      Lang.getComponent("team1-bossbar"),
-                      (float) Math.min(team1Health / team1MaxHealth, 1.0f),
-                      Color.RED,
-                      Overlay.PROGRESS);
-
-              for (Player player : team1Members) {
-                player.showBossBar(team1Bar[0]);
-              }
-
-              for (Player player : team2Members) {
-                player.showBossBar(team2Bar[0]);
-              }
+              team2Bar[0].name(Lang.getComponent("team1-bossbar")).progress((float) Math.min(team1Health / team1MaxHealth, 1.0f));
             }
           };
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);

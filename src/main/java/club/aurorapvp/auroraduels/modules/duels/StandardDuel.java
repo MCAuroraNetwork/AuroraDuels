@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
@@ -133,57 +132,58 @@ public class StandardDuel extends Duel implements Listener {
         }
       }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
+      playerOneBar[0] =
+          BossBar.bossBar(
+              Lang.formatComponent(
+                  "opponent-bossbar",
+                  playerTwo.getName(),
+                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
+                  (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                  playerTwo.getPing()),
+              1.0f,
+              BossBar.Color.RED,
+              BossBar.Overlay.PROGRESS);
+
+      playerOne.showBossBar(playerOneBar[0]);
+
+      playerTwoBar[0] =
+          BossBar.bossBar(
+              Lang.formatComponent(
+                  "opponent-bossbar",
+                  playerOne.getName(),
+                  (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
+                  (int) playerOne.getLocation().distance(playerTwo.getLocation()),
+                  playerOne.getPing()),
+                  1.0f,
+              BossBar.Color.RED,
+              BossBar.Overlay.PROGRESS);
+
+      playerTwo.showBossBar(playerTwoBar[0]);
+
       bossbarTask =
           new BukkitRunnable() {
             @Override
             public void run() {
-              if (playerOneBar[0] != null) {
-                playerOne.hideBossBar(playerOneBar[0]);
-              }
-
               try {
-                playerOneBar[0] =
-                    BossBar.bossBar(
-                        Lang.formatComponent(
-                            "opponent-bossbar",
-                            playerTwo.getName(),
-                            (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                            (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                            playerTwo.getPing()),
-                        (float) Math.min(
-                            (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-                            1.0f),
-                        BossBar.Color.RED,
-                        BossBar.Overlay.PROGRESS);
+                playerOneBar[0].name(Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
+                    (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
+                    (int) playerTwo.getLocation().distance(playerOne.getLocation()),
+                    playerTwo.getPing())).progress(
+                    (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+                        1.0f));
               } catch (IllegalArgumentException e) {
                 this.cancel();
               }
-
-              playerOne.showBossBar(playerOneBar[0]);
-
-              if (playerTwoBar[0] != null) {
-                playerTwo.hideBossBar(playerTwoBar[0]);
-              }
-
               try {
-                playerTwoBar[0] =
-                    BossBar.bossBar(
-                        Lang.formatComponent(
-                            "opponent-bossbar",
-                            playerOne.getName(),
-                            (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                            (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                            playerOne.getPing()),
-                        (float) Math.min(
-                            (playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                            1.0f),
-                        BossBar.Color.RED,
-                        BossBar.Overlay.PROGRESS);
+                playerTwoBar[0].name(Lang.formatComponent("opponent-bossbar", playerOne.getName(),
+                    (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()),
+                    (int) playerOne.getLocation().distance(playerOne.getLocation()),
+                    playerOne.getPing())).progress(
+                    (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+                        1.0f));
               } catch (IllegalArgumentException e) {
                 this.cancel();
               }
-
-              playerTwo.showBossBar(playerTwoBar[0]);
             }
           };
       bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);

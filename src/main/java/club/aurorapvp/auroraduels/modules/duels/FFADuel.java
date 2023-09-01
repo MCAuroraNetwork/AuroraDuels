@@ -54,6 +54,10 @@ public class FFADuel extends Duel {
     deadPlayers.add(player);
   }
 
+  public boolean isDead(Player player) {
+    return deadPlayers.contains(player);
+  }
+
   public boolean onePlayerAlive() {
     int aliveCount = 0;
 
@@ -164,6 +168,18 @@ public class FFADuel extends Duel {
 
       double playersMaxHealth = (this.getPlayers().size() - 1) * 20;
 
+      for (Player player : this.getPlayers()) {
+        BossBar bar = BossBar.bossBar(
+            MiniMessage.miniMessage().deserialize("<red>Opponents"),
+            1.0f,
+            Color.RED,
+            Overlay.PROGRESS);
+
+        player.showBossBar(bar);
+
+        bossBars.put(player, bar);
+      }
+
       bossbarTask =
           new BukkitRunnable() {
             @Override
@@ -172,24 +188,13 @@ public class FFADuel extends Duel {
                 double playersHealth = 0;
 
                 for (Player opp : thisDuel.getOpponents(player)) {
-                  if (!thisDuel.isSpectator(opp)) {
+                  if (!thisDuel.isDead(player) && !thisDuel.isSpectator(opp)) {
                     playersHealth = playersHealth + opp.getHealth() + opp.getAbsorptionAmount();
                   }
                 }
 
-                if (bossBars.get(player) != null) {
-                  player.hideBossBar(bossBars.get(player));
-                }
-
-                BossBar bar = BossBar.bossBar(
-                    MiniMessage.miniMessage().deserialize("<red>Opponents"),
-                    (float) Math.min(playersHealth / playersMaxHealth, 1.0f),
-                    Color.RED,
-                    Overlay.PROGRESS);
-
-                player.showBossBar(bar);
-
-                bossBars.put(player, bar);
+                bossBars.get(player).name(MiniMessage.miniMessage().deserialize("<red>Opponents"))
+                    .progress((float) Math.min(playersHealth / playersMaxHealth, 1.0f));
               }
             }
           };
