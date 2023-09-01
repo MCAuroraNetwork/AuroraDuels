@@ -123,9 +123,10 @@ public class FFADuel extends Duel {
         @Override
         public void run() {
           for (Player player : thisDuel.getPlayers()) {
-            player.teleportAsync(
+            CompletableFuture<Boolean> teleport = player.teleportAsync(
                 Objects.requireNonNull(safeLocations.get(player)));
-            player.lookAt(center, LookAnchor.EYES);
+
+            teleport.thenRun(() -> player.lookAt(center, LookAnchor.EYES));
 
             player.showTitle(Title.title(Component.text(seconds), Component.text("")));
 

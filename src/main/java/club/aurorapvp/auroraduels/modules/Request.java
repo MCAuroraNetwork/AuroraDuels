@@ -36,6 +36,7 @@ public class Request {
       return;
     } else if (Queue.inQueue(requester)) {
       requester.sendMessage(Lang.getComponent("in-queue"));
+      return;
     }
 
     for (Player player : duel.getPlayers()) {

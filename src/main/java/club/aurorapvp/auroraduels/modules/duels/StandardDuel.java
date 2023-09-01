@@ -97,10 +97,10 @@ public class StandardDuel extends Duel implements Listener {
 
         @Override
         public void run() {
-          playerOne.teleportAsync(spawn1);
-          playerOne.lookAt(spawn2, LookAnchor.EYES);
-          playerTwo.teleportAsync(spawn2);
-          playerTwo.lookAt(spawn1, LookAnchor.EYES);
+          CompletableFuture<Boolean> teleport1 = playerOne.teleportAsync(spawn1);
+          teleport1.thenRun(() -> playerOne.lookAt(spawn2, LookAnchor.EYES));
+          CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
+          teleport2.thenRun(() -> playerTwo.lookAt(spawn1, LookAnchor.EYES));
 
           if ((seconds -= 1) == 0) {
             final Title title1 =

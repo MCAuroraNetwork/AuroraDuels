@@ -177,8 +177,9 @@ public class TeamDuel extends Duel {
         @Override
         public void run() {
           for (Player player : team1Members) {
-            player.teleportAsync(spawn1);
-            player.lookAt(spawn2, LookAnchor.EYES);
+            CompletableFuture<Boolean> teleport = player.teleportAsync(spawn1);
+
+            teleport.thenRun(() -> player.lookAt(spawn2, LookAnchor.EYES));
 
             player.showTitle(Title.title(Component.text(seconds), Component.text("")));
 
@@ -210,8 +211,9 @@ public class TeamDuel extends Duel {
         @Override
         public void run() {
           for (Player player : team2Members) {
-            player.teleportAsync(spawn2);
-            player.lookAt(spawn1, LookAnchor.EYES);
+            CompletableFuture<Boolean> teleport = player.teleportAsync(spawn2);
+
+            teleport.thenRun(() -> player.lookAt(spawn1, LookAnchor.EYES));
 
             player.showTitle(Title.title(Component.text(seconds), Component.text("")));
 
