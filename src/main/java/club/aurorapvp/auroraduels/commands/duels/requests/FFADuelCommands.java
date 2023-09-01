@@ -39,6 +39,11 @@ public class FFADuelCommands extends BaseCommand {
 
     int i = 0;
     for (String playerName : playerNames) {
+      if (playerName.equals(player.getName())) {
+        player.sendMessage(Lang.getComponent("unknown-opponent"));
+        return;
+      }
+
       requested[i] = Bukkit.getPlayer(playerName);
       i++;
     }

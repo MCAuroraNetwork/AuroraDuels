@@ -30,7 +30,7 @@ public class StandardDuelCommands extends BaseCommand {
   public void onNewRequest(Player player, String playerName, @Optional String str) {
     Player requested = Bukkit.getPlayer(playerName);
 
-    if (requested == null) {
+    if (requested == null || requested == player) {
       player.sendMessage(Lang.getComponent("unknown-opponent"));
       return;
     }
