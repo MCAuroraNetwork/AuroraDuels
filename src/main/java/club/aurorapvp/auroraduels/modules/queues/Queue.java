@@ -133,13 +133,16 @@ public class Queue {
     if (Request.hasPendingRequest(player)) {
       player.sendMessage(Lang.getComponent("you-have-request"));
       return;
-    } else if (Queue.inQueue(player)) {
-      player.sendMessage(Lang.getComponent("in-queue"));
     }
 
     if (lookingForMatch.containsValue(player)) {
       lookingForMatch.clear();
       player.sendMessage(Lang.getComponent("not-looking-match"));
+      return;
+    }
+
+    else if (Queue.inQueue(player)) {
+      player.sendMessage(Lang.getComponent("in-queue"));
       return;
     }
 
