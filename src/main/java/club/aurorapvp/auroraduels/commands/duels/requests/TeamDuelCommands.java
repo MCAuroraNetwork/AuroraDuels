@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -43,7 +44,7 @@ public class TeamDuelCommands extends BaseCommand {
     Player[] team1 = new Player[team1Names.length + 1];
     Player[] team2 = new Player[team2Names.length];
 
-    team1[team1Names.length - 1] = player;
+    team1[team1.length - 1] = player;
 
     int i = 0;
     for (String playerName : team1Names) {

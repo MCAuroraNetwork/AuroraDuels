@@ -172,6 +172,8 @@ public class TeamDuel extends Duel {
         return;
       }
 
+      AuroraDuels.INSTANCE.getLogger().log(Level.INFO, "joe");
+
       new BukkitRunnable() {
         int seconds = 4;
 
