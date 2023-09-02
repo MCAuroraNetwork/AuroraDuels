@@ -28,7 +28,10 @@ public class DuelStartEvent extends Event {
       }
     } else {
       for (Player player : duel.getPlayers()) {
-        Duel.getDuelKit(player).giveKit(player);
+        Kit duelKit = Duel.getDuelKit(player);
+        if (duelKit != null) {
+          duelKit.giveKit(player);
+        }
       }
     }
 
