@@ -3,13 +3,12 @@ package club.aurorapvp.auroraduels.modules.duels;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
+import club.aurorapvp.aurorakits.events.custom.KitCreateEvent;
+import club.aurorapvp.aurorakits.events.custom.KitDeleteEvent;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
-import club.aurorapvp.aurorakits.modules.kits.KitsGUI;
-import club.aurorapvp.aurorakits.modules.kits.KitsGUI.Page;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -109,8 +108,36 @@ public class DuelKitGUI implements Listener {
     }
   }
 
+  public void addKit(Kit kit) {
+    Inventory lastPage = pages.get(index - 1).getInventory();
+
+    if (lastPage.getContents()[44] != null) {
+      new DuelKitGUI.Page(kit, this);
+    } else {
+      lastPage.addItem(kit.getDisplayItem());
+    }
+  }
+
   public void open() {
     player.openInventory(this.getCurrentPage());
+  }
+
+  @EventHandler
+  public void onKitCreate(KitCreateEvent event) {
+    if (!(event.getPlayer() == this.getPlayer())) {
+      return;
+    }
+
+    this.addKit(event.getKit());
+  }
+
+  @EventHandler
+  public void onKitDelete(KitDeleteEvent event) {
+    if (!(event.getPlayer() == this.getPlayer())) {
+      return;
+    }
+
+    this.reload();
   }
 
   @EventHandler
@@ -164,7 +191,13 @@ public class DuelKitGUI implements Listener {
   }
 
   public static DuelKitGUI getGUI(Player player) {
-    return KITS_GUIS.getOrDefault(player, new DuelKitGUI(player));
+    DuelKitGUI gui = KITS_GUIS.get(player);
+
+    if (gui == null) {
+      return new DuelKitGUI(player);
+    }
+
+    return gui;
   }
 
   public static class Page implements InventoryHolder {
@@ -199,6 +232,35 @@ public class DuelKitGUI implements Listener {
 
       inventory.setItem(49, noKit);
       inventory.setItem(45, previousPage);
+      inventory.setItem(53, nextPage);
+      gui.index++;
+    }
+
+    private Page(Kit kit, DuelKitGUI gui) {
+      inventory = Bukkit.createInventory(this, 54, Lang.getComponent("duel-kit-gui"));
+      this.gui = gui;
+
+      inventory.addItem(kit.getDisplayItem());
+
+      ItemMeta meta;
+
+      ItemStack nextPage = new ItemStack(Material.PAPER);
+      meta = nextPage.getItemMeta();
+      meta.displayName(club.aurorapvp.aurorakits.config.Lang.getComponent("next-page"));
+      nextPage.setItemMeta(meta);
+
+      ItemStack previousPage = new ItemStack(Material.PAPER);
+      meta = previousPage.getItemMeta();
+      meta.displayName(club.aurorapvp.aurorakits.config.Lang.getComponent("previous-page"));
+      previousPage.setItemMeta(meta);
+
+      ItemStack noKit = new ItemStack(Material.BARRIER);
+      meta = noKit.getItemMeta();
+      meta.displayName(Lang.getComponent("no-kit"));
+      noKit.setItemMeta(meta);
+
+      inventory.setItem(49, noKit);
+      inventory.setItem(45, nextPage);
       inventory.setItem(53, nextPage);
       gui.index++;
     }
