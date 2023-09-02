@@ -105,6 +105,7 @@ public class DuelKitGUI implements Listener {
       Kit[] kitsArray = kitsOnPage.toArray(new Kit[0]);
 
       pages.add(new DuelKitGUI.Page(kitsArray, this));
+      index++;
     }
   }
 
@@ -199,6 +200,7 @@ public class DuelKitGUI implements Listener {
       inventory.setItem(49, noKit);
       inventory.setItem(45, previousPage);
       inventory.setItem(53, nextPage);
+      gui.index++;
     }
 
     public DuelKitGUI getGui() {
