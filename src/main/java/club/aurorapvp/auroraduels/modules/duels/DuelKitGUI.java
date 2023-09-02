@@ -76,6 +76,9 @@ public class DuelKitGUI implements Listener {
   public void reload() {
     Set<Kit> kitSet = Kit.getKits(this.getPlayer(), true);
 
+    index = 0;
+    pages.clear();
+
     List<Kit> publicKits = new ArrayList<>();
     List<Kit> privateKits = new ArrayList<>();
 
