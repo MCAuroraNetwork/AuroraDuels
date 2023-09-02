@@ -167,6 +167,8 @@ public class DuelKitGUI implements Listener {
       return;
     } else if (event.getSlot() == 49) {
       player.closeInventory();
+
+      new DuelKitSelectEvent(player, null).callEvent();
       return;
     }
 
