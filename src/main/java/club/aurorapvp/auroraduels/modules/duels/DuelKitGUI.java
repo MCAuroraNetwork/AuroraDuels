@@ -23,6 +23,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class DuelKitGUI implements Listener {
@@ -138,6 +139,14 @@ public class DuelKitGUI implements Listener {
     if (!(event.getPlayer() == this.getPlayer())) {
       return;
     }
+
+    DuelKitGUI gui = this;
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        gui.reload();
+      }
+    }.runTaskLater(AuroraDuels.INSTANCE, 1L);
 
     this.reload();
   }
