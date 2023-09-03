@@ -194,6 +194,7 @@ public abstract class Duel {
 
   public static int inDuel(String queueName) {
     return Duel.getDuels().stream()
+        .filter(Duel::isActive)
         .filter(duel -> Optional.ofNullable(duel.getQueue())
             .map(Queue::getName)
             .filter(queueName::equals)
