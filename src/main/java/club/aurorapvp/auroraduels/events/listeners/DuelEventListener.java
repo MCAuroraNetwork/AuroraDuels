@@ -88,7 +88,7 @@ public class DuelEventListener implements Listener {
     if (AuroraDuels.isDiscordSRVInstalled()) {
       DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
           new EmbedBuilder().setAuthor(
-                  Lang.getString("duel-won").formatted(winnersText, losersText), null,
+                  Lang.getString("discord-duel-won").formatted(winnersText, losersText), null,
                   "https://cravatar.eu/helmavatar/" + event.getWinners()[0].getUniqueId())
               .setColor(Color.BLACK).build()).queue();
     }
