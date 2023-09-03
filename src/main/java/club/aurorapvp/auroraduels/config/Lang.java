@@ -63,7 +63,7 @@ public class Lang {
     DEFAULTS.put("request-accepted", "prefix <green>Request accepted!");
     DEFAULTS.put("you-won", "<green>You won!");
     DEFAULTS.put("you-lost", "<red>You lost");
-    DEFAULTS.put("duel-won", "<bold><yellow>%1$s won a duel against %2$s!");
+    DEFAULTS.put("duel-won", "<bold><yellow>%1$s<reset><yellow> won a duel against <bold>%2$s<reset><yellow>!");
     DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s");
     DEFAULTS.put("draw", "prefix <yellow>Draw!");
     DEFAULTS.put("no-leaving-arena", "prefix <red>Can't leave arena");
