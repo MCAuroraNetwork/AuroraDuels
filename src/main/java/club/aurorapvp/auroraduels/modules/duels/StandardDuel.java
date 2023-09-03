@@ -267,8 +267,6 @@ public class StandardDuel extends Duel implements Listener {
         new DuelEndEvent(thisDuel, winner, loser).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
-
-    duels.remove(this);
   }
 
   public void draw() {
@@ -317,7 +315,5 @@ public class StandardDuel extends Duel implements Listener {
         new DuelDrawEvent(thisDuel).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
-
-    duels.remove(this);
   }
 }

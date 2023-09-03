@@ -54,6 +54,8 @@ public class DuelEndEvent extends Event {
     }
 
     duel.setActive(false);
+
+    Duel.getDuels().remove(duel);
   }
 
   @SuppressWarnings("unused")

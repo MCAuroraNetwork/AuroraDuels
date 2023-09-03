@@ -180,7 +180,9 @@ public abstract class Duel {
     int inDuels = 0;
 
     for (Duel duel : duels) {
-      inDuels = inDuels + duel.inDuel();
+      if (duel.isActive()) {
+        inDuels = inDuels + duel.inDuel();
+      }
     }
 
     return inDuels;

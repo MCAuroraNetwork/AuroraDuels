@@ -251,8 +251,6 @@ public class FFADuel extends Duel {
         new DuelEndEvent(thisDuel, new Player[]{winner}, losers).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
-
-    duels.remove(this);
   }
 
   @Override
@@ -293,7 +291,5 @@ public class FFADuel extends Duel {
         new DuelDrawEvent(thisDuel).callEvent();
       }
     }.runTask(AuroraDuels.INSTANCE);
-
-    duels.remove(this);
   }
 }
