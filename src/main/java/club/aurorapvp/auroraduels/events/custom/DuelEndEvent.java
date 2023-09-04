@@ -5,6 +5,7 @@ import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DU
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import java.util.Timer;
 import java.util.TimerTask;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -48,12 +49,18 @@ public class DuelEndEvent extends Event {
       }
     }
 
-    if (duel.isRanked()) {
-      for (Player player : this.getWinners()) {
+    for (Player player : this.getWinners()) {
+      player.playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_FIREWORK_ROCKET_TWINKLE).build());
+
+      if (duel.isRanked()) {
         Duel.addWin(player);
       }
+    }
 
-      for (Player player : this.getLosers()) {
+    for (Player player : this.getWinners()) {
+      player.playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
+
+      if (duel.isRanked()) {
         Duel.resetStreak(player);
       }
     }
