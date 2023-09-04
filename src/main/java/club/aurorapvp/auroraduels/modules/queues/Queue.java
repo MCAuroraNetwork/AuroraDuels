@@ -139,9 +139,7 @@ public class Queue {
       lookingForMatch.clear();
       player.sendMessage(Lang.getComponent("not-looking-match"));
       return;
-    }
-
-    else if (Queue.inQueue(player)) {
+    } else if (Queue.inQueue(player)) {
       player.sendMessage(Lang.getComponent("in-queue"));
       return;
     }
@@ -300,6 +298,24 @@ public class Queue {
     }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
     new QueueJoinEvent(duel).callEvent();
+  }
+
+  public static void removeFromQueue(Player player) {
+    for (Queue queue : queues) {
+      for (Duel duel : queue.duelQueue) {
+        if (duel.contains(player)) {
+          queue.duelQueue.remove(duel);
+
+          duel.draw();
+        }
+      }
+
+      for (Player matchMaker : queue.lookingForMatch.values()) {
+        if (matchMaker == player) {
+          queue.lookingForMatch.clear();
+        }
+      }
+    }
   }
 
   public static boolean inQueue(Player player) {

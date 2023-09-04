@@ -15,7 +15,6 @@ import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
-import com.sk89q.worldedit.WorldEdit;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.HashSet;
 import java.util.Objects;
@@ -159,6 +158,10 @@ public class PlayerEventListener implements Listener {
   public void onPlayerQuit(PlayerQuitEvent event) {
     if (AuroraDuels.isAuroraKitsInstalled()) {
       DuelKitGUI.remove(event.getPlayer());
+    }
+
+    if (Queue.inQueue(event.getPlayer())) {
+      Queue.removeFromQueue(event.getPlayer());
     }
 
     if (Request.hasPendingRequest(event.getPlayer())) {
