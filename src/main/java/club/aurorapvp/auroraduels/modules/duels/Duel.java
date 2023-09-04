@@ -42,9 +42,9 @@ public abstract class Duel {
   protected int currentRound = 1;
   private Queue queue;
   private boolean active = false;
-  protected BukkitRunnable bossbarTask;
+  public BukkitRunnable bossbarTask;
   private final Duel thisDuel = this;
-  protected final BukkitRunnable checkBounds = new BukkitRunnable() {
+  public final BukkitRunnable checkBounds = new BukkitRunnable() {
     @Override
     public void run() {
       try {

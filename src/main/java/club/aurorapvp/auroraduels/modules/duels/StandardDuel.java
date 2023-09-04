@@ -241,9 +241,6 @@ public class StandardDuel extends Duel implements Listener {
       }
     }
 
-    bossbarTask.cancel();
-    checkBounds.cancel();
-
     winner[0].showTitle(
         Title.title(
             Lang.getComponent("you-won"), Component.text("Opponent: " + loser[0].getName())));
@@ -276,9 +273,6 @@ public class StandardDuel extends Duel implements Listener {
       this.startDuel(arena);
       return;
     }
-
-    bossbarTask.cancel();
-    checkBounds.cancel();
 
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));

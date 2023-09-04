@@ -330,9 +330,6 @@ public class TeamDuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    bossbarTask.cancel();
-    checkBounds.cancel();
-
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < winners.length; i++) {
       sb.append(winners[i].getName());
@@ -383,9 +380,6 @@ public class TeamDuel extends Duel {
 
   @Override
   public void draw() {
-    bossbarTask.cancel();
-    checkBounds.cancel();
-
     for (Player player : this.getPlayers()) {
       player.sendMessage(Lang.getComponent("draw"));
     }

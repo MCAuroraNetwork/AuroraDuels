@@ -214,9 +214,6 @@ public class FFADuel extends Duel {
   }
 
   public void endDuel(Player[] winners, Player[] losers) {
-    bossbarTask.cancel();
-    checkBounds.cancel();
-
     for (Player player : this.getPlayers()) {
       player.hideBossBar(bossBars.get(player));
     }
@@ -255,9 +252,6 @@ public class FFADuel extends Duel {
 
   @Override
   public void draw() {
-    bossbarTask.cancel();
-    checkBounds.cancel();
-
     for (Player player : this.getPlayers()) {
       player.hideBossBar(bossBars.get(player));
     }
