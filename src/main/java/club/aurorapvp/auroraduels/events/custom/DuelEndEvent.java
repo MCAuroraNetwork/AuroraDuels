@@ -65,11 +65,13 @@ public class DuelEndEvent extends Event {
       }
     }
 
-    if (duel.bossbarTask != null) {
+    if (duel.bossbarTask != null && !duel.bossbarTask.isCancelled()) {
       duel.bossbarTask.cancel();
     }
 
-    duel.checkBounds.cancel();
+    if (!duel.checkBounds.isCancelled()) {
+      duel.checkBounds.cancel();
+    }
 
     duel.setActive(false);
 
