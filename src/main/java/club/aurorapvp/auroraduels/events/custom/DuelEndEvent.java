@@ -1,11 +1,10 @@
 package club.aurorapvp.auroraduels.events.custom;
 
-import club.aurorapvp.auroraduels.AuroraDuels;
+import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DUEL_RESPAWN;
+
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -41,6 +40,12 @@ public class DuelEndEvent extends Event {
 
     for (Player player : duel.getSpectators()) {
       duel.setSpectator(player, false);
+    }
+
+    for (Player player : duel.getPlayers()) {
+      if (player.isDead()) {
+        DUEL_RESPAWN.add(player);
+      }
     }
 
     if (duel.isRanked()) {

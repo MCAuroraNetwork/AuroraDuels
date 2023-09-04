@@ -297,7 +297,7 @@ public abstract class Duel {
 
       spectators.add(player);
     } else {
-      player.teleportAsync(Bukkit.getWorlds().get(0).getSpawnLocation());
+      player.teleportAsync(this.getRespawnLocation());
       player.setGameMode(Bukkit.getDefaultGameMode());
       player.sendMessage(Lang.getComponent("stop-spectating"));
 

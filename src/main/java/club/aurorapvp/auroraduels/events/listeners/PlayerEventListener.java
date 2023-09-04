@@ -33,6 +33,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PlayerEventListener implements Listener {
 
+  public final static Set<Player> DUEL_RESPAWN = new HashSet<>();
+
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     if (event.getClickedBlock() == null) {
@@ -142,6 +144,10 @@ public class PlayerEventListener implements Listener {
               duel.getArena().getFirstSpawn().getBlockZ());
 
       event.getPlayer().teleportAsync(spawn1);
+    }
+
+    if (DUEL_RESPAWN.remove(event.getPlayer())) {
+      event.getPlayer().teleportAsync(duel.getRespawnLocation());
     }
   }
 
