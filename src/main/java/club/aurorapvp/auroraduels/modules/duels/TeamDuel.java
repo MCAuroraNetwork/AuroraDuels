@@ -276,7 +276,7 @@ public class TeamDuel extends Duel {
           BossBar.bossBar(
               Lang.getComponent("team1-bossbar"),
               1.0f,
-              Color.BLUE,
+              Color.RED,
               Overlay.PROGRESS);
 
       for (Player team2Member : team2Members) {
@@ -385,12 +385,12 @@ public class TeamDuel extends Duel {
     }
 
     for (Player player : team1Members) {
-      TeamDuel.team1.removePlayer(player);
+      team1.removePlayer(player);
       player.hideBossBar(team1Bar[0]);
     }
 
     for (Player player : team2Members) {
-      TeamDuel.team2.removePlayer(player);
+      team2.removePlayer(player);
       player.hideBossBar(team2Bar[0]);
     }
 
