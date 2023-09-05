@@ -81,7 +81,7 @@ public class PlayerEventListener implements Listener {
       }
     }
 
-    if (!commandMatched) {
+    if (commandMatched) {
       return;
     }
 
