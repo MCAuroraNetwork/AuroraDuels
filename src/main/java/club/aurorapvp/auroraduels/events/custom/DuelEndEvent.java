@@ -8,6 +8,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import java.awt.Color;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import net.kyori.adventure.sound.Sound;
@@ -45,7 +46,7 @@ public class DuelEndEvent extends Event {
             },
             3000);
 
-    for (Player player : duel.getSpectators()) {
+    for (Player player : Set.copyOf(duel.getSpectators())) {
       duel.setSpectator(player, false);
     }
 

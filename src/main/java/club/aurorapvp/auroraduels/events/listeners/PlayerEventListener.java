@@ -25,7 +25,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -129,6 +128,11 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerRespawn(PlayerPostRespawnEvent event) {
+    if (DUEL_RESPAWN.remove(event.getPlayer())) {
+      event.getPlayer().teleportAsync(
+          Objects.requireNonNull(Duel.getLastDuel(event.getPlayer())).getRespawnLocation());
+    }
+
     if (!Duel.inDuel(event.getPlayer())) {
       return;
     }
@@ -145,10 +149,6 @@ public class PlayerEventListener implements Listener {
               duel.getArena().getFirstSpawn().getBlockZ());
 
       event.getPlayer().teleportAsync(spawn1);
-    }
-
-    if (DUEL_RESPAWN.remove(event.getPlayer())) {
-      event.getPlayer().teleportAsync(duel.getRespawnLocation());
     }
   }
 
