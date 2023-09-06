@@ -157,12 +157,14 @@ public class FFADuel extends Duel {
             player.showTitle(
                 Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
                     Component.text("")));
+          }
 
-            if ((seconds -= 1) < 0) {
-              StringBuilder sb;
-              String names;
-              Title title;
+          if ((seconds -= 1) < 0) {
+            StringBuilder sb;
+            String names;
+            Title title;
 
+            for (Player player : thisDuel.getPlayers()) {
               sb = new StringBuilder();
 
               for (Player opponent : thisDuel.getPlayers()) {
@@ -182,9 +184,9 @@ public class FFADuel extends Duel {
                       Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
-
-              this.cancel();
             }
+
+            this.cancel();
           }
         }
       }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
