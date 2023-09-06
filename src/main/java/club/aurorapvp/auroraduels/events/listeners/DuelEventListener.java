@@ -42,6 +42,10 @@ public class DuelEventListener implements Listener {
 
   @EventHandler
   public void onDuelEnd(DuelEndEvent event) {
+    for (Player player : event.getDuel().getPlayers()) {
+      Duel.setLastDuel(player, event.getDuel());
+    }
+
     if (AuroraDuels.isAuroraKitsInstalled()) {
       for (Player player : event.getDuel().getPlayers()) {
         Kit.getLastUsedKit(player).giveKit(player);
@@ -56,8 +60,6 @@ public class DuelEventListener implements Listener {
 
     for (Player player : event.getDuel().getPlayers()) {
       CombatTag.setTaggable(player, true);
-
-      Duel.setLastDuel(player, event.getDuel());
     }
 
     Player[] winners = event.getWinners();
