@@ -190,14 +190,17 @@ public class FFADuel extends Duel {
 
           for (Player player : thisDuel.getPlayers()) {
             if (!thisDuel.isDead(player) && !thisDuel.isSpectator(player)) {
-              playersHealth = playersHealth + player.getHealth() + player.getAbsorptionAmount();
+              playersHealth += player.getHealth() + player.getAbsorptionAmount();
             }
           }
 
           for (Player player : thisDuel.getPlayers()) {
+            double playerHealth = thisDuel.isSpectator(player) ? 0 : player.getHealth() + player.getAbsorptionAmount();
             bossbars.get(player)
-                .name(Component.text("Opponents").decorate(TextDecoration.BOLD).color(NamedTextColor.RED))
-                .progress((float) Math.min(((playersHealth - player.getHealth()) / playersMaxHealth), 1.0f));
+                .name(Component.text("Opponents").decorate(TextDecoration.BOLD)
+                    .color(NamedTextColor.RED))
+                .progress((float) Math.min(
+                    ((playersHealth - playerHealth) / playersMaxHealth), 1.0f));
           }
         }
       };
