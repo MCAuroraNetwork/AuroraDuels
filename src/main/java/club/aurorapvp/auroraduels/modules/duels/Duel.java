@@ -287,23 +287,24 @@ public abstract class Duel {
 
   public void setSpectator(Player player, boolean spectator) {
     if (spectator) {
-      BlockVector3 midpoint = this.getArena().getFirstSpawn().add(this.getArena().getSecondSpawn())
-          .divide(2);
-      Location loc =
-          new Location(this.getArena().getWorld(), midpoint.getX(), midpoint.getY(),
-              midpoint.getZ());
+      for (Player duelingPlayer : thisDuel.getPlayers()) {
+        if (!thisDuel.isSpectator(duelingPlayer)) {
+          player.teleportAsync(duelingPlayer.getLocation());
+          break;
+        }
+      }
 
-      player.teleportAsync(loc);
       player.setGameMode(GameMode.SPECTATOR);
       player.sendMessage(Lang.getComponent("start-spectating"));
 
       spectators.add(player);
     } else {
-      player.teleportAsync(this.getRespawnLocation());
       player.setGameMode(Bukkit.getDefaultGameMode());
       player.sendMessage(Lang.getComponent("stop-spectating"));
 
       spectators.remove(player);
+
+      player.teleportAsync(this.getRespawnLocation());
     }
   }
 
