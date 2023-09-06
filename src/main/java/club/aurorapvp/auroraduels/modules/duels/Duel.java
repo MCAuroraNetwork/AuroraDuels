@@ -59,8 +59,10 @@ public abstract class Duel {
         for (Player player : thisDuel.getSpectators()) {
           if (!Arena.isInBounds(player.getLocation(), thisDuel.getArena())) {
             for (Player duelingPlayer : thisDuel.getPlayers()) {
-              player.teleportAsync(duelingPlayer.getLocation());
-              break;
+              if (!thisDuel.isSpectator(duelingPlayer)) {
+                player.teleportAsync(duelingPlayer.getLocation());
+                break;
+              }
             }
             player.sendMessage(Lang.getComponent("no-leaving-arena"));
           }
