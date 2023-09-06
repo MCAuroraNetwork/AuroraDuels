@@ -2,10 +2,16 @@ package club.aurorapvp.auroraduels.events.custom;
 
 import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DUEL_RESPAWN;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
+import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
+import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -71,6 +77,40 @@ public class DuelEndEvent extends Event {
 
     if (duel.bossbarTask != null && !duel.bossbarTask.isCancelled()) {
       duel.bossbarTask.cancel();
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < winners.length; i++) {
+      sb.append(winners[i].getName());
+      if (i < winners.length - 2) {
+        sb.append(", ");
+      } else if (i == winners.length - 2) {
+        sb.append(" and ");
+      }
+    }
+
+    String winnersText = sb.toString();
+
+    sb = new StringBuilder();
+    for (int i = 0; i < losers.length; i++) {
+      sb.append(losers[i].getName());
+      if (i < losers.length - 2) {
+        sb.append(", ");
+      } else if (i == losers.length - 2) {
+        sb.append(" and ");
+      }
+    }
+
+    String losersText = sb.toString();
+
+    Bukkit.broadcast(Lang.formatComponent("duel-won", winnersText, losersText));
+
+    if (AuroraDuels.isDiscordSRVInstalled()) {
+      DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
+          new EmbedBuilder().setAuthor(
+                  Lang.getString("discord-duel-won").formatted(winnersText, losersText), null,
+                  "https://cravatar.eu/helmavatar/" + winners[0].getUniqueId())
+              .setColor(Color.BLACK).build()).queue();
     }
 
     duel.setActive(false);

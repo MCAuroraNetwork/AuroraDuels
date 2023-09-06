@@ -63,36 +63,6 @@ public class DuelEventListener implements Listener {
     Player[] winners = event.getWinners();
     Player[] losers = event.getLosers();
 
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < winners.length; i++) {
-      sb.append(winners[i].getName());
-      if (i < winners.length - 1) {
-        sb.append(", ");
-      }
-    }
-
-    String winnersText = sb.toString();
-
-    sb = new StringBuilder();
-    for (int i = 0; i < losers.length; i++) {
-      sb.append(losers[i].getName());
-      if (i < losers.length - 1) {
-        sb.append(", ");
-      }
-    }
-
-    String losersText = sb.toString();
-
-    Bukkit.broadcast(Lang.formatComponent("duel-won", winnersText, losersText));
-
-    if (AuroraDuels.isDiscordSRVInstalled()) {
-      DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
-          new EmbedBuilder().setAuthor(
-                  Lang.getString("discord-duel-won").formatted(winnersText, losersText), null,
-                  "https://cravatar.eu/helmavatar/" + event.getWinners()[0].getUniqueId())
-              .setColor(Color.BLACK).build()).queue();
-    }
-
     if (!event.getDuel().isRanked()) {
       return;
     }
