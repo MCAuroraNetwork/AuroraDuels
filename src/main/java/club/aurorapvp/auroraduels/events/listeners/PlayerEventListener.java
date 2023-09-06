@@ -102,20 +102,6 @@ public class PlayerEventListener implements Listener {
     }
   }
 
-
-  @EventHandler
-  public void onPlayerDamaged(EntityDamageEvent event) {
-    if (!(event.getEntity() instanceof Player player)) {
-      return;
-    }
-
-    if (!Duel.inDuel(player)) {
-      return;
-    }
-
-    Objects.requireNonNull(Duel.getDuel(player)).updateBossbar(player, event.getDamage());
-  }
-
   @EventHandler
   public void onPlayerDamaged(PlayerDamagedByPlayerEvent event) {
     if (event.getDamaged().equals(event.getAttacker())) {

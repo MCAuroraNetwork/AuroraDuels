@@ -228,7 +228,11 @@ public class TeamDuel extends Duel {
                 Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
                     Component.text("")));
 
-            if ((seconds -= 1) < 0) {
+          }
+
+          if ((seconds -= 1) < 0) {
+            for (Player player : teamOneMembers) {
+
               StringBuilder sb = new StringBuilder();
               for (int i = 0; i < teamTwoMembers.length; i++) {
                 sb.append(teamTwoMembers[i].getName());
@@ -243,9 +247,9 @@ public class TeamDuel extends Duel {
                       Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
-
-              this.cancel();
             }
+
+            this.cancel();
           }
         }
       }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
@@ -263,8 +267,10 @@ public class TeamDuel extends Duel {
             player.showTitle(
                 Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
                     Component.text("")));
+          }
 
-            if ((seconds -= 1) < 0) {
+          if ((seconds -= 1) < 0) {
+            for (Player player : teamTwoMembers) {
               StringBuilder sb = new StringBuilder();
               for (int i = 0; i < teamOneMembers.length; i++) {
                 sb.append(teamOneMembers[i].getName());
@@ -279,9 +285,9 @@ public class TeamDuel extends Duel {
                       Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
-
-              this.cancel();
             }
+
+            this.cancel();
           }
         }
       }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);

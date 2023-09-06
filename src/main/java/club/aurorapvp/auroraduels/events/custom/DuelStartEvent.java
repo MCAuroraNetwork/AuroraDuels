@@ -49,7 +49,7 @@ public class DuelStartEvent extends Event {
                              this.cancel();
                            }
                          },
-        Config.get().etInt("duels.max-duration"));
+        Config.get().getInt("duels.max-duration"));
 
     duel.setActive(true);
     duel.getArena().setOccupied(true);
