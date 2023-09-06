@@ -22,6 +22,8 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
@@ -31,23 +33,28 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class FFADuel extends Duel {
 
   private final Set<Player> deadPlayers = new HashSet<>();
-  private final Map<Player, BossBar> bossBars = new HashMap<>();
+  private final Map<Player, BossBar> bossbars = new HashMap<>();
+  private final double playersMaxHealth;
+
 
   public FFADuel(Set<Player> players, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, ranked);
+
+    playersMaxHealth = (players.size() - 1) * 20;
   }
 
   public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation,
       boolean ranked) {
     super(players, respawnLocation, queue, kit, ranked);
+
+    playersMaxHealth = (players.size() - 1) * 20;
   }
 
-  @SuppressWarnings("unused")
-  public Player[] getOpponents(Player player) {
+  public Set<Player> getOpponents(Player player) {
     Set<Player> opponents = new HashSet<>(this.getPlayers());
     opponents.remove(player);
 
-    return opponents.toArray(new Player[0]);
+    return opponents;
   }
 
   public void setDead(Player player) {
@@ -77,6 +84,22 @@ public class FFADuel extends Duel {
       }
     }
     return null;
+  }
+
+  public void updateBossbar(Player player, double damage) {
+    double playersHealth = -damage;
+
+    for (Player duelPlayer : this.getPlayers()) {
+      if (!this.isDead(player) && !this.isSpectator(duelPlayer)) {
+        playersHealth = playersHealth + duelPlayer.getHealth() + duelPlayer.getAbsorptionAmount();
+      }
+    }
+
+    for (Player opp : this.getOpponents(player)) {
+      bossbars.get(opp)
+          .name(Component.text("Opponents").decorate(TextDecoration.BOLD).color(NamedTextColor.RED))
+          .progress((float) Math.min((playersHealth - opp.getHealth()) / playersMaxHealth, 1.0f));
+    }
   }
 
   public void startDuel(Arena arena) {
@@ -166,8 +189,6 @@ public class FFADuel extends Duel {
         }
       }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
-      double playersMaxHealth = (this.getPlayers().size() - 1) * 20;
-
       for (Player player : this.getPlayers()) {
         BossBar bar = BossBar.bossBar(
             MiniMessage.miniMessage().deserialize("<red>Opponents"),
@@ -177,28 +198,8 @@ public class FFADuel extends Duel {
 
         player.showBossBar(bar);
 
-        bossBars.put(player, bar);
+        bossbars.put(player, bar);
       }
-
-      bossbarTask =
-          new BukkitRunnable() {
-            @Override
-            public void run() {
-              for (Player player : thisDuel.getPlayers()) {
-                double playersHealth = 0;
-
-                for (Player opp : thisDuel.getOpponents(player)) {
-                  if (!thisDuel.isDead(player) && !thisDuel.isSpectator(opp)) {
-                    playersHealth = playersHealth + opp.getHealth() + opp.getAbsorptionAmount();
-                  }
-                }
-
-                bossBars.get(player).name(MiniMessage.miniMessage().deserialize("<red>Opponents"))
-                    .progress((float) Math.min(playersHealth / playersMaxHealth, 1.0f));
-              }
-            }
-          };
-      bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
       checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
 
@@ -215,7 +216,7 @@ public class FFADuel extends Duel {
 
   public void endDuel(Player[] winners, Player[] losers) {
     for (Player player : this.getPlayers()) {
-      player.hideBossBar(bossBars.get(player));
+      player.hideBossBar(bossbars.get(player));
     }
 
     Player winner = winners[0];
@@ -253,7 +254,7 @@ public class FFADuel extends Duel {
   @Override
   public void draw() {
     for (Player player : this.getPlayers()) {
-      player.hideBossBar(bossBars.get(player));
+      player.hideBossBar(bossbars.get(player));
     }
 
     for (Player player : this.getPlayers()) {

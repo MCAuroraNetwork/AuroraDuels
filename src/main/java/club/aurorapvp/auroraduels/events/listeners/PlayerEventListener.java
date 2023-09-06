@@ -25,6 +25,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -99,6 +100,19 @@ public class PlayerEventListener implements Listener {
     if (Duel.inDuel(event.getPlayer())) {
       event.setCancelled(true);
     }
+  }
+
+  @EventHandler
+  public void onPlayerDamaged(EntityDamageEvent event) {
+    if (!(event.getEntity() instanceof Player player)) {
+      return;
+    }
+
+    if (!Duel.inDuel(player)) {
+      return;
+    }
+
+    Objects.requireNonNull(Duel.getDuel(player)).updateBossbar(player, event.getDamage());
   }
 
   @EventHandler
@@ -189,7 +203,7 @@ public class PlayerEventListener implements Listener {
     } else if (duel instanceof TeamDuel teamDuel) {
       teamDuel.setDead(player);
 
-      if ((teamDuel.teamDead(player))) {
+      if ((teamDuel.isTeamDead(player))) {
         duel.endDuel(teamDuel.getOpponents(player), teamDuel.getTeammates(player));
       } else {
         duel.setSpectator(player, true);

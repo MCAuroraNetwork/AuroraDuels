@@ -53,17 +53,17 @@ public class RematchCommand extends BaseCommand {
       new Request(
           player, new RandomTeamDuel(lastDuel.getPlayers(), lastDuel.getRespawnLocation(), false));
     } else if (lastDuel instanceof TeamDuel teamDuel) {
-      boolean isInTeam1 = Arrays.asList(teamDuel.getTeam1Members()).contains(player);
+      boolean isInTeam1 = Arrays.asList(teamDuel.getTeamOneMembers()).contains(player);
       Player[] team1 =
           isInTeam1
-              ? Arrays.stream(teamDuel.getTeam1Members())
+              ? Arrays.stream(teamDuel.getTeamOneMembers())
               .filter(teamMember -> !teamMember.equals(player))
               .toArray(Player[]::new)
-              : teamDuel.getTeam1Members();
+              : teamDuel.getTeamOneMembers();
       Player[] team2 =
           isInTeam1
-              ? teamDuel.getTeam2Members()
-              : Arrays.stream(teamDuel.getTeam2Members())
+              ? teamDuel.getTeamTwoMembers()
+              : Arrays.stream(teamDuel.getTeamTwoMembers())
                   .filter(teamMember -> !teamMember.equals(player))
                   .toArray(Player[]::new);
 

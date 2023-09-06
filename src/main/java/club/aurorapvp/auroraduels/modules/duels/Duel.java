@@ -42,7 +42,6 @@ public abstract class Duel {
   protected int currentRound = 1;
   private Queue queue;
   private boolean active = false;
-  public BukkitRunnable bossbarTask;
   private final Duel thisDuel = this;
   public final BukkitRunnable checkBounds = new BukkitRunnable() {
     @Override
@@ -226,6 +225,8 @@ public abstract class Duel {
   public abstract void endDuel(Player[] winners, Player[] losers);
 
   public abstract void draw();
+
+  public abstract void updateBossbar(Player player, double damage);
 
   public Queue getQueue() {
     return queue;

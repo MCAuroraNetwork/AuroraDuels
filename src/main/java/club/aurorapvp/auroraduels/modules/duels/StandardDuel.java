@@ -16,7 +16,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.bossbar.BossBar.Color;
+import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Location;
@@ -54,6 +58,32 @@ public class StandardDuel extends Duel implements Listener {
       return playerOne;
     } else {
       return null;
+    }
+  }
+
+  public void updateBossbar(Player player, double damage) {
+    if (player == playerTwo) {
+      playerOneBar[0].name(
+              playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                  .appendSpace().append(
+                      Component.text(
+                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount() - damage) + "❤")
+                          .color(NamedTextColor.RED))
+                  .appendSpace().append(
+                      Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
+          .progress((float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+              1.0f));
+    } else {
+      playerTwoBar[0].name(
+          playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+              .appendSpace().append(
+                  Component.text(
+                          (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount() - damage) + "❤")
+                      .color(NamedTextColor.RED))
+              .appendSpace().append(
+                  Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
+          (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+              1.0f));
     }
   }
 
@@ -134,59 +164,29 @@ public class StandardDuel extends Duel implements Listener {
 
       playerOneBar[0] =
           BossBar.bossBar(
-              Lang.formatComponent(
-                  "opponent-bossbar",
-                  playerTwo.getName(),
-                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                  playerTwo.getPing()),
-              1.0f,
-              BossBar.Color.RED,
-              BossBar.Overlay.PROGRESS);
+              playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                  .appendSpace().append(
+                      Component.text(
+                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
+                          .color(NamedTextColor.RED))
+                  .appendSpace().append(
+                      Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)),
+              1.0f, Color.RED, Overlay.PROGRESS);
 
       playerOne.showBossBar(playerOneBar[0]);
 
       playerTwoBar[0] =
           BossBar.bossBar(
-              Lang.formatComponent(
-                  "opponent-bossbar",
-                  playerOne.getName(),
-                  (int) (playerOne.getHealth() + playerTwo.getAbsorptionAmount()),
-                  (int) playerOne.getLocation().distance(playerTwo.getLocation()),
-                  playerOne.getPing()),
-                  1.0f,
-              BossBar.Color.RED,
-              BossBar.Overlay.PROGRESS);
+              playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                  .appendSpace().append(
+                      Component.text(
+                              (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
+                          .color(NamedTextColor.RED))
+                  .appendSpace().append(
+                      Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA)),
+              1.0f, Color.RED, Overlay.PROGRESS);
 
       playerTwo.showBossBar(playerTwoBar[0]);
-
-      bossbarTask =
-          new BukkitRunnable() {
-            @Override
-            public void run() {
-              try {
-                playerOneBar[0].name(Lang.formatComponent("opponent-bossbar", playerTwo.getName(),
-                    (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()),
-                    (int) playerTwo.getLocation().distance(playerOne.getLocation()),
-                    playerTwo.getPing())).progress(
-                    (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-                        1.0f));
-              } catch (IllegalArgumentException e) {
-                this.cancel();
-              }
-              try {
-                playerTwoBar[0].name(Lang.formatComponent("opponent-bossbar", playerOne.getName(),
-                    (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()),
-                    (int) playerOne.getLocation().distance(playerOne.getLocation()),
-                    playerOne.getPing())).progress(
-                    (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                        1.0f));
-              } catch (IllegalArgumentException e) {
-                this.cancel();
-              }
-            }
-          };
-      bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
       checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
 

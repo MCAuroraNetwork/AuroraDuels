@@ -24,6 +24,7 @@ import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -36,38 +37,46 @@ public class TeamDuel extends Duel {
 
   public static Team team1;
   public static Team team2;
-  private final Map<Player, Boolean> team1Dead = new HashMap<>();
-  private final Map<Player, Boolean> team2Dead = new HashMap<>();
-  private final Player[] team1Members;
-  private final Player[] team2Members;
-  private final BossBar[] team1Bar = new BossBar[1];
-  private final BossBar[] team2Bar = new BossBar[1];
+  private final Map<Player, Boolean> teamOneDead = new HashMap<>();
+  private final Map<Player, Boolean> teamTwoDead = new HashMap<>();
+  private final Player[] teamOneMembers;
+  private final Player[] teamTwoMembers;
+  private final BossBar[] teamOneBar = new BossBar[1];
+  private final BossBar[] teamTwo2Bar = new BossBar[1];
+  private final double team1MaxHealth;
+  private final double team2MaxHealth;
 
-  public TeamDuel(Player[] team1Members, Player[] team2Members, Location respawnLocation,
+  public TeamDuel(Player[] teamOneMembers, Player[] teamTwoMembers, Location respawnLocation,
       boolean ranked) {
-    super(Stream.concat(Arrays.stream(team1Members), Arrays.stream(team2Members))
+    super(Stream.concat(Arrays.stream(teamOneMembers), Arrays.stream(teamTwoMembers))
             .collect(Collectors.toSet()),
         respawnLocation, ranked);
 
     team1.color(NamedTextColor.RED);
     team2.color(NamedTextColor.BLUE);
 
-    this.team1Members = team1Members;
-    this.team2Members = team2Members;
+    this.teamOneMembers = teamOneMembers;
+    this.teamTwoMembers = teamTwoMembers;
+
+    team1MaxHealth = teamOneMembers.length * 20;
+    team2MaxHealth = teamTwoMembers.length * 20;
   }
 
-  public TeamDuel(Player[] team1Members, Player[] team2Members, Queue queue, Kit kit,
+  public TeamDuel(Player[] teamOneMembers, Player[] teamTwoMembers, Queue queue, Kit kit,
       Location respawnLocation,
       boolean ranked) {
-    super(Stream.concat(Arrays.stream(team1Members), Arrays.stream(team2Members))
+    super(Stream.concat(Arrays.stream(teamOneMembers), Arrays.stream(teamTwoMembers))
             .collect(Collectors.toSet()),
         respawnLocation, queue, kit, ranked);
 
     team1.color(NamedTextColor.RED);
     team2.color(NamedTextColor.BLUE);
 
-    this.team1Members = team1Members;
-    this.team2Members = team2Members;
+    this.teamOneMembers = teamOneMembers;
+    this.teamTwoMembers = teamTwoMembers;
+
+    team1MaxHealth = teamOneMembers.length * 20;
+    team2MaxHealth = teamTwoMembers.length * 20;
   }
 
   public static void init() {
@@ -86,57 +95,110 @@ public class TeamDuel extends Duel {
     }
   }
 
-  public Player[] getTeam1Members() {
-    return team1Members;
+  public Player[] getTeamOneMembers() {
+    return teamOneMembers;
   }
 
-  public Player[] getTeam2Members() {
-    return team2Members;
+  public Player[] getTeamTwoMembers() {
+    return teamTwoMembers;
   }
 
-  @SuppressWarnings("unused")
   public Player[] getOpponents(Player player) {
-    for (Player teamMember : team1Members) {
+    for (Player teamMember : teamOneMembers) {
       if (teamMember == player) {
-        return team2Members;
+        return teamTwoMembers;
       }
     }
-    return team1Members;
+    return teamOneMembers;
+  }
+
+  public Player[] getTeammates(Player player) {
+    for (Player teamMember : teamOneMembers) {
+      if (teamMember == player) {
+        return teamOneMembers;
+      }
+    }
+    return teamTwoMembers;
+  }
+
+  public boolean isOnTeamOne(Player player) {
+    for (Player teamOneMember : teamOneMembers) {
+      if (teamOneMember == player) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   @SuppressWarnings("unused")
-  public Player[] getTeammates(Player player) {
-    for (Player teamMember : team1Members) {
-      if (teamMember == player) {
-        return team1Members;
+  public boolean isOnTeamTwo(Player player) {
+    for (Player teamOneMember : teamOneMembers) {
+      if (teamOneMember == player) {
+        return true;
       }
     }
-    return team2Members;
+
+    return false;
   }
 
   public void setDead(Player player) {
-    if (team1Dead.containsKey(player)) {
-      team1Dead.put(player, true);
+    if (teamOneDead.containsKey(player)) {
+      teamOneDead.put(player, true);
     } else {
-      team2Dead.put(player, true);
+      teamTwoDead.put(player, true);
     }
   }
 
-  public boolean teamDead(Player player) {
-    if (team1Dead.containsKey(player)) {
-      for (boolean dead : team1Dead.values()) {
+  public boolean isTeamDead(Player player) {
+    if (teamOneDead.containsKey(player)) {
+      for (boolean dead : teamOneDead.values()) {
         if (!dead) {
           return false;
         }
       }
     } else {
-      for (boolean dead : team2Dead.values()) {
+      for (boolean dead : teamTwoDead.values()) {
         if (!dead) {
           return false;
         }
       }
     }
     return true;
+  }
+
+  public void updateBossbar(Player player, double damage) {
+    if (isOnTeamOne(player)) {
+      double team1Health = -damage;
+
+      for (Player team1Member : teamOneMembers) {
+        if (teamOneDead.get(team1Member)) {
+          continue;
+        }
+
+        team1Health =
+            team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
+      }
+
+      teamTwo2Bar[0].name(
+              Component.text("Enemy Team").decorate(TextDecoration.BOLD).color(NamedTextColor.RED))
+          .progress((float) Math.min(team1Health / team1MaxHealth, 1.0f));
+    } else {
+      double team2Health = -damage;
+
+      for (Player team2Member : teamTwoMembers) {
+        if (teamTwoDead.get(team2Member) || this.isSpectator(team2Member)) {
+          continue;
+        }
+
+        team2Health =
+            team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
+      }
+
+      teamOneBar[0].name(
+              Component.text("Enemy Team").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE))
+          .progress((float) Math.min(team2Health / team2MaxHealth, 1.0f));
+    }
   }
 
   public void startDuel(Arena arena) {
@@ -155,13 +217,13 @@ public class TeamDuel extends Duel {
             arena.getSecondSpawn().getY(),
             arena.getSecondSpawn().getZ());
 
-    for (Player player : team1Members) {
-      team1Dead.put(player, false);
+    for (Player player : teamOneMembers) {
+      teamOneDead.put(player, false);
       team1.addPlayer(player);
     }
 
-    for (Player player : team2Members) {
-      team2Dead.put(player, false);
+    for (Player player : teamTwoMembers) {
+      teamTwoDead.put(player, false);
       team2.addPlayer(player);
     }
 
@@ -169,12 +231,12 @@ public class TeamDuel extends Duel {
 
     Set<CompletableFuture<Boolean>> teleportFutures = new HashSet<>();
 
-    for (Player player : team1Members) {
+    for (Player player : teamOneMembers) {
       CompletableFuture<Boolean> teleportFuture = player.teleportAsync(spawn1);
       teleportFutures.add(teleportFuture);
     }
 
-    for (Player player : team2Members) {
+    for (Player player : teamTwoMembers) {
       CompletableFuture<Boolean> teleportFuture = player.teleportAsync(spawn1);
       teleportFutures.add(teleportFuture);
     }
@@ -191,7 +253,7 @@ public class TeamDuel extends Duel {
 
         @Override
         public void run() {
-          for (Player player : team1Members) {
+          for (Player player : teamOneMembers) {
             CompletableFuture<Boolean> teleport = player.teleportAsync(spawn1);
 
             teleport.thenRun(() -> player.lookAt(spawn2, LookAnchor.EYES));
@@ -202,9 +264,9 @@ public class TeamDuel extends Duel {
 
             if ((seconds -= 1) < 0) {
               StringBuilder sb = new StringBuilder();
-              for (int i = 0; i < team2Members.length; i++) {
-                sb.append(team2Members[i].getName());
-                if (i < team2Members.length - 1) {
+              for (int i = 0; i < teamTwoMembers.length; i++) {
+                sb.append(teamTwoMembers[i].getName());
+                if (i < teamTwoMembers.length - 1) {
                   sb.append(", ");
                 }
               }
@@ -227,7 +289,7 @@ public class TeamDuel extends Duel {
 
         @Override
         public void run() {
-          for (Player player : team2Members) {
+          for (Player player : teamTwoMembers) {
             CompletableFuture<Boolean> teleport = player.teleportAsync(spawn2);
 
             teleport.thenRun(() -> player.lookAt(spawn1, LookAnchor.EYES));
@@ -238,9 +300,9 @@ public class TeamDuel extends Duel {
 
             if ((seconds -= 1) < 0) {
               StringBuilder sb = new StringBuilder();
-              for (int i = 0; i < team1Members.length; i++) {
-                sb.append(team1Members[i].getName());
-                if (i < team1Members.length - 1) {
+              for (int i = 0; i < teamOneMembers.length; i++) {
+                sb.append(teamOneMembers[i].getName());
+                if (i < teamOneMembers.length - 1) {
                   sb.append(", ");
                 }
               }
@@ -258,63 +320,27 @@ public class TeamDuel extends Duel {
         }
       }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
 
-      double team1MaxHealth = team1Members.length * 20;
-      double team2MaxHealth = team2Members.length * 20;
-
-      team1Bar[0] =
+      teamOneBar[0] =
           BossBar.bossBar(
               Lang.getComponent("team2-bossbar"),
               1.0f,
               Color.BLUE,
               Overlay.PROGRESS);
 
-      for (Player team1Member : team1Members) {
-        team1Member.showBossBar(team1Bar[0]);
+      for (Player team1Member : teamOneMembers) {
+        team1Member.showBossBar(teamOneBar[0]);
       }
 
-      team2Bar[0] =
+      teamTwo2Bar[0] =
           BossBar.bossBar(
               Lang.getComponent("team1-bossbar"),
               1.0f,
               Color.RED,
               Overlay.PROGRESS);
 
-      for (Player team2Member : team2Members) {
-        team2Member.showBossBar(team2Bar[0]);
+      for (Player team2Member : teamTwoMembers) {
+        team2Member.showBossBar(teamTwo2Bar[0]);
       }
-
-      bossbarTask =
-          new BukkitRunnable() {
-            @Override
-            public void run() {
-              double team2Health = 0;
-
-              for (Player team2Member : team2Members) {
-                if (team2Dead.get(team2Member) || thisDuel.isSpectator(team2Member)) {
-                  continue;
-                }
-
-                team2Health =
-                    team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
-              }
-
-              team1Bar[0].name(Lang.getComponent("team2-bossbar")).progress((float) Math.min(team2Health / team2MaxHealth, 1.0f));
-
-              double team1Health = 0;
-
-              for (Player team1Member : team1Members) {
-                if (team1Dead.get(team1Member)) {
-                  continue;
-                }
-
-                team1Health =
-                    team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
-              }
-
-              team2Bar[0].name(Lang.getComponent("team1-bossbar")).progress((float) Math.min(team1Health / team1MaxHealth, 1.0f));
-            }
-          };
-      bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
 
       checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
 
@@ -358,14 +384,14 @@ public class TeamDuel extends Duel {
           Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
     }
 
-    for (Player player : team1Members) {
+    for (Player player : teamOneMembers) {
       TeamDuel.team1.removePlayer(player);
-      player.hideBossBar(team1Bar[0]);
+      player.hideBossBar(teamOneBar[0]);
     }
 
-    for (Player player : team2Members) {
+    for (Player player : teamTwoMembers) {
       TeamDuel.team2.removePlayer(player);
-      player.hideBossBar(team2Bar[0]);
+      player.hideBossBar(teamTwo2Bar[0]);
     }
 
     Duel thisDuel = this;
@@ -384,14 +410,14 @@ public class TeamDuel extends Duel {
       player.sendMessage(Lang.getComponent("draw"));
     }
 
-    for (Player player : team1Members) {
+    for (Player player : teamOneMembers) {
       team1.removePlayer(player);
-      player.hideBossBar(team1Bar[0]);
+      player.hideBossBar(teamOneBar[0]);
     }
 
-    for (Player player : team2Members) {
+    for (Player player : teamTwoMembers) {
       team2.removePlayer(player);
-      player.hideBossBar(team2Bar[0]);
+      player.hideBossBar(teamTwo2Bar[0]);
     }
 
     Duel thisDuel = this;

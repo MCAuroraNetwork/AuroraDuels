@@ -100,11 +100,6 @@ public class Lang {
     DEFAULTS.put("new-win", "prefix <bold><green>+1 Win");
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
-        "opponent-bossbar",
-        "<yellow><bold>%1$s <reset><red>| %2$s❤ |<reset><green> %3$sm |<reset><aqua> %4$sms");
-    DEFAULTS.put("team1-bossbar", "<red><bold>Enemy Team");
-    DEFAULTS.put("team2-bossbar", "<blue><bold>Enemy Team");
-    DEFAULTS.put(
         "help-command",
         """
             prefix <yellow><bold>All Commands:
