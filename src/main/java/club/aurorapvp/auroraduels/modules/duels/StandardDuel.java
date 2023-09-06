@@ -61,32 +61,6 @@ public class StandardDuel extends Duel implements Listener {
     }
   }
 
-  public void updateBossbar(Player player, double damage) {
-    if (player == playerTwo) {
-      playerOneBar[0].name(
-              playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                  .appendSpace().append(
-                      Component.text(
-                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount() - damage) + "❤")
-                          .color(NamedTextColor.RED))
-                  .appendSpace().append(
-                      Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
-          .progress((float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-              1.0f));
-    } else {
-      playerTwoBar[0].name(
-          playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-              .appendSpace().append(
-                  Component.text(
-                          (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount() - damage) + "❤")
-                      .color(NamedTextColor.RED))
-              .appendSpace().append(
-                  Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
-          (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-              1.0f));
-    }
-  }
-
   public void startDuel(Arena arena) {
     this.arena = arena;
 
@@ -188,7 +162,32 @@ public class StandardDuel extends Duel implements Listener {
 
       playerTwo.showBossBar(playerTwoBar[0]);
 
-      checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
+      bossbarTask = new BukkitRunnable() {
+        @Override
+        public void run() {
+          playerOneBar[0].name(
+                  playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                      .appendSpace().append(
+                          Component.text(
+                                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
+                              .color(NamedTextColor.RED))
+                      .appendSpace().append(
+                          Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
+              .progress(
+                  (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
+                      1.0f));
+          playerTwoBar[0].name(
+              playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
+                  .appendSpace().append(
+                      Component.text(
+                              (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
+                          .color(NamedTextColor.RED))
+                  .appendSpace().append(
+                      Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
+              (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
+                  1.0f));
+        }
+      };
 
       timeStarted = System.currentTimeMillis();
 

@@ -167,40 +167,6 @@ public class TeamDuel extends Duel {
     return true;
   }
 
-  public void updateBossbar(Player player, double damage) {
-    if (isOnTeamOne(player)) {
-      double team1Health = -damage;
-
-      for (Player team1Member : teamOneMembers) {
-        if (teamOneDead.get(team1Member)) {
-          continue;
-        }
-
-        team1Health =
-            team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
-      }
-
-      teamTwo2Bar[0].name(
-              Component.text("Enemy Team").decorate(TextDecoration.BOLD).color(NamedTextColor.RED))
-          .progress((float) Math.min(team1Health / team1MaxHealth, 1.0f));
-    } else {
-      double team2Health = -damage;
-
-      for (Player team2Member : teamTwoMembers) {
-        if (teamTwoDead.get(team2Member) || this.isSpectator(team2Member)) {
-          continue;
-        }
-
-        team2Health =
-            team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
-      }
-
-      teamOneBar[0].name(
-              Component.text("Enemy Team").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE))
-          .progress((float) Math.min(team2Health / team2MaxHealth, 1.0f));
-    }
-  }
-
   public void startDuel(Arena arena) {
     this.arena = arena;
 
@@ -342,7 +308,40 @@ public class TeamDuel extends Duel {
         team2Member.showBossBar(teamTwo2Bar[0]);
       }
 
-      checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          double team1Health = 0;
+
+          for (Player team1Member : teamOneMembers) {
+            if (teamOneDead.get(team1Member) || thisDuel.isSpectator(team1Member)) {
+              continue;
+            }
+
+            team1Health =
+                team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
+          }
+
+          teamTwo2Bar[0].name(
+                  Component.text("Enemy Team").decorate(TextDecoration.BOLD).color(NamedTextColor.RED))
+              .progress((float) Math.min(team1Health / team1MaxHealth, 1.0f));
+
+          double team2Health = 0;
+
+          for (Player team2Member : teamTwoMembers) {
+            if (teamTwoDead.get(team2Member) || thisDuel.isSpectator(team2Member)) {
+              continue;
+            }
+
+            team2Health =
+                team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
+          }
+
+          teamOneBar[0].name(
+                  Component.text("Enemy Team").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE))
+              .progress((float) Math.min(team2Health / team2MaxHealth, 1.0f));
+        }
+      };
 
       timeStarted = System.currentTimeMillis();
 

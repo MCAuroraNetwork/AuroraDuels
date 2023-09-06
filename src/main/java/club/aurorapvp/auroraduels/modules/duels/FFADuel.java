@@ -34,20 +34,14 @@ public class FFADuel extends Duel {
 
   private final Set<Player> deadPlayers = new HashSet<>();
   private final Map<Player, BossBar> bossbars = new HashMap<>();
-  private final double playersMaxHealth;
-
 
   public FFADuel(Set<Player> players, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, ranked);
-
-    playersMaxHealth = (players.size() - 1) * 20;
   }
 
   public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation,
       boolean ranked) {
     super(players, respawnLocation, queue, kit, ranked);
-
-    playersMaxHealth = (players.size() - 1) * 20;
   }
 
   public Set<Player> getOpponents(Player player) {
@@ -84,22 +78,6 @@ public class FFADuel extends Duel {
       }
     }
     return null;
-  }
-
-  public void updateBossbar(Player player, double damage) {
-    double playersHealth = -damage;
-
-    for (Player duelPlayer : this.getPlayers()) {
-      if (!this.isDead(player) && !this.isSpectator(duelPlayer)) {
-        playersHealth = playersHealth + duelPlayer.getHealth() + duelPlayer.getAbsorptionAmount();
-      }
-    }
-
-    for (Player opp : this.getOpponents(player)) {
-      bossbars.get(opp)
-          .name(Component.text("Opponents").decorate(TextDecoration.BOLD).color(NamedTextColor.RED))
-          .progress((float) Math.min((playersHealth - opp.getHealth()) / playersMaxHealth, 1.0f));
-    }
   }
 
   public void startDuel(Arena arena) {
@@ -203,7 +181,26 @@ public class FFADuel extends Duel {
         bossbars.put(player, bar);
       }
 
-      checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
+      final double playersMaxHealth = (players.size() - 1) * 20;
+
+      bossbarTask = new BukkitRunnable() {
+        @Override
+        public void run() {
+          double playersHealth = 0;
+
+          for (Player player : thisDuel.getPlayers()) {
+            if (!thisDuel.isDead(player) && !thisDuel.isSpectator(player)) {
+              playersHealth = playersHealth + player.getHealth() + player.getAbsorptionAmount();
+            }
+          }
+
+          for (Player player : thisDuel.getPlayers()) {
+            bossbars.get(player)
+                .name(Component.text("Opponents").decorate(TextDecoration.BOLD).color(NamedTextColor.RED))
+                .progress((float) Math.min(((playersHealth - player.getHealth()) / playersMaxHealth), 1.0f));
+          }
+        }
+      };
 
       timeStarted = System.currentTimeMillis();
 

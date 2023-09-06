@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
@@ -48,15 +49,13 @@ public class DuelStartEvent extends Event {
                              this.cancel();
                            }
                          },
-        Config.get().
-
-            getInt("duels.max-duration"));
+        Config.get().etInt("duels.max-duration"));
 
     duel.setActive(true);
-    duel.getArena().
+    duel.getArena().setOccupied(true);
 
-        setOccupied(true);
-
+    duel.checkBounds.runTaskTimer(AuroraDuels.INSTANCE, 200L, 200L);
+    duel.bossbarTask.runTaskTimer(AuroraDuels.INSTANCE, 0L, 1L);
   }
 
   @SuppressWarnings("unused")
