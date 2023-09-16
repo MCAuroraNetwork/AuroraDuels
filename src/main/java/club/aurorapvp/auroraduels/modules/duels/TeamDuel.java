@@ -241,7 +241,7 @@ public class TeamDuel extends Duel {
 
               final Title title =
                   Title.title(
-                      Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.INSTANCE.getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -279,7 +279,7 @@ public class TeamDuel extends Duel {
 
               final Title title =
                   Title.title(
-                      Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.INSTANCE.getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -379,12 +379,12 @@ public class TeamDuel extends Duel {
 
     for (Player player : winners) {
       player.showTitle(
-          Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + loserNames)));
+          Title.title(AuroraDuels.INSTANCE.getLang().getComponent("you-won"), Component.text("Opponents: " + loserNames)));
     }
 
     for (Player player : losers) {
       player.showTitle(
-          Title.title(Lang.getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
+          Title.title(AuroraDuels.INSTANCE.getLang().getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
     }
 
     for (Player player : teamOneMembers) {
@@ -410,7 +410,7 @@ public class TeamDuel extends Duel {
   @Override
   public void draw() {
     for (Player player : this.getPlayers()) {
-      player.sendMessage(Lang.getComponent("draw"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("draw"));
     }
 
     for (Player player : teamOneMembers) {

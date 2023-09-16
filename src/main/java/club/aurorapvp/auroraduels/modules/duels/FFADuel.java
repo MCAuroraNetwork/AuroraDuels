@@ -153,7 +153,7 @@ public class FFADuel extends Duel {
 
               title =
                   Title.title(
-                      Lang.getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.INSTANCE.getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -242,11 +242,11 @@ public class FFADuel extends Duel {
     String loserNames = sb.toString();
 
     winner.showTitle(
-        Title.title(Lang.getComponent("you-won"), Component.text("Opponents: " + loserNames)));
+        Title.title(AuroraDuels.INSTANCE.getLang().getComponent("you-won"), Component.text("Opponents: " + loserNames)));
 
     for (Player player : losers) {
       player.showTitle(
-          Title.title(Lang.getComponent("you-lost"), Component.text("Winner: " + winnerName)));
+          Title.title(AuroraDuels.INSTANCE.getLang().getComponent("you-lost"), Component.text("Winner: " + winnerName)));
     }
 
     Duel thisDuel = this;
@@ -266,7 +266,7 @@ public class FFADuel extends Duel {
     }
 
     for (Player player : this.getPlayers()) {
-      player.sendMessage(Lang.getComponent("draw"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("draw"));
     }
 
     Duel thisDuel = this;

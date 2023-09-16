@@ -1,8 +1,6 @@
 package club.aurorapvp.auroraduels.commands;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import co.aikar.commands.BaseCommand;
@@ -24,12 +22,12 @@ public class PluginCommands extends BaseCommand {
   public void onReload(Player player) {
     long startTime = System.currentTimeMillis();
 
-    Config.reload();
-    Lang.reload();
+    AuroraDuels.INSTANCE.reloadConfig();
+    AuroraDuels.INSTANCE.getLang().reload();
     Arena.reloadAll();
     Queue.reloadAll();
 
-    player.sendMessage(Lang.getComponent("reloaded"));
+    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("reloaded"));
 
     AuroraDuels.INSTANCE
         .getLogger()
@@ -42,6 +40,6 @@ public class PluginCommands extends BaseCommand {
   @Description("Lists all available plugin commands and their function")
   @SuppressWarnings("unused")
   public void onHelp(Player player) {
-    player.sendMessage(Lang.getComponent("help-command"));
+    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("help-command"));
   }
 }

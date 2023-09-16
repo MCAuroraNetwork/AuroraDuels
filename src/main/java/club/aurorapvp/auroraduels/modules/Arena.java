@@ -184,11 +184,11 @@ public class Arena {
       player.getInventory()
           .setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.IRON_HOE));
 
-      player.sendMessage(Lang.getComponent("set-spawn1"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("set-spawn1"));
     } else if (state != ArenaState.IDLE) {
-      player.sendMessage(Lang.getComponent("arena-already-being-created"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-already-being-created"));
     } else {
-      player.sendMessage(Lang.getComponent("arena-already-exists"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-already-exists"));
     }
   }
 
@@ -199,7 +199,7 @@ public class Arena {
       player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
-                  Lang.getString("spawn1-set")
+                  AuroraDuels.INSTANCE.getLang().getString("spawn1-set")
                       + " ("
                       + spawn1.getBlockX()
                       + ", "
@@ -208,7 +208,7 @@ public class Arena {
                       + spawn1.getBlockZ()
                       + ")"));
 
-      player.sendMessage(Lang.getComponent("set-spawn2"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("set-spawn2"));
       state = ArenaState.SPAWN_2;
       Wand.setActive(Wand.WandActivity.RIGHT);
     }
@@ -219,7 +219,7 @@ public class Arena {
       player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
-                  Lang.getString("spawn2-set")
+                  AuroraDuels.INSTANCE.getLang().getString("spawn2-set")
                       + " ("
                       + spawn2.getBlockX()
                       + ", "
@@ -228,8 +228,8 @@ public class Arena {
                       + spawn2.getBlockZ()
                       + ")"));
 
-      player.sendMessage(Lang.getComponent("spawns-set"));
-      player.sendMessage(Lang.getComponent("set-pos1"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("spawns-set"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("set-pos1"));
       world = player.getWorld();
       state = ArenaState.CORNER_1;
       Wand.setActive(Wand.WandActivity.LEFT);
@@ -245,7 +245,7 @@ public class Arena {
       player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
-                  Lang.getString("pos1-set")
+                  AuroraDuels.INSTANCE.getLang().getString("pos1-set")
                       + " ("
                       + pos1.getBlockX()
                       + ", "
@@ -254,7 +254,7 @@ public class Arena {
                       + pos1.getBlockZ()
                       + ")"));
 
-      player.sendMessage(Lang.getComponent("set-pos2"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("set-pos2"));
       state = ArenaState.CORNER_2;
       Wand.setActive(Wand.WandActivity.RIGHT);
     }
@@ -267,7 +267,7 @@ public class Arena {
       player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
-                  Lang.getString("pos2-set")
+                  AuroraDuels.INSTANCE.getLang().getString("pos2-set")
                       + " ("
                       + pos2.getBlockX()
                       + ", "
@@ -276,7 +276,7 @@ public class Arena {
                       + pos2.getBlockZ()
                       + ")"));
 
-      player.sendMessage(Lang.getComponent("arena-created"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-created"));
       Wand.setActive(Wand.WandActivity.INACTIVE);
       schematic.create();
       data.create();
@@ -288,9 +288,9 @@ public class Arena {
   public void reset(Player player) {
     if (this.exists()) {
       this.reset();
-      player.sendMessage(Lang.getComponent("arena-reset"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-reset"));
     } else {
-      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-does-not-exist"));
     }
   }
 
@@ -320,9 +320,9 @@ public class Arena {
       this.schematic.delete();
       arenas.remove(this);
 
-      player.sendMessage(Lang.getComponent("arena-deleted"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-deleted"));
     } else {
-      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-does-not-exist"));
     }
   }
 

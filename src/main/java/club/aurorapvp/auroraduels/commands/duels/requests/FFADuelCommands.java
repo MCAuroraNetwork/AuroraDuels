@@ -31,7 +31,7 @@ public class FFADuelCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onNewRequest(Player player, String[] playerNames) {
     if (playerNames.length < 1) {
-      player.sendMessage(Lang.getComponent("not-enough-players"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("not-enough-players"));
       return;
     }
 
@@ -40,7 +40,7 @@ public class FFADuelCommands extends BaseCommand {
     int i = 0;
     for (String playerName : playerNames) {
       if (playerName.equals(player.getName())) {
-        player.sendMessage(Lang.getComponent("unknown-opponent"));
+        player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("unknown-opponent"));
         return;
       }
 

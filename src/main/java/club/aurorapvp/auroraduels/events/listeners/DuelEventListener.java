@@ -4,16 +4,11 @@ import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Config;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
-import github.scarsz.discordsrv.DiscordSRV;
-import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
-import java.awt.Color;
 import java.util.Arrays;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,7 +24,7 @@ public class DuelEventListener implements Listener {
     Rating.getRating("default").setEnabled(false);
 
     if (event.getDuel().isRanked()) {
-      if (Config.get()
+      if (AuroraDuels.INSTANCE.getConfig()
           .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
         Rating.getRating("default_duels").setEnabled(true);
       }
@@ -69,7 +64,7 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    if (Config.get()
+    if (AuroraDuels.INSTANCE.getConfig()
         .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
       Rating.getRating("default_duels").setEnabled(false);
     }

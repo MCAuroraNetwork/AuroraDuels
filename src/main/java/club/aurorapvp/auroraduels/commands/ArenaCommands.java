@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.commands;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import co.aikar.commands.BaseCommand;
@@ -40,7 +41,7 @@ public class ArenaCommands extends BaseCommand {
     if (arena != null) {
       arena.delete(player);
     } else {
-      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-does-not-exist"));
     }
   }
 
@@ -56,7 +57,7 @@ public class ArenaCommands extends BaseCommand {
     if (arena != null) {
       arena.reset(player);
     } else {
-      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-does-not-exist"));
     }
   }
 

@@ -104,12 +104,12 @@ public class DuelEndEvent extends Event {
 
     String losersText = sb.toString();
 
-    Bukkit.broadcast(Lang.formatComponent("duel-won", winnersText, losersText));
+    Bukkit.broadcast(AuroraDuels.INSTANCE.getLang().formatComponent("duel-won", winnersText, losersText));
 
     if (AuroraDuels.isDiscordSRVInstalled()) {
       DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
           new EmbedBuilder().setAuthor(
-                  Lang.getString("discord-duel-won").formatted(winnersText, losersText), null,
+                  AuroraDuels.INSTANCE.getLang().getString("discord-duel-won").formatted(winnersText, losersText), null,
                   "https://cravatar.eu/helmavatar/" + winners[0].getUniqueId())
               .setColor(Color.BLACK).build()).queue();
     }

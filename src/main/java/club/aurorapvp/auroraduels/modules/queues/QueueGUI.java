@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 public class QueueGUI implements InventoryHolder, Listener {
 
   private final Inventory inventory =
-      Bukkit.createInventory(this, 54, Lang.getComponent("queue-menu"));
+      Bukkit.createInventory(this, 54, AuroraDuels.INSTANCE.getLang().getComponent("queue-menu"));
 
   public QueueGUI() {
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
@@ -72,7 +71,7 @@ public class QueueGUI implements InventoryHolder, Listener {
     event.setCancelled(true);
 
     if (event.getCurrentItem().getItemMeta().displayName() == null) {
-      player.sendMessage(Lang.getComponent("queue-not-found"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-not-found"));
     } else {
       String itemName =
           PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
@@ -81,7 +80,7 @@ public class QueueGUI implements InventoryHolder, Listener {
       Queue queue = Queue.getQueue(queueName.toLowerCase());
 
       if (queue == null) {
-        player.sendMessage(Lang.getComponent("queue-not-found"));
+        player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-not-found"));
         return;
       }
 

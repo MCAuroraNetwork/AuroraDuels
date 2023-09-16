@@ -32,22 +32,22 @@ public class Request {
     this.duel = duel;
 
     if (Request.hasPendingRequest(requester)) {
-      requester.sendMessage(Lang.getComponent("you-have-request"));
+      requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("you-have-request"));
       return;
     } else if (Queue.inQueue(requester)) {
-      requester.sendMessage(Lang.getComponent("in-queue"));
+      requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("in-queue"));
       return;
     }
 
     for (Player player : duel.getPlayers()) {
       if (hasPendingRequest(requester, player)) {
-        requester.sendMessage(Lang.getComponent("already-has-request"));
+        requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("already-has-request"));
         return;
       } else if (Duel.inDuel(player)) {
-        requester.sendMessage(Lang.getComponent("player-in-duel"));
+        requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("player-in-duel"));
         return;
       } else if (Queue.inQueue(player)) {
-        requester.sendMessage(Lang.getComponent("player-in-duel"));
+        requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("player-in-duel"));
         return;
       }
     }
@@ -158,15 +158,15 @@ public class Request {
     requested.remove(requester);
 
     if (requested.isEmpty()) {
-      requester.sendMessage(Lang.getComponent("unknown-opponent"));
+      requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("unknown-opponent"));
       PENDING_REQUESTS.remove(this);
       return;
     }
 
-    requester.sendMessage(Lang.getComponent("sent-request"));
+    requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("sent-request"));
 
     for (Player player : requested) {
-      player.sendMessage(Lang.formatComponent("received-request", requester.getName()));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().formatComponent("received-request", requester.getName()));
     }
 
     for (Player player : requested) {
@@ -181,10 +181,10 @@ public class Request {
               @Override
               public void run() {
                 if (PENDING_REQUESTS.contains(thisRequest)) {
-                  requester.sendMessage(Lang.getComponent("request-timed-out"));
+                  requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("request-timed-out"));
 
                   for (Player player : requested) {
-                    player.sendMessage(Lang.getComponent("request-timed-out"));
+                    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("request-timed-out"));
                   }
 
                   PENDING_REQUESTS.remove(thisRequest);
@@ -192,16 +192,16 @@ public class Request {
                 }
               }
             },
-            Config.get().getInt("requests.expiry-time"));
+            AuroraDuels.INSTANCE.getConfig().getInt("requests.expiry-time"));
   }
 
   public void accept(Player player) {
-    player.sendMessage(Lang.getComponent("request-accepted"));
+    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("request-accepted"));
     playersAccepted.put(player, true);
 
     if (!playersAccepted.containsValue(false)) {
       PENDING_REQUESTS.remove(this);
-      requester.sendMessage(Lang.getComponent("request-accepted"));
+      requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("request-accepted"));
 
       duel.getQueue().enterDuelQueue(duel);
     }
@@ -212,10 +212,10 @@ public class Request {
   public void deny() {
     PENDING_REQUESTS.remove(this);
     Duel.getDuels().remove(duel);
-    requester.sendMessage(Lang.getComponent("request-denied"));
+    requester.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("request-denied"));
 
     for (Player player : requested) {
-      player.sendMessage(Lang.getComponent("request-denied"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("request-denied"));
     }
   }
 }

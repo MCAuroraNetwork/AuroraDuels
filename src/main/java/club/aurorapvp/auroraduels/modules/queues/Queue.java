@@ -62,7 +62,7 @@ public class Queue {
   public static void init() {
     File dir = new File(AuroraDuels.INSTANCE.getDataFolder(), "/queues/");
 
-    if (Config.get().getBoolean("queues.enable-default-queue")) {
+    if (AuroraDuels.INSTANCE.getConfig().getBoolean("queues.enable-default-queue")) {
       Queue queue = new Queue("default");
       queue.addArenas(Arena.getArenas());
 
@@ -94,7 +94,7 @@ public class Queue {
   public static void reloadAll() {
     queues.clear();
 
-    if (Config.get().getBoolean("queues.enable-default-queue")) {
+    if (AuroraDuels.INSTANCE.getConfig().getBoolean("queues.enable-default-queue")) {
       Queue queue = new Queue("default");
       queue.addArenas(Arena.getArenas());
 
@@ -131,20 +131,20 @@ public class Queue {
 
   public void findMatch(Player player, boolean ranked) {
     if (Request.hasPendingRequest(player)) {
-      player.sendMessage(Lang.getComponent("you-have-request"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("you-have-request"));
       return;
     }
 
     if (lookingForMatch.containsValue(player)) {
       lookingForMatch.clear();
-      player.sendMessage(Lang.getComponent("not-looking-match"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("not-looking-match"));
       return;
     } else if (Queue.inQueue(player)) {
-      player.sendMessage(Lang.getComponent("in-queue"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("in-queue"));
       return;
     }
 
-    player.sendMessage(Lang.getComponent("looking-match"));
+    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("looking-match"));
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(ranked, player);
     } else {
@@ -162,8 +162,8 @@ public class Queue {
       this.enterDuelQueue(
           new StandardDuel(player, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked,
               1));
-      player.sendMessage(Lang.getComponent("match-found"));
-      lookingForMatch.get(ranked).sendMessage(Lang.getComponent("match-found"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("match-found"));
+      lookingForMatch.get(ranked).sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("match-found"));
       lookingForMatch.clear();
     }
   }
@@ -219,15 +219,15 @@ public class Queue {
 
       create(player);
     } else if (this.exists()) {
-      player.sendMessage(Lang.getComponent("queue-already-exists"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-already-exists"));
     } else {
-      player.sendMessage(Lang.getComponent("queue-being-created"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-being-created"));
     }
   }
 
   public void create(Player player) {
     if (player.getInventory().getItemInMainHand().getItemMeta() == null) {
-      player.sendMessage(Lang.getComponent("queue-invalid-item"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-invalid-item"));
       queues.remove(this);
       return;
     }
@@ -242,11 +242,11 @@ public class Queue {
 
       player.sendMessage(
           MiniMessage.miniMessage()
-              .deserialize(String.format(Lang.getString("add-arena"), arenas.size())));
+              .deserialize(String.format(AuroraDuels.INSTANCE.getLang().getString("add-arena"), arenas.size())));
     } else if (this.exists()) {
-      player.sendMessage(Lang.getComponent("queue-already-exists"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-already-exists"));
     } else {
-      player.sendMessage(Lang.getComponent("queue-being-created"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-being-created"));
     }
   }
 
@@ -257,12 +257,12 @@ public class Queue {
       data.create();
       AuroraDuels.getQueueGUI().addItem(this.getDisplayItem());
 
-      player.sendMessage(Lang.getComponent("queue-created"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
       arenas.add(Arena.getArena(str));
-      player.sendMessage(Lang.formatComponent("add-arena", arenas.size()));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().formatComponent("add-arena", arenas.size()));
     } else {
-      player.sendMessage(Lang.getComponent("arena-does-not-exist"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-does-not-exist"));
     }
   }
 
@@ -274,7 +274,7 @@ public class Queue {
     duelQueue.add(duel);
 
     for (Player player : duel.getPlayers()) {
-      player.sendMessage(Lang.getComponent("entered-queue"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("entered-queue"));
     }
 
     Queue thisQueue = this;

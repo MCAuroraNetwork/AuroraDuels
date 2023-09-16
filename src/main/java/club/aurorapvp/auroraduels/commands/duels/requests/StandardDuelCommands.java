@@ -31,7 +31,7 @@ public class StandardDuelCommands extends BaseCommand {
     Player requested = Bukkit.getPlayer(playerName);
 
     if (requested == null || requested == player) {
-      player.sendMessage(Lang.getComponent("unknown-opponent"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("unknown-opponent"));
       return;
     }
 

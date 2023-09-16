@@ -16,19 +16,19 @@ public class Lang {
   private static final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "lang.yml");
   private static YamlConfiguration lang;
 
-  public static void init() {
-    Lang.reload();
-    Lang.generateDefaults();
+  public Lang() {
+    this.reload();
+    this.generateDefaults();
   }
 
-  public static void generateDefaults() {
+  public void generateDefaults() {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
-    for (Object path : get().getKeys(false).toArray()) {
-      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~")
-          && Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
+    for (Object path : getYaml().getKeys(false).toArray()) {
+      if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
+          && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(
-            (String) path, Objects.requireNonNull(get().getString((String) path)).replace("~", ""));
+            (String) path, Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
       }
     }
 
@@ -110,28 +110,28 @@ public class Lang {
             """);
 
     for (String path : DEFAULTS.keySet()) {
-      if (!get().contains(path) || get().getString(path) == null) {
-        get().set(path, DEFAULTS.get(path));
+      if (!getYaml().contains(path) || getYaml().getString(path) == null) {
+        getYaml().set(path, DEFAULTS.get(path));
       }
     }
 
     try {
-      get().save(FILE);
+      getYaml().save(FILE);
     } catch (IOException e) {
       AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save lang file", e);
     }
 
-    for (Object path : get().getKeys(false).toArray()) {
-      if (Objects.requireNonNull(get().getString((String) path)).startsWith("~")
-          && Objects.requireNonNull(get().getString((String) path)).endsWith("~")) {
+    for (Object path : getYaml().getKeys(false).toArray()) {
+      if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
+          && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(
-            (String) path, Objects.requireNonNull(get().getString((String) path)).replace("~", ""));
+            (String) path, Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
       }
     }
   }
 
-  public static String getString(String message) {
-    String pathString = get().getString(message);
+  public String getString(String message) {
+    String pathString = getYaml().getString(message);
     for (String placeholder : PLACEHOLDERS.keySet()) {
       assert pathString != null;
       if (pathString.contains(placeholder)) {
@@ -141,8 +141,8 @@ public class Lang {
     return pathString;
   }
 
-  public static Component formatComponent(String message, Object... args) {
-    String pathString = get().getString(message);
+  public Component formatComponent(String message, Object... args) {
+    String pathString = getYaml().getString(message);
     assert pathString != null;
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
@@ -155,8 +155,8 @@ public class Lang {
     return MiniMessage.miniMessage().deserialize(pathString);
   }
 
-  public static Component getComponent(String message) {
-    String pathString = get().getString(message);
+  public Component getComponent(String message) {
+    String pathString = getYaml().getString(message);
     assert pathString != null;
 
     for (String placeholder : PLACEHOLDERS.keySet()) {
@@ -167,12 +167,12 @@ public class Lang {
     return MiniMessage.miniMessage().deserialize(pathString);
   }
 
-  public static YamlConfiguration get() {
+  public YamlConfiguration getYaml() {
     return lang;
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
-  public static void reload() {
+  public void reload() {
     if (!FILE.exists()) {
       try {
         FILE.getParentFile().mkdirs();
@@ -180,7 +180,7 @@ public class Lang {
 
         lang = YamlConfiguration.loadConfiguration(FILE);
 
-        Lang.generateDefaults();
+        this.generateDefaults();
       } catch (IOException e) {
         AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate lang file", e);
       }

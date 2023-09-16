@@ -14,12 +14,12 @@ public class Config {
   private static final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "config.yml");
   private static YamlConfiguration config;
 
-  public static void init() {
-    Config.reload();
-    Config.generateDefaults();
+  public Config() {
+    this.reload();
+    this.generateDefaults();
   }
 
-  public static void generateDefaults() {
+  public void generateDefaults() {
     final HashMap<String, Object> DEFAULTS = new HashMap<>();
 
     DEFAULTS.put("duels.requests.request-timeout", 30000);
@@ -36,28 +36,32 @@ public class Config {
     DEFAULTS.put("queues.enable-default-queue", true);
 
     for (String path : DEFAULTS.keySet()) {
-      if (!get().isSet(path) || get().getString(path) == null) {
-        get().set(path, DEFAULTS.get(path));
+      if (!getYaml().isSet(path) || getYaml().getString(path) == null) {
+        getYaml().set(path, DEFAULTS.get(path));
       }
     }
 
     try {
-      get().save(FILE);
+      getYaml().save(FILE);
     } catch (IOException e) {
       AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save config file", e);
     }
   }
 
-  public static YamlConfiguration get() {
+  public YamlConfiguration getYaml() {
     return config;
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
-  public static void reload() {
+  public void reload() {
     if (!FILE.exists()) {
       try {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
+
+        config = YamlConfiguration.loadConfiguration(FILE);
+
+        this.generateDefaults();
       } catch (IOException e) {
         AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate config file", e);
       }

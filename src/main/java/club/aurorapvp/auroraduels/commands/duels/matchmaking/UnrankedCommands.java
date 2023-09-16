@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.commands.duels.matchmaking;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import co.aikar.commands.BaseCommand;
@@ -26,7 +27,7 @@ public class UnrankedCommands extends BaseCommand {
     Queue queue = Queue.getQueue(Objects.requireNonNullElse(name, "default"));
 
     if (queue == null) {
-      player.sendMessage(Lang.getComponent("queue-not-found"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-not-found"));
       return;
     }
 

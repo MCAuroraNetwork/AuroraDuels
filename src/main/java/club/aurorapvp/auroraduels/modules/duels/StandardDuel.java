@@ -66,7 +66,7 @@ public class StandardDuel extends Duel implements Listener {
 
     if (rounds % 2 == 0) {
       for (Player player : this.players) {
-        player.sendMessage(Lang.getComponent("even-rounds"));
+        player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("even-rounds"));
       }
     }
 
@@ -107,18 +107,18 @@ public class StandardDuel extends Duel implements Listener {
           if ((seconds -= 1) <= 0) {
             final Title title1 =
                 Title.title(
-                    Lang.getComponent("duel-started"),
+                    AuroraDuels.INSTANCE.getLang().getComponent("duel-started"),
                     Component.text("Opponent: " + playerTwo.getName()));
             final Title title2 =
                 Title.title(
-                    Lang.getComponent("duel-started"),
+                    AuroraDuels.INSTANCE.getLang().getComponent("duel-started"),
                     Component.text("Opponent: " + playerOne.getName()));
 
             if (rounds > 1) {
               playerOne.sendActionBar(
-                  Lang.formatComponent("rounds-remaining", currentRound, rounds));
+                  AuroraDuels.INSTANCE.getLang().formatComponent("rounds-remaining", currentRound, rounds));
               playerTwo.sendActionBar(
-                  Lang.formatComponent("rounds-remaining", currentRound, rounds));
+                  AuroraDuels.INSTANCE.getLang().formatComponent("rounds-remaining", currentRound, rounds));
             }
 
             playerOne.showTitle(title1);
@@ -245,10 +245,10 @@ public class StandardDuel extends Duel implements Listener {
 
     winner[0].showTitle(
         Title.title(
-            Lang.getComponent("you-won"), Component.text("Opponent: " + loser[0].getName())));
+            AuroraDuels.INSTANCE.getLang().getComponent("you-won"), Component.text("Opponent: " + loser[0].getName())));
     loser[0].showTitle(
         Title.title(
-            Lang.getComponent("you-lost"), Component.text("Opponent: " + winner[0].getName())));
+            AuroraDuels.INSTANCE.getLang().getComponent("you-lost"), Component.text("Opponent: " + winner[0].getName())));
 
     if (playerOneBar[0] != null) {
       playerOne.hideBossBar(playerOneBar[0]);
@@ -277,7 +277,7 @@ public class StandardDuel extends Duel implements Listener {
     }
 
     for (Player player : this.getPlayers()) {
-      player.sendMessage(Lang.getComponent("draw"));
+      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("draw"));
     }
 
     new Timer()

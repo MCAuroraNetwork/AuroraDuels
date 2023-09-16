@@ -41,15 +41,15 @@ public class DuelStartEvent extends Event {
                            public void run() {
                              if (duel.isActive()) {
                                for (Player player : duel.getPlayers()) {
-                                 player.sendMessage(Lang.getComponent("duel-time-expired"));
-                                 player.sendMessage(Lang.getComponent("duel-time-expired"));
+                                 player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("duel-time-expired"));
+                                 player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("duel-time-expired"));
                                }
                                duel.draw();
                              }
                              this.cancel();
                            }
                          },
-        Config.get().getInt("duels.max-duration"));
+        AuroraDuels.INSTANCE.getConfig().getInt("duels.max-duration"));
 
     duel.setActive(true);
     duel.getArena().setOccupied(true);

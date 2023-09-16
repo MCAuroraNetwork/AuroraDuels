@@ -12,14 +12,16 @@ import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 public final class AuroraDuels extends JavaPlugin {
 
   public static AuroraDuels INSTANCE;
   private static QueueGUI queueGUI;
+  private static Config config;
+  private static Lang lang;
   private static boolean auroraKitsInstalled = false;
   private static boolean auroraCombatInstalled = false;
   private static boolean auroraWarpsInstalled = false;
@@ -43,6 +45,14 @@ public final class AuroraDuels extends JavaPlugin {
     return queueGUI;
   }
 
+  public @NotNull YamlConfiguration getConfig() {
+    return config.getYaml();
+  }
+
+  public Lang getLang() {
+    return lang;
+  }
+
   @Override
   public void onEnable() {
     long startTime = System.currentTimeMillis();
@@ -50,8 +60,8 @@ public final class AuroraDuels extends JavaPlugin {
     INSTANCE = this;
 
     // Initialize configs
-    Config.init();
-    Lang.init();
+    config = new Config();
+    lang = new Lang();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -59,22 +69,22 @@ public final class AuroraDuels extends JavaPlugin {
     }
 
     if (Bukkit.getPluginManager().getPlugin("AuroraKits") != null
-        && Config.get().getBoolean("optional-plugins.aurorakits-compatibility")) {
+        && this.getConfig().getBoolean("optional-plugins.aurorakits-compatibility")) {
       auroraKitsInstalled = true;
     }
 
     if (Bukkit.getPluginManager().getPlugin("AuroraCombat") != null
-        && Config.get().getBoolean("optional-plugins.auroracombat-compatibility.enabled")) {
+        && this.getConfig().getBoolean("optional-plugins.auroracombat-compatibility.enabled")) {
       auroraCombatInstalled = true;
     }
 
     if (Bukkit.getPluginManager().getPlugin("AuroraWarps") != null
-        && Config.get().getBoolean("optional-plugins.aurorawarps-compatibility")) {
+        && this.getConfig().getBoolean("optional-plugins.aurorawarps-compatibility")) {
       auroraWarpsInstalled = true;
     }
 
     if (Bukkit.getPluginManager().getPlugin("DiscordSRV") != null
-        && Config.get().getBoolean("optional-plugins.discordsrv-compatibility")) {
+        && this.getConfig().getBoolean("optional-plugins.discordsrv-compatibility")) {
       discordSrvInstalled = true;
     }
 
@@ -102,5 +112,9 @@ public final class AuroraDuels extends JavaPlugin {
     }
 
     getLogger().info("AuroraDuels disabled in " + (System.currentTimeMillis() - startTime) + "ms");
+  }
+
+  public void reloadConfig() {
+    config.reload();
   }
 }
