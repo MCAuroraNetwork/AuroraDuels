@@ -48,7 +48,7 @@ public class DuelEventListener implements Listener {
 
     if (AuroraDuels.isAuroraKitsInstalled()) {
       for (Player player : event.getDuel().getPlayers()) {
-        Kit.getLastUsedKit(player).giveKit(player);
+        Kit.refillKit(player);
       }
     }
 
