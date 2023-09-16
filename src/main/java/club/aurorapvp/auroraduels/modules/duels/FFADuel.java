@@ -34,6 +34,7 @@ public class FFADuel extends Duel {
 
   private final Set<Player> deadPlayers = new HashSet<>();
   private final Map<Player, BossBar> bossbars = new HashMap<>();
+  private BossBar spectatorBar;
 
   public FFADuel(Set<Player> players, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, ranked);
@@ -42,13 +43,6 @@ public class FFADuel extends Duel {
   public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation,
       boolean ranked) {
     super(players, respawnLocation, queue, kit, ranked);
-  }
-
-  public Set<Player> getOpponents(Player player) {
-    Set<Player> opponents = new HashSet<>(this.getPlayers());
-    opponents.remove(player);
-
-    return opponents;
   }
 
   public void setDead(Player player) {
@@ -171,7 +165,8 @@ public class FFADuel extends Duel {
 
       for (Player player : this.getPlayers()) {
         BossBar bar = BossBar.bossBar(
-            MiniMessage.miniMessage().deserialize("<red>Opponents"),
+            Component.text("Opponents").decorate(TextDecoration.BOLD)
+                .color(NamedTextColor.RED),
             1.0f,
             Color.RED,
             Overlay.PROGRESS);
@@ -180,6 +175,15 @@ public class FFADuel extends Duel {
 
         bossbars.put(player, bar);
       }
+
+      spectatorBar = BossBar.bossBar(
+          Component.text("Players").decorate(TextDecoration.BOLD)
+              .color(NamedTextColor.RED),
+          1.0f,
+          Color.RED,
+          Overlay.PROGRESS);
+
+      spectatorBars.add(spectatorBar);
 
       final double playersMaxHealth = (players.size() - 1) * 20;
 
@@ -195,13 +199,15 @@ public class FFADuel extends Duel {
           }
 
           for (Player player : thisDuel.getPlayers()) {
-            double playerHealth = thisDuel.isSpectator(player) ? 0 : player.getHealth() + player.getAbsorptionAmount();
+            double playerHealth = thisDuel.isSpectator(player) ? 0
+                : player.getHealth() + player.getAbsorptionAmount();
             bossbars.get(player)
-                .name(Component.text("Opponents").decorate(TextDecoration.BOLD)
-                    .color(NamedTextColor.RED))
                 .progress((float) Math.min(
                     ((playersHealth - playerHealth) / playersMaxHealth), 1.0f));
           }
+
+          spectatorBar.progress((float) Math.min(
+              (playersHealth / playersMaxHealth), 1.0f));
         }
       };
 

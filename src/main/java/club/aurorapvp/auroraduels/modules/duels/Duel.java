@@ -6,7 +6,6 @@ import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
-import com.sk89q.worldedit.math.BlockVector3;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,6 +13,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
+import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -31,6 +31,7 @@ public abstract class Duel {
   protected static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
+  protected final Set<BossBar> spectatorBars = new HashSet<>();
   protected final Location respawnLocation;
   private final boolean ranked;
   private static final NamespacedKey winStreakKey =
@@ -297,12 +298,22 @@ public abstract class Duel {
       player.setGameMode(GameMode.SPECTATOR);
       player.sendMessage(Lang.getComponent("start-spectating"));
 
+      for (BossBar bar : spectatorBars) {
+        player.showBossBar(bar);
+      }
+
       spectators.add(player);
     } else {
       player.setGameMode(Bukkit.getDefaultGameMode());
       player.sendMessage(Lang.getComponent("stop-spectating"));
 
       spectators.remove(player);
+
+      for (BossBar bar : spectatorBars) {
+        if (bar != null) {
+          player.hideBossBar(bar);
+        }
+      }
 
       player.teleportAsync(this.getRespawnLocation());
     }

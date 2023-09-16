@@ -42,7 +42,7 @@ public class TeamDuel extends Duel {
   private final Player[] teamOneMembers;
   private final Player[] teamTwoMembers;
   private final BossBar[] teamOneBar = new BossBar[1];
-  private final BossBar[] teamTwo2Bar = new BossBar[1];
+  private final BossBar[] teamTwoBar = new BossBar[1];
   private final double team1MaxHealth;
   private final double team2MaxHealth;
 
@@ -291,25 +291,28 @@ public class TeamDuel extends Duel {
 
       teamOneBar[0] =
           BossBar.bossBar(
-              Lang.getComponent("team2-bossbar"),
+              Component.text("Blue Team").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE),
               1.0f,
-              Color.RED,
+              Color.BLUE,
               Overlay.PROGRESS);
 
       for (Player team1Member : teamOneMembers) {
         team1Member.showBossBar(teamOneBar[0]);
       }
 
-      teamTwo2Bar[0] =
+      teamTwoBar[0] =
           BossBar.bossBar(
-              Lang.getComponent("team1-bossbar"),
+              Component.text("Red Team").decorate(TextDecoration.BOLD).color(NamedTextColor.RED),
               1.0f,
-              Color.BLUE,
+              Color.RED,
               Overlay.PROGRESS);
 
       for (Player team2Member : teamTwoMembers) {
-        team2Member.showBossBar(teamTwo2Bar[0]);
+        team2Member.showBossBar(teamTwoBar[0]);
       }
+
+      spectatorBars.add(teamOneBar[0]);
+      spectatorBars.add(teamTwoBar[0]);
 
       bossbarTask = new BukkitRunnable() {
         @Override
@@ -325,8 +328,7 @@ public class TeamDuel extends Duel {
                 team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
           }
 
-          teamTwo2Bar[0].name(
-                  Component.text("Enemy Team").decorate(TextDecoration.BOLD).color(NamedTextColor.RED))
+          teamTwoBar[0]
               .progress((float) Math.min(team1Health / team1MaxHealth, 1.0f));
 
           double team2Health = 0;
@@ -340,8 +342,7 @@ public class TeamDuel extends Duel {
                 team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
           }
 
-          teamOneBar[0].name(
-                  Component.text("Enemy Team").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE))
+          teamOneBar[0]
               .progress((float) Math.min(team2Health / team2MaxHealth, 1.0f));
         }
       };
@@ -393,7 +394,7 @@ public class TeamDuel extends Duel {
 
     for (Player player : teamTwoMembers) {
       TeamDuel.team2.removePlayer(player);
-      player.hideBossBar(teamTwo2Bar[0]);
+      player.hideBossBar(teamTwoBar[0]);
     }
 
     Duel thisDuel = this;
@@ -419,7 +420,7 @@ public class TeamDuel extends Duel {
 
     for (Player player : teamTwoMembers) {
       team2.removePlayer(player);
-      player.hideBossBar(teamTwo2Bar[0]);
+      player.hideBossBar(teamTwoBar[0]);
     }
 
     Duel thisDuel = this;

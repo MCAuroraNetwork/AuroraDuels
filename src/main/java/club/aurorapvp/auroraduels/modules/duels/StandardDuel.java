@@ -162,6 +162,9 @@ public class StandardDuel extends Duel implements Listener {
 
       playerTwo.showBossBar(playerTwoBar[0]);
 
+      spectatorBars.add(playerOneBar[0]);
+      spectatorBars.add(playerTwoBar[0]);
+
       bossbarTask = new BukkitRunnable() {
         @Override
         public void run() {
