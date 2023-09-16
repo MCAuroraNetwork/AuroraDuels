@@ -12,9 +12,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
 
-  private static final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
-  private static final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "lang.yml");
-  private static YamlConfiguration lang;
+  private final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
+  private final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "lang.yml");
+  private YamlConfiguration lang;
 
   public Lang() {
     this.reload();

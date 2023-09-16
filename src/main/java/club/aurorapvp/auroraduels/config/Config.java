@@ -11,8 +11,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
 
-  private static final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "config.yml");
-  private static YamlConfiguration config;
+  private final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "config.yml");
+  private YamlConfiguration config;
 
   public Config() {
     this.reload();

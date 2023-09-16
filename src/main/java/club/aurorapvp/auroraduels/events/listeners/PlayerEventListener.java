@@ -14,6 +14,7 @@ import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
+import club.aurorapvp.aurorakits.events.custom.KitRefillEvent;
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.HashSet;
@@ -96,6 +97,13 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onKitUse(KitGiveEvent event) {
+    if (Duel.inDuel(event.getPlayer())) {
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onKitRefill(KitRefillEvent event) {
     if (Duel.inDuel(event.getPlayer())) {
       event.setCancelled(true);
     }
