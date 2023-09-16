@@ -52,9 +52,6 @@ public class TeamDuel extends Duel {
             .collect(Collectors.toSet()),
         respawnLocation, ranked);
 
-    team1.color(NamedTextColor.RED);
-    team2.color(NamedTextColor.BLUE);
-
     this.teamOneMembers = teamOneMembers;
     this.teamTwoMembers = teamTwoMembers;
 
@@ -68,9 +65,6 @@ public class TeamDuel extends Duel {
     super(Stream.concat(Arrays.stream(teamOneMembers), Arrays.stream(teamTwoMembers))
             .collect(Collectors.toSet()),
         respawnLocation, queue, kit, ranked);
-
-    team1.color(NamedTextColor.RED);
-    team2.color(NamedTextColor.BLUE);
 
     this.teamOneMembers = teamOneMembers;
     this.teamTwoMembers = teamTwoMembers;
@@ -87,12 +81,15 @@ public class TeamDuel extends Duel {
           .registerNewTeam("team1");
     }
 
-    team2 = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team1");
+    team2 = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team2");
 
     if (team2 == null) {
       team2 = Bukkit.getScoreboardManager().getMainScoreboard()
-          .registerNewTeam("team1");
+          .registerNewTeam("team2");
     }
+
+    team1.color(NamedTextColor.BLUE);
+    team2.color(NamedTextColor.RED);
   }
 
   public Player[] getTeamOneMembers() {
@@ -296,7 +293,7 @@ public class TeamDuel extends Duel {
           BossBar.bossBar(
               Lang.getComponent("team2-bossbar"),
               1.0f,
-              Color.BLUE,
+              Color.RED,
               Overlay.PROGRESS);
 
       for (Player team1Member : teamOneMembers) {
@@ -307,14 +304,14 @@ public class TeamDuel extends Duel {
           BossBar.bossBar(
               Lang.getComponent("team1-bossbar"),
               1.0f,
-              Color.RED,
+              Color.BLUE,
               Overlay.PROGRESS);
 
       for (Player team2Member : teamTwoMembers) {
         team2Member.showBossBar(teamTwo2Bar[0]);
       }
 
-      new BukkitRunnable() {
+      bossbarTask = new BukkitRunnable() {
         @Override
         public void run() {
           double team1Health = 0;
