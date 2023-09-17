@@ -17,7 +17,7 @@ public class DuelEventListener implements Listener {
 
   @EventHandler
   public void onDuelStart(DuelStartEvent event) {
-    if (!AuroraDuels.isAuroraCombatInstalled()) {
+    if (!AuroraDuels.getInstance().isAuroraCombatInstalled()) {
       return;
     }
 
@@ -41,13 +41,13 @@ public class DuelEventListener implements Listener {
       Duel.setLastDuel(player, event.getDuel());
     }
 
-    if (AuroraDuels.isAuroraKitsInstalled()) {
+    if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
       for (Player player : event.getDuel().getPlayers()) {
         Kit.refillKit(player);
       }
     }
 
-    if (!AuroraDuels.isAuroraCombatInstalled()) {
+    if (!AuroraDuels.getInstance().isAuroraCombatInstalled()) {
       return;
     }
 

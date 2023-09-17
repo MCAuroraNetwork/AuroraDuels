@@ -37,7 +37,7 @@ public class StandardDuelCommands extends BaseCommand {
 
     Location loc = Duel.getDuelLobby();
 
-    if (loc == null && AuroraDuels.isAuroraWarpsInstalled()) {
+    if (loc == null && AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
       WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
 
       if (worldSpawn != null) {

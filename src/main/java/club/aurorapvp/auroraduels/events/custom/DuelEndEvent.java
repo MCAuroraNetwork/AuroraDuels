@@ -106,7 +106,7 @@ public class DuelEndEvent extends Event {
 
     Bukkit.broadcast(AuroraDuels.getInstance().getLang().formatComponent("duel-won", winnersText, losersText));
 
-    if (AuroraDuels.isDiscordSRVInstalled()) {
+    if (AuroraDuels.getInstance().isDiscordSRVInstalled()) {
       DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
           new EmbedBuilder().setAuthor(
                   AuroraDuels.getInstance().getLang().getString("discord-duel-won").formatted(winnersText, losersText), null,

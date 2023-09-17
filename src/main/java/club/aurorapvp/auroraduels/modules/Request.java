@@ -54,7 +54,7 @@ public class Request {
 
     if (Queue.getQueues().size() > 1) {
       AuroraDuels.getQueueGUI().open(requester);
-    } else if (AuroraDuels.isAuroraKitsInstalled()) {
+    } else if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
       DuelKitGUI.getGUI(requester).open();
     } else {
       this.sendRequest();
@@ -81,7 +81,7 @@ public class Request {
 
     duel.setQueue(event.getQueue());
 
-    if (AuroraDuels.isAuroraKitsInstalled()) {
+    if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
       DuelKitGUI.getGUI(event.getPlayer()).open();
       return;
     }

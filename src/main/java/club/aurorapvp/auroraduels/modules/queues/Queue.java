@@ -54,7 +54,7 @@ public class Queue {
       reload();
     }
 
-    if (AuroraDuels.isAuroraCombatInstalled()) {
+    if (AuroraDuels.getInstance().isAuroraCombatInstalled()) {
       new Rating(name + "_duels", Rating.RatingType.CUSTOM, false);
     }
   }
@@ -206,14 +206,14 @@ public class Queue {
     this.arenas.addAll(this.data.getArenas());
     this.displayItem = data.getDisplayItem();
 
-    if (AuroraDuels.isAuroraKitsInstalled()) {
+    if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
       this.kit = this.data.getKit();
     }
   }
 
   public void create(Player player, String kitName) {
     if (!this.exists() && arenasSet) {
-      if (kitName != null && AuroraDuels.isAuroraKitsInstalled()) {
+      if (kitName != null && AuroraDuels.getInstance().isAuroraKitsInstalled()) {
         this.kit = Kit.getKit(kitName);
       }
 

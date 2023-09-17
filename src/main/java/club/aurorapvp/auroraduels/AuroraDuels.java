@@ -22,29 +22,28 @@ public final class AuroraDuels extends JavaPlugin {
   private static QueueGUI queueGUI;
   private static Config config;
   private static Lang lang;
-  private static boolean auroraKitsInstalled = false;
-  private static boolean auroraCombatInstalled = false;
-  private static boolean auroraWarpsInstalled = false;
-  private static boolean discordSrvInstalled = false;
+  private boolean auroraKitsInstalled = false;
+  private boolean auroraCombatInstalled = false;
+  private boolean auroraWarpsInstalled = false;
+  private boolean discordSrvInstalled = false;
 
   public static AuroraDuels getInstance() {
     return INSTANCE;
   }
 
-  // TODO why are these not used?
-  public static boolean isAuroraKitsInstalled() {
+  public boolean isAuroraKitsInstalled() {
     return auroraKitsInstalled;
   }
 
-  public static boolean isAuroraCombatInstalled() {
+  public boolean isAuroraCombatInstalled() {
     return auroraCombatInstalled;
   }
 
-  public static boolean isAuroraWarpsInstalled() {
+  public boolean isAuroraWarpsInstalled() {
     return auroraWarpsInstalled;
   }
 
-  public static boolean isDiscordSRVInstalled() { return discordSrvInstalled; }
+  public boolean isDiscordSRVInstalled() { return discordSrvInstalled; }
 
   public static QueueGUI getQueueGUI() {
     return queueGUI;

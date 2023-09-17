@@ -171,7 +171,7 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    if (AuroraDuels.isAuroraKitsInstalled()) {
+    if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
       DuelKitGUI.remove(event.getPlayer());
     }
 

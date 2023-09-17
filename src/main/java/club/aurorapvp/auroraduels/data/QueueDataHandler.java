@@ -53,7 +53,7 @@ public class QueueDataHandler {
   }
 
   public void create() {
-    if (AuroraDuels.isAuroraKitsInstalled() && queue.getKit() != null) {
+    if (AuroraDuels.getInstance().isAuroraKitsInstalled() && queue.getKit() != null) {
       queueData.set("kit", queue.getKit().getName());
     }
 
