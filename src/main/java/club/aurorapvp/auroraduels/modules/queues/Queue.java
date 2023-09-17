@@ -22,11 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Queue {
@@ -149,6 +151,13 @@ public class Queue {
       for (Request pendingRequest : Request.getRequests(player)) {
         pendingRequest.deny();
       }
+
+      ItemMeta meta = displayItem.getItemMeta();
+
+      meta.lore(List.of(Component.text("In Queue:" + this.inQueue()),
+          Component.text("In Duel: " + Duel.inDuel(this.getName()))));
+
+      displayItem.setItemMeta(meta);
     } else {
       WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
       Location loc = null;
@@ -297,10 +306,24 @@ public class Queue {
           if (!arena.isOccupied()) {
             duelQueue.getLast().startDuel(arena);
             duelQueue.remove(duelQueue.getLast());
+
+            ItemMeta meta = displayItem.getItemMeta();
+
+            meta.lore(List.of(Component.text("In Queue:" + thisQueue.inQueue()),
+                Component.text("In Duel: " + Duel.inDuel(thisQueue.getName()))));
+
+            displayItem.setItemMeta(meta);
           }
         }
       }
     }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
+
+    ItemMeta meta = displayItem.getItemMeta();
+
+    meta.lore(List.of(Component.text("In Queue:" + this.inQueue()),
+        Component.text("In Duel: " + Duel.inDuel(this.getName()))));
+
+    displayItem.setItemMeta(meta);
 
     new QueueJoinEvent(duel).callEvent();
   }
