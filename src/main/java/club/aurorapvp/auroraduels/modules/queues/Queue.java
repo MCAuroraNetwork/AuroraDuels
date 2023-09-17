@@ -2,8 +2,6 @@ package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.data.QueueDataHandler;
 import club.aurorapvp.auroraduels.events.custom.QueueJoinEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -147,6 +145,10 @@ public class Queue {
     player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("looking-match"));
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(ranked, player);
+
+      for (Request pendingRequest : Request.getRequests(player)) {
+        pendingRequest.deny();
+      }
     } else {
       WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
       Location loc = null;
@@ -163,7 +165,8 @@ public class Queue {
           new StandardDuel(player, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked,
               1));
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("match-found"));
-      lookingForMatch.get(ranked).sendMessage(AuroraDuels.getInstance().getLang().getComponent("match-found"));
+      lookingForMatch.get(ranked)
+          .sendMessage(AuroraDuels.getInstance().getLang().getComponent("match-found"));
       lookingForMatch.clear();
     }
   }
@@ -242,7 +245,8 @@ public class Queue {
 
       player.sendMessage(
           MiniMessage.miniMessage()
-              .deserialize(String.format(AuroraDuels.getInstance().getLang().getString("add-arena"), arenas.size())));
+              .deserialize(String.format(AuroraDuels.getInstance().getLang().getString("add-arena"),
+                  arenas.size())));
     } else if (this.exists()) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-already-exists"));
     } else {
@@ -260,7 +264,8 @@ public class Queue {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
       arenas.add(Arena.getArena(str));
-      player.sendMessage(AuroraDuels.getInstance().getLang().formatComponent("add-arena", arenas.size()));
+      player.sendMessage(
+          AuroraDuels.getInstance().getLang().formatComponent("add-arena", arenas.size()));
     } else {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("arena-does-not-exist"));
     }
