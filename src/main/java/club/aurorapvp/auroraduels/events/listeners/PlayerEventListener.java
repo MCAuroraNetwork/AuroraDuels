@@ -2,13 +2,10 @@ package club.aurorapvp.auroraduels.events.listeners;
 
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.DuelKitGUI;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
@@ -171,10 +168,6 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      DuelKitGUI.remove(event.getPlayer());
-    }
-
     if (Queue.inQueue(event.getPlayer())) {
       Queue.removeFromQueue(event.getPlayer());
     }

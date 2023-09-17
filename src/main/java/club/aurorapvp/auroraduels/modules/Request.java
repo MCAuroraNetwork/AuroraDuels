@@ -1,14 +1,12 @@
 package club.aurorapvp.auroraduels.modules;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
-import club.aurorapvp.auroraduels.config.Lang;
-import club.aurorapvp.auroraduels.events.custom.DuelKitSelectEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.DuelKitGUI;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.aurorakits.events.custom.KitSelectEvent;
+import club.aurorapvp.aurorakits.modules.kits.KitsGUI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -55,7 +53,7 @@ public class Request {
     if (Queue.getQueues().size() > 1) {
       AuroraDuels.getQueueGUI().open(requester);
     } else if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      DuelKitGUI.getGUI(requester).open();
+      requester.openInventory(KitsGUI.getGUI(requester).getCurrentPage());
     } else {
       this.sendRequest();
       return;
@@ -82,7 +80,7 @@ public class Request {
     duel.setQueue(event.getQueue());
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      DuelKitGUI.getGUI(event.getPlayer()).open();
+      event.getPlayer().openInventory(KitsGUI.getGUI(event.getPlayer()).getCurrentPage());
       return;
     }
 
@@ -90,10 +88,12 @@ public class Request {
     this.sendRequest();
   }
 
-  public void onKitSelect(DuelKitSelectEvent event) {
+  public void onKitSelect(KitSelectEvent event) {
     if (requester != event.getPlayer()) {
       return;
     }
+
+    event.setCancelled(true);
 
     duel.setKit(event.getKit());
 
