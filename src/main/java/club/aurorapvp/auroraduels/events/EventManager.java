@@ -9,8 +9,8 @@ import org.bukkit.Bukkit;
 public class EventManager {
 
   public static void init() {
-    Bukkit.getPluginManager().registerEvents(new PlayerEventListener(), AuroraDuels.INSTANCE);
-    Bukkit.getPluginManager().registerEvents(new DuelEventListener(), AuroraDuels.INSTANCE);
-    Bukkit.getPluginManager().registerEvents(new RequestEventListener(), AuroraDuels.INSTANCE);
+    Bukkit.getPluginManager().registerEvents(new PlayerEventListener(), AuroraDuels.getInstance());
+    Bukkit.getPluginManager().registerEvents(new DuelEventListener(), AuroraDuels.getInstance());
+    Bukkit.getPluginManager().registerEvents(new RequestEventListener(), AuroraDuels.getInstance());
   }
 }

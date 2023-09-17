@@ -30,7 +30,7 @@ public class DuelBaseCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onAccept(Player player, @Optional String requesterName) {
     if (!Request.hasPendingRequest(player)) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("no-requests"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-requests"));
       return;
     }
 
@@ -55,7 +55,7 @@ public class DuelBaseCommands extends BaseCommand {
     }
 
     if (!Request.hasPendingRequest(requester, player)) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("no-requests"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-requests"));
       return;
     }
 
@@ -79,7 +79,7 @@ public class DuelBaseCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onDeny(Player player, @Optional String requesterName) {
     if (!Request.hasPendingRequest(player)) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("no-requests"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-requests"));
       return;
     }
 
@@ -98,7 +98,7 @@ public class DuelBaseCommands extends BaseCommand {
     }
 
     if (!Request.hasPendingRequest(requester, player)) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("no-requests"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-requests"));
       return;
     }
 
@@ -117,7 +117,7 @@ public class DuelBaseCommands extends BaseCommand {
     if (!Duel.inDuel(player) && duel != null) {
       duel.setSpectator(player, true);
     } else {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("unknown-duel"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-duel"));
     }
   }
 
@@ -149,7 +149,7 @@ public class DuelBaseCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onLobbySet(Player player) {
     Duel.setDuelLobby(player.getLocation());
-    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("duel-lobby-set"));
+    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-lobby-set"));
   }
 
   // TODO
@@ -157,6 +157,6 @@ public class DuelBaseCommands extends BaseCommand {
   @CommandPermission("auroraduels.command.duel.help")
   @SuppressWarnings("unused")
   public void onUnknown(Player player) {
-    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("unknown-duel-command"));
+    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-duel-command"));
   }
 }

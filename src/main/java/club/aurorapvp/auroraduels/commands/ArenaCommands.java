@@ -41,7 +41,7 @@ public class ArenaCommands extends BaseCommand {
     if (arena != null) {
       arena.delete(player);
     } else {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-does-not-exist"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("arena-does-not-exist"));
     }
   }
 
@@ -57,7 +57,7 @@ public class ArenaCommands extends BaseCommand {
     if (arena != null) {
       arena.reset(player);
     } else {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("arena-does-not-exist"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("arena-does-not-exist"));
     }
   }
 

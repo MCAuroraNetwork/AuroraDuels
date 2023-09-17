@@ -24,7 +24,7 @@ public class DuelEventListener implements Listener {
     Rating.getRating("default").setEnabled(false);
 
     if (event.getDuel().isRanked()) {
-      if (AuroraDuels.INSTANCE.getConfig()
+      if (AuroraDuels.getInstance().getConfig()
           .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
         Rating.getRating("default_duels").setEnabled(true);
       }
@@ -64,7 +64,7 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    if (AuroraDuels.INSTANCE.getConfig()
+    if (AuroraDuels.getInstance().getConfig()
         .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
       Rating.getRating("default_duels").setEnabled(false);
     }

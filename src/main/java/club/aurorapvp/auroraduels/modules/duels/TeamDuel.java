@@ -241,7 +241,7 @@ public class TeamDuel extends Duel {
 
               final Title title =
                   Title.title(
-                      AuroraDuels.INSTANCE.getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.getInstance().getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -249,7 +249,7 @@ public class TeamDuel extends Duel {
             this.cancel();
           }
         }
-      }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
+      }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
 
       new BukkitRunnable() {
         int seconds = 3;
@@ -279,7 +279,7 @@ public class TeamDuel extends Duel {
 
               final Title title =
                   Title.title(
-                      AuroraDuels.INSTANCE.getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.getInstance().getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -287,7 +287,7 @@ public class TeamDuel extends Duel {
             this.cancel();
           }
         }
-      }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
+      }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
 
       teamOneBar[0] =
           BossBar.bossBar(
@@ -354,7 +354,7 @@ public class TeamDuel extends Duel {
         public void run() {
           new DuelStartEvent(thisDuel).callEvent();
         }
-      }.runTask(AuroraDuels.INSTANCE);
+      }.runTask(AuroraDuels.getInstance());
     });
   }
 
@@ -379,12 +379,12 @@ public class TeamDuel extends Duel {
 
     for (Player player : winners) {
       player.showTitle(
-          Title.title(AuroraDuels.INSTANCE.getLang().getComponent("you-won"), Component.text("Opponents: " + loserNames)));
+          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-won"), Component.text("Opponents: " + loserNames)));
     }
 
     for (Player player : losers) {
       player.showTitle(
-          Title.title(AuroraDuels.INSTANCE.getLang().getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
+          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
     }
 
     for (Player player : teamOneMembers) {
@@ -404,13 +404,13 @@ public class TeamDuel extends Duel {
       public void run() {
         new DuelEndEvent(thisDuel, winners, losers).callEvent();
       }
-    }.runTask(AuroraDuels.INSTANCE);
+    }.runTask(AuroraDuels.getInstance());
   }
 
   @Override
   public void draw() {
     for (Player player : this.getPlayers()) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("draw"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("draw"));
     }
 
     for (Player player : teamOneMembers) {
@@ -447,6 +447,6 @@ public class TeamDuel extends Duel {
       public void run() {
         new DuelDrawEvent(thisDuel).callEvent();
       }
-    }.runTask(AuroraDuels.INSTANCE);
+    }.runTask(AuroraDuels.getInstance());
   }
 }

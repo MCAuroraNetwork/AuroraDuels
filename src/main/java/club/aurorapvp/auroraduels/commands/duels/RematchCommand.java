@@ -25,7 +25,7 @@ public class RematchCommand extends BaseCommand {
     Duel lastDuel = Duel.getLastDuel(player);
 
     if (lastDuel == null) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("no-last-duel"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-last-duel"));
       return;
     }
 

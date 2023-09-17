@@ -66,7 +66,7 @@ public class StandardDuel extends Duel implements Listener {
 
     if (rounds % 2 == 0) {
       for (Player player : this.players) {
-        player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("even-rounds"));
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("even-rounds"));
       }
     }
 
@@ -107,18 +107,18 @@ public class StandardDuel extends Duel implements Listener {
           if ((seconds -= 1) <= 0) {
             final Title title1 =
                 Title.title(
-                    AuroraDuels.INSTANCE.getLang().getComponent("duel-started"),
+                    AuroraDuels.getInstance().getLang().getComponent("duel-started"),
                     Component.text("Opponent: " + playerTwo.getName()));
             final Title title2 =
                 Title.title(
-                    AuroraDuels.INSTANCE.getLang().getComponent("duel-started"),
+                    AuroraDuels.getInstance().getLang().getComponent("duel-started"),
                     Component.text("Opponent: " + playerOne.getName()));
 
             if (rounds > 1) {
               playerOne.sendActionBar(
-                  AuroraDuels.INSTANCE.getLang().formatComponent("rounds-remaining", currentRound, rounds));
+                  AuroraDuels.getInstance().getLang().formatComponent("rounds-remaining", currentRound, rounds));
               playerTwo.sendActionBar(
-                  AuroraDuels.INSTANCE.getLang().formatComponent("rounds-remaining", currentRound, rounds));
+                  AuroraDuels.getInstance().getLang().formatComponent("rounds-remaining", currentRound, rounds));
             }
 
             playerOne.showTitle(title1);
@@ -134,7 +134,7 @@ public class StandardDuel extends Duel implements Listener {
                     Component.text("")));
           }
         }
-      }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
+      }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
 
       playerOneBar[0] =
           BossBar.bossBar(
@@ -199,7 +199,7 @@ public class StandardDuel extends Duel implements Listener {
         public void run() {
           new DuelStartEvent(thisDuel).callEvent();
         }
-      }.runTask(AuroraDuels.INSTANCE);
+      }.runTask(AuroraDuels.getInstance());
     });
   }
 
@@ -234,7 +234,7 @@ public class StandardDuel extends Duel implements Listener {
               }
             }
           }
-        }.runTaskLater(AuroraDuels.INSTANCE, 1);
+        }.runTaskLater(AuroraDuels.getInstance(), 1);
 
         arena.reset();
 
@@ -245,10 +245,10 @@ public class StandardDuel extends Duel implements Listener {
 
     winner[0].showTitle(
         Title.title(
-            AuroraDuels.INSTANCE.getLang().getComponent("you-won"), Component.text("Opponent: " + loser[0].getName())));
+            AuroraDuels.getInstance().getLang().getComponent("you-won"), Component.text("Opponent: " + loser[0].getName())));
     loser[0].showTitle(
         Title.title(
-            AuroraDuels.INSTANCE.getLang().getComponent("you-lost"), Component.text("Opponent: " + winner[0].getName())));
+            AuroraDuels.getInstance().getLang().getComponent("you-lost"), Component.text("Opponent: " + winner[0].getName())));
 
     if (playerOneBar[0] != null) {
       playerOne.hideBossBar(playerOneBar[0]);
@@ -265,7 +265,7 @@ public class StandardDuel extends Duel implements Listener {
       public void run() {
         new DuelEndEvent(thisDuel, winner, loser).callEvent();
       }
-    }.runTask(AuroraDuels.INSTANCE);
+    }.runTask(AuroraDuels.getInstance());
   }
 
   public void draw() {
@@ -277,7 +277,7 @@ public class StandardDuel extends Duel implements Listener {
     }
 
     for (Player player : this.getPlayers()) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("draw"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("draw"));
     }
 
     new Timer()
@@ -310,6 +310,6 @@ public class StandardDuel extends Duel implements Listener {
       public void run() {
         new DuelDrawEvent(thisDuel).callEvent();
       }
-    }.runTask(AuroraDuels.INSTANCE);
+    }.runTask(AuroraDuels.getInstance());
   }
 }

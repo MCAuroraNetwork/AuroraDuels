@@ -26,7 +26,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public abstract class Duel {
 
   private static final NamespacedKey duelKitKey =
-      new NamespacedKey(AuroraDuels.INSTANCE, "duelkit");
+      new NamespacedKey(AuroraDuels.getInstance(), "duelkit");
   private static final HashMap<Player, Duel> LAST_DUEL = new HashMap<>();
   protected static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
@@ -35,7 +35,7 @@ public abstract class Duel {
   protected final Location respawnLocation;
   private final boolean ranked;
   private static final NamespacedKey winStreakKey =
-      new NamespacedKey(AuroraDuels.INSTANCE, "duel-winstreak");
+      new NamespacedKey(AuroraDuels.getInstance(), "duel-winstreak");
   protected Long timeStarted;
   protected Kit kit;
   protected Arena arena;
@@ -53,7 +53,7 @@ public abstract class Duel {
           if (!Arena.isInBounds(player.getLocation(), thisDuel.getArena()) && !thisDuel.isSpectator(
               player)) {
             player.setHealth(0);
-            player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("no-leaving-arena"));
+            player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
           }
         }
 
@@ -65,7 +65,7 @@ public abstract class Duel {
                 break;
               }
             }
-            player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("no-leaving-arena"));
+            player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
           }
         }
       } catch (IllegalArgumentException e) {
@@ -116,7 +116,7 @@ public abstract class Duel {
 
     container.set(winStreakKey, PersistentDataType.INTEGER, wins + 1);
 
-    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("new-win"));
+    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("new-win"));
   }
 
   public static void resetStreak(Player player) {
@@ -154,7 +154,7 @@ public abstract class Duel {
 
     container.set(duelKitKey, PersistentDataType.STRING, kitName);
 
-    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("duel-kit"));
+    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-kit"));
   }
 
   public static void unSetDuelKit(Player player) {
@@ -162,20 +162,20 @@ public abstract class Duel {
 
     container.remove(duelKitKey);
 
-    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("duel-kit"));
+    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-kit"));
   }
 
   public static Location getDuelLobby() {
-    return AuroraDuels.INSTANCE.getConfig().getLocation("lobby");
+    return AuroraDuels.getInstance().getConfig().getLocation("lobby");
   }
 
   public static void setDuelLobby(Location loc) {
-    AuroraDuels.INSTANCE.getConfig().set("lobby", loc);
+    AuroraDuels.getInstance().getConfig().set("lobby", loc);
 
     try {
-      AuroraDuels.INSTANCE.getConfig().save(new File(AuroraDuels.INSTANCE.getDataFolder(), "config.yml"));
+      AuroraDuels.getInstance().getConfig().save(new File(AuroraDuels.getInstance().getDataFolder(), "config.yml"));
     } catch (IOException e) {
-      AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save config file", e);
+      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save config file", e);
     }
   }
 
@@ -296,7 +296,7 @@ public abstract class Duel {
       }
 
       player.setGameMode(GameMode.SPECTATOR);
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("start-spectating"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("start-spectating"));
 
       for (BossBar bar : spectatorBars) {
         player.showBossBar(bar);
@@ -305,7 +305,7 @@ public abstract class Duel {
       spectators.add(player);
     } else {
       player.setGameMode(Bukkit.getDefaultGameMode());
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("stop-spectating"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("stop-spectating"));
 
       spectators.remove(player);
 

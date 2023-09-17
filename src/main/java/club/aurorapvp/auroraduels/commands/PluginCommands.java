@@ -22,14 +22,14 @@ public class PluginCommands extends BaseCommand {
   public void onReload(Player player) {
     long startTime = System.currentTimeMillis();
 
-    AuroraDuels.INSTANCE.reloadConfig();
-    AuroraDuels.INSTANCE.getLang().reload();
+    AuroraDuels.getInstance().reloadConfig();
+    AuroraDuels.getInstance().getLang().reload();
     Arena.reloadAll();
     Queue.reloadAll();
 
-    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("reloaded"));
+    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("reloaded"));
 
-    AuroraDuels.INSTANCE
+    AuroraDuels.getInstance()
         .getLogger()
         .info("AuroraDuels reloaded in " + (System.currentTimeMillis() - startTime) + "ms");
   }
@@ -40,6 +40,6 @@ public class PluginCommands extends BaseCommand {
   @Description("Lists all available plugin commands and their function")
   @SuppressWarnings("unused")
   public void onHelp(Player player) {
-    player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("help-command"));
+    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("help-command"));
   }
 }

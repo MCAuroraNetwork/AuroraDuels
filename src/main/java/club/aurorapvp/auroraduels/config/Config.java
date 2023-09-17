@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
 
-  private final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "config.yml");
+  private final File FILE = new File(AuroraDuels.getInstance().getDataFolder(), "config.yml");
   private YamlConfiguration config;
 
   public Config() {
@@ -44,7 +44,7 @@ public class Config {
     try {
       getYaml().save(FILE);
     } catch (IOException e) {
-      AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save config file", e);
+      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save config file", e);
     }
   }
 
@@ -63,10 +63,10 @@ public class Config {
 
         this.generateDefaults();
       } catch (IOException e) {
-        AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate config file", e);
+        AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to generate config file", e);
       }
     }
     config = YamlConfiguration.loadConfiguration(FILE);
-    AuroraDuels.INSTANCE.getLogger().info("Config reloaded!");
+    AuroraDuels.getInstance().getLogger().info("Config reloaded!");
   }
 }

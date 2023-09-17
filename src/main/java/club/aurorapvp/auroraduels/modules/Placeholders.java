@@ -28,7 +28,7 @@ public class Placeholders extends PlaceholderExpansion {
 
   @Override
   public @NotNull String getVersion() {
-    return AuroraDuels.INSTANCE.getPluginMeta().getVersion();
+    return AuroraDuels.getInstance().getPluginMeta().getVersion();
   }
 
   @Override

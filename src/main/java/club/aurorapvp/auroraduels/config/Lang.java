@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class Lang {
 
   private final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
-  private final File FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "lang.yml");
+  private final File FILE = new File(AuroraDuels.getInstance().getDataFolder(), "lang.yml");
   private YamlConfiguration lang;
 
   public Lang() {
@@ -118,7 +118,7 @@ public class Lang {
     try {
       getYaml().save(FILE);
     } catch (IOException e) {
-      AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save lang file", e);
+      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save lang file", e);
     }
 
     for (Object path : getYaml().getKeys(false).toArray()) {
@@ -182,10 +182,10 @@ public class Lang {
 
         this.generateDefaults();
       } catch (IOException e) {
-        AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate lang file", e);
+        AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to generate lang file", e);
       }
     }
     lang = YamlConfiguration.loadConfiguration(FILE);
-    AuroraDuels.INSTANCE.getLogger().info("Lang reloaded!");
+    AuroraDuels.getInstance().getLogger().info("Lang reloaded!");
   }
 }

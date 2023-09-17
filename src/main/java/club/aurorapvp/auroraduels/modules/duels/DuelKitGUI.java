@@ -41,7 +41,7 @@ public class DuelKitGUI implements Listener {
 
     KITS_GUIS.put(player, this);
 
-    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
+    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.getInstance());
   }
 
   public Player getPlayer() {
@@ -146,7 +146,7 @@ public class DuelKitGUI implements Listener {
       public void run() {
         gui.reload();
       }
-    }.runTaskLater(AuroraDuels.INSTANCE, 1L);
+    }.runTaskLater(AuroraDuels.getInstance(), 1L);
 
     this.reload();
   }
@@ -187,7 +187,7 @@ public class DuelKitGUI implements Listener {
     }
 
     if (event.getCurrentItem().getItemMeta().displayName() == null) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("kit-invalid-name"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("kit-invalid-name"));
     } else {
       String itemName =
           PlainTextComponentSerializer.plainText()
@@ -219,7 +219,7 @@ public class DuelKitGUI implements Listener {
     private final DuelKitGUI gui;
 
     private Page(Kit[] kits, DuelKitGUI gui) {
-      inventory = Bukkit.createInventory(this, 54, AuroraDuels.INSTANCE.getLang().getComponent("duel-kit-gui"));
+      inventory = Bukkit.createInventory(this, 54, AuroraDuels.getInstance().getLang().getComponent("duel-kit-gui"));
       this.gui = gui;
 
       for (Kit kit : kits) {
@@ -230,17 +230,17 @@ public class DuelKitGUI implements Listener {
 
       ItemStack nextPage = new ItemStack(Material.PAPER);
       meta = nextPage.getItemMeta();
-      meta.displayName(AuroraDuels.INSTANCE.getLang().getComponent("next-page"));
+      meta.displayName(AuroraDuels.getInstance().getLang().getComponent("next-page"));
       nextPage.setItemMeta(meta);
 
       ItemStack previousPage = new ItemStack(Material.PAPER);
       meta = previousPage.getItemMeta();
-      meta.displayName(AuroraDuels.INSTANCE.getLang().getComponent("previous-page"));
+      meta.displayName(AuroraDuels.getInstance().getLang().getComponent("previous-page"));
       previousPage.setItemMeta(meta);
 
       ItemStack noKit = new ItemStack(Material.BARRIER);
       meta = noKit.getItemMeta();
-      meta.displayName(AuroraDuels.INSTANCE.getLang().getComponent("no-kit"));
+      meta.displayName(AuroraDuels.getInstance().getLang().getComponent("no-kit"));
       noKit.setItemMeta(meta);
 
       inventory.setItem(49, noKit);
@@ -250,7 +250,7 @@ public class DuelKitGUI implements Listener {
     }
 
     private Page(Kit kit, DuelKitGUI gui) {
-      inventory = Bukkit.createInventory(this, 54, AuroraDuels.INSTANCE.getLang().getComponent("duel-kit-gui"));
+      inventory = Bukkit.createInventory(this, 54, AuroraDuels.getInstance().getLang().getComponent("duel-kit-gui"));
       this.gui = gui;
 
       inventory.addItem(kit.getDisplayItem());
@@ -269,7 +269,7 @@ public class DuelKitGUI implements Listener {
 
       ItemStack noKit = new ItemStack(Material.BARRIER);
       meta = noKit.getItemMeta();
-      meta.displayName(AuroraDuels.INSTANCE.getLang().getComponent("no-kit"));
+      meta.displayName(AuroraDuels.getInstance().getLang().getComponent("no-kit"));
       noKit.setItemMeta(meta);
 
       inventory.setItem(49, noKit);

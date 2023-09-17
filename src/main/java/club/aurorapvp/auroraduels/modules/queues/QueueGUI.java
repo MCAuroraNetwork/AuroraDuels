@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 public class QueueGUI implements InventoryHolder, Listener {
 
   private final Inventory inventory =
-      Bukkit.createInventory(this, 54, AuroraDuels.INSTANCE.getLang().getComponent("queue-menu"));
+      Bukkit.createInventory(this, 54, AuroraDuels.getInstance().getLang().getComponent("queue-menu"));
 
   public QueueGUI() {
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
@@ -51,7 +51,7 @@ public class QueueGUI implements InventoryHolder, Listener {
 
     populateGUI(itemStacks);
 
-    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.INSTANCE);
+    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.getInstance());
   }
 
   @EventHandler
@@ -71,7 +71,7 @@ public class QueueGUI implements InventoryHolder, Listener {
     event.setCancelled(true);
 
     if (event.getCurrentItem().getItemMeta().displayName() == null) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-not-found"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-not-found"));
     } else {
       String itemName =
           PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
@@ -80,7 +80,7 @@ public class QueueGUI implements InventoryHolder, Listener {
       Queue queue = Queue.getQueue(queueName.toLowerCase());
 
       if (queue == null) {
-        player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-not-found"));
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-not-found"));
         return;
       }
 

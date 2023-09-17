@@ -22,7 +22,7 @@ public class ArenaDataHandler {
   public ArenaDataHandler(Arena arena) {
     ArenaDataHandler.arena = arena;
 
-    FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "/arenas/" + arena.getName() + ".yml");
+    FILE = new File(AuroraDuels.getInstance().getDataFolder(), "/arenas/" + arena.getName() + ".yml");
     arenaData = YamlConfiguration.loadConfiguration(FILE);
   }
 
@@ -96,7 +96,7 @@ public class ArenaDataHandler {
         FILE.createNewFile();
         arenaData.save(FILE);
       } catch (IOException e) {
-        AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save arena data", e);
+        AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save arena data", e);
       }
     }
   }

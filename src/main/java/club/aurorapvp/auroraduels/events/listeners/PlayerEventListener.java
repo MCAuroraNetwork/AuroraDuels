@@ -73,8 +73,8 @@ public class PlayerEventListener implements Listener {
 
     boolean commandMatched = false;
 
-    if (!AuroraDuels.INSTANCE.getConfig().getBoolean("duels.commands.allow-commands")) {
-      for (String command : AuroraDuels.INSTANCE.getConfig().getStringList("duels.commands.whitelisted")) {
+    if (!AuroraDuels.getInstance().getConfig().getBoolean("duels.commands.allow-commands")) {
+      for (String command : AuroraDuels.getInstance().getConfig().getStringList("duels.commands.whitelisted")) {
         if (event.getMessage().equals(command)) {
           commandMatched = true;
           break;
@@ -90,7 +90,7 @@ public class PlayerEventListener implements Listener {
       return;
     }
 
-    event.getPlayer().sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("commands-disabled"));
+    event.getPlayer().sendMessage(AuroraDuels.getInstance().getLang().getComponent("commands-disabled"));
 
     event.setCancelled(true);
   }
@@ -223,7 +223,7 @@ public class PlayerEventListener implements Listener {
       return;
     }
 
-    if (AuroraDuels.INSTANCE.getConfig().getBoolean("duels.enable-teleports")) {
+    if (AuroraDuels.getInstance().getConfig().getBoolean("duels.enable-teleports")) {
       return;
     }
 
@@ -231,7 +231,7 @@ public class PlayerEventListener implements Listener {
       return;
     }
 
-    event.getPlayer().sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("no-teleport"));
+    event.getPlayer().sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-teleport"));
 
     event.setCancelled(true);
   }

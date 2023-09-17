@@ -23,7 +23,7 @@ public class QueueDataHandler {
   public QueueDataHandler(Queue queue) {
     this.queue = queue;
 
-    FILE = new File(AuroraDuels.INSTANCE.getDataFolder(), "/queues/" + queue.getName() + ".yml");
+    FILE = new File(AuroraDuels.getInstance().getDataFolder(), "/queues/" + queue.getName() + ".yml");
     queueData = YamlConfiguration.loadConfiguration(FILE);
   }
 
@@ -78,7 +78,7 @@ public class QueueDataHandler {
         FILE.createNewFile();
         queueData.save(FILE);
       } catch (IOException e) {
-        AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Unable to save queue data", e);
+        AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Unable to save queue data", e);
       }
     }
   }

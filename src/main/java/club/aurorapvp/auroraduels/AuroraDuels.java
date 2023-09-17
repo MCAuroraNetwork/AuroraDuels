@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class AuroraDuels extends JavaPlugin {
 
-  public static AuroraDuels INSTANCE;
+  private static AuroraDuels INSTANCE;
   private static QueueGUI queueGUI;
   private static Config config;
   private static Lang lang;
@@ -27,6 +27,11 @@ public final class AuroraDuels extends JavaPlugin {
   private static boolean auroraWarpsInstalled = false;
   private static boolean discordSrvInstalled = false;
 
+  public static AuroraDuels getInstance() {
+    return INSTANCE;
+  }
+
+  // TODO why are these not used?
   public static boolean isAuroraKitsInstalled() {
     return auroraKitsInstalled;
   }

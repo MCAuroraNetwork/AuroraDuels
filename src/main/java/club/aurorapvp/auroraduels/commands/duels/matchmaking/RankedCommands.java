@@ -28,7 +28,7 @@ public class RankedCommands extends BaseCommand {
     Queue queue = Queue.getQueue(Objects.requireNonNullElse(name, "default"));
 
     if (queue == null) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("queue-not-found"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-not-found"));
       return;
     }
 

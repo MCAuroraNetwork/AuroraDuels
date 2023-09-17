@@ -153,7 +153,7 @@ public class FFADuel extends Duel {
 
               title =
                   Title.title(
-                      AuroraDuels.INSTANCE.getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.getInstance().getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -161,7 +161,7 @@ public class FFADuel extends Duel {
             this.cancel();
           }
         }
-      }.runTaskTimer(AuroraDuels.INSTANCE, 0L, 20L);
+      }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
 
       for (Player player : this.getPlayers()) {
         BossBar bar = BossBar.bossBar(
@@ -218,7 +218,7 @@ public class FFADuel extends Duel {
         public void run() {
           new DuelStartEvent(thisDuel).callEvent();
         }
-      }.runTask(AuroraDuels.INSTANCE);
+      }.runTask(AuroraDuels.getInstance());
     });
   }
 
@@ -242,11 +242,11 @@ public class FFADuel extends Duel {
     String loserNames = sb.toString();
 
     winner.showTitle(
-        Title.title(AuroraDuels.INSTANCE.getLang().getComponent("you-won"), Component.text("Opponents: " + loserNames)));
+        Title.title(AuroraDuels.getInstance().getLang().getComponent("you-won"), Component.text("Opponents: " + loserNames)));
 
     for (Player player : losers) {
       player.showTitle(
-          Title.title(AuroraDuels.INSTANCE.getLang().getComponent("you-lost"), Component.text("Winner: " + winnerName)));
+          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-lost"), Component.text("Winner: " + winnerName)));
     }
 
     Duel thisDuel = this;
@@ -256,7 +256,7 @@ public class FFADuel extends Duel {
       public void run() {
         new DuelEndEvent(thisDuel, new Player[]{winner}, losers).callEvent();
       }
-    }.runTask(AuroraDuels.INSTANCE);
+    }.runTask(AuroraDuels.getInstance());
   }
 
   @Override
@@ -266,7 +266,7 @@ public class FFADuel extends Duel {
     }
 
     for (Player player : this.getPlayers()) {
-      player.sendMessage(AuroraDuels.INSTANCE.getLang().getComponent("draw"));
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("draw"));
     }
 
     Duel thisDuel = this;
@@ -293,6 +293,6 @@ public class FFADuel extends Duel {
       public void run() {
         new DuelDrawEvent(thisDuel).callEvent();
       }
-    }.runTask(AuroraDuels.INSTANCE);
+    }.runTask(AuroraDuels.getInstance());
   }
 }

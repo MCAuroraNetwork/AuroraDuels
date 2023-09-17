@@ -36,7 +36,7 @@ public class SchematicDataHandler {
 
     FILE =
         new File(
-            AuroraDuels.INSTANCE.getDataFolder(),
+            AuroraDuels.getInstance().getDataFolder(),
             "/arenas/schematics/" + arena.getName() + ".schem");
   }
 
@@ -66,7 +66,7 @@ public class SchematicDataHandler {
     try {
       Operations.complete(forwardExtentCopy);
     } catch (WorldEditException e) {
-      AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to copy arena schematic data", e);
+      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to copy arena schematic data", e);
     }
 
     if (!FILE.exists()) {
@@ -74,7 +74,7 @@ public class SchematicDataHandler {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to generate schematic file", e);
+        AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to generate schematic file", e);
       }
     }
 
@@ -82,7 +82,7 @@ public class SchematicDataHandler {
         BuiltInClipboardFormat.FAST.getWriter(new FileOutputStream(FILE))) {
       writer.write(clipboard);
     } catch (IOException e) {
-      AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to save schematic file", e);
+      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save schematic file", e);
     }
   }
 
@@ -99,7 +99,7 @@ public class SchematicDataHandler {
 
         Bukkit.getScheduler()
             .runTaskAsynchronously(
-                AuroraDuels.INSTANCE,
+                AuroraDuels.getInstance(),
                 () -> {
                   try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
                     Operation operation =
@@ -110,13 +110,13 @@ public class SchematicDataHandler {
 
                     Operations.complete(operation);
                   } catch (WorldEditException e) {
-                    AuroraDuels.INSTANCE.getLogger()
+                    AuroraDuels.getInstance().getLogger()
                         .log(Level.SEVERE, "Failed to paste schematic file", e);
                   }
                 });
       }
     } catch (IOException e) {
-      AuroraDuels.INSTANCE.getLogger().log(Level.SEVERE, "Failed to read schematic file", e);
+      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to read schematic file", e);
     }
   }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CommandManager {
 
-  public static PaperCommandManager MANAGER = new PaperCommandManager(AuroraDuels.INSTANCE);
+  public static PaperCommandManager MANAGER = new PaperCommandManager(AuroraDuels.getInstance());
 
   public static void init() {
     MANAGER.registerCommand(new ArenaCommands());
