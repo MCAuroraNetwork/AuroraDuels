@@ -346,6 +346,16 @@ public class Queue {
     }
   }
 
+  public static int inQueues() {
+    int inQueues = 0;
+
+    for (Queue queue : Queue.getQueues()) {
+      inQueues = inQueues + queue.inQueue();
+    }
+
+    return inQueues;
+  }
+
   public static boolean inQueue(Player player) {
     for (Queue queue : Queue.getQueues()) {
       if (queue.lookingForMatch.containsValue(player)) {
