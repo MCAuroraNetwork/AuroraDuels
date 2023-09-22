@@ -143,11 +143,7 @@ public abstract class Duel {
   }
 
   public static Duel getLastDuel(Player player) {
-    if (LAST_DUEL.containsKey(player.getUniqueId())) {
-      return LAST_DUEL.get(player.getUniqueId());
-    }
-
-    return null;
+    return LAST_DUEL.get(player.getUniqueId());
   }
 
   public static void setDuelKit(Player player, String kitName) {
