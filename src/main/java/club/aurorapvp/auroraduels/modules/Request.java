@@ -14,13 +14,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class Request {
 
   protected static final LinkedList<Request> PENDING_REQUESTS = new LinkedList<>();
-  private final HashMap<Player, Boolean> playersAccepted = new HashMap<>();
+  private final HashMap<UUID, Boolean> playersAccepted = new HashMap<>();
   private final Player requester;
   private final Set<Player> requested = new HashSet<>();
   private final Duel duel;
@@ -170,7 +171,7 @@ public class Request {
     }
 
     for (Player player : requested) {
-      playersAccepted.put(player, false);
+      playersAccepted.put(player.getUniqueId(), false);
     }
 
     Request thisRequest = this;
@@ -197,7 +198,7 @@ public class Request {
 
   public void accept(Player player) {
     player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-accepted"));
-    playersAccepted.put(player, true);
+    playersAccepted.put(player.getUniqueId(), true);
 
     if (!playersAccepted.containsValue(false)) {
       PENDING_REQUESTS.remove(this);

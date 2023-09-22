@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
@@ -27,7 +28,7 @@ public abstract class Duel {
 
   private static final NamespacedKey duelKitKey =
       new NamespacedKey(AuroraDuels.getInstance(), "duelkit");
-  private static final HashMap<Player, Duel> LAST_DUEL = new HashMap<>();
+  private static final HashMap<UUID, Duel> LAST_DUEL = new HashMap<>();
   protected static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
@@ -138,12 +139,12 @@ public abstract class Duel {
   }
 
   public static void setLastDuel(Player player, Duel duel) {
-    LAST_DUEL.put(player, duel);
+    LAST_DUEL.put(player.getUniqueId(), duel);
   }
 
   public static Duel getLastDuel(Player player) {
-    if (LAST_DUEL.containsKey(player)) {
-      return LAST_DUEL.get(player);
+    if (LAST_DUEL.containsKey(player.getUniqueId())) {
+      return LAST_DUEL.get(player.getUniqueId());
     }
 
     return null;

@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
@@ -33,7 +34,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class FFADuel extends Duel {
 
   private final Set<Player> deadPlayers = new HashSet<>();
-  private final Map<Player, BossBar> bossbars = new HashMap<>();
+  private final Map<UUID, BossBar> bossbars = new HashMap<>();
   private BossBar spectatorBar;
 
   public FFADuel(Set<Player> players, Location respawnLocation, boolean ranked) {
@@ -98,13 +99,13 @@ public class FFADuel extends Duel {
 
     FFADuel thisDuel = this;
 
-    final Map<Player, Location> safeLocations = new HashMap<>();
+    final Map<UUID, Location> safeLocations = new HashMap<>();
 
     Set<CompletableFuture<Boolean>> teleportFutures = new HashSet<>();
     for (Player player : thisDuel.getPlayers()) {
-      safeLocations.put(player, LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center));
+      safeLocations.put(player.getUniqueId(), LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center));
 
-      CompletableFuture<Boolean> teleportFuture = player.teleportAsync(safeLocations.get(player));
+      CompletableFuture<Boolean> teleportFuture = player.teleportAsync(safeLocations.get(player.getUniqueId()));
       teleportFutures.add(teleportFuture);
     }
 
@@ -173,7 +174,7 @@ public class FFADuel extends Duel {
 
         player.showBossBar(bar);
 
-        bossbars.put(player, bar);
+        bossbars.put(player.getUniqueId(), bar);
       }
 
       spectatorBar = BossBar.bossBar(
@@ -201,7 +202,7 @@ public class FFADuel extends Duel {
           for (Player player : thisDuel.getPlayers()) {
             double playerHealth = thisDuel.isSpectator(player) ? 0
                 : player.getHealth() + player.getAbsorptionAmount();
-            bossbars.get(player)
+            bossbars.get(player.getUniqueId())
                 .progress((float) Math.min(
                     ((playersHealth - playerHealth) / playersMaxHealth), 1.0f));
           }
@@ -224,7 +225,7 @@ public class FFADuel extends Duel {
 
   public void endDuel(Player[] winners, Player[] losers) {
     for (Player player : this.getPlayers()) {
-      player.hideBossBar(bossbars.get(player));
+      player.hideBossBar(bossbars.get(player.getUniqueId()));
     }
 
     Player winner = winners[0];
@@ -262,7 +263,7 @@ public class FFADuel extends Duel {
   @Override
   public void draw() {
     for (Player player : this.getPlayers()) {
-      player.hideBossBar(bossbars.get(player));
+      player.hideBossBar(bossbars.get(player.getUniqueId()));
     }
 
     for (Player player : this.getPlayers()) {

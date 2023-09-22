@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,8 +38,8 @@ public class TeamDuel extends Duel {
 
   public static Team team1;
   public static Team team2;
-  private final Map<Player, Boolean> teamOneDead = new HashMap<>();
-  private final Map<Player, Boolean> teamTwoDead = new HashMap<>();
+  private final Map<UUID, Boolean> teamOneDead = new HashMap<>();
+  private final Map<UUID, Boolean> teamTwoDead = new HashMap<>();
   private final Player[] teamOneMembers;
   private final Player[] teamTwoMembers;
   private final BossBar[] teamOneBar = new BossBar[1];
@@ -118,6 +119,7 @@ public class TeamDuel extends Duel {
     return teamTwoMembers;
   }
 
+  @SuppressWarnings("unused")
   public boolean isOnTeamOne(Player player) {
     for (Player teamOneMember : teamOneMembers) {
       if (teamOneMember == player) {
@@ -140,15 +142,15 @@ public class TeamDuel extends Duel {
   }
 
   public void setDead(Player player) {
-    if (teamOneDead.containsKey(player)) {
-      teamOneDead.put(player, true);
+    if (teamOneDead.containsKey(player.getUniqueId())) {
+      teamOneDead.put(player.getUniqueId(), true);
     } else {
-      teamTwoDead.put(player, true);
+      teamTwoDead.put(player.getUniqueId(), true);
     }
   }
 
   public boolean isTeamDead(Player player) {
-    if (teamOneDead.containsKey(player)) {
+    if (teamOneDead.containsKey(player.getUniqueId())) {
       for (boolean dead : teamOneDead.values()) {
         if (!dead) {
           return false;
@@ -181,12 +183,12 @@ public class TeamDuel extends Duel {
             arena.getSecondSpawn().getZ());
 
     for (Player player : teamOneMembers) {
-      teamOneDead.put(player, false);
+      teamOneDead.put(player.getUniqueId(), false);
       team1.addPlayer(player);
     }
 
     for (Player player : teamTwoMembers) {
-      teamTwoDead.put(player, false);
+      teamTwoDead.put(player.getUniqueId(), false);
       team2.addPlayer(player);
     }
 
@@ -320,7 +322,7 @@ public class TeamDuel extends Duel {
           double team1Health = 0;
 
           for (Player team1Member : teamOneMembers) {
-            if (teamOneDead.get(team1Member) || thisDuel.isSpectator(team1Member)) {
+            if (teamOneDead.get(team1Member.getUniqueId()) || thisDuel.isSpectator(team1Member)) {
               continue;
             }
 
@@ -334,7 +336,7 @@ public class TeamDuel extends Duel {
           double team2Health = 0;
 
           for (Player team2Member : teamTwoMembers) {
-            if (teamTwoDead.get(team2Member) || thisDuel.isSpectator(team2Member)) {
+            if (teamTwoDead.get(team2Member.getUniqueId()) || thisDuel.isSpectator(team2Member)) {
               continue;
             }
 

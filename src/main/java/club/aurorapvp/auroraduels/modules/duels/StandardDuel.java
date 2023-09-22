@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
@@ -14,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
@@ -30,7 +30,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class StandardDuel extends Duel implements Listener {
 
-  private final Map<Player, Integer> wins = new HashMap<>();
+  private final Map<UUID, Integer> wins = new HashMap<>();
   private final BossBar[] playerOneBar = new BossBar[1];
   private final BossBar[] playerTwoBar = new BossBar[1];
   private final Player playerOne;
@@ -116,9 +116,11 @@ public class StandardDuel extends Duel implements Listener {
 
             if (rounds > 1) {
               playerOne.sendActionBar(
-                  AuroraDuels.getInstance().getLang().formatComponent("rounds-remaining", currentRound, rounds));
+                  AuroraDuels.getInstance().getLang()
+                      .formatComponent("rounds-remaining", currentRound, rounds));
               playerTwo.sendActionBar(
-                  AuroraDuels.getInstance().getLang().formatComponent("rounds-remaining", currentRound, rounds));
+                  AuroraDuels.getInstance().getLang()
+                      .formatComponent("rounds-remaining", currentRound, rounds));
             }
 
             playerOne.showTitle(title1);
@@ -205,15 +207,15 @@ public class StandardDuel extends Duel implements Listener {
 
   public void endDuel(Player[] winner, Player[] loser) {
     if (rounds > 1 && loser[0].isOnline()) {
-      if (wins.containsKey(winner[0])) {
-        int currentWins = wins.get(winner[0]);
+      if (wins.containsKey(winner[0].getUniqueId())) {
+        int currentWins = wins.get(winner[0].getUniqueId());
 
-        wins.put(winner[0], currentWins + 1);
+        wins.put(winner[0].getUniqueId(), currentWins + 1);
       } else {
-        wins.put(winner[0], 1);
+        wins.put(winner[0].getUniqueId(), 1);
       }
 
-      if (!(wins.get(winner[0]) >= (rounds / 2 + 1))) {
+      if (!(wins.get(winner[0].getUniqueId()) >= (rounds / 2 + 1))) {
         loser[0].spigot().respawn();
 
         new BukkitRunnable() {
@@ -245,10 +247,12 @@ public class StandardDuel extends Duel implements Listener {
 
     winner[0].showTitle(
         Title.title(
-            AuroraDuels.getInstance().getLang().getComponent("you-won"), Component.text("Opponent: " + loser[0].getName())));
+            AuroraDuels.getInstance().getLang().getComponent("you-won"),
+            Component.text("Opponent: " + loser[0].getName())));
     loser[0].showTitle(
         Title.title(
-            AuroraDuels.getInstance().getLang().getComponent("you-lost"), Component.text("Opponent: " + winner[0].getName())));
+            AuroraDuels.getInstance().getLang().getComponent("you-lost"),
+            Component.text("Opponent: " + winner[0].getName())));
 
     if (playerOneBar[0] != null) {
       playerOne.hideBossBar(playerOneBar[0]);
