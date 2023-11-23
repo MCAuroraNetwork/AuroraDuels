@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
@@ -57,6 +56,12 @@ public class StandardDuelCommands extends BaseCommand {
 
     if (str != null && str.matches("\\d+")) {
       rounds = Integer.parseInt(str);
+
+      if (rounds % 2 == 0) {
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("even-rounds"));
+        rounds--;
+      }
+
       if (rounds <= 1) {
         rounds = 1;
       }

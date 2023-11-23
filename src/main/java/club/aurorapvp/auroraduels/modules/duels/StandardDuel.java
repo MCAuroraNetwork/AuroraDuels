@@ -64,12 +64,6 @@ public class StandardDuel extends Duel implements Listener {
   public void startDuel(Arena arena) {
     this.arena = arena;
 
-    if (rounds % 2 == 0) {
-      for (Player player : this.players) {
-        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("even-rounds"));
-      }
-    }
-
     Location spawn1 =
         new Location(
             arena.getWorld(),
