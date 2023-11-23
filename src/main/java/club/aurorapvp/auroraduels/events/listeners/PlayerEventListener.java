@@ -72,7 +72,7 @@ public class PlayerEventListener implements Listener {
 
     if (!AuroraDuels.getInstance().getConfig().getBoolean("duels.commands.allow-commands")) {
       for (String command : AuroraDuels.getInstance().getConfig().getStringList("duels.commands.whitelisted")) {
-        if (event.getMessage().equals(command)) {
+        if (event.getMessage().equals("/" + command)) {
           commandMatched = true;
           break;
         }
