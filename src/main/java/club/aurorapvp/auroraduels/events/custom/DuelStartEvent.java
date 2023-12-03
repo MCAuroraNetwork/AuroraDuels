@@ -13,6 +13,7 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired when a duel starts */
+// TODO make this cancellable
 public class DuelStartEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();

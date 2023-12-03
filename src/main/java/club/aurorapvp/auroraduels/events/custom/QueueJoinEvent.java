@@ -6,6 +6,7 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired when a duel enters the duel queue */
+// TODO make this cancellable
 public class QueueJoinEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();

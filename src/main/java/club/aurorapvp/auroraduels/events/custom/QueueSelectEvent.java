@@ -6,6 +6,8 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/* Event that is fired when the player selects which queue to use for a duel */
+// TODO make this cancellable
 public class QueueSelectEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();

@@ -3,7 +3,6 @@ package club.aurorapvp.auroraduels.events.custom;
 import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DUEL_RESPAWN;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;

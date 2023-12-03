@@ -1,8 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
@@ -51,22 +49,24 @@ public abstract class Duel {
     public void run() {
       try {
         for (Player player : thisDuel.getPlayers()) {
-          if (!Arena.isInBounds(player.getLocation(), thisDuel.getArena()) && !thisDuel.isSpectator(
-              player)) {
+          if (!thisDuel.isSpectator(player) && !thisDuel.getArena()
+              .isInBounds(player.getLocation())) {
             player.setHealth(0);
-            player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
+            player.sendMessage(
+                AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
           }
         }
 
         for (Player player : thisDuel.getSpectators()) {
-          if (!Arena.isInBounds(player.getLocation(), thisDuel.getArena())) {
+          if (!thisDuel.getArena().isInBounds(player.getLocation())) {
             for (Player duelingPlayer : thisDuel.getPlayers()) {
               if (!thisDuel.isSpectator(duelingPlayer)) {
                 player.teleportAsync(duelingPlayer.getLocation());
                 break;
               }
             }
-            player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
+            player.sendMessage(
+                AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
           }
         }
       } catch (IllegalArgumentException e) {
@@ -166,11 +166,13 @@ public abstract class Duel {
     return AuroraDuels.getInstance().getConfig().getLocation("lobby");
   }
 
+  // TODO do this better
   public static void setDuelLobby(Location loc) {
     AuroraDuels.getInstance().getConfig().set("lobby", loc);
 
     try {
-      AuroraDuels.getInstance().getConfig().save(new File(AuroraDuels.getInstance().getDataFolder(), "config.yml"));
+      AuroraDuels.getInstance().getConfig()
+          .save(new File(AuroraDuels.getInstance().getDataFolder(), "config.yml"));
     } catch (IOException e) {
       AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save config file", e);
     }

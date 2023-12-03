@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.data.ArenaDataHandler;
 import club.aurorapvp.auroraduels.data.SchematicDataHandler;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -186,7 +185,8 @@ public class Arena {
 
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("set-spawn1"));
     } else if (state != ArenaState.IDLE) {
-      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("arena-already-being-created"));
+      player.sendMessage(
+          AuroraDuels.getInstance().getLang().getComponent("arena-already-being-created"));
     } else {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("arena-already-exists"));
     }
@@ -302,8 +302,7 @@ public class Arena {
             AuroraDuels.getInstance(),
             () -> {
               for (Entity entity : thisArena.getWorld().getEntities()) {
-                if (Arena.isInBounds(entity.getLocation(), thisArena)
-                    && !(entity instanceof Player)) {
+                if (thisArena.isInBounds(entity.getLocation()) && !(entity instanceof Player)) {
                   entity.remove();
                 }
               }
@@ -326,9 +325,9 @@ public class Arena {
     }
   }
 
-  public static boolean isInBounds(Location loc, Arena arena) {
-    Location corner1 = arena.getCornerOne();
-    Location corner2 = arena.getCornerTwo();
+  public boolean isInBounds(Location loc) {
+    Location corner1 = this.getCornerOne();
+    Location corner2 = this.getCornerTwo();
 
     double minX = Math.min(corner1.getX(), corner2.getX());
     double minY = Math.min(corner1.getY(), corner2.getY());
