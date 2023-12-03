@@ -111,10 +111,12 @@ public class StandardDuel extends Duel implements Listener {
             if (rounds > 1) {
               playerOne.sendActionBar(
                   AuroraDuels.getInstance().getLang()
-                      .formatComponent("rounds-remaining", currentRound, rounds));
+                      .formatComponent("rounds-remaining", currentRound, rounds,
+                          wins.get(playerOne.getUniqueId()), wins.get(playerTwo.getUniqueId())));
               playerTwo.sendActionBar(
                   AuroraDuels.getInstance().getLang()
-                      .formatComponent("rounds-remaining", currentRound, rounds));
+                      .formatComponent("rounds-remaining", currentRound, rounds,
+                          wins.get(playerOne.getUniqueId()), wins.get(playerTwo.getUniqueId())));
             }
 
             playerOne.showTitle(title1);
@@ -209,7 +211,7 @@ public class StandardDuel extends Duel implements Listener {
         wins.put(winner[0].getUniqueId(), 1);
       }
 
-      if (!(wins.get(winner[0].getUniqueId()) >= (rounds / 2 + 1))) {
+      if (!(wins.get(winner[0].getUniqueId()) >= ((rounds - 1) / 2 + 1))) {
         loser[0].spigot().respawn();
 
         new BukkitRunnable() {

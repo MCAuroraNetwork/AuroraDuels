@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
@@ -243,7 +242,8 @@ public class TeamDuel extends Duel {
 
               final Title title =
                   Title.title(
-                      AuroraDuels.getInstance().getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                      Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -281,7 +281,8 @@ public class TeamDuel extends Duel {
 
               final Title title =
                   Title.title(
-                      AuroraDuels.getInstance().getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                      Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -381,12 +382,14 @@ public class TeamDuel extends Duel {
 
     for (Player player : winners) {
       player.showTitle(
-          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-won"), Component.text("Opponents: " + loserNames)));
+          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-won"),
+              Component.text("Opponents: " + loserNames)));
     }
 
     for (Player player : losers) {
       player.showTitle(
-          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-lost"), Component.text("Opponents: " + winnerNames)));
+          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-lost"),
+              Component.text("Opponents: " + winnerNames)));
     }
 
     for (Player player : teamOneMembers) {
