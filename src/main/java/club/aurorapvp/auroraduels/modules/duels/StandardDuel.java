@@ -83,11 +83,6 @@ public class StandardDuel extends Duel implements Listener {
     CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
 
     CompletableFuture.allOf(teleport1, teleport2).thenRun(() -> {
-      if (!teleport1.join() || !teleport2.join()) {
-        thisDuel.draw();
-        return;
-      }
-
       new BukkitRunnable() {
         int seconds = 4;
 
