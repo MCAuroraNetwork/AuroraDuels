@@ -43,7 +43,7 @@ dependencies {
     implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
     implementation(platform("com.intellectualsites.bom:bom-newest:1.39"))
 
-    compileOnly 'io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Core'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit'
     compileOnly 'me.clip:placeholderapi:2.11.5'
