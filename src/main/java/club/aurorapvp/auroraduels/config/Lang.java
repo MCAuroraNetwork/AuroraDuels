@@ -28,7 +28,8 @@ public class Lang {
       if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
           && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(
-            (String) path, Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
+            (String) path,
+            Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
       }
     }
 
@@ -56,14 +57,16 @@ public class Lang {
     DEFAULTS.put("entered-queue", "prefix <green>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <green>Request sent successfully!");
     DEFAULTS.put(
-        "received-request", "prefix <yellow>Request from <bold>%s<reset><yellow>. Use <bold>/duel accept<reset><yellow> or <bold>/duel deny<reset><yellow>");
+        "received-request",
+        "prefix <yellow>Request from <bold>%s<reset><yellow>. Use <bold>/duel accept<reset><yellow> or <bold>/duel deny<reset><yellow>");
     DEFAULTS.put("request-timed-out", "prefix <yellow>Request timed out");
     DEFAULTS.put("no-requests", "prefix <yellow>No requests");
     DEFAULTS.put("request-denied", "prefix <red>Request denied");
     DEFAULTS.put("request-accepted", "prefix <green>Request accepted!");
     DEFAULTS.put("you-won", "<green>You won!");
     DEFAULTS.put("you-lost", "<red>You lost");
-    DEFAULTS.put("duel-won", "<bold><yellow>%1$s<reset><yellow> won a duel against <bold>%2$s<reset><yellow>!");
+    DEFAULTS.put("duel-won",
+        "<bold><yellow>%1$s<reset><yellow> won a duel against <bold>%2$s<reset><yellow>!");
     DEFAULTS.put("discord-duel-won", "%1$s won a duel against %2$s!");
     DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s /n<red>%3$s<yellow - <blue>%4$s");
     DEFAULTS.put("draw", "prefix <yellow>Draw!");
@@ -79,7 +82,8 @@ public class Lang {
     DEFAULTS.put("queue-created", "prefix <green>Queue created");
     DEFAULTS.put("queue-not-found", "prefix <red>Queue not found");
     DEFAULTS.put("you-have-request", "prefix <red>You already have a pending request");
-    DEFAULTS.put("already-has-request", "prefix <red>You already have a request pending to this player");
+    DEFAULTS.put("already-has-request",
+        "prefix <red>You already have a request pending to this player");
     DEFAULTS.put(
         "add-arena",
         "prefix <yellow>Type the name of the arena you want to add arena to queue. Added %s so far");
@@ -124,7 +128,8 @@ public class Lang {
       if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
           && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(
-            (String) path, Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
+            (String) path,
+            Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
       }
     }
   }

@@ -23,7 +23,8 @@ public class QueueDataHandler {
   public QueueDataHandler(Queue queue) {
     this.queue = queue;
 
-    FILE = new File(AuroraDuels.getInstance().getDataFolder(), "/queues/" + queue.getName() + ".yml");
+    FILE = new File(AuroraDuels.getInstance().getDataFolder(),
+        "/queues/" + queue.getName() + ".yml");
     queueData = YamlConfiguration.loadConfiguration(FILE);
   }
 

@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.commands;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Arena;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;

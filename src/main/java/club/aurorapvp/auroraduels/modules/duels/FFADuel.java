@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
@@ -103,19 +102,15 @@ public class FFADuel extends Duel {
 
     Set<CompletableFuture<Boolean>> teleportFutures = new HashSet<>();
     for (Player player : thisDuel.getPlayers()) {
-      safeLocations.put(player.getUniqueId(), LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center));
+      safeLocations.put(player.getUniqueId(),
+          LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center));
 
-      CompletableFuture<Boolean> teleportFuture = player.teleportAsync(safeLocations.get(player.getUniqueId()));
+      CompletableFuture<Boolean> teleportFuture = player.teleportAsync(
+          safeLocations.get(player.getUniqueId()));
       teleportFutures.add(teleportFuture);
     }
 
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
-      if (!teleportFutures.stream()
-          .allMatch(CompletableFuture::join)) {
-        thisDuel.draw();
-        return;
-      }
-
       new BukkitRunnable() {
         int seconds = 3;
 
@@ -123,7 +118,7 @@ public class FFADuel extends Duel {
         public void run() {
           for (Player player : thisDuel.getPlayers()) {
             CompletableFuture<Boolean> teleport = player.teleportAsync(
-                Objects.requireNonNull(safeLocations.get(player)));
+                Objects.requireNonNull(safeLocations.get(player.getUniqueId())));
 
             teleport.thenRun(() -> player.lookAt(center, LookAnchor.EYES));
 
@@ -154,7 +149,8 @@ public class FFADuel extends Duel {
 
               title =
                   Title.title(
-                      AuroraDuels.getInstance().getLang().getComponent("duel-started"), Component.text("Opponents: " + names));
+                      AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                      Component.text("Opponents: " + names));
 
               player.showTitle(title);
             }
@@ -243,11 +239,13 @@ public class FFADuel extends Duel {
     String loserNames = sb.toString();
 
     winner.showTitle(
-        Title.title(AuroraDuels.getInstance().getLang().getComponent("you-won"), Component.text("Opponents: " + loserNames)));
+        Title.title(AuroraDuels.getInstance().getLang().getComponent("you-won"),
+            Component.text("Opponents: " + loserNames)));
 
     for (Player player : losers) {
       player.showTitle(
-          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-lost"), Component.text("Winner: " + winnerName)));
+          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-lost"),
+              Component.text("Winner: " + winnerName)));
     }
 
     Duel thisDuel = this;

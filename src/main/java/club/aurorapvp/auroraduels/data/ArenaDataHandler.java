@@ -22,7 +22,8 @@ public class ArenaDataHandler {
   public ArenaDataHandler(Arena arena) {
     ArenaDataHandler.arena = arena;
 
-    FILE = new File(AuroraDuels.getInstance().getDataFolder(), "/arenas/" + arena.getName() + ".yml");
+    FILE = new File(AuroraDuels.getInstance().getDataFolder(),
+        "/arenas/" + arena.getName() + ".yml");
     arenaData = YamlConfiguration.loadConfiguration(FILE);
   }
 

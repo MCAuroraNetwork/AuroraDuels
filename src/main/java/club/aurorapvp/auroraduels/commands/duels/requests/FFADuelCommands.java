@@ -1,7 +1,6 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
@@ -57,7 +56,7 @@ public class FFADuelCommands extends BaseCommand {
       WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
 
       if (worldSpawn != null) {
-        loc = worldSpawn.getSpawn();
+        loc = worldSpawn.getLocation();
       }
 
       if (loc == null) {

@@ -43,7 +43,9 @@ public final class AuroraDuels extends JavaPlugin {
     return auroraWarpsInstalled;
   }
 
-  public boolean isDiscordSRVInstalled() { return discordSrvInstalled; }
+  public boolean isDiscordSRVInstalled() {
+    return discordSrvInstalled;
+  }
 
   public static QueueGUI getQueueGUI() {
     return queueGUI;

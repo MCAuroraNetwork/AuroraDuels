@@ -1,8 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.config.Config;
-import club.aurorapvp.auroraduels.config.Lang;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Timer;
@@ -42,8 +40,10 @@ public class DuelStartEvent extends Event {
                            public void run() {
                              if (duel.isActive()) {
                                for (Player player : duel.getPlayers()) {
-                                 player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
-                                 player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
+                                 player.sendMessage(
+                                     AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
+                                 player.sendMessage(
+                                     AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
                                }
                                duel.draw();
                              }

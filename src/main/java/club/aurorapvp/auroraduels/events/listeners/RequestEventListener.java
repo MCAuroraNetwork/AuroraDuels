@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class RequestEventListener implements Listener {
+
   @EventHandler
   public void onInventoryClose(InventoryCloseEvent event) {
     for (Request request : Request.getPendingRequests()) {

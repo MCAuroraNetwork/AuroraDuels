@@ -163,7 +163,7 @@ public class Queue {
       Location loc = null;
 
       if (worldSpawn != null) {
-        loc = worldSpawn.getSpawn();
+        loc = worldSpawn.getLocation();
       }
 
       if (loc == null) {

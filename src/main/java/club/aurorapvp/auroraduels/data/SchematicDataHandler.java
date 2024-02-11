@@ -66,7 +66,8 @@ public class SchematicDataHandler {
     try {
       Operations.complete(forwardExtentCopy);
     } catch (WorldEditException e) {
-      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to copy arena schematic data", e);
+      AuroraDuels.getInstance().getLogger()
+          .log(Level.SEVERE, "Failed to copy arena schematic data", e);
     }
 
     if (!FILE.exists()) {
@@ -74,7 +75,8 @@ public class SchematicDataHandler {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
       } catch (IOException e) {
-        AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to generate schematic file", e);
+        AuroraDuels.getInstance().getLogger()
+            .log(Level.SEVERE, "Failed to generate schematic file", e);
       }
     }
 

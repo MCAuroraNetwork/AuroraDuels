@@ -21,7 +21,8 @@ import org.jetbrains.annotations.NotNull;
 public class QueueGUI implements InventoryHolder, Listener {
 
   private final Inventory inventory =
-      Bukkit.createInventory(this, 54, AuroraDuels.getInstance().getLang().getComponent("queue-menu"));
+      Bukkit.createInventory(this, 54,
+          AuroraDuels.getInstance().getLang().getComponent("queue-menu"));
 
   public QueueGUI() {
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];

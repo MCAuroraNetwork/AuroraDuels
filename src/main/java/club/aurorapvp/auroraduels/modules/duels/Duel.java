@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -26,15 +27,15 @@ public abstract class Duel {
 
   private static final NamespacedKey duelKitKey =
       new NamespacedKey(AuroraDuels.getInstance(), "duelkit");
-  private static final HashMap<UUID, Duel> LAST_DUEL = new HashMap<>();
+  private static final NamespacedKey winStreakKey =
+      new NamespacedKey(AuroraDuels.getInstance(), "duel-winstreak");
+  private static final Map<UUID, Duel> LAST_DUEL = new HashMap<>();
   protected static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   protected final Set<BossBar> spectatorBars = new HashSet<>();
   protected final Location respawnLocation;
   private final boolean ranked;
-  private static final NamespacedKey winStreakKey =
-      new NamespacedKey(AuroraDuels.getInstance(), "duel-winstreak");
   protected Long timeStarted;
   protected Kit kit;
   protected Arena arena;

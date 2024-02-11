@@ -40,7 +40,8 @@ public class Request {
 
     for (Player player : duel.getPlayers()) {
       if (hasPendingRequest(requester, player)) {
-        requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("already-has-request"));
+        requester.sendMessage(
+            AuroraDuels.getInstance().getLang().getComponent("already-has-request"));
         return;
       } else if (Duel.inDuel(player)) {
         requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("player-in-duel"));
@@ -167,7 +168,8 @@ public class Request {
     requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("sent-request"));
 
     for (Player player : requested) {
-      player.sendMessage(AuroraDuels.getInstance().getLang().formatComponent("received-request", requester.getName()));
+      player.sendMessage(AuroraDuels.getInstance().getLang()
+          .formatComponent("received-request", requester.getName()));
     }
 
     for (Player player : requested) {
@@ -182,10 +184,12 @@ public class Request {
               @Override
               public void run() {
                 if (PENDING_REQUESTS.contains(thisRequest)) {
-                  requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
+                  requester.sendMessage(
+                      AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
 
                   for (Player player : requested) {
-                    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
+                    player.sendMessage(
+                        AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
                   }
 
                   PENDING_REQUESTS.remove(thisRequest);

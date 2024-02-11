@@ -206,12 +206,6 @@ public class TeamDuel extends Duel {
     }
 
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
-      if (!teleportFutures.stream()
-          .allMatch(CompletableFuture::join)) {
-        thisDuel.draw();
-        return;
-      }
-
       new BukkitRunnable() {
         int seconds = 3;
 

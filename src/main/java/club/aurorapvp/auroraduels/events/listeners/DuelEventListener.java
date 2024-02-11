@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
@@ -81,7 +82,7 @@ public class DuelEventListener implements Listener {
                           .getScore(player)
                           .getPoints())
               .average()
-              .orElse(club.aurorapvp.auroracombat.config.Config.get().getInt("elo.default-points"));
+              .orElse(AuroraCombat.getInstance().getConfig().getInt("elo.default-points"));
       double winnerAvgRating =
           Arrays.stream(winners)
               .mapToDouble(
@@ -90,7 +91,7 @@ public class DuelEventListener implements Listener {
                           .getScore(player)
                           .getPoints())
               .average()
-              .orElse(club.aurorapvp.auroracombat.config.Config.get().getInt("elo.default-points"));
+              .orElse(AuroraCombat.getInstance().getConfig().getInt("elo.default-points"));
 
       for (Player loser : losers) {
         Rating.getRating(event.getDuel().getQueue().getName() + "_duels")

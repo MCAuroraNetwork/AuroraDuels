@@ -63,7 +63,8 @@ public class Config {
 
         this.generateDefaults();
       } catch (IOException e) {
-        AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to generate config file", e);
+        AuroraDuels.getInstance().getLogger()
+            .log(Level.SEVERE, "Failed to generate config file", e);
       }
     }
     config = YamlConfiguration.loadConfiguration(FILE);
