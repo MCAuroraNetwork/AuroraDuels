@@ -53,7 +53,7 @@ public class FFADuel extends Duel {
     return deadPlayers.contains(player);
   }
 
-  public boolean onePlayerAlive() {
+  public boolean isOnePlayerAlive() {
     int aliveCount = 0;
 
     for (Player player : this.getPlayers()) {

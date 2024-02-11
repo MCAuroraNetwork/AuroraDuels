@@ -6,14 +6,25 @@ import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
+import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
+import club.aurorapvp.aurorawarps.events.custom.NewDeathLocationEvent;
 import java.util.Arrays;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class DuelEventListener implements Listener {
+
+  @EventHandler
+  public void onNewDeathLocation(NewDeathLocationEvent event) {
+    for (Arena arena : Arena.getArenas()) {
+      if (arena.isInBounds(event.getLocation())) {
+        event.setCancelled(true);
+      }
+    }
+  }
 
   @EventHandler
   public void onDuelStart(DuelStartEvent event) {

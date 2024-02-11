@@ -193,7 +193,7 @@ public class PlayerEventListener implements Listener {
     } else if (duel instanceof TeamDuel teamDuel) {
       teamDuel.setDead(player);
 
-      if ((teamDuel.isTeamDead(player))) {
+      if (teamDuel.isTeamDead(player)) {
         duel.endDuel(teamDuel.getOpponents(player), teamDuel.getTeammates(player));
       } else {
         duel.setSpectator(player, true);
@@ -201,7 +201,7 @@ public class PlayerEventListener implements Listener {
     } else if (duel instanceof FFADuel ffaDuel) {
       ffaDuel.setDead(player);
 
-      if (ffaDuel.onePlayerAlive()) {
+      if (ffaDuel.isOnePlayerAlive()) {
         Set<Player> losers = new HashSet<>(ffaDuel.getPlayers());
         losers.remove(ffaDuel.getFirstAlive());
 
