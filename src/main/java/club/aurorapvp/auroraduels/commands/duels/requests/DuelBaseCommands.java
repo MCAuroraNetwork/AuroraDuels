@@ -150,12 +150,4 @@ public class DuelBaseCommands extends BaseCommand {
     Duel.setDuelLobby(player.getLocation());
     player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-lobby-set"));
   }
-
-  // TODO
-  @CatchUnknown
-  @CommandPermission("auroraduels.command.duel.help")
-  @SuppressWarnings("unused")
-  public void onUnknown(Player player) {
-    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-duel-command"));
-  }
 }

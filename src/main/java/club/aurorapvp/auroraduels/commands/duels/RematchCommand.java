@@ -8,6 +8,7 @@ import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Player;
 public class RematchCommand extends BaseCommand {
 
   @Default
+  @CatchUnknown
   @SuppressWarnings("unused")
   public void onRematch(Player player) {
     Duel lastDuel = Duel.getLastDuel(player);
