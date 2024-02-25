@@ -106,8 +106,11 @@ public class Lang {
         """
             prefix <yellow><bold>All Commands:
                     
+                    
             <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player
-            <blue><bold>/ranked or /unranked [name]: <reset><yellow>Joins a ranked or unreanked queue, or the default one if no name is given
+            
+            <blue><bold>/ranked or /unranked [name]: <reset><yellow>Joins a ranked or unranked queue, or the default one if no name is given
+            
             <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members
             """);
 

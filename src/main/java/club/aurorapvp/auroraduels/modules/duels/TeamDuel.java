@@ -288,9 +288,9 @@ public class TeamDuel extends Duel {
 
       teamOneBar[0] =
           BossBar.bossBar(
-              Component.text("Blue Team").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE),
+              Component.text("Red Team").decorate(TextDecoration.BOLD).color(NamedTextColor.RED),
               1.0f,
-              Color.BLUE,
+              Color.RED,
               Overlay.PROGRESS);
 
       for (Player team1Member : teamOneMembers) {
@@ -299,9 +299,9 @@ public class TeamDuel extends Duel {
 
       teamTwoBar[0] =
           BossBar.bossBar(
-              Component.text("Red Team").decorate(TextDecoration.BOLD).color(NamedTextColor.RED),
+              Component.text("Blue Team").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE),
               1.0f,
-              Color.RED,
+              Color.BLUE,
               Overlay.PROGRESS);
 
       for (Player team2Member : teamTwoMembers) {
