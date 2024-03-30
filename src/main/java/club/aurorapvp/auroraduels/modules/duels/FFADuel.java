@@ -9,6 +9,7 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.util.LocationUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -129,28 +130,20 @@ public class FFADuel extends Duel {
 
           if ((seconds -= 1) < 0) {
             StringBuilder sb;
-            String names;
             Title title;
 
             for (Player player : thisDuel.getPlayers()) {
               sb = new StringBuilder();
-
               for (Player opponent : thisDuel.getPlayers()) {
-                if (player != opponent) {
-                  sb.append(opponent.getName());
-                  sb.append(", ");
-                }
+                sb.append(opponent.getName()).append(", ");
               }
 
-              names = sb.toString();
-              if (names.length() > 2) {
-                names = names.substring(0, names.length() - 2);
-              }
+              sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
 
               title =
                   Title.title(
                       AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                      Component.text("Opponents: " + names));
+                      Component.text("Opponents: " + sb));
 
               player.showTitle(title);
             }
@@ -219,22 +212,21 @@ public class FFADuel extends Duel {
     });
   }
 
-  public void endDuel(Player[] winners, Player[] losers) {
+  public void endDuel(Collection<Player> winners, Collection<Player> losers) {
     for (Player player : this.getPlayers()) {
       player.hideBossBar(bossbars.get(player.getUniqueId()));
     }
 
-    Player winner = winners[0];
+    Player winner = winners.iterator().next();
 
     String winnerName = winner.getName();
 
     StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < losers.length; i++) {
-      sb.append(losers[i].getName());
-      if (i < losers.length - 1) {
-        sb.append(", ");
-      }
+    for (Player loser : losers) {
+      sb.append(loser.getName()).append(", ");
     }
+
+    sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
 
     String loserNames = sb.toString();
 
@@ -253,7 +245,7 @@ public class FFADuel extends Duel {
     new BukkitRunnable() {
       @Override
       public void run() {
-        new DuelEndEvent(thisDuel, new Player[]{winner}, losers).callEvent();
+        new DuelEndEvent(thisDuel, winners, losers).callEvent();
       }
     }.runTask(AuroraDuels.getInstance());
   }

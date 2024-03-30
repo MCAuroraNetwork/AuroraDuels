@@ -9,6 +9,7 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -39,38 +40,36 @@ public class TeamDuel extends Duel {
   public static Team team2;
   private final Map<UUID, Boolean> teamOneDead = new HashMap<>();
   private final Map<UUID, Boolean> teamTwoDead = new HashMap<>();
-  private final Player[] teamOneMembers;
-  private final Player[] teamTwoMembers;
+  private final Collection<Player> teamOneMembers;
+  private final Collection<Player> teamTwoMembers;
   private final BossBar[] teamOneBar = new BossBar[1];
   private final BossBar[] teamTwoBar = new BossBar[1];
   private final double team1MaxHealth;
   private final double team2MaxHealth;
 
-  public TeamDuel(Player[] teamOneMembers, Player[] teamTwoMembers, Location respawnLocation,
+  public TeamDuel(Collection<Player> teamOneMembers, Collection<Player> teamTwoMembers, Location respawnLocation,
       boolean ranked) {
-    super(Stream.concat(Arrays.stream(teamOneMembers), Arrays.stream(teamTwoMembers))
-            .collect(Collectors.toSet()),
+    super(new HashSet<>() {{ addAll(teamOneMembers); addAll(teamTwoMembers); }},
         respawnLocation, ranked);
 
     this.teamOneMembers = teamOneMembers;
     this.teamTwoMembers = teamTwoMembers;
 
-    team1MaxHealth = teamOneMembers.length * 20;
-    team2MaxHealth = teamTwoMembers.length * 20;
+    team1MaxHealth = teamOneMembers.size() * 20;
+    team2MaxHealth = teamTwoMembers.size() * 20;
   }
 
-  public TeamDuel(Player[] teamOneMembers, Player[] teamTwoMembers, Queue queue, Kit kit,
+  public TeamDuel(Collection<Player> teamOneMembers, Collection<Player> teamTwoMembers, Queue queue, Kit kit,
       Location respawnLocation,
       boolean ranked) {
-    super(Stream.concat(Arrays.stream(teamOneMembers), Arrays.stream(teamTwoMembers))
-            .collect(Collectors.toSet()),
+    super(new HashSet<>() {{ addAll(teamOneMembers); addAll(teamTwoMembers); }},
         respawnLocation, queue, kit, ranked);
 
     this.teamOneMembers = teamOneMembers;
     this.teamTwoMembers = teamTwoMembers;
 
-    team1MaxHealth = teamOneMembers.length * 20;
-    team2MaxHealth = teamTwoMembers.length * 20;
+    team1MaxHealth = teamOneMembers.size() * 20;
+    team2MaxHealth = teamTwoMembers.size() * 20;
   }
 
   public static void init() {
@@ -92,15 +91,15 @@ public class TeamDuel extends Duel {
     team2.color(NamedTextColor.RED);
   }
 
-  public Player[] getTeamOneMembers() {
+  public Collection<Player> getTeamOneMembers() {
     return teamOneMembers;
   }
 
-  public Player[] getTeamTwoMembers() {
+  public Collection<Player> getTeamTwoMembers() {
     return teamTwoMembers;
   }
 
-  public Player[] getOpponents(Player player) {
+  public Collection<Player> getOpponents(Player player) {
     for (Player teamMember : teamOneMembers) {
       if (teamMember == player) {
         return teamTwoMembers;
@@ -109,7 +108,7 @@ public class TeamDuel extends Duel {
     return teamOneMembers;
   }
 
-  public Player[] getTeammates(Player player) {
+  public Collection<Player> getTeammates(Player player) {
     for (Player teamMember : teamOneMembers) {
       if (teamMember == player) {
         return teamOneMembers;
@@ -224,20 +223,17 @@ public class TeamDuel extends Duel {
 
           if ((seconds -= 1) < 0) {
             for (Player player : teamOneMembers) {
-
               StringBuilder sb = new StringBuilder();
-              for (int i = 0; i < teamTwoMembers.length; i++) {
-                sb.append(teamTwoMembers[i].getName());
-                if (i < teamTwoMembers.length - 1) {
-                  sb.append(", ");
-                }
+              for (Player teamTwoMember : teamTwoMembers) {
+                sb.append(teamTwoMember.getName()).append(", ");
               }
-              String names = sb.toString();
+
+              sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
 
               final Title title =
                   Title.title(
                       AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                      Component.text("Opponents: " + names));
+                      Component.text("Opponents: " + sb));
 
               player.showTitle(title);
             }
@@ -265,18 +261,16 @@ public class TeamDuel extends Duel {
           if ((seconds -= 1) < 0) {
             for (Player player : teamTwoMembers) {
               StringBuilder sb = new StringBuilder();
-              for (int i = 0; i < teamOneMembers.length; i++) {
-                sb.append(teamOneMembers[i].getName());
-                if (i < teamOneMembers.length - 1) {
-                  sb.append(", ");
-                }
+              for (Player teamOneMember : teamOneMembers) {
+                sb.append(teamOneMember.getName()).append(", ");
               }
-              String names = sb.toString();
+
+              sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
 
               final Title title =
                   Title.title(
                       AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                      Component.text("Opponents: " + names));
+                      Component.text("Opponents: " + sb));
 
               player.showTitle(title);
             }
@@ -355,23 +349,23 @@ public class TeamDuel extends Duel {
     });
   }
 
-  public void endDuel(Player[] winners, Player[] losers) {
+  public void endDuel(Collection<Player> winners, Collection<Player> losers) {
     StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < winners.length; i++) {
-      sb.append(winners[i].getName());
-      if (i < winners.length - 1) {
-        sb.append(", ");
-      }
+    for (Player winner : winners) {
+      sb.append(winner.getName()).append(", ");
     }
+
+    sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+
     String winnerNames = sb.toString();
 
     sb = new StringBuilder();
-    for (int i = 0; i < losers.length; i++) {
-      sb.append(losers[i].getName());
-      if (i < losers.length - 1) {
-        sb.append(", ");
-      }
+    for (Player loser : losers) {
+      sb.append(loser.getName()).append(", ");
     }
+
+    sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+
     String loserNames = sb.toString();
 
     for (Player player : winners) {

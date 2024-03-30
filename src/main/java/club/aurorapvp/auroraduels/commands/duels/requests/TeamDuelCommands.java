@@ -16,6 +16,7 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Bukkit;
@@ -37,10 +38,10 @@ public class TeamDuelCommands extends BaseCommand {
       return;
     }
 
-    Player[] team1 = new Player[team1Names.length + 1];
-    Player[] team2 = new Player[team2Names.length];
+    Set<Player> team1 = new HashSet<>();
+    Set<Player> team2 = new HashSet<>();
 
-    team1[team1.length - 1] = player;
+    team1.add(player);
 
     int i = 0;
     for (String playerName : team1Names) {
@@ -49,13 +50,13 @@ public class TeamDuelCommands extends BaseCommand {
         return;
       }
 
-      team1[i] = Bukkit.getPlayer(playerName);
+      team1.add(Bukkit.getPlayer(playerName));
       i++;
     }
 
     i = 0;
     for (String playerName : team2Names) {
-      team2[i] = Bukkit.getPlayer(playerName);
+      team2.add(Bukkit.getPlayer(playerName));
       i++;
     }
 

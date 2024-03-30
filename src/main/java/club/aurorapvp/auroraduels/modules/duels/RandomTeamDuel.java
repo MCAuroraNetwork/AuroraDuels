@@ -2,6 +2,7 @@ package club.aurorapvp.auroraduels.modules.duels;
 
 import com.google.common.collect.Iterables;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +17,7 @@ public class RandomTeamDuel extends TeamDuel {
         ranked);
   }
 
-  private static Pair<Player[], Player[]> calculateTeams(Set<Player> players) {
+  private static Pair<Collection<Player>, Collection<Player>> calculateTeams(Set<Player> players) {
     int size = players.size();
     Player extra = null;
 
@@ -32,15 +33,13 @@ public class RandomTeamDuel extends TeamDuel {
 
     Iterable<List<Player>> partitions = Iterables.partition(players, (size / 2));
 
-    Player[] temp = new HashSet<>(partitions.iterator().next()).toArray(new Player[0]);
+    Set<Player> team1 = new HashSet<>(partitions.iterator().next());
 
     if (extra != null) {
-      temp = Arrays.copyOf(temp, temp.length + 1);
-      temp[temp.length - 1] = extra;
+      team1.add(extra);
     }
 
-    Player[] team1 = temp;
-    Player[] team2 = new HashSet<>(Iterables.getLast(partitions)).toArray(new Player[0]);
+    Set<Player> team2 = new HashSet<>(Iterables.getLast(partitions));
 
     return new Pair<>(team1, team2);
   }

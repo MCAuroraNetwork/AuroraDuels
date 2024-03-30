@@ -14,6 +14,8 @@ import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.events.custom.KitRefillEvent;
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -124,9 +126,7 @@ public class PlayerEventListener implements Listener {
       return;
     }
 
-    Player[] teamMates = teamDuel.getTeammates(event.getDamaged());
-
-    for (Player teamMate : teamMates) {
+    for (Player teamMate : teamDuel.getTeammates(event.getDamaged())) {
       if (teamMate.equals(event.getAttacker())) {
         event.setCancelled(true);
       }
@@ -189,7 +189,7 @@ public class PlayerEventListener implements Listener {
     Duel duel = Duel.getDuel(player);
 
     if (duel instanceof StandardDuel standardDuel) {
-      standardDuel.endDuel(new Player[]{standardDuel.getOpponent(player)}, new Player[]{player});
+      standardDuel.endDuel(Set.of(standardDuel.getOpponent(player)), Set.of(player));
     } else if (duel instanceof TeamDuel teamDuel) {
       teamDuel.setDead(player);
 
@@ -205,7 +205,7 @@ public class PlayerEventListener implements Listener {
         Set<Player> losers = new HashSet<>(ffaDuel.getPlayers());
         losers.remove(ffaDuel.getFirstAlive());
 
-        duel.endDuel(new Player[]{ffaDuel.getFirstAlive()}, losers.toArray(new Player[0]));
+        duel.endDuel(Set.of(ffaDuel.getFirstAlive()), losers);
       } else {
         duel.setSpectator(player, true);
       }

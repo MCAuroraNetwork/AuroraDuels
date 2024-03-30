@@ -11,6 +11,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import club.aurorapvp.aurorawarps.events.custom.NewDeathLocationEvent;
 import java.util.Arrays;
+import java.util.Collection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -74,11 +75,11 @@ public class DuelEventListener implements Listener {
 
     String queueName = event.getDuel().getQueue().getName() + "_duels";
 
-    Player[] winners = event.getWinners();
-    Player[] losers = event.getLosers();
+    Collection<Player> winners = event.getWinners();
+    Collection<Player> losers = event.getLosers();
 
     if (event.getDuel().getPlayers().size() == 2) {
-      Rating.getRating(queueName).updateElo(losers[0], winners[0]);
+      Rating.getRating(queueName).updateElo(losers.iterator().next(), winners.iterator().next());
     } else {
       for (Player loser : losers) {
         Rating.getRating(queueName).updateElo(loser, (int) getAverageRating(winners, queueName), false);
@@ -90,8 +91,8 @@ public class DuelEventListener implements Listener {
     }
   }
 
-  public double getAverageRating(Player[] players, String queueName) {
-    return Arrays.stream(players)
+  public double getAverageRating(Collection<Player> players, String queueName) {
+    return players.stream()
         .mapToDouble(player -> Rating.getRating(queueName).getScore(player).getPoints())
         .average()
         .orElse(AuroraCombat.getInstance().getConfig().getInt("elo.default-points"));

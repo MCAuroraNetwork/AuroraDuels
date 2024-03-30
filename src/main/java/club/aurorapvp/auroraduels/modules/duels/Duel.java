@@ -6,6 +6,7 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -226,7 +227,7 @@ public abstract class Duel {
 
   public abstract void startDuel(Arena arena);
 
-  public abstract void endDuel(Player[] winners, Player[] losers);
+  public abstract void endDuel(Collection<Player> winners, Collection<Player> losers);
 
   public abstract void draw();
 

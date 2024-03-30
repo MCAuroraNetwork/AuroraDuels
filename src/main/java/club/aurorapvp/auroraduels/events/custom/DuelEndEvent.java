@@ -7,6 +7,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import java.awt.Color;
+import java.util.Collection;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,11 +22,11 @@ import org.jetbrains.annotations.NotNull;
 public class DuelEndEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();
-  private final Player[] winners;
-  private final Player[] losers;
+  private final Collection<Player> winners;
+  private final Collection<Player> losers;
   private final Duel duel;
 
-  public DuelEndEvent(Duel duel, Player[] winners, Player[] losers) {
+  public DuelEndEvent(Duel duel, Collection<Player> winners, Collection<Player> losers) {
     this.duel = duel;
     this.winners = winners;
     this.losers = losers;
@@ -80,25 +81,29 @@ public class DuelEndEvent extends Event {
     }
 
     StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < winners.length; i++) {
-      sb.append(winners[i].getName());
-      if (i < winners.length - 2) {
+    int count = 0;
+    for (Player winner : winners) {
+      sb.append(winner.getName());
+      if (count < winners.size() - 2) {
         sb.append(", ");
-      } else if (i == winners.length - 2) {
+      } else if (count == winners.size() - 2) {
         sb.append(" and ");
       }
+      count++;
     }
 
     String winnersText = sb.toString();
 
     sb = new StringBuilder();
-    for (int i = 0; i < losers.length; i++) {
-      sb.append(losers[i].getName());
-      if (i < losers.length - 2) {
+    count = 0;
+    for (Player loser : losers) {
+      sb.append(loser.getName());
+      if (count < losers.size() - 2) {
         sb.append(", ");
-      } else if (i == losers.length - 2) {
+      } else if (count == losers.size() - 2) {
         sb.append(" and ");
       }
+      count++;
     }
 
     String losersText = sb.toString();
@@ -111,7 +116,7 @@ public class DuelEndEvent extends Event {
           new EmbedBuilder().setAuthor(
                   AuroraDuels.getInstance().getLang().getString("discord-duel-won")
                       .formatted(winnersText, losersText), null,
-                  "https://cravatar.eu/helmavatar/" + winners[0].getUniqueId())
+                  "https://cravatar.eu/helmavatar/" + winners.iterator().next().getUniqueId())
               .setColor(Color.BLACK).build()).queue();
     }
 
@@ -139,11 +144,11 @@ public class DuelEndEvent extends Event {
     return duel.getElapsed();
   }
 
-  public Player[] getLosers() {
+  public Collection<Player> getLosers() {
     return losers;
   }
 
-  public Player[] getWinners() {
+  public Collection<Player> getWinners() {
     return winners;
   }
 }
