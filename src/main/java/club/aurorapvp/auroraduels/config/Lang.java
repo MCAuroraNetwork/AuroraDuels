@@ -24,7 +24,7 @@ public class Lang {
   public void generateDefaults() {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
-    for (Object path : getYaml().getKeys(false).toArray()) {
+    for (var path : getYaml().getKeys(false).toArray()) {
       if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
           && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(
@@ -126,7 +126,7 @@ public class Lang {
       AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save lang file", e);
     }
 
-    for (Object path : getYaml().getKeys(false).toArray()) {
+    for (var path : getYaml().getKeys(false).toArray()) {
       if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
           && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(

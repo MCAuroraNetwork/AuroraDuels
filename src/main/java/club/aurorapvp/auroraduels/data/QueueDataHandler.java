@@ -46,7 +46,7 @@ public class QueueDataHandler {
     Set<Arena> arenas = new HashSet<>();
 
     assert arenaNames != null;
-    for (Object name : arenaNames) {
+    for (var name : arenaNames) {
       arenas.add(Arena.getArena((String) name));
     }
 
