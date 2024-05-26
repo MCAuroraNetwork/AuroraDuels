@@ -39,7 +39,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
     implementation(platform("com.intellectualsites.bom:bom-newest:1.45"))
 
@@ -60,7 +59,6 @@ build {
 shadowJar {
     minimize()
     archiveFileName.set("${project.name}-${project.version}.jar")
-    relocate 'org.bstats', 'club.aurorapvp.auroraduels.shaded.bstats'
     relocate 'co.aikar.commands', 'club.aurorapvp.auroraduels.shaded.acf'
     relocate 'co.aikar.locales', 'club.aurorapvp.auroraduels.shaded.locales'
 }
