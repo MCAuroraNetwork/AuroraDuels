@@ -44,8 +44,14 @@ public class StandardDuel extends Duel implements Listener {
     this.rounds = rounds;
   }
 
-  public StandardDuel(Player p1, Player p2, Queue queue, Kit kit, Location respawnLocation,
-      boolean ranked, int rounds) {
+  public StandardDuel(
+      Player p1,
+      Player p2,
+      Queue queue,
+      Kit kit,
+      Location respawnLocation,
+      boolean ranked,
+      int rounds) {
     super(Set.of(p1, p2), respawnLocation, queue, kit, ranked);
     this.playerOne = p1;
     this.playerTwo = p2;
@@ -68,133 +74,196 @@ public class StandardDuel extends Duel implements Listener {
     Location spawn1 =
         new Location(
             arena.getWorld(),
-            arena.getFirstSpawn().getX(),
-            arena.getFirstSpawn().getY(),
-            arena.getFirstSpawn().getZ());
+            arena.getFirstSpawn().x(),
+            arena.getFirstSpawn().y(),
+            arena.getFirstSpawn().z());
     Location spawn2 =
         new Location(
             arena.getWorld(),
-            arena.getSecondSpawn().getX(),
-            arena.getSecondSpawn().getY(),
-            arena.getSecondSpawn().getZ());
+            arena.getSecondSpawn().x(),
+            arena.getSecondSpawn().y(),
+            arena.getSecondSpawn().z());
 
     StandardDuel thisDuel = this;
 
     CompletableFuture<Boolean> teleport1 = playerOne.teleportAsync(spawn1);
     CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
 
-    CompletableFuture.allOf(teleport1, teleport2).thenRun(() -> {
-      new BukkitRunnable() {
-        int seconds = 4;
+    CompletableFuture.allOf(teleport1, teleport2)
+        .thenRun(
+            () -> {
+              new BukkitRunnable() {
+                int seconds = 4;
 
-        @Override
-        public void run() {
-          CompletableFuture<Boolean> teleport1 = playerOne.teleportAsync(spawn1);
-          teleport1.thenRun(() -> playerOne.lookAt(spawn2, LookAnchor.EYES));
-          CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
-          teleport2.thenRun(() -> playerTwo.lookAt(spawn1, LookAnchor.EYES));
+                @Override
+                public void run() {
+                  CompletableFuture<Boolean> teleport1 = playerOne.teleportAsync(spawn1);
+                  teleport1.thenRun(() -> playerOne.lookAt(spawn2, LookAnchor.EYES));
+                  CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
+                  teleport2.thenRun(() -> playerTwo.lookAt(spawn1, LookAnchor.EYES));
 
-          if ((seconds -= 1) <= 0) {
-            final Title title1 =
-                Title.title(
-                    AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                    Component.text("Opponent: " + playerTwo.getName()));
-            final Title title2 =
-                Title.title(
-                    AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                    Component.text("Opponent: " + playerOne.getName()));
+                  if ((seconds -= 1) <= 0) {
+                    final Title title1 =
+                        Title.title(
+                            AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                            Component.text("Opponent: " + playerTwo.getName()));
+                    final Title title2 =
+                        Title.title(
+                            AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                            Component.text("Opponent: " + playerOne.getName()));
 
-            if (rounds > 1) {
-              playerOne.sendActionBar(
-                  AuroraDuels.getInstance().getLang()
-                      .formatComponent("rounds-remaining", currentRound, rounds,
-                          wins.get(playerOne.getUniqueId()), wins.get(playerTwo.getUniqueId())));
-              playerTwo.sendActionBar(
-                  AuroraDuels.getInstance().getLang()
-                      .formatComponent("rounds-remaining", currentRound, rounds,
-                          wins.get(playerOne.getUniqueId()), wins.get(playerTwo.getUniqueId())));
-            }
+                    if (rounds > 1) {
+                      playerOne.sendActionBar(
+                          AuroraDuels.getInstance()
+                              .getLang()
+                              .formatComponent(
+                                  "rounds-remaining",
+                                  currentRound,
+                                  rounds,
+                                  wins.get(playerOne.getUniqueId()),
+                                  wins.get(playerTwo.getUniqueId())));
+                      playerTwo.sendActionBar(
+                          AuroraDuels.getInstance()
+                              .getLang()
+                              .formatComponent(
+                                  "rounds-remaining",
+                                  currentRound,
+                                  rounds,
+                                  wins.get(playerOne.getUniqueId()),
+                                  wins.get(playerTwo.getUniqueId())));
+                    }
 
-            playerOne.showTitle(title1);
-            playerTwo.showTitle(title2);
+                    playerOne.showTitle(title1);
+                    playerTwo.showTitle(title2);
 
-            this.cancel();
-            return;
-          }
+                    this.cancel();
+                    return;
+                  }
 
-          for (Player player : thisDuel.getPlayers()) {
-            player.showTitle(
-                Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
-                    Component.text("")));
-          }
-        }
-      }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
+                  for (Player player : thisDuel.getPlayers()) {
+                    player.showTitle(
+                        Title.title(
+                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                            Component.text("")));
+                  }
+                }
+              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
 
-      playerOneBar[0] =
-          BossBar.bossBar(
-              playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                  .appendSpace().append(
-                      Component.text(
-                              (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
-                          .color(NamedTextColor.RED))
-                  .appendSpace().append(
-                      Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)),
-              1.0f, Color.RED, Overlay.PROGRESS);
+              playerOneBar[0] =
+                  BossBar.bossBar(
+                      playerTwo
+                          .displayName()
+                          .decorate(TextDecoration.BOLD)
+                          .color(NamedTextColor.YELLOW)
+                          .appendSpace()
+                          .append(
+                              Component.text(
+                                      (int)
+                                              (playerTwo.getHealth()
+                                                  + playerTwo.getAbsorptionAmount())
+                                          + "❤")
+                                  .color(NamedTextColor.RED))
+                          .appendSpace()
+                          .append(
+                              Component.text(playerTwo.getPing() + "ms")
+                                  .color(NamedTextColor.AQUA)),
+                      1.0f,
+                      Color.RED,
+                      Overlay.PROGRESS);
 
-      playerOne.showBossBar(playerOneBar[0]);
+              playerOne.showBossBar(playerOneBar[0]);
 
-      playerTwoBar[0] =
-          BossBar.bossBar(
-              playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                  .appendSpace().append(
-                      Component.text(
-                              (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
-                          .color(NamedTextColor.RED))
-                  .appendSpace().append(
-                      Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA)),
-              1.0f, Color.RED, Overlay.PROGRESS);
+              playerTwoBar[0] =
+                  BossBar.bossBar(
+                      playerOne
+                          .displayName()
+                          .decorate(TextDecoration.BOLD)
+                          .color(NamedTextColor.YELLOW)
+                          .appendSpace()
+                          .append(
+                              Component.text(
+                                      (int)
+                                              (playerOne.getHealth()
+                                                  + playerOne.getAbsorptionAmount())
+                                          + "❤")
+                                  .color(NamedTextColor.RED))
+                          .appendSpace()
+                          .append(
+                              Component.text(playerOne.getPing() + "ms")
+                                  .color(NamedTextColor.AQUA)),
+                      1.0f,
+                      Color.RED,
+                      Overlay.PROGRESS);
 
-      playerTwo.showBossBar(playerTwoBar[0]);
+              playerTwo.showBossBar(playerTwoBar[0]);
 
-      spectatorBars.add(playerOneBar[0]);
-      spectatorBars.add(playerTwoBar[0]);
+              spectatorBars.add(playerOneBar[0]);
+              spectatorBars.add(playerTwoBar[0]);
 
-      bossbarTask = new BukkitRunnable() {
-        @Override
-        public void run() {
-          playerOneBar[0].name(
-                  playerTwo.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                      .appendSpace().append(
-                          Component.text(
-                                  (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
-                              .color(NamedTextColor.RED))
-                      .appendSpace().append(
-                          Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
-              .progress(
-                  (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20,
-                      1.0f));
-          playerTwoBar[0].name(
-              playerOne.displayName().decorate(TextDecoration.BOLD).color(NamedTextColor.YELLOW)
-                  .appendSpace().append(
-                      Component.text(
-                              (int) (playerOne.getHealth() + playerOne.getAbsorptionAmount()) + "❤")
-                          .color(NamedTextColor.RED))
-                  .appendSpace().append(
-                      Component.text(playerOne.getPing() + "ms").color(NamedTextColor.AQUA))).progress(
-              (float) Math.min((playerOne.getHealth() + playerOne.getAbsorptionAmount()) / 20,
-                  1.0f));
-        }
-      };
+              bossbarTask =
+                  new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                      playerOneBar[0]
+                          .name(
+                              playerTwo
+                                  .displayName()
+                                  .decorate(TextDecoration.BOLD)
+                                  .color(NamedTextColor.YELLOW)
+                                  .appendSpace()
+                                  .append(
+                                      Component.text(
+                                              (int)
+                                                      (playerTwo.getHealth()
+                                                          + playerTwo.getAbsorptionAmount())
+                                                  + "❤")
+                                          .color(NamedTextColor.RED))
+                                  .appendSpace()
+                                  .append(
+                                      Component.text(playerTwo.getPing() + "ms")
+                                          .color(NamedTextColor.AQUA)))
+                          .progress(
+                              (float)
+                                  Math.min(
+                                      (playerTwo.getHealth() + playerTwo.getAbsorptionAmount())
+                                          / 20,
+                                      1.0f));
+                      playerTwoBar[0]
+                          .name(
+                              playerOne
+                                  .displayName()
+                                  .decorate(TextDecoration.BOLD)
+                                  .color(NamedTextColor.YELLOW)
+                                  .appendSpace()
+                                  .append(
+                                      Component.text(
+                                              (int)
+                                                      (playerOne.getHealth()
+                                                          + playerOne.getAbsorptionAmount())
+                                                  + "❤")
+                                          .color(NamedTextColor.RED))
+                                  .appendSpace()
+                                  .append(
+                                      Component.text(playerOne.getPing() + "ms")
+                                          .color(NamedTextColor.AQUA)))
+                          .progress(
+                              (float)
+                                  Math.min(
+                                      (playerOne.getHealth() + playerOne.getAbsorptionAmount())
+                                          / 20,
+                                      1.0f));
+                    }
+                  };
 
-      timeStarted = System.currentTimeMillis();
+              timeStarted = System.currentTimeMillis();
 
-      new BukkitRunnable() {
-        @Override
-        public void run() {
-          new DuelStartEvent(thisDuel).callEvent();
-        }
-      }.runTask(AuroraDuels.getInstance());
-    });
+              new BukkitRunnable() {
+                @Override
+                public void run() {
+                  new DuelStartEvent(thisDuel).callEvent();
+                }
+              }.runTask(AuroraDuels.getInstance());
+            });
   }
 
   public void endDuel(Collection<Player> winners, Collection<Player> losers) {

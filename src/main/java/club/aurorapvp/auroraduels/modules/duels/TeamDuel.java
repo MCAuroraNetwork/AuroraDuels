@@ -47,10 +47,20 @@ public class TeamDuel extends Duel {
   private final double team1MaxHealth;
   private final double team2MaxHealth;
 
-  public TeamDuel(Collection<Player> teamOneMembers, Collection<Player> teamTwoMembers, Location respawnLocation,
+  public TeamDuel(
+      Collection<Player> teamOneMembers,
+      Collection<Player> teamTwoMembers,
+      Location respawnLocation,
       boolean ranked) {
-    super(new HashSet<>() {{ addAll(teamOneMembers); addAll(teamTwoMembers); }},
-        respawnLocation, ranked);
+    super(
+        new HashSet<>() {
+          {
+            addAll(teamOneMembers);
+            addAll(teamTwoMembers);
+          }
+        },
+        respawnLocation,
+        ranked);
 
     this.teamOneMembers = teamOneMembers;
     this.teamTwoMembers = teamTwoMembers;
@@ -59,11 +69,24 @@ public class TeamDuel extends Duel {
     team2MaxHealth = teamTwoMembers.size() * 20;
   }
 
-  public TeamDuel(Collection<Player> teamOneMembers, Collection<Player> teamTwoMembers, Queue queue, Kit kit,
+  public TeamDuel(
+      Collection<Player> teamOneMembers,
+      Collection<Player> teamTwoMembers,
+      Queue queue,
+      Kit kit,
       Location respawnLocation,
       boolean ranked) {
-    super(new HashSet<>() {{ addAll(teamOneMembers); addAll(teamTwoMembers); }},
-        respawnLocation, queue, kit, ranked);
+    super(
+        new HashSet<>() {
+          {
+            addAll(teamOneMembers);
+            addAll(teamTwoMembers);
+          }
+        },
+        respawnLocation,
+        queue,
+        kit,
+        ranked);
 
     this.teamOneMembers = teamOneMembers;
     this.teamTwoMembers = teamTwoMembers;
@@ -76,15 +99,13 @@ public class TeamDuel extends Duel {
     team1 = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team1");
 
     if (team1 == null) {
-      team1 = Bukkit.getScoreboardManager().getMainScoreboard()
-          .registerNewTeam("team1");
+      team1 = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("team1");
     }
 
     team2 = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team2");
 
     if (team2 == null) {
-      team2 = Bukkit.getScoreboardManager().getMainScoreboard()
-          .registerNewTeam("team2");
+      team2 = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("team2");
     }
 
     team1.color(NamedTextColor.BLUE);
@@ -170,15 +191,15 @@ public class TeamDuel extends Duel {
     Location spawn1 =
         new Location(
             arena.getWorld(),
-            arena.getFirstSpawn().getX(),
-            arena.getFirstSpawn().getY(),
-            arena.getFirstSpawn().getZ());
+            arena.getFirstSpawn().x(),
+            arena.getFirstSpawn().y(),
+            arena.getFirstSpawn().z());
     Location spawn2 =
         new Location(
             arena.getWorld(),
-            arena.getSecondSpawn().getX(),
-            arena.getSecondSpawn().getY(),
-            arena.getSecondSpawn().getZ());
+            arena.getSecondSpawn().x(),
+            arena.getSecondSpawn().y(),
+            arena.getSecondSpawn().z());
 
     for (Player player : teamOneMembers) {
       teamOneDead.put(player.getUniqueId(), false);
@@ -204,149 +225,161 @@ public class TeamDuel extends Duel {
       teleportFutures.add(teleportFuture);
     }
 
-    CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
-      new BukkitRunnable() {
-        int seconds = 3;
+    CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
+        .thenRun(
+            () -> {
+              new BukkitRunnable() {
+                int seconds = 3;
 
-        @Override
-        public void run() {
-          for (Player player : teamOneMembers) {
-            CompletableFuture<Boolean> teleport = player.teleportAsync(spawn1);
+                @Override
+                public void run() {
+                  for (Player player : teamOneMembers) {
+                    CompletableFuture<Boolean> teleport = player.teleportAsync(spawn1);
 
-            teleport.thenRun(() -> player.lookAt(spawn2, LookAnchor.EYES));
+                    teleport.thenRun(() -> player.lookAt(spawn2, LookAnchor.EYES));
 
-            player.showTitle(
-                Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
-                    Component.text("")));
+                    player.showTitle(
+                        Title.title(
+                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                            Component.text("")));
+                  }
 
-          }
+                  if ((seconds -= 1) < 0) {
+                    for (Player player : teamOneMembers) {
+                      StringBuilder sb = new StringBuilder();
+                      for (Player teamTwoMember : teamTwoMembers) {
+                        sb.append(teamTwoMember.getName()).append(", ");
+                      }
 
-          if ((seconds -= 1) < 0) {
-            for (Player player : teamOneMembers) {
-              StringBuilder sb = new StringBuilder();
-              for (Player teamTwoMember : teamTwoMembers) {
-                sb.append(teamTwoMember.getName()).append(", ");
+                      sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+
+                      final Title title =
+                          Title.title(
+                              AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                              Component.text("Opponents: " + sb));
+
+                      player.showTitle(title);
+                    }
+
+                    this.cancel();
+                  }
+                }
+              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
+
+              new BukkitRunnable() {
+                int seconds = 3;
+
+                @Override
+                public void run() {
+                  for (Player player : teamTwoMembers) {
+                    CompletableFuture<Boolean> teleport = player.teleportAsync(spawn2);
+
+                    teleport.thenRun(() -> player.lookAt(spawn1, LookAnchor.EYES));
+
+                    player.showTitle(
+                        Title.title(
+                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                            Component.text("")));
+                  }
+
+                  if ((seconds -= 1) < 0) {
+                    for (Player player : teamTwoMembers) {
+                      StringBuilder sb = new StringBuilder();
+                      for (Player teamOneMember : teamOneMembers) {
+                        sb.append(teamOneMember.getName()).append(", ");
+                      }
+
+                      sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+
+                      final Title title =
+                          Title.title(
+                              AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                              Component.text("Opponents: " + sb));
+
+                      player.showTitle(title);
+                    }
+
+                    this.cancel();
+                  }
+                }
+              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
+
+              teamOneBar[0] =
+                  BossBar.bossBar(
+                      Component.text("Red Team")
+                          .decorate(TextDecoration.BOLD)
+                          .color(NamedTextColor.RED),
+                      1.0f,
+                      Color.RED,
+                      Overlay.PROGRESS);
+
+              for (Player team1Member : teamOneMembers) {
+                team1Member.showBossBar(teamOneBar[0]);
               }
 
-              sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+              teamTwoBar[0] =
+                  BossBar.bossBar(
+                      Component.text("Blue Team")
+                          .decorate(TextDecoration.BOLD)
+                          .color(NamedTextColor.BLUE),
+                      1.0f,
+                      Color.BLUE,
+                      Overlay.PROGRESS);
 
-              final Title title =
-                  Title.title(
-                      AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                      Component.text("Opponents: " + sb));
-
-              player.showTitle(title);
-            }
-
-            this.cancel();
-          }
-        }
-      }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
-
-      new BukkitRunnable() {
-        int seconds = 3;
-
-        @Override
-        public void run() {
-          for (Player player : teamTwoMembers) {
-            CompletableFuture<Boolean> teleport = player.teleportAsync(spawn2);
-
-            teleport.thenRun(() -> player.lookAt(spawn1, LookAnchor.EYES));
-
-            player.showTitle(
-                Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
-                    Component.text("")));
-          }
-
-          if ((seconds -= 1) < 0) {
-            for (Player player : teamTwoMembers) {
-              StringBuilder sb = new StringBuilder();
-              for (Player teamOneMember : teamOneMembers) {
-                sb.append(teamOneMember.getName()).append(", ");
+              for (Player team2Member : teamTwoMembers) {
+                team2Member.showBossBar(teamTwoBar[0]);
               }
 
-              sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+              spectatorBars.add(teamOneBar[0]);
+              spectatorBars.add(teamTwoBar[0]);
 
-              final Title title =
-                  Title.title(
-                      AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                      Component.text("Opponents: " + sb));
+              bossbarTask =
+                  new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                      double team1Health = 0;
 
-              player.showTitle(title);
-            }
+                      for (Player team1Member : teamOneMembers) {
+                        if (teamOneDead.get(team1Member.getUniqueId())
+                            || thisDuel.isSpectator(team1Member)) {
+                          continue;
+                        }
 
-            this.cancel();
-          }
-        }
-      }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
+                        team1Health =
+                            team1Health
+                                + team1Member.getHealth()
+                                + team1Member.getAbsorptionAmount();
+                      }
 
-      teamOneBar[0] =
-          BossBar.bossBar(
-              Component.text("Red Team").decorate(TextDecoration.BOLD).color(NamedTextColor.RED),
-              1.0f,
-              Color.RED,
-              Overlay.PROGRESS);
+                      teamTwoBar[0].progress((float) Math.min(team1Health / team1MaxHealth, 1.0f));
 
-      for (Player team1Member : teamOneMembers) {
-        team1Member.showBossBar(teamOneBar[0]);
-      }
+                      double team2Health = 0;
 
-      teamTwoBar[0] =
-          BossBar.bossBar(
-              Component.text("Blue Team").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE),
-              1.0f,
-              Color.BLUE,
-              Overlay.PROGRESS);
+                      for (Player team2Member : teamTwoMembers) {
+                        if (teamTwoDead.get(team2Member.getUniqueId())
+                            || thisDuel.isSpectator(team2Member)) {
+                          continue;
+                        }
 
-      for (Player team2Member : teamTwoMembers) {
-        team2Member.showBossBar(teamTwoBar[0]);
-      }
+                        team2Health =
+                            team2Health
+                                + team2Member.getHealth()
+                                + team2Member.getAbsorptionAmount();
+                      }
 
-      spectatorBars.add(teamOneBar[0]);
-      spectatorBars.add(teamTwoBar[0]);
+                      teamOneBar[0].progress((float) Math.min(team2Health / team2MaxHealth, 1.0f));
+                    }
+                  };
 
-      bossbarTask = new BukkitRunnable() {
-        @Override
-        public void run() {
-          double team1Health = 0;
+              timeStarted = System.currentTimeMillis();
 
-          for (Player team1Member : teamOneMembers) {
-            if (teamOneDead.get(team1Member.getUniqueId()) || thisDuel.isSpectator(team1Member)) {
-              continue;
-            }
-
-            team1Health =
-                team1Health + team1Member.getHealth() + team1Member.getAbsorptionAmount();
-          }
-
-          teamTwoBar[0]
-              .progress((float) Math.min(team1Health / team1MaxHealth, 1.0f));
-
-          double team2Health = 0;
-
-          for (Player team2Member : teamTwoMembers) {
-            if (teamTwoDead.get(team2Member.getUniqueId()) || thisDuel.isSpectator(team2Member)) {
-              continue;
-            }
-
-            team2Health =
-                team2Health + team2Member.getHealth() + team2Member.getAbsorptionAmount();
-          }
-
-          teamOneBar[0]
-              .progress((float) Math.min(team2Health / team2MaxHealth, 1.0f));
-        }
-      };
-
-      timeStarted = System.currentTimeMillis();
-
-      new BukkitRunnable() {
-        @Override
-        public void run() {
-          new DuelStartEvent(thisDuel).callEvent();
-        }
-      }.runTask(AuroraDuels.getInstance());
-    });
+              new BukkitRunnable() {
+                @Override
+                public void run() {
+                  new DuelStartEvent(thisDuel).callEvent();
+                }
+              }.runTask(AuroraDuels.getInstance());
+            });
   }
 
   public void endDuel(Collection<Player> winners, Collection<Player> losers) {
@@ -370,13 +403,15 @@ public class TeamDuel extends Duel {
 
     for (Player player : winners) {
       player.showTitle(
-          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-won"),
+          Title.title(
+              AuroraDuels.getInstance().getLang().getComponent("you-won"),
               Component.text("Opponents: " + loserNames)));
     }
 
     for (Player player : losers) {
       player.showTitle(
-          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-lost"),
+          Title.title(
+              AuroraDuels.getInstance().getLang().getComponent("you-lost"),
               Component.text("Opponents: " + winnerNames)));
     }
 

@@ -41,8 +41,8 @@ public class FFADuel extends Duel {
     super(players, respawnLocation, ranked);
   }
 
-  public FFADuel(Set<Player> players, Queue queue, Kit kit, Location respawnLocation,
-      boolean ranked) {
+  public FFADuel(
+      Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, queue, kit, ranked);
   }
 
@@ -81,15 +81,15 @@ public class FFADuel extends Duel {
     Location spawn1 =
         new Location(
             arena.getWorld(),
-            arena.getFirstSpawn().getX(),
-            arena.getFirstSpawn().getY(),
-            arena.getFirstSpawn().getZ());
+            arena.getFirstSpawn().x(),
+            arena.getFirstSpawn().y(),
+            arena.getFirstSpawn().z());
     Location spawn2 =
         new Location(
             arena.getWorld(),
-            arena.getSecondSpawn().getX(),
-            arena.getSecondSpawn().getY(),
-            arena.getSecondSpawn().getZ());
+            arena.getSecondSpawn().x(),
+            arena.getSecondSpawn().y(),
+            arena.getSecondSpawn().z());
 
     double x = (spawn1.getX() + spawn2.getX()) / 2;
     double y = (spawn1.getY() + spawn2.getY()) / 2;
@@ -103,113 +103,127 @@ public class FFADuel extends Duel {
 
     Set<CompletableFuture<Boolean>> teleportFutures = new HashSet<>();
     for (Player player : thisDuel.getPlayers()) {
-      safeLocations.put(player.getUniqueId(),
-          LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center));
+      safeLocations.put(
+          player.getUniqueId(), LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center));
 
-      CompletableFuture<Boolean> teleportFuture = player.teleportAsync(
-          safeLocations.get(player.getUniqueId()));
+      CompletableFuture<Boolean> teleportFuture =
+          player.teleportAsync(safeLocations.get(player.getUniqueId()));
       teleportFutures.add(teleportFuture);
     }
 
-    CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
-      new BukkitRunnable() {
-        int seconds = 3;
+    CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
+        .thenRun(
+            () -> {
+              new BukkitRunnable() {
+                int seconds = 3;
 
-        @Override
-        public void run() {
-          for (Player player : thisDuel.getPlayers()) {
-            CompletableFuture<Boolean> teleport = player.teleportAsync(
-                Objects.requireNonNull(safeLocations.get(player.getUniqueId())));
+                @Override
+                public void run() {
+                  for (Player player : thisDuel.getPlayers()) {
+                    CompletableFuture<Boolean> teleport =
+                        player.teleportAsync(
+                            Objects.requireNonNull(safeLocations.get(player.getUniqueId())));
 
-            teleport.thenRun(() -> player.lookAt(center, LookAnchor.EYES));
+                    teleport.thenRun(() -> player.lookAt(center, LookAnchor.EYES));
 
-            player.showTitle(
-                Title.title(MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
-                    Component.text("")));
-          }
+                    player.showTitle(
+                        Title.title(
+                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                            Component.text("")));
+                  }
 
-          if ((seconds -= 1) < 0) {
-            StringBuilder sb;
-            Title title;
+                  if ((seconds -= 1) < 0) {
+                    StringBuilder sb;
+                    Title title;
 
-            for (Player player : thisDuel.getPlayers()) {
-              sb = new StringBuilder();
-              for (Player opponent : thisDuel.getPlayers()) {
-                sb.append(opponent.getName()).append(", ");
+                    for (Player player : thisDuel.getPlayers()) {
+                      sb = new StringBuilder();
+                      for (Player opponent : thisDuel.getPlayers()) {
+                        sb.append(opponent.getName()).append(", ");
+                      }
+
+                      sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+
+                      title =
+                          Title.title(
+                              AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                              Component.text("Opponents: " + sb));
+
+                      player.showTitle(title);
+                    }
+
+                    this.cancel();
+                  }
+                }
+              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
+
+              for (Player player : this.getPlayers()) {
+                BossBar bar =
+                    BossBar.bossBar(
+                        Component.text("Opponents")
+                            .decorate(TextDecoration.BOLD)
+                            .color(NamedTextColor.RED),
+                        1.0f,
+                        Color.RED,
+                        Overlay.PROGRESS);
+
+                player.showBossBar(bar);
+
+                bossbars.put(player.getUniqueId(), bar);
               }
 
-              sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+              spectatorBar =
+                  BossBar.bossBar(
+                      Component.text("Players")
+                          .decorate(TextDecoration.BOLD)
+                          .color(NamedTextColor.RED),
+                      1.0f,
+                      Color.RED,
+                      Overlay.PROGRESS);
 
-              title =
-                  Title.title(
-                      AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                      Component.text("Opponents: " + sb));
+              spectatorBars.add(spectatorBar);
 
-              player.showTitle(title);
-            }
+              final double playersMaxHealth = (players.size() - 1) * 20;
 
-            this.cancel();
-          }
-        }
-      }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
+              bossbarTask =
+                  new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                      double playersHealth = 0;
 
-      for (Player player : this.getPlayers()) {
-        BossBar bar = BossBar.bossBar(
-            Component.text("Opponents").decorate(TextDecoration.BOLD)
-                .color(NamedTextColor.RED),
-            1.0f,
-            Color.RED,
-            Overlay.PROGRESS);
+                      for (Player player : thisDuel.getPlayers()) {
+                        if (!thisDuel.isDead(player) && !thisDuel.isSpectator(player)) {
+                          playersHealth += player.getHealth() + player.getAbsorptionAmount();
+                        }
+                      }
 
-        player.showBossBar(bar);
+                      for (Player player : thisDuel.getPlayers()) {
+                        double playerHealth =
+                            thisDuel.isSpectator(player)
+                                ? 0
+                                : player.getHealth() + player.getAbsorptionAmount();
+                        bossbars
+                            .get(player.getUniqueId())
+                            .progress(
+                                (float)
+                                    Math.min(
+                                        ((playersHealth - playerHealth) / playersMaxHealth), 1.0f));
+                      }
 
-        bossbars.put(player.getUniqueId(), bar);
-      }
+                      spectatorBar.progress(
+                          (float) Math.min((playersHealth / playersMaxHealth), 1.0f));
+                    }
+                  };
 
-      spectatorBar = BossBar.bossBar(
-          Component.text("Players").decorate(TextDecoration.BOLD)
-              .color(NamedTextColor.RED),
-          1.0f,
-          Color.RED,
-          Overlay.PROGRESS);
+              timeStarted = System.currentTimeMillis();
 
-      spectatorBars.add(spectatorBar);
-
-      final double playersMaxHealth = (players.size() - 1) * 20;
-
-      bossbarTask = new BukkitRunnable() {
-        @Override
-        public void run() {
-          double playersHealth = 0;
-
-          for (Player player : thisDuel.getPlayers()) {
-            if (!thisDuel.isDead(player) && !thisDuel.isSpectator(player)) {
-              playersHealth += player.getHealth() + player.getAbsorptionAmount();
-            }
-          }
-
-          for (Player player : thisDuel.getPlayers()) {
-            double playerHealth = thisDuel.isSpectator(player) ? 0
-                : player.getHealth() + player.getAbsorptionAmount();
-            bossbars.get(player.getUniqueId())
-                .progress((float) Math.min(
-                    ((playersHealth - playerHealth) / playersMaxHealth), 1.0f));
-          }
-
-          spectatorBar.progress((float) Math.min(
-              (playersHealth / playersMaxHealth), 1.0f));
-        }
-      };
-
-      timeStarted = System.currentTimeMillis();
-
-      new BukkitRunnable() {
-        @Override
-        public void run() {
-          new DuelStartEvent(thisDuel).callEvent();
-        }
-      }.runTask(AuroraDuels.getInstance());
-    });
+              new BukkitRunnable() {
+                @Override
+                public void run() {
+                  new DuelStartEvent(thisDuel).callEvent();
+                }
+              }.runTask(AuroraDuels.getInstance());
+            });
   }
 
   public void endDuel(Collection<Player> winners, Collection<Player> losers) {
@@ -231,12 +245,14 @@ public class FFADuel extends Duel {
     String loserNames = sb.toString();
 
     winner.showTitle(
-        Title.title(AuroraDuels.getInstance().getLang().getComponent("you-won"),
+        Title.title(
+            AuroraDuels.getInstance().getLang().getComponent("you-won"),
             Component.text("Opponents: " + loserNames)));
 
     for (Player player : losers) {
       player.showTitle(
-          Title.title(AuroraDuels.getInstance().getLang().getComponent("you-lost"),
+          Title.title(
+              AuroraDuels.getInstance().getLang().getComponent("you-lost"),
               Component.text("Winner: " + winnerName)));
     }
 
