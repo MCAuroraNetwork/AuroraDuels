@@ -49,6 +49,11 @@ public abstract class Duel {
   public final BukkitRunnable checkBounds = new BukkitRunnable() {
     @Override
     public void run() {
+      if (!thisDuel.isActive()) {
+        this.cancel();
+        return;
+      }
+
       try {
         for (Player player : thisDuel.getPlayers()) {
           if (!thisDuel.isSpectator(player) && !thisDuel.getArena()
