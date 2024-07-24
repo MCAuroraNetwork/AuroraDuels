@@ -204,6 +204,11 @@ public class StandardDuel extends Duel implements Listener {
                   new BukkitRunnable() {
                     @Override
                     public void run() {
+                      if (!thisDuel.isActive()) {
+                        this.cancel();
+                        return;
+                      }
+
                       playerOneBar[0]
                           .name(
                               playerTwo

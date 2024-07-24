@@ -189,6 +189,11 @@ public class FFADuel extends Duel {
                   new BukkitRunnable() {
                     @Override
                     public void run() {
+                      if (!thisDuel.isActive()) {
+                        this.cancel();
+                        return;
+                      }
+
                       double playersHealth = 0;
 
                       for (Player player : thisDuel.getPlayers()) {

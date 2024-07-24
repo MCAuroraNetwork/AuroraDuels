@@ -72,14 +72,6 @@ public class DuelEndEvent extends Event {
       }
     }
 
-    if (!duel.checkBounds.isCancelled()) {
-      duel.checkBounds.cancel();
-    }
-
-    if (duel.bossbarTask != null && !duel.bossbarTask.isCancelled()) {
-      duel.bossbarTask.cancel();
-    }
-
     StringBuilder sb = new StringBuilder();
     int count = 0;
     for (Player winner : winners) {

@@ -46,7 +46,7 @@ public abstract class Duel {
   private boolean active = false;
   private final Duel thisDuel = this;
   public BukkitRunnable bossbarTask;
-  public final BukkitRunnable checkBounds = new BukkitRunnable() {
+  private final BukkitRunnable checkBounds = new BukkitRunnable() {
     @Override
     public void run() {
       if (!thisDuel.isActive()) {

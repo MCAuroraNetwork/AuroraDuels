@@ -337,6 +337,11 @@ public class TeamDuel extends Duel {
                   new BukkitRunnable() {
                     @Override
                     public void run() {
+                      if (!thisDuel.isActive()) {
+                        this.cancel();
+                        return;
+                      }
+
                       double team1Health = 0;
 
                       for (Player team1Member : teamOneMembers) {
