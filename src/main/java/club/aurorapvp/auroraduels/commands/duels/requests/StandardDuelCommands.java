@@ -49,7 +49,7 @@ public class StandardDuelCommands extends BaseCommand {
     }
 
     if (loc == null) {
-      loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
     }
 
     int rounds = 1;

@@ -99,6 +99,7 @@ public class Request {
 
     duel.setKit(event.getKit());
 
+    event.getPlayer().closeInventory();
     this.sendRequest();
   }
 
