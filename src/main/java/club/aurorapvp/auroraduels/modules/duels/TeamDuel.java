@@ -8,7 +8,7 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
-import java.util.Arrays;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,8 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -346,7 +345,7 @@ public class TeamDuel extends Duel {
 
                       for (Player team1Member : teamOneMembers) {
                         if (teamOneDead.get(team1Member.getUniqueId())
-                            || thisDuel.isSpectator(team1Member)) {
+                            || thisDuel.isSpectating(team1Member)) {
                           continue;
                         }
 
@@ -362,7 +361,7 @@ public class TeamDuel extends Duel {
 
                       for (Player team2Member : teamTwoMembers) {
                         if (teamTwoDead.get(team2Member.getUniqueId())
-                            || thisDuel.isSpectator(team2Member)) {
+                            || thisDuel.isSpectating(team2Member)) {
                           continue;
                         }
 

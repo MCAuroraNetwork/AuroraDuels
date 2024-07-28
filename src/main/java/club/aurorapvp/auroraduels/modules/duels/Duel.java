@@ -56,7 +56,7 @@ public abstract class Duel {
 
       try {
         for (Player player : thisDuel.getPlayers()) {
-          if (!thisDuel.isSpectator(player) && !thisDuel.getArena()
+          if (!thisDuel.isSpectating(player) && !thisDuel.getArena()
               .isInBounds(player.getLocation())) {
             player.setHealth(0);
             player.sendMessage(
@@ -67,7 +67,7 @@ public abstract class Duel {
         for (Player player : thisDuel.getSpectators()) {
           if (!thisDuel.getArena().isInBounds(player.getLocation())) {
             for (Player duelingPlayer : thisDuel.getPlayers()) {
-              if (!thisDuel.isSpectator(duelingPlayer)) {
+              if (!thisDuel.isSpectating(duelingPlayer)) {
                 player.teleportAsync(duelingPlayer.getLocation());
                 break;
               }
@@ -214,7 +214,16 @@ public abstract class Duel {
 
   public static boolean inDuel(Player player) {
     for (Duel duel : duels) {
-      if ((duel.contains(player) || duel.isSpectator(player)) && duel.isActive()) {
+      if ((duel.contains(player) || duel.isSpectating(player)) && duel.isActive()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean isSpectator(Player player) {
+    for (Duel duel : duels) {
+      if (duel.isSpectating(player)) {
         return true;
       }
     }
@@ -295,7 +304,7 @@ public abstract class Duel {
   public void setSpectator(Player player, boolean spectator) {
     if (spectator) {
       for (Player duelingPlayer : thisDuel.getPlayers()) {
-        if (!thisDuel.isSpectator(duelingPlayer)) {
+        if (!thisDuel.isSpectating(duelingPlayer)) {
           player.teleportAsync(duelingPlayer.getLocation());
           break;
         }
@@ -329,7 +338,7 @@ public abstract class Duel {
     return players.contains(player);
   }
 
-  public boolean isSpectator(Player player) {
+  public boolean isSpectating(Player player) {
     return spectators.contains(player);
   }
 }

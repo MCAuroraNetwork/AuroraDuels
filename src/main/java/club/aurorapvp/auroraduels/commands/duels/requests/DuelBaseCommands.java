@@ -5,7 +5,6 @@ import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
@@ -113,8 +112,8 @@ public class DuelBaseCommands extends BaseCommand {
   public void onSetSpectator(Player player, String playerName) {
     Duel duel = Duel.getDuel(Bukkit.getPlayer(playerName));
 
-    if (!Duel.inDuel(player) && duel != null) {
-      duel.setSpectator(player, true);
+    if (duel != null && (!Duel.inDuel(player) || duel.isSpectating(player))) {
+      duel.setSpectator(player, !duel.isSpectating(player));
     } else {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-duel"));
     }

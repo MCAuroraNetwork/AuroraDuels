@@ -90,7 +90,7 @@ public class Lang {
     DEFAULTS.put("no-teleport", "prefix <red>Can't teleport during a duel");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled during duel");
     DEFAULTS.put("duel-kit", "prefix <green>Duel kit set!");
-    DEFAULTS.put("start-spectating", "prefix <yellow>Spectating!");
+    DEFAULTS.put("start-spectating", "prefix <yellow>Spectating! Do /duel spectate again to stop");
     DEFAULTS.put("stop-spectating", "prefix <yellow>Stopped spectating");
     DEFAULTS.put("no-last-duel", "prefix <red>No previous duel");
     DEFAULTS.put("queue-menu", "<yellow><bold>Select Duel Type");

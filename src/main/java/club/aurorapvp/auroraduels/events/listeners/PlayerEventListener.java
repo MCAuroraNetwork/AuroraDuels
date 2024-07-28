@@ -14,8 +14,7 @@ import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.events.custom.KitRefillEvent;
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import io.papermc.paper.event.player.AsyncChatEvent;
-import java.util.Collection;
-import java.util.Collections;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -147,7 +146,7 @@ public class PlayerEventListener implements Listener {
     Duel duel = Duel.getDuel(event.getPlayer());
 
     assert duel != null;
-    if (duel.isSpectator(event.getPlayer())) {
+    if (duel.isSpectating(event.getPlayer())) {
       Location spawn1 =
           new Location(
               duel.getArena().getWorld(),

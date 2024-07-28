@@ -197,14 +197,14 @@ public class FFADuel extends Duel {
                       double playersHealth = 0;
 
                       for (Player player : thisDuel.getPlayers()) {
-                        if (!thisDuel.isDead(player) && !thisDuel.isSpectator(player)) {
+                        if (!thisDuel.isDead(player) && !thisDuel.isSpectating(player)) {
                           playersHealth += player.getHealth() + player.getAbsorptionAmount();
                         }
                       }
 
                       for (Player player : thisDuel.getPlayers()) {
                         double playerHealth =
-                            thisDuel.isSpectator(player)
+                            thisDuel.isSpectating(player)
                                 ? 0
                                 : player.getHealth() + player.getAbsorptionAmount();
                         bossbars
