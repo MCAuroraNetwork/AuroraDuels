@@ -91,9 +91,9 @@ public class FFADuel extends Duel {
             arena.getSecondSpawn().y(),
             arena.getSecondSpawn().z());
 
-    double x = (spawn1.getX() + spawn2.getX()) / 2;
-    double y = (spawn1.getY() + spawn2.getY()) / 2;
-    double z = (spawn1.getZ() + spawn2.getZ()) / 2;
+    double x = (spawn1.x() + spawn2.x()) / 2;
+    double y = (spawn1.y() + spawn2.y()) / 2;
+    double z = (spawn1.z() + spawn2.z()) / 2;
 
     Location center = new Location(spawn1.getWorld(), x, y, z);
 

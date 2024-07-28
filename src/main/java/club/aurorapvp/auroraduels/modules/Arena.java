@@ -201,11 +201,11 @@ public class Arena {
               .deserialize(
                   AuroraDuels.getInstance().getLang().getString("spawn1-set")
                       + " ("
-                      + spawn1.getBlockX()
+                      + spawn1.x()
                       + ", "
-                      + spawn1.getBlockY()
+                      + spawn1.y()
                       + ", "
-                      + spawn1.getBlockZ()
+                      + spawn1.z()
                       + ")"));
 
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("set-spawn2"));
@@ -221,11 +221,11 @@ public class Arena {
               .deserialize(
                   AuroraDuels.getInstance().getLang().getString("spawn2-set")
                       + " ("
-                      + spawn2.getBlockX()
+                      + spawn2.x()
                       + ", "
-                      + spawn2.getBlockY()
+                      + spawn2.y()
                       + ", "
-                      + spawn2.getBlockZ()
+                      + spawn2.z()
                       + ")"));
 
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("spawns-set"));
@@ -240,18 +240,18 @@ public class Arena {
     if (action.isLeftClick() && state == ArenaState.CORNER_1) {
       pos1 = vector;
 
-      corner1 = new Location(this.getWorld(), vector.getX(), vector.getY(), vector.getZ());
+      corner1 = new Location(this.getWorld(), vector.x(), vector.y(), vector.z());
 
       player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
                   AuroraDuels.getInstance().getLang().getString("pos1-set")
                       + " ("
-                      + pos1.getBlockX()
+                      + pos1.x()
                       + ", "
-                      + pos1.getBlockY()
+                      + pos1.y()
                       + ", "
-                      + pos1.getBlockZ()
+                      + pos1.z()
                       + ")"));
 
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("set-pos2"));
@@ -262,18 +262,18 @@ public class Arena {
     if (action.isRightClick() && state == ArenaState.CORNER_2) {
       pos2 = vector;
 
-      corner2 = new Location(this.getWorld(), vector.getX(), vector.getY(), vector.getZ());
+      corner2 = new Location(this.getWorld(), vector.x(), vector.y(), vector.z());
 
       player.sendMessage(
           MiniMessage.miniMessage()
               .deserialize(
                   AuroraDuels.getInstance().getLang().getString("pos2-set")
                       + " ("
-                      + pos2.getBlockX()
+                      + pos2.x()
                       + ", "
-                      + pos2.getBlockY()
+                      + pos2.y()
                       + ", "
-                      + pos2.getBlockZ()
+                      + pos2.z()
                       + ")"));
 
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("arena-created"));
@@ -329,19 +329,19 @@ public class Arena {
     Location corner1 = this.getCornerOne();
     Location corner2 = this.getCornerTwo();
 
-    double minX = Math.min(corner1.getX(), corner2.getX());
-    double minY = Math.min(corner1.getY(), corner2.getY());
-    double minZ = Math.min(corner1.getZ(), corner2.getZ());
-    double maxX = Math.max(corner1.getX(), corner2.getX());
-    double maxY = Math.max(corner1.getY(), corner2.getY());
-    double maxZ = Math.max(corner1.getZ(), corner2.getZ());
+    double minX = Math.min(corner1.x(), corner2.x());
+    double minY = Math.min(corner1.y(), corner2.y());
+    double minZ = Math.min(corner1.z(), corner2.z());
+    double maxX = Math.max(corner1.x(), corner2.x());
+    double maxY = Math.max(corner1.y(), corner2.y());
+    double maxZ = Math.max(corner1.z(), corner2.z());
 
-    return loc.getX() >= minX
-        && loc.getX() <= maxX
-        && loc.getY() >= minY
-        && loc.getY() <= maxY
-        && loc.getZ() >= minZ
-        && loc.getZ() <= maxZ;
+    return loc.x() >= minX
+        && loc.x() <= maxX
+        && loc.y() >= minY
+        && loc.y() <= maxY
+        && loc.z() >= minZ
+        && loc.z() <= maxZ;
   }
 
   private enum ArenaState {

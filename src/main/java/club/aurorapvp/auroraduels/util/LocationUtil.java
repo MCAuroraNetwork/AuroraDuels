@@ -20,10 +20,10 @@ public class LocationUtil {
     while (attempts < maxAttempts) {
       double angle = RANDOM.nextDouble() * Math.PI * 2;
       double distance = RANDOM.nextDouble() * radius;
-      double x = center.getX() + distance * Math.cos(angle);
-      double z = center.getZ() + distance * Math.sin(angle);
+      double x = center.x() + distance * Math.cos(angle);
+      double z = center.z() + distance * Math.sin(angle);
 
-      Location spawnLocation = new Location(world, x, center.getY(), z);
+      Location spawnLocation = new Location(world, x, center.y(), z);
 
       if (isSafeSpawnLocation(spawnLocation)) {
         return spawnLocation;
@@ -57,7 +57,7 @@ public class LocationUtil {
       int adjustments = 0;
 
       while (adjustments < maxAdjustments) {
-        location.setY(location.getY() + 1);
+        location.setY(location.y() + 1);
         blockType = location.getBlock().getType();
         belowBlockType = location.clone().add(0, -1, 0).getBlock().getType();
         aboveBlockType = location.clone().add(0, 1, 0).getBlock().getType();

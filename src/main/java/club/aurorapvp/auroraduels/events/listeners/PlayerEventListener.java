@@ -151,9 +151,9 @@ public class PlayerEventListener implements Listener {
       Location spawn1 =
           new Location(
               duel.getArena().getWorld(),
-              duel.getArena().getFirstSpawn().getBlockX(),
-              duel.getArena().getFirstSpawn().getBlockY(),
-              duel.getArena().getFirstSpawn().getBlockZ());
+              duel.getArena().getFirstSpawn().x(),
+              duel.getArena().getFirstSpawn().y(),
+              duel.getArena().getFirstSpawn().z());
 
       event.getPlayer().teleportAsync(spawn1);
     }

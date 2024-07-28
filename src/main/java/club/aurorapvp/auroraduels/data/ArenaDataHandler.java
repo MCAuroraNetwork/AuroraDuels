@@ -22,8 +22,8 @@ public class ArenaDataHandler {
   public ArenaDataHandler(Arena arena) {
     ArenaDataHandler.arena = arena;
 
-    FILE = new File(AuroraDuels.getInstance().getDataFolder(),
-        "/arenas/" + arena.getName() + ".yml");
+    FILE =
+        new File(AuroraDuels.getInstance().getDataFolder(), "/arenas/" + arena.getName() + ".yml");
     arenaData = YamlConfiguration.loadConfiguration(FILE);
   }
 
@@ -63,27 +63,27 @@ public class ArenaDataHandler {
     Location spawn1 =
         new Location(
             arena.getWorld(),
-            arena.getFirstSpawn().getBlockX(),
-            arena.getFirstSpawn().getBlockY(),
-            arena.getFirstSpawn().getBlockZ());
+            arena.getFirstSpawn().x(),
+            arena.getFirstSpawn().y(),
+            arena.getFirstSpawn().z());
     Location spawn2 =
         new Location(
             arena.getWorld(),
-            arena.getSecondSpawn().getBlockX(),
-            arena.getSecondSpawn().getBlockY(),
-            arena.getSecondSpawn().getBlockZ());
+            arena.getSecondSpawn().x(),
+            arena.getSecondSpawn().y(),
+            arena.getSecondSpawn().z());
     Location pos1 =
         new Location(
             arena.getWorld(),
-            arena.getFirstPosition().getX(),
-            arena.getFirstPosition().getY(),
-            arena.getFirstPosition().getZ());
+            arena.getFirstPosition().x(),
+            arena.getFirstPosition().y(),
+            arena.getFirstPosition().z());
     Location pos2 =
         new Location(
             arena.getWorld(),
-            arena.getSecondPosition().getX(),
-            arena.getSecondPosition().getY(),
-            arena.getSecondPosition().getZ());
+            arena.getSecondPosition().x(),
+            arena.getSecondPosition().y(),
+            arena.getSecondPosition().z());
 
     arenaData.set("arena.world", arena.getWorld().getName());
     arenaData.set("arena.spawns.spawn1", spawn1);
