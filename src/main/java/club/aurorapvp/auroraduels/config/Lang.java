@@ -51,6 +51,7 @@ public class Lang {
     DEFAULTS.put("arena-already-exists", "prefix <yellow>Arena exists");
     DEFAULTS.put("unknown-opponent", "prefix <red>Opponent not found");
     DEFAULTS.put("unknown-duel", "prefix <red>Duel not found");
+    DEFAULTS.put("unknown-player", "prefix <red>Player not found");
     DEFAULTS.put("player-in-duel", "prefix <red>Player in duel");
     DEFAULTS.put("duel-started", "<bold><green>Duel started!");
     DEFAULTS.put("even-rounds", "prefix <red>Odd rounds required for duel");

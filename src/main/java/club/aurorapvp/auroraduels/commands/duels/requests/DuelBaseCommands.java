@@ -109,7 +109,22 @@ public class DuelBaseCommands extends BaseCommand {
   @Syntax("<player>")
   @Description("Spectates the duel of a given player")
   @SuppressWarnings("unused")
-  public void onSetSpectator(Player player, String playerName) {
+  public void onSetSpectator(Player player, @Optional String playerName) {
+    if (playerName == null) {
+      if (Duel.isSpectator(player)) {
+        for (Duel duel : Duel.getDuels()) {
+          if (duel.isSpectating(player)) {
+            duel.setSpectator(player, false);
+            return;
+          }
+        }
+      } else {
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-player"));
+        return;
+      }
+    }
+
+    assert playerName != null;
     Duel duel = Duel.getDuel(Bukkit.getPlayer(playerName));
 
     if (duel != null && (!Duel.inDuel(player) || duel.isSpectating(player))) {
