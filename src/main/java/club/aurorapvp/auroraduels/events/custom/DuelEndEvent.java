@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.events.custom;
 import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DUEL_RESPAWN;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
+import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
@@ -18,16 +19,18 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-/* Event that is fired after a duel ends */
+/* Event that is fired after a duel ends not in a draw */
 public class DuelEndEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Collection<Player> winners;
   private final Collection<Player> losers;
   private final Duel duel;
+  private final Arena arena;
 
-  public DuelEndEvent(Duel duel, Collection<Player> winners, Collection<Player> losers) {
+  public DuelEndEvent(Duel duel, Arena arena, Collection<Player> winners, Collection<Player> losers) {
     this.duel = duel;
+    this.arena = arena;
     this.winners = winners;
     this.losers = losers;
 
@@ -39,8 +42,8 @@ public class DuelEndEvent extends Event {
                 for (Player player : duel.getPlayers()) {
                   player.teleportAsync(duel.getRespawnLocation());
                 }
-                duel.getArena().reset();
-                duel.getArena().setOccupied(false);
+                arena.reset();
+                arena.setOccupied(false);
                 this.cancel();
               }
             },
@@ -129,6 +132,10 @@ public class DuelEndEvent extends Event {
 
   public Duel getDuel() {
     return duel;
+  }
+
+  public Arena getArena() {
+    return arena;
   }
 
   @SuppressWarnings("unused")

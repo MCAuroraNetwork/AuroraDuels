@@ -72,6 +72,7 @@ public abstract class Duel {
                 break;
               }
             }
+
             player.sendMessage(
                 AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
           }

@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,9 +14,11 @@ public class DuelDrawEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Duel duel;
+  private final Arena arena;
 
-  public DuelDrawEvent(Duel duel) {
+  public DuelDrawEvent(Duel duel, Arena arena) {
     this.duel = duel;
+    this.arena = arena;
 
     new Timer()
         .schedule(
@@ -25,8 +28,8 @@ public class DuelDrawEvent extends Event {
                 for (Player player : duel.getPlayers()) {
                   player.teleportAsync(duel.getRespawnLocation());
                 }
-                duel.getArena().reset();
-                duel.getArena().setOccupied(false);
+                arena.reset();
+                arena.setOccupied(false);
                 this.cancel();
               }
             },
@@ -47,6 +50,10 @@ public class DuelDrawEvent extends Event {
 
   public Duel getDuel() {
     return duel;
+  }
+
+  public Arena getArena() {
+    return arena;
   }
 
   @SuppressWarnings("unused")
