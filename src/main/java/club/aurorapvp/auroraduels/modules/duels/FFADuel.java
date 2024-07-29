@@ -48,6 +48,10 @@ public class FFADuel extends Duel {
 
   public void setDead(Player player) {
     deadPlayers.add(player);
+
+    player.hideBossBar(bossbars.get(player.getUniqueId()));
+
+    bossbars.remove(player.getUniqueId());
   }
 
   public boolean isDead(Player player) {
