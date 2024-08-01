@@ -25,6 +25,7 @@ public final class AuroraDuels extends JavaPlugin {
   private boolean auroraKitsInstalled = false;
   private boolean auroraCombatInstalled = false;
   private boolean auroraWarpsInstalled = false;
+  private boolean auroraChatInstalled = false;
   private boolean discordSrvInstalled = false;
 
   public static AuroraDuels getInstance() {
@@ -41,6 +42,10 @@ public final class AuroraDuels extends JavaPlugin {
 
   public boolean isAuroraWarpsInstalled() {
     return auroraWarpsInstalled;
+  }
+
+  public boolean isAuroraChatInstalled() {
+    return auroraChatInstalled;
   }
 
   public boolean isDiscordSRVInstalled() {
@@ -89,6 +94,11 @@ public final class AuroraDuels extends JavaPlugin {
       auroraWarpsInstalled = true;
     }
 
+    if (Bukkit.getPluginManager().getPlugin("AuroraChat") != null
+            && this.getConfig().getBoolean("optional-plugins.aurorachat-compatibility")) {
+      auroraChatInstalled = true;
+    }
+
     if (Bukkit.getPluginManager().getPlugin("DiscordSRV") != null
         && this.getConfig().getBoolean("optional-plugins.discordsrv-compatibility")) {
       discordSrvInstalled = true;
@@ -100,7 +110,6 @@ public final class AuroraDuels extends JavaPlugin {
     Arena.init();
     Queue.init();
     Wand.init();
-    TeamDuel.init();
 
     queueGUI = new QueueGUI();
 

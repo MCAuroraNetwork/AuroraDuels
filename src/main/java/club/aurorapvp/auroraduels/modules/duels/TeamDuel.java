@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
+import club.aurorapvp.aurorachat.modules.NameColor;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
@@ -35,8 +36,6 @@ import org.bukkit.scoreboard.Team;
 
 public class TeamDuel extends Duel {
 
-  public static Team team1;
-  public static Team team2;
   private final Map<UUID, Boolean> teamOneDead = new HashMap<>();
   private final Map<UUID, Boolean> teamTwoDead = new HashMap<>();
   private final Collection<Player> teamOneMembers;
@@ -92,23 +91,6 @@ public class TeamDuel extends Duel {
 
     team1MaxHealth = teamOneMembers.size() * 20;
     team2MaxHealth = teamTwoMembers.size() * 20;
-  }
-
-  public static void init() {
-    team1 = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team1");
-
-    if (team1 == null) {
-      team1 = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("team1");
-    }
-
-    team2 = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("team2");
-
-    if (team2 == null) {
-      team2 = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("team2");
-    }
-
-    team1.color(NamedTextColor.BLUE);
-    team2.color(NamedTextColor.RED);
   }
 
   public Collection<Player> getTeamOneMembers() {
@@ -202,12 +184,18 @@ public class TeamDuel extends Duel {
 
     for (Player player : teamOneMembers) {
       teamOneDead.put(player.getUniqueId(), false);
-      team1.addPlayer(player);
+
+      if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
+        NameColor.getNameColor(player).setColor(NamedTextColor.BLUE);
+      }
     }
 
     for (Player player : teamTwoMembers) {
       teamTwoDead.put(player.getUniqueId(), false);
-      team2.addPlayer(player);
+
+      if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
+        NameColor.getNameColor(player).setColor(NamedTextColor.RED);
+      }
     }
 
     Duel thisDuel = this;
@@ -420,13 +408,19 @@ public class TeamDuel extends Duel {
     }
 
     for (Player player : teamOneMembers) {
-      TeamDuel.team1.removePlayer(player);
       player.hideBossBar(teamOneBar[0]);
+
+      if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
+        NameColor.getNameColor(player).reload();
+      }
     }
 
     for (Player player : teamTwoMembers) {
-      TeamDuel.team2.removePlayer(player);
       player.hideBossBar(teamTwoBar[0]);
+
+      if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
+        NameColor.getNameColor(player).reload();
+      }
     }
 
     Duel thisDuel = this;
@@ -446,13 +440,19 @@ public class TeamDuel extends Duel {
     }
 
     for (Player player : teamOneMembers) {
-      team1.removePlayer(player);
       player.hideBossBar(teamOneBar[0]);
+
+      if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
+        NameColor.getNameColor(player).reload();
+      }
     }
 
     for (Player player : teamTwoMembers) {
-      team2.removePlayer(player);
       player.hideBossBar(teamTwoBar[0]);
+
+      if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
+        NameColor.getNameColor(player).reload();
+      }
     }
 
     Duel thisDuel = this;

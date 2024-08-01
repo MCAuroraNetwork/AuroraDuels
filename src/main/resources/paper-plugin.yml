@@ -129,3 +129,5 @@ dependencies:
       required: false
     AuroraWarps:
       required: false
+    AuroraChat:
+      required: false
