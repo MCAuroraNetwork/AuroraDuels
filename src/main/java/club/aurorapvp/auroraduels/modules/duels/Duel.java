@@ -46,42 +46,43 @@ public abstract class Duel {
   private boolean active = false;
   private final Duel thisDuel = this;
   public BukkitRunnable bossbarTask;
-  public final BukkitRunnable checkBounds = new BukkitRunnable() {
-    @Override
-    public void run() {
-      if (!thisDuel.isActive()) {
-        this.cancel();
-        return;
-      }
-
-      try {
-        for (Player player : thisDuel.getPlayers()) {
-          if (!thisDuel.isSpectating(player) && !thisDuel.getArena()
-              .isInBounds(player.getLocation())) {
-            player.setHealth(0);
-            player.sendMessage(
-                AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
+  public final BukkitRunnable checkBounds =
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          if (!thisDuel.isActive()) {
+            this.cancel();
+            return;
           }
-        }
 
-        for (Player player : thisDuel.getSpectators()) {
-          if (!thisDuel.getArena().isInBounds(player.getLocation())) {
-            for (Player duelingPlayer : thisDuel.getPlayers()) {
-              if (!thisDuel.isSpectating(duelingPlayer)) {
-                player.teleportAsync(duelingPlayer.getLocation());
-                break;
+          try {
+            for (Player player : thisDuel.getPlayers()) {
+              if (!thisDuel.isSpectating(player)
+                  && !thisDuel.getArena().isInBounds(player.getLocation())) {
+                player.setHealth(0);
+                player.sendMessage(
+                    AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
               }
             }
 
-            player.sendMessage(
-                AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
+            for (Player player : thisDuel.getSpectators()) {
+              if (!thisDuel.getArena().isInBounds(player.getLocation())) {
+                for (Player duelingPlayer : thisDuel.getPlayers()) {
+                  if (!thisDuel.isSpectating(duelingPlayer)) {
+                    player.teleportAsync(duelingPlayer.getLocation());
+                    break;
+                  }
+                }
+
+                player.sendMessage(
+                    AuroraDuels.getInstance().getLang().getComponent("no-leaving-arena"));
+              }
+            }
+          } catch (IllegalArgumentException e) {
+            this.cancel();
           }
         }
-      } catch (IllegalArgumentException e) {
-        this.cancel();
-      }
-    }
-  };
+      };
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked) {
     this.respawnLocation = respawnLocation;
@@ -107,7 +108,12 @@ public abstract class Duel {
     duels.add(this);
   }
 
-  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked,
+  public Duel(
+      Set<Player> players,
+      Location respawnLocation,
+      Queue queue,
+      Kit kit,
+      boolean ranked,
       int rounds) {
     this.respawnLocation = respawnLocation;
     this.players.addAll(players);
@@ -179,7 +185,8 @@ public abstract class Duel {
     AuroraDuels.getInstance().getConfig().set("lobby", loc);
 
     try {
-      AuroraDuels.getInstance().getConfig()
+      AuroraDuels.getInstance()
+          .getConfig()
           .save(new File(AuroraDuels.getInstance().getDataFolder(), "config.yml"));
     } catch (IOException e) {
       AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save config file", e);
@@ -205,10 +212,12 @@ public abstract class Duel {
   public static int inDuel(String queueName) {
     return Duel.getDuels().stream()
         .filter(Duel::isActive)
-        .filter(duel -> Optional.ofNullable(duel.getQueue())
-            .map(Queue::getName)
-            .filter(queueName::equals)
-            .isPresent())
+        .filter(
+            duel ->
+                Optional.ofNullable(duel.getQueue())
+                    .map(Queue::getName)
+                    .filter(queueName::equals)
+                    .isPresent())
         .mapToInt(Duel::inDuel)
         .sum();
   }
@@ -312,7 +321,11 @@ public abstract class Duel {
       }
 
       player.setGameMode(GameMode.SPECTATOR);
-      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("start-spectating"));
+      player.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .getComponentCommand(
+                  "start-spectating", "Click to stop spectating", "/duel spectate"));
 
       for (BossBar bar : spectatorBars) {
         player.showBossBar(bar);
