@@ -36,7 +36,8 @@ public class DuelEventListener implements Listener {
     Rating.getRating("default").setEnabled(false);
 
     if (event.getDuel().isRanked()) {
-      if (AuroraDuels.getInstance().getConfig()
+      if (AuroraDuels.getInstance()
+          .getConfig()
           .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
         Rating.getRating("default_duels").setEnabled(true);
       }
@@ -53,6 +54,11 @@ public class DuelEventListener implements Listener {
       Duel.setLastDuel(player, event.getDuel());
 
       player.setGlowing(false);
+
+      player.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .getComponentCommand("rematch", "Click to request rematch", "/rematch"));
     }
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
@@ -84,11 +90,13 @@ public class DuelEventListener implements Listener {
       Rating.getRating(queueName).updateElo(losers.iterator().next(), winners.iterator().next());
     } else {
       for (Player loser : losers) {
-        Rating.getRating(queueName).updateElo(loser, (int) getAverageRating(winners, queueName), false);
+        Rating.getRating(queueName)
+            .updateElo(loser, (int) getAverageRating(winners, queueName), false);
       }
 
       for (Player winner : winners) {
-        Rating.getRating(queueName).updateElo(winner, (int) getAverageRating(losers, queueName), true);
+        Rating.getRating(queueName)
+            .updateElo(winner, (int) getAverageRating(losers, queueName), true);
       }
     }
   }
@@ -116,7 +124,6 @@ public class DuelEventListener implements Listener {
     for (Player player : event.getDuel().getPlayers()) {
       CombatTag.setTaggable(player, true);
     }
-
   }
 
   public double getAverageRating(Collection<Player> players, String queueName) {

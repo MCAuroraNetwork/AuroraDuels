@@ -12,7 +12,6 @@ import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
-import java.util.Arrays;
 import org.bukkit.entity.Player;
 
 @CommandAlias("rematch")
@@ -22,6 +21,7 @@ public class RematchCommand extends BaseCommand {
   @Default
   @CatchUnknown
   @SuppressWarnings("unused")
+  // TODO add params (i.e. /rematch Wtrlmn) not sure why this would be needed, but who knows
   public void onRematch(Player player) {
     Duel lastDuel = Duel.getLastDuel(player);
 
