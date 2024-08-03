@@ -174,7 +174,7 @@ public class Request {
               .getLang()
               .getformattedComponentCommand(
                   "received-request",
-                  "Accept Request",
+                  "Click to Accept Request",
                   "/duel accept " + requester.getName(),
                   requester.getName()));
     }
