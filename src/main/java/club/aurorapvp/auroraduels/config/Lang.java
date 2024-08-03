@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.logging.Level;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -66,11 +68,13 @@ public class Lang {
     DEFAULTS.put("request-accepted", "prefix <green>Request accepted!");
     DEFAULTS.put("you-won", "<green>You won!");
     DEFAULTS.put("you-lost", "<red>You lost");
-    DEFAULTS.put("duel-won",
+    DEFAULTS.put(
+        "duel-won",
         "<bold><yellow>%1$s<reset><yellow> won a duel against <bold>%2$s<reset><yellow>!");
     DEFAULTS.put("discord-duel-won", "%1$s won a duel against %2$s!");
     DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s /n<red>%3$s<yellow - <blue>%4$s");
     DEFAULTS.put("draw", "prefix <yellow>Draw!");
+    DEFAULTS.put("rematch", "prefix <yellow> Want a rematch? Do /rematch!");
     DEFAULTS.put("no-leaving-arena", "prefix <red>Can't leave arena");
     DEFAULTS.put("halfway", "prefix <yellow>Duel halfway over. All players now glowing");
     DEFAULTS.put("one-minute-left", "prefix <yellow>One minute remaining");
@@ -85,8 +89,8 @@ public class Lang {
     DEFAULTS.put("queue-created", "prefix <green>Queue created");
     DEFAULTS.put("queue-not-found", "prefix <red>Queue not found");
     DEFAULTS.put("you-have-request", "prefix <red>You already have a pending request");
-    DEFAULTS.put("already-has-request",
-        "prefix <red>You already have a request pending to this player");
+    DEFAULTS.put(
+        "already-has-request", "prefix <red>You already have a request pending to this player");
     DEFAULTS.put(
         "add-arena",
         "prefix <yellow>Type the name of the arena you want to add arena to queue. Added %s so far");
@@ -108,12 +112,12 @@ public class Lang {
         "help-command",
         """
             prefix <yellow><bold>All Commands:
-                    
-                    
+
+
             <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player
-            
+
             <blue><bold>/ranked or /unranked [name]: <reset><yellow>Joins a ranked or unranked queue, or the default one if no name is given
-            
+
             <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members
             """);
 
@@ -174,6 +178,41 @@ public class Lang {
       }
     }
     return MiniMessage.miniMessage().deserialize(pathString);
+  }
+
+  public Component getformattedComponentCommand(String message, String hover, String command, Object... args) {
+    String pathString = getYaml().getString(message);
+    assert pathString != null;
+    for (String placeholder : PLACEHOLDERS.keySet()) {
+      if (pathString.contains(placeholder)) {
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
+      }
+    }
+
+    pathString = String.format(pathString, args);
+
+    Component component = MiniMessage.miniMessage().deserialize(pathString);
+
+    return component
+            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, command))
+            .hoverEvent(HoverEvent.showText(Component.text(hover)));
+  }
+
+  public Component getComponentCommand(String message, String hover, String command) {
+    String pathString = getYaml().getString(message);
+    assert pathString != null;
+
+    for (String placeholder : PLACEHOLDERS.keySet()) {
+      if (pathString.contains(placeholder)) {
+        pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
+      }
+    }
+
+    Component component = MiniMessage.miniMessage().deserialize(pathString);
+
+    return component
+        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, command))
+        .hoverEvent(HoverEvent.showText(Component.text(hover)));
   }
 
   public YamlConfiguration getYaml() {

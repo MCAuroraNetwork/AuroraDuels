@@ -169,8 +169,14 @@ public class Request {
     requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("sent-request"));
 
     for (Player player : requested) {
-      player.sendMessage(AuroraDuels.getInstance().getLang()
-          .formatComponent("received-request", requester.getName()));
+      player.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .getformattedComponentCommand(
+                  "received-request",
+                  "Accept Request",
+                  "/duel accept " + requester.getName(),
+                  requester.getName()));
     }
 
     for (Player player : requested) {
