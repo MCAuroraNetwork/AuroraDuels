@@ -42,8 +42,6 @@ public class DuelStartEvent extends Event {
                                for (Player player : duel.getPlayers()) {
                                  player.sendMessage(
                                      AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
-                                 player.sendMessage(
-                                     AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
                                }
                                duel.draw();
                              }
