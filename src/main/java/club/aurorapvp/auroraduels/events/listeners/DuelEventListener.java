@@ -33,17 +33,11 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    Rating.getRating("default").setEnabled(false);
-
-    if (event.getDuel().isRanked()) {
-      if (AuroraDuels.getInstance()
-          .getConfig()
-          .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
-        Rating.getRating("default_duels").setEnabled(true);
-      }
-    }
+    Rating rating = Rating.getRating("default");
 
     for (Player player : event.getDuel().getPlayers()) {
+      rating.setPlayerEnabled(player, false);
+
       CombatTag.setTaggable(player, false);
     }
   }
@@ -71,9 +65,11 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    Rating.getRating("default").setEnabled(true);
+    Rating rating = Rating.getRating("default");
 
     for (Player player : event.getDuel().getPlayers()) {
+      rating.setPlayerEnabled(player, false);
+
       CombatTag.setTaggable(player, true);
     }
 
@@ -86,18 +82,12 @@ public class DuelEventListener implements Listener {
     Collection<Player> winners = event.getWinners();
     Collection<Player> losers = event.getLosers();
 
-    if (event.getDuel().getPlayers().size() == 2) {
-      Rating.getRating(queueName).updateElo(losers.iterator().next(), winners.iterator().next());
-    } else {
-      for (Player loser : losers) {
-        Rating.getRating(queueName)
-            .updateElo(loser, (int) getAverageRating(winners, queueName), false);
-      }
+    updateRatings(winners, losers, queueName);
 
-      for (Player winner : winners) {
-        Rating.getRating(queueName)
-            .updateElo(winner, (int) getAverageRating(losers, queueName), true);
-      }
+    if (AuroraDuels.getInstance()
+        .getConfig()
+        .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
+      updateRatings(winners, losers, "default_duels");
     }
   }
 
@@ -124,10 +114,27 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    Rating.getRating("default").setEnabled(true);
-
     for (Player player : event.getDuel().getPlayers()) {
+      Rating.getRating("default").setPlayerEnabled(player, true);
+
       CombatTag.setTaggable(player, true);
+    }
+  }
+
+  public void updateRatings(
+      Collection<Player> winners, Collection<Player> losers, String queueName) {
+    Rating rating = Rating.getRating(queueName);
+
+    if (winners.size() + losers.size() == 2) {
+      rating.updateElo(losers.iterator().next(), winners.iterator().next());
+    } else {
+      for (Player loser : losers) {
+        rating.updateElo(loser, (int) getAverageRating(winners, queueName), false);
+      }
+
+      for (Player winner : winners) {
+        rating.updateElo(winner, (int) getAverageRating(losers, queueName), true);
+      }
     }
   }
 
