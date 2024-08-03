@@ -107,6 +107,11 @@ public class DuelEventListener implements Listener {
       Duel.setLastDuel(player, event.getDuel());
 
       player.setGlowing(false);
+
+      player.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .getComponentCommand("rematch", "Click to request rematch", "/rematch"));
     }
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
