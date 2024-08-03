@@ -72,6 +72,8 @@ public class Lang {
     DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s /n<red>%3$s<yellow - <blue>%4$s");
     DEFAULTS.put("draw", "prefix <yellow>Draw!");
     DEFAULTS.put("no-leaving-arena", "prefix <red>Can't leave arena");
+    DEFAULTS.put("halfway", "prefix <yellow>Duel halfway over. All players now glowing");
+    DEFAULTS.put("one-minute-left", "prefix <yellow>One minute remaining");
     DEFAULTS.put("duel-time-expired", "prefix <red>Duel time expired");
     DEFAULTS.put("looking-match", "prefix <yellow>Searching for opponent");
     DEFAULTS.put("not-looking-match", "prefix <yellow>Stopped searching for an opponent");

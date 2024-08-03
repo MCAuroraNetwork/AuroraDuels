@@ -51,6 +51,8 @@ public class DuelEventListener implements Listener {
   public void onDuelEnd(DuelEndEvent event) {
     for (Player player : event.getDuel().getPlayers()) {
       Duel.setLastDuel(player, event.getDuel());
+
+      player.setGlowing(false);
     }
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {

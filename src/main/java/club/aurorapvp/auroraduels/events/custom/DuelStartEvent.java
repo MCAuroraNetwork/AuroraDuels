@@ -5,6 +5,9 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -35,20 +38,59 @@ public class DuelStartEvent extends Event {
       }
     }
 
-    new Timer().schedule(new TimerTask() {
-                           @Override
-                           public void run() {
-                             if (duel.isActive()) {
-                               for (Player player : duel.getPlayers()) {
-                                 player.sendMessage(
-                                     AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
-                               }
-                               duel.draw();
-                             }
-                             this.cancel();
-                           }
-                         },
-        AuroraDuels.getInstance().getConfig().getInt("duels.max-duration"));
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                if (duel.isActive()) {
+                  for (Player player : duel.getPlayers()) {
+                    player.setGlowing(true);
+
+                    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("halfway"));
+                  }
+                  duel.draw();
+                }
+                this.cancel();
+              }
+            },
+            AuroraDuels.getInstance().getConfig().getInt("duels.max-duration") / 2);
+
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                if (duel.isActive()) {
+                  for (Player player : duel.getPlayers()) {
+                    player.showTitle(
+                        Title.title(
+                            AuroraDuels.getInstance().getLang().getComponent("one-minute-left"),
+                            Component.text("")));
+                  }
+                  duel.draw();
+                }
+                this.cancel();
+              }
+            },
+            AuroraDuels.getInstance().getConfig().getInt("duels.max-duration") - 60000);
+
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                if (duel.isActive()) {
+                  for (Player player : duel.getPlayers()) {
+                    player.sendMessage(
+                        AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
+                  }
+                  duel.draw();
+                }
+                this.cancel();
+              }
+            },
+            AuroraDuels.getInstance().getConfig().getInt("duels.max-duration"));
 
     duel.setActive(true);
     duel.getArena().setOccupied(true);
