@@ -62,8 +62,8 @@ public class Queue {
   public static void init() {
     File dir = new File(AuroraDuels.getInstance().getDataFolder(), "/queues/");
 
-    if (AuroraDuels.getInstance().getConfig().getBoolean("queues.enable-default-queue")) {
-      Queue queue = new Queue("default");
+    if (AuroraDuels.getInstance().getConfig().getBoolean("queues.enable-random-queue")) {
+      Queue queue = new Queue("random");
       queue.addArenas(Arena.getArenas());
 
       queue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, queue.getName());
@@ -94,8 +94,8 @@ public class Queue {
   public static void reloadAll() {
     queues.clear();
 
-    if (AuroraDuels.getInstance().getConfig().getBoolean("queues.enable-default-queue")) {
-      Queue queue = new Queue("default");
+    if (AuroraDuels.getInstance().getConfig().getBoolean("queues.enable-random-queue")) {
+      Queue queue = new Queue("random");
       queue.addArenas(Arena.getArenas());
 
       queue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, queue.getName());
@@ -104,7 +104,7 @@ public class Queue {
     }
 
     for (Queue queue : getQueues()) {
-      if (!Objects.equals(queue.getName(), "default")) {
+      if (!Objects.equals(queue.getName(), "random")) {
         queue.reload();
       }
     }

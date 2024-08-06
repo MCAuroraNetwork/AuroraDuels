@@ -87,7 +87,7 @@ public class DuelEventListener implements Listener {
     if (AuroraDuels.getInstance()
         .getConfig()
         .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
-      updateRatings(winners, losers, "default_duels");
+      updateRatings(winners, losers, "random_duels");
     }
   }
 

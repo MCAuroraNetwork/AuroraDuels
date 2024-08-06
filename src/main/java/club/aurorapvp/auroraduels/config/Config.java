@@ -27,14 +27,14 @@ public class Config {
     DEFAULTS.put("optional-plugins.aurorawarps-compatibility", true);
     DEFAULTS.put("optional-plugins.aurorachat-compatibility", true);
     DEFAULTS.put("optional-plugins.auroracombat-compatibility.enabled", true);
-    DEFAULTS.put("optional-plugins.auroracombat-compatibility.always-enable-default-elo", true);
+    DEFAULTS.put("optional-plugins.auroracombat-compatibility.always-enable-random-elo", true);
     DEFAULTS.put("optional-plugins.discordsrv-compatibility", true);
     DEFAULTS.put("duels.enable-teleports", true);
     DEFAULTS.put("duels.commands.allow-commands", false);
     DEFAULTS.put("duels.commands.whitelisted", new ArrayList<>(List.of("kill")));
     DEFAULTS.put("duels.max-duration", 600000);
     DEFAULTS.put("requests.expiry-time", 600000);
-    DEFAULTS.put("queues.enable-default-queue", true);
+    DEFAULTS.put("queues.enable-random-queue", true);
 
     for (String path : DEFAULTS.keySet()) {
       if (!getYaml().isSet(path) || getYaml().getString(path) == null) {
