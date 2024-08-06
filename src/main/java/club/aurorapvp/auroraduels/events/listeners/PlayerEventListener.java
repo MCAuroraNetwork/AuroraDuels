@@ -5,16 +5,12 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.Wand;
-import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.FFADuel;
-import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
-import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.auroraduels.modules.duels.*;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.events.custom.KitRefillEvent;
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import io.papermc.paper.event.player.AsyncChatEvent;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -25,14 +21,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 
 public class PlayerEventListener implements Listener {
 
   public final static Set<Player> DUEL_RESPAWN = new HashSet<>();
+
+  @EventHandler
+  public void onPlayerJoin(PlayerJoinEvent event) {
+    WinstreakTracker.register(event.getPlayer());
+  }
 
   @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
@@ -169,6 +167,8 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
+    WinstreakTracker.unregister(event.getPlayer());
+
     if (Queue.inQueue(event.getPlayer())) {
       Queue.removeFromQueue(event.getPlayer());
     }

@@ -106,7 +106,7 @@ public class Lang {
     DEFAULTS.put("previous-page", "<yellow><bold>Previous");
     DEFAULTS.put("kit-invalid-name", "prefix <red>Invalid kit name");
     DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set");
-    DEFAULTS.put("new-win", "prefix <bold><green>+1 Win");
+    DEFAULTS.put("new-win", "prefix <green>+1 Win! Current winstreak is %s");
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
         "help-command",

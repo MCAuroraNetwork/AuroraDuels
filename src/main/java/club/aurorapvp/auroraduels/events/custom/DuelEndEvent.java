@@ -5,6 +5,7 @@ import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DU
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.WinstreakTracker;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import java.awt.Color;
@@ -63,15 +64,19 @@ public class DuelEndEvent extends Event {
       player.playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_FIREWORK_ROCKET_TWINKLE).build());
 
       if (duel.isRanked()) {
-        Duel.addWin(player);
+        WinstreakTracker tracker = WinstreakTracker.getTracker(player);
+
+        tracker.addWin();
+
+        AuroraDuels.getInstance().getLang().formatComponent("new-win", tracker.getWins());
       }
     }
 
-    for (Player player : this.getWinners()) {
+    for (Player player : this.getLosers()) {
       player.playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
 
       if (duel.isRanked()) {
-        Duel.resetStreak(player);
+        WinstreakTracker.getTracker(player).resetWins();
       }
     }
 

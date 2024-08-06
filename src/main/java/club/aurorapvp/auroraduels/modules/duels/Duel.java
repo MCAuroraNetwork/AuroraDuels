@@ -28,8 +28,6 @@ public abstract class Duel {
 
   private static final NamespacedKey duelKitKey =
       new NamespacedKey(AuroraDuels.getInstance(), "duelkit");
-  private static final NamespacedKey winStreakKey =
-      new NamespacedKey(AuroraDuels.getInstance(), "duel-winstreak");
   private static final Map<UUID, Duel> LAST_DUEL = new HashMap<>();
   protected static Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
@@ -122,28 +120,6 @@ public abstract class Duel {
     this.kit = kit;
     this.rounds = rounds;
     duels.add(this);
-  }
-
-  public static void addWin(Player player) {
-    PersistentDataContainer container = player.getPersistentDataContainer();
-
-    int wins = container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
-
-    container.set(winStreakKey, PersistentDataType.INTEGER, wins + 1);
-
-    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("new-win"));
-  }
-
-  public static void resetStreak(Player player) {
-    PersistentDataContainer container = player.getPersistentDataContainer();
-
-    container.set(winStreakKey, PersistentDataType.INTEGER, 0);
-  }
-
-  public static int getWins(Player player) {
-    PersistentDataContainer container = player.getPersistentDataContainer();
-
-    return container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, 0);
   }
 
   public static Kit getDuelKit(Player player) {
