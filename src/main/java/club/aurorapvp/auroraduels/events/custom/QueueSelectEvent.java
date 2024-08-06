@@ -12,15 +12,21 @@ public class QueueSelectEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player player;
+  private final String name;
   private final Queue queue;
 
-  public QueueSelectEvent(Player player, Queue queue) {
+  public QueueSelectEvent(Player player, String name, Queue queue) {
     this.queue = queue;
+    this.name = name;
     this.player = player;
   }
 
   public Player getPlayer() {
     return player;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public Queue getQueue() {

@@ -5,16 +5,10 @@ import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import club.aurorapvp.aurorakits.events.custom.KitSelectEvent;
 import club.aurorapvp.aurorakits.modules.kits.KitsGUI;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
@@ -53,19 +47,22 @@ public class Request {
     }
 
     if (Queue.getQueues().size() > 1) {
-      AuroraDuels.getQueueGUI().open(requester);
+      new QueueGUI("duel-request").open(requester);
     } else if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
       requester.openInventory(KitsGUI.getGUI(requester).getCurrentPage());
     } else {
       this.sendRequest();
-      return;
     }
 
     PENDING_REQUESTS.add(this);
   }
 
   public void onInventoryClose(InventoryCloseEvent event) {
-    if (!Objects.equals(event.getInventory().getHolder(), AuroraDuels.getQueueGUI())) {
+    if (!(event.getInventory().getHolder() instanceof QueueGUI queueGUI)) {
+      return;
+    }
+    
+    if (!Objects.equals(queueGUI.getName(), "duel-request")) {
       return;
     }
 

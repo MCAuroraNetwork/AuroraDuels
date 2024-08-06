@@ -2,7 +2,6 @@ package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -20,11 +19,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class QueueGUI implements InventoryHolder, Listener {
 
+  private final String name;
   private final Inventory inventory =
       Bukkit.createInventory(this, 54,
           AuroraDuels.getInstance().getLang().getComponent("queue-menu"));
 
-  public QueueGUI() {
+  public QueueGUI(String name) {
+    this.name = name;
+
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
 
     int i = 0;
@@ -49,10 +51,14 @@ public class QueueGUI implements InventoryHolder, Listener {
       itemStacks[i] = displayItem;
       i++;
     }
-
+    
     populateGUI(itemStacks);
 
     Bukkit.getPluginManager().registerEvents(this, AuroraDuels.getInstance());
+  }
+
+  public String getName() {
+    return name;
   }
 
   @EventHandler
@@ -85,7 +91,7 @@ public class QueueGUI implements InventoryHolder, Listener {
         return;
       }
 
-      new QueueSelectEvent(player, queue).callEvent();
+      new QueueSelectEvent(player, name, queue).callEvent();
     }
   }
 
@@ -111,27 +117,6 @@ public class QueueGUI implements InventoryHolder, Listener {
         inventory.setItem(slot, displayItems[i]);
       }
     }
-  }
-
-  public void addItem(ItemStack newItem) {
-    ItemStack[] currentItems = inventory.getContents();
-
-    long nonNullItemCount = Arrays.stream(currentItems).filter(Objects::nonNull).count();
-
-    ItemStack[] updatedItems = new ItemStack[(int) nonNullItemCount + 1];
-
-    int index = 0;
-    for (ItemStack item : currentItems) {
-      if (item != null) {
-        updatedItems[index++] = item;
-      }
-    }
-
-    updatedItems[updatedItems.length - 1] = newItem;
-
-    inventory.clear();
-
-    populateGUI(updatedItems);
   }
 
   public void reload() {

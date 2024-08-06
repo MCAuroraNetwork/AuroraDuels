@@ -8,9 +8,7 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Placeholders;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 public final class AuroraDuels extends JavaPlugin {
 
   private static AuroraDuels INSTANCE;
-  private static QueueGUI queueGUI;
   private static Config config;
   private static Lang lang;
   private boolean auroraKitsInstalled = false;
@@ -51,11 +48,7 @@ public final class AuroraDuels extends JavaPlugin {
   public boolean isDiscordSRVInstalled() {
     return discordSrvInstalled;
   }
-
-  public static QueueGUI getQueueGUI() {
-    return queueGUI;
-  }
-
+  
   public @NotNull YamlConfiguration getConfig() {
     return config.getYaml();
   }
@@ -110,8 +103,6 @@ public final class AuroraDuels extends JavaPlugin {
     Arena.init();
     Queue.init();
     Wand.init();
-
-    queueGUI = new QueueGUI();
 
     getLogger().info("AuroraDuels enabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }

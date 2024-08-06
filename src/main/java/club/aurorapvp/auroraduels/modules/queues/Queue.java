@@ -268,7 +268,6 @@ public class Queue {
       arenasSet = true;
       queues.add(this);
       data.create();
-      AuroraDuels.getQueueGUI().addItem(this.getDisplayItem());
 
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-created"));
     } else if (Arena.getArena(str) != null) {
