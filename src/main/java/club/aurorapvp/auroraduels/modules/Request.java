@@ -58,6 +58,10 @@ public class Request {
   }
 
   public void onInventoryClose(InventoryCloseEvent event) {
+    if (requester != event.getPlayer()) {
+      return;
+    }
+
     if (!(event.getInventory().getHolder() instanceof QueueGUI queueGUI)) {
       return;
     }
