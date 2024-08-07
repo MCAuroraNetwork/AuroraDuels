@@ -80,6 +80,10 @@ public class Request {
       return;
     }
 
+    if (!event.getName().equals("duel-request")) {
+      return;
+    }
+
     duel.setQueue(event.getQueue());
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {

@@ -18,10 +18,6 @@ public class RequestEventListener implements Listener {
 
   @EventHandler
   public void onQueueSelect(QueueSelectEvent event) {
-    if (!event.getName().equals("duel-request")) {
-      return;
-    }
-
     for (Request request : Request.getPendingRequests()) {
       request.onQueueSelect(event);
     }

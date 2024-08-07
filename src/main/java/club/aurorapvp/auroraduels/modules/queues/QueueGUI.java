@@ -2,6 +2,8 @@ package club.aurorapvp.auroraduels.modules.queues;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -21,16 +23,22 @@ public class QueueGUI implements InventoryHolder, Listener {
 
   private final String name;
   private final Inventory inventory =
-      Bukkit.createInventory(this, 54,
-          AuroraDuels.getInstance().getLang().getComponent("queue-menu"));
+      Bukkit.createInventory(
+          this, 54, AuroraDuels.getInstance().getLang().getComponent("queue-menu"));
 
   public QueueGUI(String name) {
     this.name = name;
 
     ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
 
+    Arrays.sort(Queue.getQueues().toArray(new Queue[0]), Comparator.comparing(Queue::getName));
+
+    Queue[] queues = Queue.getQueues().toArray(new Queue[0]);
+
+    Arrays.sort(queues, Comparator.comparing(Queue::getName));
+
     int i = 0;
-    for (Queue queue : Queue.getQueues()) {
+    for (Queue queue : queues) {
       ItemStack displayItem = queue.getDisplayItem();
       ItemMeta meta = displayItem.getItemMeta();
 
@@ -51,7 +59,7 @@ public class QueueGUI implements InventoryHolder, Listener {
       itemStacks[i] = displayItem;
       i++;
     }
-    
+
     populateGUI(itemStacks);
 
     Bukkit.getPluginManager().registerEvents(this, AuroraDuels.getInstance());
@@ -133,8 +141,7 @@ public class QueueGUI implements InventoryHolder, Listener {
         meta.lore(
             List.of(
                 MiniMessage.miniMessage()
-                    .deserialize(
-                        "<yellow>Currently in Queue: " + queue.inQueue())));
+                    .deserialize("<yellow>Currently in Queue: " + queue.inQueue())));
         itemStack.setItemMeta(meta);
       }
     }
