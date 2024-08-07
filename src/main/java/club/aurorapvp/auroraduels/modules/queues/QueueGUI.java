@@ -53,7 +53,7 @@ public class QueueGUI implements InventoryHolder, Listener {
           List.of(
               MiniMessage.miniMessage()
                   .deserialize(
-                      "<gradient:#FFAA00:#FF55FF>Currently in Queue: " + queue.inQueue())));
+                      "<gradient:#FFAA00:#FF55FF>Queue: " + queue.inQueue())));
       displayItem.setItemMeta(meta);
 
       itemStacks[i] = displayItem;
@@ -141,7 +141,7 @@ public class QueueGUI implements InventoryHolder, Listener {
         meta.lore(
             List.of(
                 MiniMessage.miniMessage()
-                    .deserialize("<yellow>Currently in Queue: " + queue.inQueue())));
+                    .deserialize("<yellow>Queue: " + queue.inQueue())));
         itemStack.setItemMeta(meta);
       }
     }
