@@ -43,6 +43,14 @@ public class Placeholders extends PlaceholderExpansion {
   }
 
   private String getResult(OfflinePlayer offlinePlayer, String params) {
+    if (params.startsWith("in_duels_ranked")) {
+      return String.valueOf(Duel.inDuels(true));
+    }
+
+    if (params.startsWith("in_duels_unranked")) {
+      return String.valueOf(Duel.inDuels(false));
+    }
+
     if (params.startsWith("in_duels")) {
       return String.valueOf(Duel.inDuels());
     }

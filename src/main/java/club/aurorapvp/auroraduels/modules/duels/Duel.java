@@ -169,6 +169,18 @@ public abstract class Duel {
     }
   }
 
+  public static int inDuels(boolean ranked) {
+    int inDuels = 0;
+
+    for (Duel duel : duels) {
+      if (duel.isActive() && duel.isRanked() == ranked) {
+        inDuels = inDuels + duel.inDuel();
+      }
+    }
+
+    return inDuels;
+  }
+
   public static int inDuels() {
     int inDuels = 0;
 
