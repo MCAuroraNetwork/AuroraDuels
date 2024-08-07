@@ -68,7 +68,7 @@ public class DuelEventListener implements Listener {
     Rating rating = Rating.getRating("default");
 
     for (Player player : event.getDuel().getPlayers()) {
-      rating.setPlayerEnabled(player, false);
+      rating.setPlayerEnabled(player, true);
 
       CombatTag.setTaggable(player, true);
     }
