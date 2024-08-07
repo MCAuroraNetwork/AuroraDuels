@@ -34,7 +34,6 @@ public class Config {
     DEFAULTS.put("duels.commands.whitelisted", new ArrayList<>(List.of("kill")));
     DEFAULTS.put("duels.max-duration", 600000);
     DEFAULTS.put("requests.expiry-time", 600000);
-    DEFAULTS.put("queues.enable-random-queue", true);
 
     for (String path : DEFAULTS.keySet()) {
       if (!getYaml().isSet(path) || getYaml().getString(path) == null) {

@@ -4,6 +4,7 @@ import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.data.QueueDataHandler;
 import club.aurorapvp.auroraduels.events.custom.QueueJoinEvent;
+import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
@@ -154,8 +155,10 @@ public class Queue {
 
       ItemMeta meta = displayItem.getItemMeta();
 
-      meta.lore(List.of(Component.text("In Queue:" + this.inQueue()),
-          Component.text("In Duel: " + Duel.inDuel(this.getName()))));
+      meta.lore(
+          List.of(
+              Component.text("In Queue:" + this.inQueue()),
+              Component.text("In Duel: " + Duel.inDuel(this.getName()))));
 
       displayItem.setItemMeta(meta);
     } else {
@@ -171,10 +174,11 @@ public class Queue {
       }
 
       this.enterDuelQueue(
-          new StandardDuel(player, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked,
-              1));
+          new StandardDuel(
+              player, lookingForMatch.get(ranked), this, this.getKit(), loc, ranked, 1));
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("match-found"));
-      lookingForMatch.get(ranked)
+      lookingForMatch
+          .get(ranked)
           .sendMessage(AuroraDuels.getInstance().getLang().getComponent("match-found"));
       lookingForMatch.clear();
     }
@@ -254,12 +258,25 @@ public class Queue {
 
       player.sendMessage(
           MiniMessage.miniMessage()
-              .deserialize(String.format(AuroraDuels.getInstance().getLang().getString("add-arena"),
-                  arenas.size())));
+              .deserialize(
+                  String.format(
+                      AuroraDuels.getInstance().getLang().getString("add-arena"), arenas.size())));
     } else if (this.exists()) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-already-exists"));
     } else {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-being-created"));
+    }
+  }
+
+  public static void onQueueSelect(QueueSelectEvent event) {
+    if (event.getName().equals("ranked-match")) {
+      Queue.getQueue("random").findMatch(event.getPlayer(), true);
+
+      event.getPlayer().closeInventory();
+    } else if (event.getName().equals("unranked-match")) {
+      Queue.getQueue("random").findMatch(event.getPlayer(), false);
+
+      event.getPlayer().closeInventory();
     }
   }
 
@@ -308,8 +325,10 @@ public class Queue {
 
             ItemMeta meta = displayItem.getItemMeta();
 
-            meta.lore(List.of(Component.text("In Queue:" + thisQueue.inQueue()),
-                Component.text("In Duel: " + Duel.inDuel(thisQueue.getName()))));
+            meta.lore(
+                List.of(
+                    Component.text("In Queue:" + thisQueue.inQueue()),
+                    Component.text("In Duel: " + Duel.inDuel(thisQueue.getName()))));
 
             displayItem.setItemMeta(meta);
           }
@@ -319,8 +338,10 @@ public class Queue {
 
     ItemMeta meta = displayItem.getItemMeta();
 
-    meta.lore(List.of(Component.text("In Queue:" + this.inQueue()),
-        Component.text("In Duel: " + Duel.inDuel(this.getName()))));
+    meta.lore(
+        List.of(
+            Component.text("In Queue:" + this.inQueue()),
+            Component.text("In Duel: " + Duel.inDuel(this.getName()))));
 
     displayItem.setItemMeta(meta);
 
