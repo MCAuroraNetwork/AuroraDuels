@@ -32,6 +32,7 @@ public class Config {
     DEFAULTS.put("duels.commands.allow-commands", false);
     DEFAULTS.put("duels.commands.whitelisted", new ArrayList<>(List.of("kill")));
     DEFAULTS.put("duels.max-duration", 600000);
+    DEFAULTS.put("misc.min-winstreak-to-announce", 10);
     DEFAULTS.put("requests.expiry-time", 600000);
 
     for (String path : DEFAULTS.keySet()) {

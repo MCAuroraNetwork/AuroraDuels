@@ -29,7 +29,8 @@ public class DuelEndEvent extends Event {
   private final Duel duel;
   private final Arena arena;
 
-  public DuelEndEvent(Duel duel, Arena arena, Collection<Player> winners, Collection<Player> losers) {
+  public DuelEndEvent(
+      Duel duel, Arena arena, Collection<Player> winners, Collection<Player> losers) {
     this.duel = duel;
     this.arena = arena;
     this.winners = winners;
@@ -64,11 +65,12 @@ public class DuelEndEvent extends Event {
       player.playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_FIREWORK_ROCKET_TWINKLE).build());
 
       if (duel.isRanked()) {
-        WinstreakTracker tracker = WinstreakTracker.getTracker(player);
+        Winstracker tracker = Winstracker.getTracker(player);
 
         tracker.addWin();
 
-        AuroraDuels.getInstance().getLang().formatComponent("new-win", tracker.getWins());
+        player.sendMessage(
+            AuroraDuels.getInstance().getLang().formatComponent("new-win", tracker.getWinstreak()));
       }
     }
 
@@ -76,7 +78,7 @@ public class DuelEndEvent extends Event {
       player.playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_ENDER_DRAGON_GROWL).build());
 
       if (duel.isRanked()) {
-        WinstreakTracker.getTracker(player).resetWins();
+        Winstracker.getTracker(player).addLoss();
       }
     }
 
@@ -112,12 +114,20 @@ public class DuelEndEvent extends Event {
         AuroraDuels.getInstance().getLang().formatComponent("duel-over", winnersText, losersText));
 
     if (AuroraDuels.getInstance().isDiscordSRVInstalled()) {
-      DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
-          new EmbedBuilder().setAuthor(
-                  AuroraDuels.getInstance().getLang().getString("discord-duel-over")
-                      .formatted(winnersText, losersText), null,
-                  "https://cravatar.eu/helmavatar/" + winners.iterator().next().getUniqueId())
-              .setColor(Color.BLACK).build()).queue();
+      DiscordSRV.getPlugin()
+          .getOptionalTextChannel("global")
+          .sendMessageEmbeds(
+              new EmbedBuilder()
+                  .setAuthor(
+                      AuroraDuels.getInstance()
+                          .getLang()
+                          .getString("discord-duel-over")
+                          .formatted(winnersText, losersText),
+                      null,
+                      "https://cravatar.eu/helmavatar/" + winners.iterator().next().getUniqueId())
+                  .setColor(Color.BLACK)
+                  .build())
+          .queue();
     }
 
     duel.setActive(false);

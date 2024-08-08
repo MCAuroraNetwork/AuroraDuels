@@ -4,7 +4,7 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
-import club.aurorapvp.auroraduels.modules.duels.WinstreakTracker;
+import club.aurorapvp.auroraduels.modules.duels.Winstracker;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import java.util.HashSet;
 import java.util.Objects;
@@ -78,7 +78,15 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("winstreak")) {
-      return String.valueOf(WinstreakTracker.getTracker(player).getWins());
+      return String.valueOf(Winstracker.getTracker(player).getWinstreak());
+    }
+
+    if (params.startsWith("wins")) {
+      return String.valueOf(Winstracker.getTracker(player).getWins());
+    }
+
+    if (params.startsWith("losses")) {
+      return String.valueOf(Winstracker.getTracker(player).getLosses());
     }
 
     if (params.startsWith("opponent_ping")) {
