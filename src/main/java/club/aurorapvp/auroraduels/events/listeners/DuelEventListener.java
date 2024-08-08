@@ -9,6 +9,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.Winstracker;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import club.aurorapvp.aurorawarps.events.custom.NewDeathLocationEvent;
 import java.util.Collection;
@@ -84,7 +85,8 @@ public class DuelEventListener implements Listener {
 
     Map<Rating, Integer> updatedRatings = new HashMap<>();
 
-    updatedRatings.put(Rating.getRating("overall_duels"), updateRatings(winners, losers, "overall_duels"));
+    updatedRatings.put(
+        Rating.getRating("overall_duels"), updateRatings(winners, losers, "overall_duels"));
 
     if (!ratingName.equals("random_duels")) {
       updatedRatings.put(Rating.getRating(ratingName), updateRatings(winners, losers, ratingName));
@@ -94,34 +96,34 @@ public class DuelEventListener implements Listener {
 
     for (Rating rating : updatedRatings.keySet()) {
       killerMessage
-              .append("\n")
-              .append(rating.getFriendlyName())
-              .append(": +")
-              .append(updatedRatings.get(rating));
+          .append("\n")
+          .append(rating.getFriendlyName())
+          .append(": +")
+          .append(updatedRatings.get(rating));
     }
 
     StringBuilder deadMessage = new StringBuilder();
 
     for (Rating rating : updatedRatings.keySet()) {
       deadMessage
-              .append("\n")
-              .append(rating.getFriendlyName())
-              .append(": -")
-              .append(updatedRatings.get(rating));
+          .append("\n")
+          .append(rating.getFriendlyName())
+          .append(": -")
+          .append(updatedRatings.get(rating));
     }
 
     for (Player loser : losers) {
       loser.sendMessage(
-              AuroraDuels.getInstance()
-                      .getLang()
-                      .formatComponent("duel-lost", deadMessage.toString()));
+          AuroraDuels.getInstance().getLang().formatComponent("duel-lost", deadMessage.toString()));
     }
 
     for (Player winner : winners) {
+      killerMessage.append("\nWinstreak: ").append(Winstracker.getTracker(winner).getWinstreak());
+
       winner.sendMessage(
-              AuroraDuels.getInstance()
-                      .getLang()
-                      .formatComponent("duel-won", killerMessage.toString()));
+          AuroraDuels.getInstance()
+              .getLang()
+              .formatComponent("duel-won", killerMessage.toString()));
     }
   }
 

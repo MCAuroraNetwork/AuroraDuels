@@ -68,9 +68,6 @@ public class DuelEndEvent extends Event {
         Winstracker tracker = Winstracker.getTracker(player);
 
         tracker.addWin();
-
-        player.sendMessage(
-            AuroraDuels.getInstance().getLang().formatComponent("new-win", tracker.getWinstreak()));
       }
     }
 
