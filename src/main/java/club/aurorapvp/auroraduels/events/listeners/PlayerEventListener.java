@@ -29,7 +29,7 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
-    WinstreakTracker.register(event.getPlayer());
+    Winstracker.register(event.getPlayer());
   }
 
   @EventHandler
@@ -167,7 +167,7 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    WinstreakTracker.unregister(event.getPlayer());
+    Winstracker.unregister(event.getPlayer());
 
     if (Queue.inQueue(event.getPlayer())) {
       Queue.removeFromQueue(event.getPlayer());

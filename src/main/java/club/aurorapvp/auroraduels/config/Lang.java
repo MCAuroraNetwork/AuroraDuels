@@ -68,13 +68,15 @@ public class Lang {
     DEFAULTS.put("request-accepted", "prefix <green>Request accepted!");
     DEFAULTS.put("you-won", "<green>You won!");
     DEFAULTS.put("you-lost", "<red>You lost");
+    DEFAULTS.put("duel-won", "prefix <green>You won!%s");
+    DEFAULTS.put("duel-lost", "prefix <red>You lost%s");
     DEFAULTS.put(
-        "duel-won",
+        "duel-over",
         "<bold><yellow>%1$s<reset><yellow> won a duel against <bold>%2$s<reset><yellow>!");
-    DEFAULTS.put("discord-duel-won", "%1$s won a duel against %2$s!");
+    DEFAULTS.put("discord-duel-over", "%1$s won a duel against %2$s!");
     DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s /n<red>%3$s<yellow - <blue>%4$s");
     DEFAULTS.put("draw", "prefix <yellow>Draw!");
-    DEFAULTS.put("rematch", "prefix <yellow> Want a rematch? Do /rematch!");
+    DEFAULTS.put("rematch", "prefix <yellow>Want a rematch? Do /rematch!");
     DEFAULTS.put("no-leaving-arena", "prefix <red>Can't leave arena");
     DEFAULTS.put("halfway", "prefix <yellow>Duel halfway over. All players now glowing");
     DEFAULTS.put("one-minute-left", "prefix <yellow>One minute remaining");

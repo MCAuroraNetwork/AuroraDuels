@@ -12,6 +12,8 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import club.aurorapvp.aurorawarps.events.custom.NewDeathLocationEvent;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +35,7 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    Rating rating = Rating.getRating("default");
+    Rating rating = Rating.getRating("overall");
 
     for (Player player : event.getDuel().getPlayers()) {
       rating.setPlayerEnabled(player, false);
@@ -65,10 +67,8 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    Rating rating = Rating.getRating("default");
-
     for (Player player : event.getDuel().getPlayers()) {
-      rating.setPlayerEnabled(player, true);
+      Rating.getRating("overall").setPlayerEnabled(player, true);
 
       CombatTag.setTaggable(player, true);
     }
@@ -77,17 +77,51 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    String queueName = event.getDuel().getQueue().getName() + "_duels";
+    String ratingName = event.getDuel().getQueue().getName() + "_duels";
 
     Collection<Player> winners = event.getWinners();
     Collection<Player> losers = event.getLosers();
 
-    updateRatings(winners, losers, queueName);
+    Map<Rating, Integer> updatedRatings = new HashMap<>();
 
-    if (AuroraDuels.getInstance()
-        .getConfig()
-        .getBoolean("optional-plugins.auroracombat-compatibility.always-enable-default-elo")) {
-      updateRatings(winners, losers, "random_duels");
+    updatedRatings.put(Rating.getRating("overall_duels"), updateRatings(winners, losers, "overall_duels"));
+
+    if (!ratingName.equals("random_duels")) {
+      updatedRatings.put(Rating.getRating(ratingName), updateRatings(winners, losers, ratingName));
+    }
+
+    StringBuilder killerMessage = new StringBuilder();
+
+    for (Rating rating : updatedRatings.keySet()) {
+      killerMessage
+              .append("\n")
+              .append(rating.getFriendlyName())
+              .append(": +")
+              .append(updatedRatings.get(rating));
+    }
+
+    StringBuilder deadMessage = new StringBuilder();
+
+    for (Rating rating : updatedRatings.keySet()) {
+      deadMessage
+              .append("\n")
+              .append(rating.getFriendlyName())
+              .append(": -")
+              .append(updatedRatings.get(rating));
+    }
+
+    for (Player loser : losers) {
+      loser.sendMessage(
+              AuroraDuels.getInstance()
+                      .getLang()
+                      .formatComponent("duel-lost", deadMessage.toString()));
+    }
+
+    for (Player winner : winners) {
+      winner.sendMessage(
+              AuroraDuels.getInstance()
+                      .getLang()
+                      .formatComponent("duel-won", killerMessage.toString()));
     }
   }
 
@@ -115,27 +149,31 @@ public class DuelEventListener implements Listener {
     }
 
     for (Player player : event.getDuel().getPlayers()) {
-      Rating.getRating("default").setPlayerEnabled(player, true);
+      Rating.getRating("overall").setPlayerEnabled(player, true);
 
       CombatTag.setTaggable(player, true);
     }
   }
 
-  public void updateRatings(
-      Collection<Player> winners, Collection<Player> losers, String queueName) {
-    Rating rating = Rating.getRating(queueName);
+  public int updateRatings(
+      Collection<Player> winners, Collection<Player> losers, String ratingName) {
+    Rating rating = Rating.getRating(ratingName);
+
+    int change = 0;
 
     if (winners.size() + losers.size() == 2) {
-      rating.updateElo(losers.iterator().next(), winners.iterator().next());
+      change = rating.updateElo(losers.iterator().next(), winners.iterator().next());
     } else {
       for (Player loser : losers) {
-        rating.updateElo(loser, (int) getAverageRating(winners, queueName), false);
+        rating.updateElo(loser, (int) getAverageRating(winners, ratingName), false);
       }
 
       for (Player winner : winners) {
-        rating.updateElo(winner, (int) getAverageRating(losers, queueName), true);
+        change = rating.updateElo(winner, (int) getAverageRating(losers, ratingName), true);
       }
     }
+
+    return change;
   }
 
   public double getAverageRating(Collection<Player> players, String queueName) {

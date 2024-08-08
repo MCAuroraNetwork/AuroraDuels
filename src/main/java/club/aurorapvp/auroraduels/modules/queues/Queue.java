@@ -60,11 +60,25 @@ public class Queue {
     }
   }
 
+  public Queue(String queueName, String ratingName) {
+    this.name = queueName;
+
+    this.data = new QueueDataHandler(this);
+
+    if (this.exists()) {
+      reload();
+    }
+
+    if (AuroraDuels.getInstance().isAuroraCombatInstalled()) {
+      new Rating(ratingName + "_duels", Rating.RatingType.CUSTOM, false);
+    }
+  }
+
   public static void init() {
     File dir = new File(AuroraDuels.getInstance().getDataFolder(), "/queues/");
 
     if (AuroraDuels.getInstance().getConfig().getBoolean("queues.enable-random-queue")) {
-      Queue queue = new Queue("random");
+      Queue queue = new Queue("random", "overall");
       queue.addArenas(Arena.getArenas());
 
       queue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, queue.getName());
@@ -96,7 +110,7 @@ public class Queue {
     queues.clear();
 
     if (AuroraDuels.getInstance().getConfig().getBoolean("queues.enable-random-queue")) {
-      Queue queue = new Queue("random");
+      Queue queue = new Queue("random", "overall");
       queue.addArenas(Arena.getArenas());
 
       queue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, queue.getName());

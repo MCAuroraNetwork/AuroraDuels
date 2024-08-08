@@ -5,7 +5,7 @@ import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DU
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.duels.WinstreakTracker;
+import club.aurorapvp.auroraduels.modules.duels.Winstracker;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import java.awt.Color;
@@ -109,12 +109,12 @@ public class DuelEndEvent extends Event {
     String losersText = sb.toString();
 
     Bukkit.broadcast(
-        AuroraDuels.getInstance().getLang().formatComponent("duel-won", winnersText, losersText));
+        AuroraDuels.getInstance().getLang().formatComponent("duel-over", winnersText, losersText));
 
     if (AuroraDuels.getInstance().isDiscordSRVInstalled()) {
       DiscordSRV.getPlugin().getOptionalTextChannel("global").sendMessageEmbeds(
           new EmbedBuilder().setAuthor(
-                  AuroraDuels.getInstance().getLang().getString("discord-duel-won")
+                  AuroraDuels.getInstance().getLang().getString("discord-duel-over")
                       .formatted(winnersText, losersText), null,
                   "https://cravatar.eu/helmavatar/" + winners.iterator().next().getUniqueId())
               .setColor(Color.BLACK).build()).queue();
