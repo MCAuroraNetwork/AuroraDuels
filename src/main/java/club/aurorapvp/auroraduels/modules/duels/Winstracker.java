@@ -3,6 +3,9 @@ package club.aurorapvp.auroraduels.modules.duels;
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.data.WinsDataHandler;
+import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -74,13 +77,29 @@ public class Winstracker {
     this.wins++;
     this.winstreak++;
 
-    if (winstreak
-            % AuroraCombat.getInstance().getConfig().getInt("misc.min-killstreak-to-announce")
-            == 0) {
+    if (winstreak % AuroraCombat.getInstance().getConfig().getInt("misc.min-killstreak-to-announce")
+        == 0) {
       Bukkit.broadcast(
-              AuroraCombat.getInstance()
-                      .getLang()
-                      .formatComponent("on-winstreak", player.getName(), winstreak));
+          AuroraCombat.getInstance()
+              .getLang()
+              .formatComponent("on-winstreak", player.getName(), winstreak));
+
+      if (AuroraDuels.getInstance().isDiscordSRVInstalled()) {
+        DiscordSRV.getPlugin()
+            .getOptionalTextChannel("global")
+            .sendMessageEmbeds(
+                new EmbedBuilder()
+                    .setAuthor(
+                        AuroraDuels.getInstance()
+                            .getLang()
+                            .getString("discord-on-winstreak")
+                            .formatted(player.getName(), winstreak),
+                        null,
+                        "https://cravatar.eu/helmavatar/" + player.getUniqueId())
+                    .setColor(Color.BLACK)
+                    .build())
+            .queue();
+      }
     }
 
     this.save();
@@ -90,11 +109,28 @@ public class Winstracker {
     this.losses++;
 
     if (winstreak
-            >= AuroraDuels.getInstance().getConfig().getInt("misc.min-winstreak-to-announce")) {
+        >= AuroraDuels.getInstance().getConfig().getInt("misc.min-winstreak-to-announce")) {
       Bukkit.broadcast(
-              AuroraCombat.getInstance()
-                      .getLang()
-                      .formatComponent("winstreak-lost", player.getName(), winstreak));
+          AuroraCombat.getInstance()
+              .getLang()
+              .formatComponent("winstreak-lost", player.getName(), winstreak));
+
+      if (AuroraDuels.getInstance().isDiscordSRVInstalled()) {
+        DiscordSRV.getPlugin()
+                .getOptionalTextChannel("global")
+                .sendMessageEmbeds(
+                        new EmbedBuilder()
+                                .setAuthor(
+                                        AuroraDuels.getInstance()
+                                                .getLang()
+                                                .getString("discord-winstreak-lost")
+                                                .formatted(player.getName(), winstreak),
+                                        null,
+                                        "https://cravatar.eu/helmavatar/" + player.getUniqueId())
+                                .setColor(Color.BLACK)
+                                .build())
+                .queue();
+      }
     }
 
     this.winstreak = 0;

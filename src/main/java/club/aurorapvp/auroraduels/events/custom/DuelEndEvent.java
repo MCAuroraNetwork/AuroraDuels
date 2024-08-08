@@ -65,9 +65,7 @@ public class DuelEndEvent extends Event {
       player.playSound(Sound.sound().type(org.bukkit.Sound.ENTITY_FIREWORK_ROCKET_TWINKLE).build());
 
       if (duel.isRanked()) {
-        Winstracker tracker = Winstracker.getTracker(player);
-
-        tracker.addWin();
+        Winstracker.getTracker(player).addWin();
       }
     }
 

@@ -110,10 +110,16 @@ public class Lang {
     DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set");
     DEFAULTS.put(
             "winstreak-lost",
-            "prefix <red><bold>%1$s<reset><red> died and lost <red><bold>%2$s<reset><red> Winstreak!");
+            "prefix <red><bold>%1$s<reset><red> lost a Winstreak of <red><bold>%2$s<reset><red>!");
     DEFAULTS.put(
             "on-winstreak",
             "prefix <green><bold>%1$s<reset><green> has a Winstreak of <green><bold>%2$s<reset><green>!");
+    DEFAULTS.put(
+            "discord-winstreak-lost",
+            "%1$s lost a Winstreak of %2$s!");
+    DEFAULTS.put(
+            "discord-on-winstreak",
+            "%1$s has a Winstreak of %2$s!");
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
         "help-command",
