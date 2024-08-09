@@ -46,9 +46,9 @@ public class Request {
       }
     }
 
-    if (Queue.getQueues().size() > 1) {
+    if (Queue.getQueues().size() > 1 && duel.getQueue() == null) {
       new QueueGUI("duel-request").open(requester);
-    } else if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
+    } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
       requester.openInventory(KitsGUI.getGUI(requester).getCurrentPage());
     } else {
       this.sendRequest();
@@ -65,7 +65,7 @@ public class Request {
     if (!(event.getInventory().getHolder() instanceof QueueGUI queueGUI)) {
       return;
     }
-    
+
     if (!Objects.equals(queueGUI.getName(), "duel-request")) {
       return;
     }

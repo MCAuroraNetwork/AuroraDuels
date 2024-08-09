@@ -313,7 +313,7 @@ public abstract class Duel {
           AuroraDuels.getInstance()
               .getLang()
               .getComponentCommand(
-                  "start-spectating", "Click to stop spectating", "/duel spectate"));
+                  "start-spectating", "Click to stop Spectating", "/duel spectate"));
 
       for (BossBar bar : spectatorBars) {
         player.showBossBar(bar);

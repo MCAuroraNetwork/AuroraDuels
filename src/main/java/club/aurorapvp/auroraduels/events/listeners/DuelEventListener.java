@@ -55,7 +55,7 @@ public class DuelEventListener implements Listener {
       player.sendMessage(
           AuroraDuels.getInstance()
               .getLang()
-              .getComponentCommand("rematch", "Click to request rematch", "/rematch"));
+              .getComponentCommand("rematch", "Click to Request Rematch", "/rematch"));
     }
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
@@ -137,7 +137,7 @@ public class DuelEventListener implements Listener {
       player.sendMessage(
           AuroraDuels.getInstance()
               .getLang()
-              .getComponentCommand("rematch", "Click to request rematch", "/rematch"));
+              .getComponentCommand("rematch", "Click to Request Rematch", "/rematch"));
     }
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
