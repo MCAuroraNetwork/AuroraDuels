@@ -284,11 +284,11 @@ public class Queue {
 
   public static void onQueueSelect(QueueSelectEvent event) {
     if (event.getName().equals("ranked-match")) {
-      Queue.getQueue("random").findMatch(event.getPlayer(), true);
+      event.getQueue().findMatch(event.getPlayer(), true);
 
       event.getPlayer().closeInventory();
     } else if (event.getName().equals("unranked-match")) {
-      Queue.getQueue("random").findMatch(event.getPlayer(), false);
+      event.getQueue().findMatch(event.getPlayer(), false);
 
       event.getPlayer().closeInventory();
     }
