@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Set;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -176,15 +177,22 @@ public class Queue {
 
       displayItem.setItemMeta(meta);
     } else {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
-      Location loc = null;
+      Location loc = Duel.getDuelLobby();
 
-      if (worldSpawn != null) {
-        loc = worldSpawn.getLocation();
+      if (loc == null && AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
+        WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
+
+        if (worldSpawn != null) {
+          loc = worldSpawn.getLocation();
+        }
+
+        if (loc == null) {
+          loc = WorldSpawn.getGlobalSpawn();
+        }
       }
 
       if (loc == null) {
-        loc = WorldSpawn.getGlobalSpawn();
+        loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
       }
 
       this.enterDuelQueue(

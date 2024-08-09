@@ -16,7 +16,6 @@ import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Split;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Bukkit;
@@ -75,7 +74,7 @@ public class TeamDuelCommands extends BaseCommand {
     }
 
     if (loc == null) {
-      loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
     }
 
     new Request(player, new TeamDuel(team1, team2, loc, false));
@@ -124,7 +123,7 @@ public class TeamDuelCommands extends BaseCommand {
     }
 
     if (loc == null) {
-      loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
     }
 
     if (requested.length == 1) {

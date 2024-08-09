@@ -65,7 +65,7 @@ public class FFADuelCommands extends BaseCommand {
     }
 
     if (loc == null) {
-      loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
     }
 
     if (requested.length == 1) {
