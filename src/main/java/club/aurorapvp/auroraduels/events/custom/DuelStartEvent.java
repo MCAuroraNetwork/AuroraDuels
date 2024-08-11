@@ -5,7 +5,6 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.entity.Player;
@@ -49,7 +48,6 @@ public class DuelStartEvent extends Event {
 
                     player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("halfway"));
                   }
-                  duel.draw();
                 }
                 this.cancel();
               }
@@ -68,7 +66,6 @@ public class DuelStartEvent extends Event {
                             AuroraDuels.getInstance().getLang().getComponent("one-minute-left"),
                             Component.text("")));
                   }
-                  duel.draw();
                 }
                 this.cancel();
               }
