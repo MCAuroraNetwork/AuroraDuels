@@ -16,8 +16,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
-
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -94,17 +92,26 @@ public class StandardDuel extends Duel implements Listener {
     CompletableFuture.allOf(teleport1, teleport2)
         .thenRun(
             () -> {
-              new BukkitRunnable() {
-                int seconds = 4;
+              final int[] seconds = {4};
 
+              new BukkitRunnable() {
                 @Override
                 public void run() {
+                  if ((seconds[0] -= 1) < 0) {
+                    this.cancel();
+                  }
+
                   CompletableFuture<Boolean> teleport1 = playerOne.teleportAsync(spawn1);
                   teleport1.thenRun(() -> playerOne.lookAt(spawn2, LookAnchor.EYES));
                   CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
                   teleport2.thenRun(() -> playerTwo.lookAt(spawn1, LookAnchor.EYES));
-
-                  if ((seconds -= 1) <= 0) {
+                }
+              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 1L);
+              
+              new BukkitRunnable() {
+                @Override
+                public void run() {
+                  if ((seconds[0] -= 1) <= 0) {
                     final Title title1 =
                         Title.title(
                             AuroraDuels.getInstance().getLang().getComponent("duel-started"),
@@ -145,7 +152,7 @@ public class StandardDuel extends Duel implements Listener {
                   for (Player player : thisDuel.getPlayers()) {
                     player.showTitle(
                         Title.title(
-                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds[0]),
                             Component.text("")));
                   }
                 }

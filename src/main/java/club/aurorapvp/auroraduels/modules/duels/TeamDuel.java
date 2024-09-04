@@ -9,7 +9,6 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,7 +18,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -28,11 +26,9 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Team;
 
 public class TeamDuel extends Duel {
 
@@ -215,23 +211,40 @@ public class TeamDuel extends Duel {
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
         .thenRun(
             () -> {
-              new BukkitRunnable() {
-                int seconds = 3;
+              final int[] seconds = {3};
 
+              new BukkitRunnable() {
                 @Override
                 public void run() {
+                  if ((seconds[0] -= 1) < 0) {
+                    this.cancel();
+                  }
+
                   for (Player player : teamOneMembers) {
                     CompletableFuture<Boolean> teleport = player.teleportAsync(spawn1);
 
                     teleport.thenRun(() -> player.lookAt(spawn2, LookAnchor.EYES));
+                  }
 
+                  for (Player player : teamTwoMembers) {
+                    CompletableFuture<Boolean> teleport = player.teleportAsync(spawn2);
+
+                    teleport.thenRun(() -> player.lookAt(spawn1, LookAnchor.EYES));
+                  }
+                }
+              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 1L);
+
+              new BukkitRunnable() {
+                @Override
+                public void run() {
+                  for (Player player : teamOneMembers) {
                     player.showTitle(
                         Title.title(
-                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds[0]),
                             Component.text("")));
                   }
 
-                  if ((seconds -= 1) < 0) {
+                  if ((seconds[0] -= 1) < 0) {
                     for (Player player : teamOneMembers) {
                       StringBuilder sb = new StringBuilder();
                       for (Player teamTwoMember : teamTwoMembers) {
@@ -259,10 +272,6 @@ public class TeamDuel extends Duel {
                 @Override
                 public void run() {
                   for (Player player : teamTwoMembers) {
-                    CompletableFuture<Boolean> teleport = player.teleportAsync(spawn2);
-
-                    teleport.thenRun(() -> player.lookAt(spawn1, LookAnchor.EYES));
-
                     player.showTitle(
                         Title.title(
                             MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),

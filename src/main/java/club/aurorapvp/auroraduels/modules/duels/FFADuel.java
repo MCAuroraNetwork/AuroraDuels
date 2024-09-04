@@ -9,15 +9,7 @@ import club.aurorapvp.auroraduels.modules.queues.Queue;
 import club.aurorapvp.auroraduels.util.LocationUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
@@ -118,11 +110,15 @@ public class FFADuel extends Duel {
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
         .thenRun(
             () -> {
-              new BukkitRunnable() {
-                int seconds = 3;
+              final int[] seconds = {3};
 
+              new BukkitRunnable() {
                 @Override
                 public void run() {
+                  if ((seconds[0] -= 1) < 0) {
+                    this.cancel();
+                  }
+
                   for (Player player : thisDuel.getPlayers()) {
                     CompletableFuture<Boolean> teleport =
                         player.teleportAsync(
@@ -132,11 +128,23 @@ public class FFADuel extends Duel {
 
                     player.showTitle(
                         Title.title(
-                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds),
+                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds[0]),
+                            Component.text("")));
+                  }
+                }
+              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 1L);
+
+              new BukkitRunnable() {
+                @Override
+                public void run() {
+                  for (Player player : thisDuel.getPlayers()) {
+                    player.showTitle(
+                        Title.title(
+                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds[0]),
                             Component.text("")));
                   }
 
-                  if ((seconds -= 1) < 0) {
+                  if ((seconds[0] -= 1) < 0) {
                     StringBuilder sb;
                     Title title;
 
