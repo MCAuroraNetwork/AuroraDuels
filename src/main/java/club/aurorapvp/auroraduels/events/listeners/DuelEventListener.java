@@ -47,32 +47,7 @@ public class DuelEventListener implements Listener {
 
   @EventHandler
   public void onDuelEnd(DuelEndEvent event) {
-    for (Player player : event.getDuel().getPlayers()) {
-      Duel.setLastDuel(player, event.getDuel());
-
-      player.setGlowing(false);
-
-      player.sendMessage(
-          AuroraDuels.getInstance()
-              .getLang()
-              .getComponentCommand("rematch", "Click to Request Rematch", "/rematch"));
-    }
-
-    if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      for (Player player : event.getDuel().getPlayers()) {
-        Kit.refillKit(player);
-      }
-    }
-
-    if (!AuroraDuels.getInstance().isAuroraCombatInstalled()) {
-      return;
-    }
-
-    for (Player player : event.getDuel().getPlayers()) {
-      Rating.getRating("overall").setPlayerEnabled(player, true);
-
-      CombatTag.setTaggable(player, true);
-    }
+    this.duelOver(event.getDuel());
 
     if (!event.getDuel().isRanked()) {
       return;
@@ -129,8 +104,12 @@ public class DuelEventListener implements Listener {
 
   @EventHandler
   public void onDuelDraw(DuelDrawEvent event) {
-    for (Player player : event.getDuel().getPlayers()) {
-      Duel.setLastDuel(player, event.getDuel());
+    this.duelOver(event.getDuel());
+  }
+
+  private void duelOver(Duel duel) {
+    for (Player player : duel.getPlayers()) {
+      Duel.setLastDuel(player, duel);
 
       player.setGlowing(false);
 
@@ -141,7 +120,7 @@ public class DuelEventListener implements Listener {
     }
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      for (Player player : event.getDuel().getPlayers()) {
+      for (Player player : duel.getPlayers()) {
         Kit.refillKit(player);
       }
     }
@@ -150,7 +129,7 @@ public class DuelEventListener implements Listener {
       return;
     }
 
-    for (Player player : event.getDuel().getPlayers()) {
+    for (Player player : duel.getPlayers()) {
       Rating.getRating("overall").setPlayerEnabled(player, true);
 
       CombatTag.setTaggable(player, true);

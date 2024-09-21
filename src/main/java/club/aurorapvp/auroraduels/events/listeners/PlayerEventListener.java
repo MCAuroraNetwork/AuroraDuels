@@ -177,11 +177,9 @@ public class PlayerEventListener implements Listener {
       Objects.requireNonNull(Request.getRequest(event.getPlayer())).deny();
     }
 
-    if (!Duel.inDuel(event.getPlayer())) {
-      return;
+    if (Duel.inDuel(event.getPlayer())) {
+      checkIfDuelOver(event.getPlayer());
     }
-
-    checkIfDuelOver(event.getPlayer());
   }
 
   public void checkIfDuelOver(Player player) {

@@ -16,23 +16,16 @@ import java.util.TimerTask;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired after a duel ends not in a draw */
-public class DuelEndEvent extends Event {
+public class DuelEndEvent extends DuelOverEvent {
 
-  private static final HandlerList HANDLERS = new HandlerList();
   private final Collection<Player> winners;
   private final Collection<Player> losers;
-  private final Duel duel;
-  private final Arena arena;
 
   public DuelEndEvent(
       Duel duel, Arena arena, Collection<Player> winners, Collection<Player> losers) {
-    this.duel = duel;
-    this.arena = arena;
+    super(duel, arena);
     this.winners = winners;
     this.losers = losers;
 
@@ -128,29 +121,6 @@ public class DuelEndEvent extends Event {
     duel.setActive(false);
 
     Duel.getDuels().remove(duel);
-  }
-
-  @SuppressWarnings("unused")
-  public static HandlerList getHandlerList() {
-    return HANDLERS;
-  }
-
-  @Override
-  public @NotNull HandlerList getHandlers() {
-    return HANDLERS;
-  }
-
-  public Duel getDuel() {
-    return duel;
-  }
-
-  public Arena getArena() {
-    return arena;
-  }
-
-  @SuppressWarnings("unused")
-  public Long timeElapsed() {
-    return duel.getElapsed();
   }
 
   public Collection<Player> getLosers() {
