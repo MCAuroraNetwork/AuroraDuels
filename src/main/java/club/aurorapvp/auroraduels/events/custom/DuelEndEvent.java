@@ -117,10 +117,6 @@ public class DuelEndEvent extends DuelOverEvent {
                   .build())
           .queue();
     }
-
-    duel.setActive(false);
-
-    Duel.getDuels().remove(duel);
   }
 
   public Collection<Player> getLosers() {

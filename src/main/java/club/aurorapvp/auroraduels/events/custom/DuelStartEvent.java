@@ -89,11 +89,7 @@ public class DuelStartEvent extends Event {
             },
             AuroraDuels.getInstance().getConfig().getInt("duels.max-duration"));
 
-    duel.setActive(true);
     duel.getArena().setOccupied(true);
-
-    duel.checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
-    duel.bossbarTask.runTaskTimer(AuroraDuels.getInstance(), 0L, 1L);
   }
 
   @SuppressWarnings("unused")

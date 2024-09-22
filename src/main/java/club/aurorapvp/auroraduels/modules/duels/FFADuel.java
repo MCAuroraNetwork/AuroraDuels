@@ -74,6 +74,9 @@ public class FFADuel extends Duel {
   public void startDuel(Arena arena) {
     this.arena = arena;
 
+    this.setActive(true);
+    this.setStarted(false);
+
     Location spawn1 =
         new Location(
             arena.getWorld(),
@@ -105,35 +108,14 @@ public class FFADuel extends Duel {
       CompletableFuture<Boolean> teleportFuture =
           player.teleportAsync(safeLocations.get(player.getUniqueId()));
       teleportFutures.add(teleportFuture);
+
+      teleportFuture.thenRun(() -> player.lookAt(center, LookAnchor.EYES));
     }
 
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
         .thenRun(
             () -> {
               final int[] seconds = {3};
-
-              new BukkitRunnable() {
-                @Override
-                public void run() {
-                  if ((seconds[0] -= 1) < 0) {
-                    this.cancel();
-                  }
-
-                  for (Player player : thisDuel.getPlayers()) {
-                    CompletableFuture<Boolean> teleport =
-                        player.teleportAsync(
-                            Objects.requireNonNull(safeLocations.get(player.getUniqueId())));
-
-                    teleport.thenRun(() -> player.lookAt(center, LookAnchor.EYES));
-
-                    player.showTitle(
-                        Title.title(
-                            MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds[0]),
-                            Component.text("")));
-                  }
-                }
-              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 1L);
-
               new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -144,28 +126,32 @@ public class FFADuel extends Duel {
                             Component.text("")));
                   }
 
-                  if ((seconds[0] -= 1) < 0) {
-                    StringBuilder sb;
-                    Title title;
+                  if (!((seconds[0]--) <= 0)) {
+                    return;
+                  }
 
-                    for (Player player : thisDuel.getPlayers()) {
-                      sb = new StringBuilder();
-                      for (Player opponent : thisDuel.getPlayers()) {
-                        sb.append(opponent.getName()).append(", ");
-                      }
+                  thisDuel.setStarted(true);
 
-                      sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+                  StringBuilder sb;
+                  Title title;
 
-                      title =
-                          Title.title(
-                              AuroraDuels.getInstance().getLang().getComponent("duel-started"),
-                              Component.text("Opponents: " + sb));
-
-                      player.showTitle(title);
+                  for (Player player : thisDuel.getPlayers()) {
+                    sb = new StringBuilder();
+                    for (Player opponent : thisDuel.getPlayers()) {
+                      sb.append(opponent.getName()).append(", ");
                     }
 
-                    this.cancel();
+                    sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
+
+                    title =
+                        Title.title(
+                            AuroraDuels.getInstance().getLang().getComponent("duel-started"),
+                            Component.text("Opponents: " + sb));
+
+                    player.showTitle(title);
                   }
+
+                  this.cancel();
                 }
               }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
 
@@ -197,40 +183,38 @@ public class FFADuel extends Duel {
 
               final double playersMaxHealth = (players.size() - 1) * 20;
 
-              bossbarTask =
-                  new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                      if (!thisDuel.isActive()) {
-                        this.cancel();
-                        return;
-                      }
+              new BukkitRunnable() {
+                @Override
+                public void run() {
+                  if (!thisDuel.isActive()) {
+                    this.cancel();
+                    return;
+                  }
 
-                      double playersHealth = 0;
+                  double playersHealth = 0;
 
-                      for (Player player : thisDuel.getPlayers()) {
-                        if (!thisDuel.isDead(player) && !thisDuel.isSpectating(player)) {
-                          playersHealth += player.getHealth() + player.getAbsorptionAmount();
-                        }
-                      }
-
-                      for (Player player : thisDuel.getPlayers()) {
-                        double playerHealth =
-                            thisDuel.isSpectating(player)
-                                ? 0
-                                : player.getHealth() + player.getAbsorptionAmount();
-                        bossbars
-                            .get(player.getUniqueId())
-                            .progress(
-                                (float)
-                                    Math.min(
-                                        ((playersHealth - playerHealth) / playersMaxHealth), 1.0f));
-                      }
-
-                      spectatorBar.progress(
-                          (float) Math.min((playersHealth / playersMaxHealth), 1.0f));
+                  for (Player player : thisDuel.getPlayers()) {
+                    if (!thisDuel.isDead(player) && !thisDuel.isSpectating(player)) {
+                      playersHealth += player.getHealth() + player.getAbsorptionAmount();
                     }
-                  };
+                  }
+
+                  for (Player player : thisDuel.getPlayers()) {
+                    double playerHealth =
+                        thisDuel.isSpectating(player)
+                            ? 0
+                            : player.getHealth() + player.getAbsorptionAmount();
+                    bossbars
+                        .get(player.getUniqueId())
+                        .progress(
+                            (float)
+                                Math.min(
+                                    ((playersHealth - playerHealth) / playersMaxHealth), 1.0f));
+                  }
+
+                  spectatorBar.progress((float) Math.min((playersHealth / playersMaxHealth), 1.0f));
+                }
+              }.runTaskTimer(AuroraDuels.getInstance(), 0L, 1L);
 
               timeStarted = System.currentTimeMillis();
 
@@ -309,8 +293,6 @@ public class FFADuel extends Duel {
               }
             },
             3000);
-
-    this.setActive(false);
 
     new BukkitRunnable() {
       @Override

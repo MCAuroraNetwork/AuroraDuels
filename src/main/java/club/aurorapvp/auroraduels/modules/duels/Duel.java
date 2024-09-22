@@ -42,9 +42,9 @@ public abstract class Duel {
   protected int currentRound = 1;
   private Queue queue;
   private boolean active = false;
+  private boolean started = false;
   private final Duel thisDuel = this;
-  public BukkitRunnable bossbarTask;
-  public final BukkitRunnable checkBounds =
+  private final BukkitRunnable checkBounds =
       new BukkitRunnable() {
         @Override
         public void run() {
@@ -87,6 +87,7 @@ public abstract class Duel {
     this.players.addAll(players);
     this.ranked = ranked;
     duels.add(this);
+    checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
   }
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked, int rounds) {
@@ -95,6 +96,7 @@ public abstract class Duel {
     this.ranked = ranked;
     this.rounds = rounds;
     duels.add(this);
+    checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
   }
 
   public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked) {
@@ -104,6 +106,7 @@ public abstract class Duel {
     this.queue = queue;
     this.kit = kit;
     duels.add(this);
+    checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
   }
 
   public Duel(
@@ -120,6 +123,7 @@ public abstract class Duel {
     this.kit = kit;
     this.rounds = rounds;
     duels.add(this);
+    checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
   }
 
   public static Kit getDuelKit(Player player) {
@@ -219,6 +223,17 @@ public abstract class Duel {
     return false;
   }
 
+  public static boolean inDuelCountdown(Player player) {
+    for (Duel duel : duels) {
+      if ((duel.contains(player) || duel.isSpectating(player))
+          && duel.isActive()
+          && !duel.hasStarted()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static boolean isSpectator(Player player) {
     for (Duel duel : duels) {
       if (duel.isSpectating(player)) {
@@ -285,6 +300,14 @@ public abstract class Duel {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public boolean hasStarted() {
+    return started;
+  }
+
+  public void setStarted(boolean started) {
+    this.started = started;
   }
 
   public boolean isRanked() {

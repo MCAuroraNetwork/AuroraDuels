@@ -36,6 +36,8 @@ public abstract class DuelOverEvent extends Event {
             3000);
 
     duel.setActive(false);
+
+    Duel.getDuels().remove(duel);
   }
 
   @SuppressWarnings("unused")

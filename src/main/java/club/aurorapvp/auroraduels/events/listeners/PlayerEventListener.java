@@ -108,6 +108,13 @@ public class PlayerEventListener implements Listener {
   }
 
   @EventHandler
+  public void onPlayerMove(PlayerMoveEvent event) {
+    if (Duel.inDuelCountdown(event.getPlayer())) {
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
   public void onPlayerDamaged(PlayerDamagedByPlayerEvent event) {
     if (event.getDamaged().equals(event.getAttacker())) {
       return;
@@ -211,6 +218,10 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerTeleport(PlayerTeleportEvent event) {
+    if (Duel.inDuelCountdown(event.getPlayer())) {
+      event.setCancelled(true);
+    }
+
     if (!Duel.inDuel(event.getPlayer())) {
       return;
     }
