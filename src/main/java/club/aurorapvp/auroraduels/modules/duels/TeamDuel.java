@@ -165,7 +165,6 @@ public class TeamDuel extends Duel {
     this.arena = arena;
 
     this.setActive(true);
-    this.setStarted(false);
 
     Location spawn1 =
         new Location(
@@ -213,6 +212,8 @@ public class TeamDuel extends Duel {
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
         .thenRun(
             () -> {
+              this.setStarting(true);
+
               final int[] seconds = {3};
 
               new BukkitRunnable() {
@@ -229,7 +230,7 @@ public class TeamDuel extends Duel {
                     return;
                   }
 
-                  thisDuel.setStarted(true);
+                  thisDuel.setStarting(false);
 
                   sendOpponents(teamOneMembers, teamTwoMembers);
 

@@ -1,7 +1,11 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroracombat.modules.CombatTag;
+import club.aurorapvp.auroracombat.modules.Rating;
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.aurorakits.modules.kits.Kit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -34,6 +38,33 @@ public abstract class DuelOverEvent extends Event {
               }
             },
             3000);
+
+    for (Player player : duel.getPlayers()) {
+      Duel.setLastDuel(player, duel);
+
+      player.setGlowing(false);
+
+      player.sendMessage(
+              AuroraDuels.getInstance()
+                      .getLang()
+                      .getComponentCommand("rematch", "Click to Request Rematch", "/rematch"));
+    }
+
+    if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
+      for (Player player : duel.getPlayers()) {
+        Kit.refillKit(player);
+      }
+    }
+
+    if (!AuroraDuels.getInstance().isAuroraCombatInstalled()) {
+      return;
+    }
+
+    for (Player player : duel.getPlayers()) {
+      Rating.getRating("overall").setPlayerEnabled(player, true);
+
+      CombatTag.setTaggable(player, true);
+    }
 
     duel.setActive(false);
 

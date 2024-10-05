@@ -71,7 +71,6 @@ public class StandardDuel extends Duel implements Listener {
     this.arena = arena;
 
     this.setActive(true);
-    this.setStarted(false);
 
     Location spawn1 =
         new Location(
@@ -94,6 +93,8 @@ public class StandardDuel extends Duel implements Listener {
     CompletableFuture.allOf(teleport1, teleport2)
         .thenRun(
             () -> {
+              this.setStarting(true);
+
               final int[] seconds = {3};
 
               new BukkitRunnable() {
@@ -110,7 +111,7 @@ public class StandardDuel extends Duel implements Listener {
                     return;
                   }
 
-                  thisDuel.setStarted(true);
+                  thisDuel.setStarting(false);
 
                   final Title title1 =
                       Title.title(

@@ -42,7 +42,7 @@ public abstract class Duel {
   protected int currentRound = 1;
   private Queue queue;
   private boolean active = false;
-  private boolean started = false;
+  private boolean starting = false;
   private final Duel thisDuel = this;
   private final BukkitRunnable checkBounds =
       new BukkitRunnable() {
@@ -227,7 +227,7 @@ public abstract class Duel {
     for (Duel duel : duels) {
       if ((duel.contains(player) || duel.isSpectating(player))
           && duel.isActive()
-          && !duel.hasStarted()) {
+          && duel.isStarting()) {
         return true;
       }
     }
@@ -302,12 +302,12 @@ public abstract class Duel {
     this.active = active;
   }
 
-  public boolean hasStarted() {
-    return started;
+  public boolean isStarting() {
+    return starting;
   }
 
-  public void setStarted(boolean started) {
-    this.started = started;
+  public void setStarting(boolean starting) {
+    this.starting = starting;
   }
 
   public boolean isRanked() {

@@ -2,6 +2,8 @@ package club.aurorapvp.auroraduels.events.custom;
 
 import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DUEL_RESPAWN;
 
+import club.aurorapvp.auroracombat.AuroraCombat;
+import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
@@ -9,10 +11,7 @@ import club.aurorapvp.auroraduels.modules.duels.Winstracker;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import java.awt.Color;
-import java.util.Collection;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -117,6 +116,83 @@ public class DuelEndEvent extends DuelOverEvent {
                   .build())
           .queue();
     }
+
+    if (!duel.isRanked()) {
+      return;
+    }
+
+    String ratingName = duel.getQueue().getName() + "_duels";
+
+    Map<Rating, Integer> updatedRatings = new HashMap<>();
+
+    updatedRatings.put(
+        Rating.getRating("overall_duels"), updateRatings(winners, losers, "overall_duels"));
+
+    if (!ratingName.equals("random_duels")) {
+      updatedRatings.put(Rating.getRating(ratingName), updateRatings(winners, losers, ratingName));
+    }
+
+    StringBuilder killerMessage = new StringBuilder();
+
+    for (Rating rating : updatedRatings.keySet()) {
+      killerMessage
+          .append("\n")
+          .append(rating.getFriendlyName())
+          .append(": +")
+          .append(updatedRatings.get(rating));
+    }
+
+    StringBuilder deadMessage = new StringBuilder();
+
+    for (Rating rating : updatedRatings.keySet()) {
+      deadMessage
+          .append("\n")
+          .append(rating.getFriendlyName())
+          .append(": -")
+          .append(updatedRatings.get(rating));
+    }
+
+    for (Player loser : losers) {
+      loser.sendMessage(
+          AuroraDuels.getInstance().getLang().formatComponent("duel-lost", deadMessage.toString()));
+    }
+
+    for (Player winner : winners) {
+      killerMessage.append("\nWinstreak: ").append(Winstracker.getTracker(winner).getWinstreak());
+
+      winner.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .formatComponent("duel-won", killerMessage.toString()));
+    }
+  }
+
+  public int updateRatings(
+      Collection<Player> winners, Collection<Player> losers, String ratingName) {
+    Rating rating = Rating.getRating(ratingName);
+
+    int change = 0;
+
+    if (winners.size() + losers.size() == 2) {
+      change = rating.updateElo(losers.iterator().next(), winners.iterator().next());
+    } else {
+      for (Player loser : losers) {
+        rating.updateElo(loser, (int) getAverageRating(winners, ratingName), false);
+      }
+
+      for (Player winner : winners) {
+        change = rating.updateElo(winner, (int) getAverageRating(losers, ratingName), true);
+      }
+    }
+
+    return change;
+  }
+
+  public double getAverageRating(Collection<Player> players, String queueName) {
+    return players.stream()
+        .mapToDouble(player -> Rating.getRating(queueName).getScore(player).getPoints())
+        .average()
+        .orElse(AuroraCombat.getInstance().getConfig().getInt("elo.default-points"));
   }
 
   public Collection<Player> getLosers() {
