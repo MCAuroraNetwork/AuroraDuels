@@ -174,8 +174,6 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    Winstracker.unregister(event.getPlayer());
-
     if (Queue.inQueue(event.getPlayer())) {
       Queue.removeFromQueue(event.getPlayer());
     }
@@ -187,6 +185,8 @@ public class PlayerEventListener implements Listener {
     if (Duel.inDuel(event.getPlayer())) {
       checkIfDuelOver(event.getPlayer());
     }
+
+    Winstracker.unregister(event.getPlayer());
   }
 
   public void checkIfDuelOver(Player player) {
