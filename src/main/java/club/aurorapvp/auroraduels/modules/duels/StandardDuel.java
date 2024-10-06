@@ -150,9 +150,8 @@ public class StandardDuel extends Duel implements Listener {
                 }
               }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
 
-              createBossbar(playerOneBar[0], playerTwo, playerOne);
-
-              createBossbar(playerTwoBar[0], playerOne, playerTwo);
+              playerOneBar[0] = createBossbar(playerTwo);
+              playerTwoBar[0] = createBossbar(playerOne);
 
               spectatorBars.add(playerOneBar[0]);
               spectatorBars.add(playerTwoBar[0]);
@@ -165,8 +164,8 @@ public class StandardDuel extends Duel implements Listener {
                     return;
                   }
 
-                  updateBossbar(playerOneBar, playerTwo);
-                  updateBossbar(playerTwoBar, playerOne);
+                  updateBossbar(playerOneBar[0], playerTwo);
+                  updateBossbar(playerTwoBar[0], playerOne);
                 }
               }.runTaskTimer(AuroraDuels.getInstance(), 0L, 1L);
 
@@ -181,43 +180,43 @@ public class StandardDuel extends Duel implements Listener {
             });
   }
 
-  private void updateBossbar(BossBar[] bossbar, Player opponent) {
-    playerOneBar[0]
+  private void updateBossbar(BossBar bossbar, Player opponent) {
+    bossbar
         .name(
-            playerTwo
+            opponent
                 .displayName()
                 .decorate(TextDecoration.BOLD)
                 .color(NamedTextColor.YELLOW)
                 .appendSpace()
                 .append(
                     Component.text(
-                            (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
+                            (int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
                         .color(NamedTextColor.RED))
                 .appendSpace()
-                .append(Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)))
+                .append(Component.text(opponent.getPing() + "ms").color(NamedTextColor.AQUA)))
         .progress(
-            (float) Math.min((playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) / 20, 1.0f));
+            (float) Math.min((opponent.getHealth() + opponent.getAbsorptionAmount()) / 20, 1.0f));
   }
 
-  private void createBossbar(BossBar bossbar, Player playerTwo, Player playerOne) {
-    bossbar =
-        BossBar.bossBar(
-            playerTwo
-                .displayName()
-                .decorate(TextDecoration.BOLD)
-                .color(NamedTextColor.YELLOW)
-                .appendSpace()
-                .append(
-                    Component.text(
-                            (int) (playerTwo.getHealth() + playerTwo.getAbsorptionAmount()) + "❤")
-                        .color(NamedTextColor.RED))
-                .appendSpace()
-                .append(Component.text(playerTwo.getPing() + "ms").color(NamedTextColor.AQUA)),
+  private BossBar createBossbar(Player opponent) {
+    BossBar bossbar = BossBar.bossBar(
+            opponent
+                    .displayName()
+                    .decorate(TextDecoration.BOLD)
+                    .color(NamedTextColor.YELLOW)
+                    .appendSpace()
+                    .append(
+                            Component.text(
+                                            (int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
+                                    .color(NamedTextColor.RED))
+                    .appendSpace()
+                    .append(Component.text(opponent.getPing() + "ms").color(NamedTextColor.AQUA)),
             1.0f,
             Color.RED,
             Overlay.PROGRESS);
 
-    playerOne.showBossBar(bossbar);
+
+    return bossbar;
   }
 
   public void endDuel(Collection<Player> winners, Collection<Player> losers) {
