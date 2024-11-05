@@ -331,6 +331,7 @@ public class Queue {
 
     Queue thisQueue = this;
 
+    // TODO event oriented
     new BukkitRunnable() {
       @Override
       public void run() {

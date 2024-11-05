@@ -57,6 +57,10 @@ public final class AuroraDuels extends JavaPlugin {
     return lang;
   }
 
+  public void reloadConfig() {
+    config.reload();
+  }
+
   @Override
   public void onEnable() {
     long startTime = System.currentTimeMillis();
@@ -118,9 +122,5 @@ public final class AuroraDuels extends JavaPlugin {
     }
 
     getLogger().info("AuroraDuels disabled in " + (System.currentTimeMillis() - startTime) + "ms");
-  }
-
-  public void reloadConfig() {
-    config.reload();
   }
 }

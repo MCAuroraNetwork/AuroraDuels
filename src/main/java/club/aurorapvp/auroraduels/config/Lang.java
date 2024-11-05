@@ -26,15 +26,6 @@ public class Lang {
   public void generateDefaults() {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
 
-    for (var path : getYaml().getKeys(false).toArray()) {
-      if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
-          && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
-        PLACEHOLDERS.put(
-            (String) path,
-            Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
-      }
-    }
-
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
     DEFAULTS.put("set-spawn1", "prefix <yellow>Set first spawn: Left click");
     DEFAULTS.put("set-spawn2", "prefix <yellow>Set second spawn: Right click");
