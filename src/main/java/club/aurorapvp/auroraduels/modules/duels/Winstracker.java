@@ -51,6 +51,10 @@ public class Winstracker {
     return this.winstreak;
   }
 
+  public int getWinRatio() {
+    return wins / losses;
+  }
+
   public int getWins() {
     return wins;
   }
