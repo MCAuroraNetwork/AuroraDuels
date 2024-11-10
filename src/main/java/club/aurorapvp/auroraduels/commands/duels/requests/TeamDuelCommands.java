@@ -2,12 +2,10 @@ package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Request;
-import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
-import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -60,9 +58,9 @@ public class TeamDuelCommands extends BaseCommand {
       i++;
     }
 
-      DuelQueue.findRespawnLocation(player);
+    Location loc = DuelQueue.findRespawnLocation(player);
 
-      new Request(player, new TeamDuel(team1, team2, loc, false));
+    new Request(player, new TeamDuel(team1, team2, loc, false));
   }
 
   @Subcommand("random|rand")
@@ -93,9 +91,9 @@ public class TeamDuelCommands extends BaseCommand {
     Set<Player> players = new HashSet<>(Set.of(requested));
     players.add(player);
 
-      DuelQueue.findRespawnLocation(player);
+    Location loc = DuelQueue.findRespawnLocation(player);
 
-      if (requested.length == 1) {
+    if (requested.length == 1) {
       new Request(player, new StandardDuel(player, requested[0], loc, false, 1));
       return;
     }

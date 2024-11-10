@@ -2,10 +2,8 @@ package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Request;
-import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
-import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -35,9 +33,9 @@ public class StandardDuelCommands extends BaseCommand {
       return;
     }
 
-      DuelQueue.findRespawnLocation(player);
+    Location loc = DuelQueue.findRespawnLocation(player);
 
-      int rounds = 1;
+    int rounds = 1;
 
     if (str != null && str.matches("\\d+")) {
       rounds = Integer.parseInt(str);

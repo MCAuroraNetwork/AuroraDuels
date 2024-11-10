@@ -49,9 +49,9 @@ public class FFADuelCommands extends BaseCommand {
     Set<Player> players = new HashSet<>(Set.of(requested));
     players.add(player);
 
-      DuelQueue.findRespawnLocation(player);
+    Location loc = DuelQueue.findRespawnLocation(player);
 
-      if (requested.length == 1) {
+    if (requested.length == 1) {
       new Request(player, new StandardDuel(player, requested[0], loc, false, 1));
       return;
     }
