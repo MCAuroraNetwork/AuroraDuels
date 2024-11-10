@@ -3,6 +3,7 @@ package club.aurorapvp.auroraduels.modules.queues;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.data.QueueDataHandler;
+import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueJoinEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
@@ -13,25 +14,22 @@ import club.aurorapvp.auroraduels.util.ItemStackUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class DuelQueue {
 
@@ -40,7 +38,7 @@ public class DuelQueue {
   private static Player currentCreator;
   private static DuelQueue unFinishedDuelQueue;
   private final Map<Boolean, Player> lookingForMatch = new HashMap<>();
-  private final LinkedList<Duel> duelQueue = new LinkedList<>();
+  private final ObservableQueue<Duel> queue = new ObservableQueue<>(this);
   private final String name;
   private final Set<Arena> arenas = new HashSet<>();
   private final QueueDataHandler data;
@@ -82,7 +80,8 @@ public class DuelQueue {
       DuelQueue duelQueue = new DuelQueue("random", "overall");
       duelQueue.addArenas(Arena.getArenas());
 
-      duelQueue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, duelQueue.getName());
+      duelQueue.displayItem =
+          ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, duelQueue.getName());
 
       DUEL_QUEUES.add(duelQueue);
     }
@@ -114,7 +113,8 @@ public class DuelQueue {
       DuelQueue duelQueue = new DuelQueue("random", "overall");
       duelQueue.addArenas(Arena.getArenas());
 
-      duelQueue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, duelQueue.getName());
+      duelQueue.displayItem =
+          ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, duelQueue.getName());
 
       DUEL_QUEUES.add(duelQueue);
     }
@@ -177,23 +177,7 @@ public class DuelQueue {
 
       displayItem.setItemMeta(meta);
     } else {
-      Location loc = Duel.getDuelLobby();
-
-      if (loc == null && AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
-        WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
-
-        if (worldSpawn != null) {
-          loc = worldSpawn.getLocation();
-        }
-
-        if (loc == null) {
-          loc = WorldSpawn.getGlobalSpawn();
-        }
-      }
-
-      if (loc == null) {
-        loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
-      }
+      Location loc = findRespawnLocation(player);
 
       this.enterDuelQueue(
           new StandardDuel(
@@ -204,6 +188,29 @@ public class DuelQueue {
           .sendMessage(AuroraDuels.getInstance().getLang().getComponent("match-found"));
       lookingForMatch.clear();
     }
+  }
+
+  // TODO move this
+  public static Location findRespawnLocation(Player player) {
+    Location loc = Duel.getDuelLobby();
+
+    if (loc == null && AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
+      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
+
+      if (worldSpawn != null) {
+        loc = worldSpawn.getLocation();
+      }
+
+      if (loc == null) {
+        loc = WorldSpawn.getGlobalSpawn();
+      }
+    }
+
+    if (loc == null) {
+      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
+    }
+
+    return loc;
   }
 
   public Kit getKit() {
@@ -233,7 +240,7 @@ public class DuelQueue {
   public Set<Player> getPlayers() {
     Set<Player> playerSet = new HashSet<>();
 
-    for (Duel duel : duelQueue) {
+    for (Duel duel : queue) {
       playerSet.addAll(duel.getPlayers());
     }
 
@@ -319,45 +326,15 @@ public class DuelQueue {
   }
 
   public int inQueue() {
-    return duelQueue.size() * 2 + lookingForMatch.values().size();
+    return queue.size() * 2 + lookingForMatch.values().size();
   }
 
   public void enterDuelQueue(Duel duel) {
-    duelQueue.add(duel);
+    queue.add(duel);
 
     for (Player player : duel.getPlayers()) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("entered-queue"));
     }
-
-    DuelQueue thisDuelQueue = this;
-
-    // TODO event oriented
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        Set<Arena> arenasSet = thisDuelQueue.getArenas();
-        List<Arena> arenasList = new ArrayList<>(arenasSet);
-        Collections.shuffle(arenasList);
-        Iterator<Arena> arenaIterator = arenasList.iterator();
-
-        while (arenaIterator.hasNext() && !duelQueue.isEmpty()) {
-          Arena arena = arenaIterator.next();
-          if (!arena.isOccupied()) {
-            duelQueue.getLast().startDuel(arena);
-            duelQueue.remove(duelQueue.getLast());
-
-            ItemMeta meta = displayItem.getItemMeta();
-
-            meta.lore(
-                List.of(
-                    Component.text("In Queue:" + thisDuelQueue.inQueue()),
-                    Component.text("In Duel: " + Duel.inDuel(thisDuelQueue.getName()))));
-
-            displayItem.setItemMeta(meta);
-          }
-        }
-      }
-    }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
 
     ItemMeta meta = displayItem.getItemMeta();
 
@@ -373,9 +350,9 @@ public class DuelQueue {
 
   public static void removeFromQueue(Player player) {
     for (DuelQueue duelQueue : DUEL_QUEUES) {
-      for (Duel duel : duelQueue.duelQueue) {
+      for (Duel duel : duelQueue.queue) {
         if (duel.contains(player)) {
-          duelQueue.duelQueue.remove(duel);
+          duelQueue.queue.remove(duel);
 
           duel.draw();
         }
@@ -412,5 +389,330 @@ public class DuelQueue {
       }
     }
     return false;
+  }
+
+  public static class ObservableQueue<T> extends AbstractSequentialList<T> implements List<T>, Deque<T>, Listener {
+    private final LinkedList<T> queue;
+    private final DuelQueue duelQueue;
+
+    public ObservableQueue(DuelQueue duelQueue) {
+      this.queue = new LinkedList<>();
+
+      this.duelQueue = duelQueue;
+    }
+
+    public boolean add(T element) {
+      boolean added = queue.add(element);
+      if (added) {
+        checkIfAvailable();
+      }
+      return added;
+    }
+
+    @EventHandler
+    private void checkIfAvailable(DuelEndEvent event) {
+      if (checkIfAvailable()) {
+        event.getHandlers().unregister(this);
+      }
+    }
+
+    private boolean checkIfAvailable() {
+      if (queue.isEmpty()) {
+        return true;
+      }
+      
+      Set<Arena> arenasSet = duelQueue.getArenas();
+      List<Arena> arenasList = new ArrayList<>(arenasSet);
+      Collections.shuffle(arenasList);
+      Iterator<Arena> arenaIterator = arenasList.iterator();
+
+      while (arenaIterator.hasNext() && !queue.isEmpty()) {
+        Arena arena = arenaIterator.next();
+
+        if (!arena.isOccupied()) {
+          ((Duel) queue.getLast()).startDuel(arena);
+          queue.removeLast();
+
+          ItemMeta meta = duelQueue.getDisplayItem().getItemMeta();
+
+          meta.lore(
+              List.of(
+                  Component.text("In Queue:" + duelQueue.inQueue()),
+                  Component.text("In Duel: " + Duel.inDuel(duelQueue.getName()))));
+
+          duelQueue.getDisplayItem().setItemMeta(meta);
+        }
+      }
+
+      if (!queue.isEmpty()) {
+        Bukkit.getPluginManager().registerEvents(this, AuroraDuels.getInstance());
+
+        return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public void push(T t) {
+      queue.addFirst(t);
+    }
+
+    @Override
+    public T pop() {
+      return queue.removeFirst();
+    }
+
+    @Override
+    public int size() {
+      return queue.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+      return queue.isEmpty();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+      return queue.contains(o);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+      return queue.iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+      queue.forEach(action);
+    }
+
+    @Override
+    public Iterator<T> descendingIterator() {
+      return queue.descendingIterator();
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
+      return queue.listIterator(index);
+    }
+
+    @Override
+    public Spliterator<T> spliterator() {
+      return queue.spliterator();
+    }
+
+    @Override
+    public Stream<T> stream() {
+      return queue.stream();
+    }
+
+    @Override
+    public Stream<T> parallelStream() {
+      return queue.parallelStream();
+    }
+
+    @Override
+    public void addFirst(T t) {
+      queue.addFirst(t);
+    }
+
+    @Override
+    public void addLast(T t) {
+      queue.addLast(t);
+    }
+
+    @Override
+    public T getFirst() {
+      return queue.getFirst();
+    }
+
+    @Override
+    public T getLast() {
+      return queue.getLast();
+    }
+
+    @Override
+    public T removeFirst() {
+      return queue.removeFirst();
+    }
+
+    @Override
+    public T removeLast() {
+      return queue.removeLast();
+    }
+
+    @Override
+    public LinkedList<T> reversed() {
+      LinkedList<T> reversedList = new LinkedList<>(queue);
+      Collections.reverse(reversedList);
+      return reversedList;
+    }
+
+    @Override
+    public Object[] toArray() {
+      return queue.toArray();
+    }
+
+    @Override
+    public <T1> T1[] toArray(T1[] a) {
+      return queue.toArray(a);
+    }
+
+    @Override
+    public <T1> T1[] toArray(IntFunction<T1[]> generator) {
+      return queue.toArray(generator);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+      return queue.remove(o);
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+      return queue.containsAll(c);
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
+      return queue.addAll(c);
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+      return queue.removeAll(c);
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super T> filter) {
+      return queue.removeIf(filter);
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+      return queue.retainAll(c);
+    }
+
+    @Override
+    public void replaceAll(UnaryOperator<T> operator) {
+      queue.replaceAll(operator);
+    }
+
+    @Override
+    public void sort(Comparator<? super T> c) {
+      queue.sort(c);
+    }
+
+    @Override
+    public void clear() {
+      queue.clear();
+    }
+
+    @Override
+    public boolean offer(T t) {
+      return queue.offer(t);
+    }
+
+    @Override
+    public T remove() {
+      return queue.remove();
+    }
+
+    @Override
+    public T poll() {
+      return queue.poll();
+    }
+
+    @Override
+    public T element() {
+      return queue.element();
+    }
+
+    @Override
+    public T peek() {
+      return queue.peek();
+    }
+
+    @Override
+    public T get(int index) {
+      return queue.get(index);
+    }
+
+    @Override
+    public T set(int index, T element) {
+      return queue.set(index, element);
+    }
+
+    @Override
+    public void add(int index, T element) {
+      queue.add(index, element);
+    }
+
+    @Override
+    public T remove(int index) {
+      return queue.remove(index);
+    }
+
+    @Override
+    public int indexOf(Object o) {
+      return queue.indexOf(o);
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+      return queue.lastIndexOf(o);
+    }
+
+    @Override
+    public ListIterator<T> listIterator() {
+      return queue.listIterator();
+    }
+
+    @Override
+    public List<T> subList(int fromIndex, int toIndex) {
+      return queue.subList(fromIndex, toIndex);
+    }
+
+    @Override
+    public boolean offerFirst(T e) {
+      return queue.offerFirst(e);
+    }
+
+    @Override
+    public boolean offerLast(T e) {
+      return queue.offerLast(e);
+    }
+
+    @Override
+    public T pollFirst() {
+      return queue.pollFirst();
+    }
+
+    @Override
+    public T pollLast() {
+      return queue.pollLast();
+    }
+
+    @Override
+    public T peekFirst() {
+      return queue.peekFirst();
+    }
+
+    @Override
+    public T peekLast() {
+      return queue.peekLast();
+    }
+
+    @Override
+    public boolean removeFirstOccurrence(Object o) {
+      return queue.removeFirstOccurrence(o);
+    }
+
+    @Override
+    public boolean removeLastOccurrence(Object o) {
+      return queue.removeLastOccurrence(o);
+    }
   }
 }

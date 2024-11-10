@@ -2,10 +2,9 @@ package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Request;
-import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
-import club.aurorapvp.aurorawarps.modules.WorldSpawn;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -50,25 +49,9 @@ public class FFADuelCommands extends BaseCommand {
     Set<Player> players = new HashSet<>(Set.of(requested));
     players.add(player);
 
-    Location loc = Duel.getDuelLobby();
+      DuelQueue.findRespawnLocation(player);
 
-    if (loc == null && AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
-
-      if (worldSpawn != null) {
-        loc = worldSpawn.getLocation();
-      }
-
-      if (loc == null) {
-        loc = WorldSpawn.getGlobalSpawn();
-      }
-    }
-
-    if (loc == null) {
-      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
-    }
-
-    if (requested.length == 1) {
+      if (requested.length == 1) {
       new Request(player, new StandardDuel(player, requested[0], loc, false, 1));
       return;
     }

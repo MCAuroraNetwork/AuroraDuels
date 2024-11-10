@@ -4,6 +4,7 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -34,25 +35,9 @@ public class StandardDuelCommands extends BaseCommand {
       return;
     }
 
-    Location loc = Duel.getDuelLobby();
+      DuelQueue.findRespawnLocation(player);
 
-    if (loc == null && AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
-
-      if (worldSpawn != null) {
-        loc = worldSpawn.getLocation();
-      }
-
-      if (loc == null) {
-        loc = WorldSpawn.getGlobalSpawn();
-      }
-    }
-
-    if (loc == null) {
-      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
-    }
-
-    int rounds = 1;
+      int rounds = 1;
 
     if (str != null && str.matches("\\d+")) {
       rounds = Integer.parseInt(str);

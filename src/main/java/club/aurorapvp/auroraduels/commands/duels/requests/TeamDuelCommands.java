@@ -6,6 +6,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorawarps.modules.WorldSpawn;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -59,25 +60,9 @@ public class TeamDuelCommands extends BaseCommand {
       i++;
     }
 
-    Location loc = Duel.getDuelLobby();
+      DuelQueue.findRespawnLocation(player);
 
-    if (loc == null && AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
-
-      if (worldSpawn != null) {
-        loc = worldSpawn.getLocation();
-      }
-
-      if (loc == null) {
-        loc = WorldSpawn.getGlobalSpawn();
-      }
-    }
-
-    if (loc == null) {
-      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
-    }
-
-    new Request(player, new TeamDuel(team1, team2, loc, false));
+      new Request(player, new TeamDuel(team1, team2, loc, false));
   }
 
   @Subcommand("random|rand")
@@ -108,25 +93,9 @@ public class TeamDuelCommands extends BaseCommand {
     Set<Player> players = new HashSet<>(Set.of(requested));
     players.add(player);
 
-    Location loc = Duel.getDuelLobby();
+      DuelQueue.findRespawnLocation(player);
 
-    if (loc == null && AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
-      WorldSpawn worldSpawn = WorldSpawn.getWorldSpawn(player.getWorld());
-
-      if (worldSpawn != null) {
-        loc = worldSpawn.getLocation();
-      }
-
-      if (loc == null) {
-        loc = WorldSpawn.getGlobalSpawn();
-      }
-    }
-
-    if (loc == null) {
-      loc = Bukkit.getWorlds().getFirst().getSpawnLocation();
-    }
-
-    if (requested.length == 1) {
+      if (requested.length == 1) {
       new Request(player, new StandardDuel(player, requested[0], loc, false, 1));
       return;
     }
