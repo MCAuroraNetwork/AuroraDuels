@@ -2,7 +2,7 @@ package club.aurorapvp.auroraduels.data;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.io.File;
 import java.io.IOException;
@@ -18,13 +18,13 @@ public class QueueDataHandler {
 
   private final File FILE;
   private final YamlConfiguration queueData;
-  private final Queue queue;
+  private final DuelQueue duelQueue;
 
-  public QueueDataHandler(Queue queue) {
-    this.queue = queue;
+  public QueueDataHandler(DuelQueue duelQueue) {
+    this.duelQueue = duelQueue;
 
     FILE = new File(AuroraDuels.getInstance().getDataFolder(),
-        "/queues/" + queue.getName() + ".yml");
+        "/queues/" + duelQueue.getName() + ".yml");
     queueData = YamlConfiguration.loadConfiguration(FILE);
   }
 
@@ -54,19 +54,19 @@ public class QueueDataHandler {
   }
 
   public void create() {
-    if (AuroraDuels.getInstance().isAuroraKitsInstalled() && queue.getKit() != null) {
-      queueData.set("kit", queue.getKit().getName());
+    if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duelQueue.getKit() != null) {
+      queueData.set("kit", duelQueue.getKit().getName());
     }
 
     List<String> arenaNames = new ArrayList<>();
 
-    for (Arena arena : queue.getArenas()) {
+    for (Arena arena : duelQueue.getArenas()) {
       arenaNames.add(arena.getName());
     }
 
     queueData.set("arenas", arenaNames);
 
-    queueData.set("displayItem", queue.getDisplayItem());
+    queueData.set("displayItem", duelQueue.getDisplayItem());
 
     save();
   }

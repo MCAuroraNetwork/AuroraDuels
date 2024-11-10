@@ -48,7 +48,7 @@ public class Lang {
     DEFAULTS.put("player-in-duel", "prefix <red>Player in duel");
     DEFAULTS.put("duel-started", "<bold><green>Duel started!");
     DEFAULTS.put("even-rounds", "prefix <red>Odd rounds required for duel");
-    DEFAULTS.put("entered-queue", "prefix <green>You have entered the duel queue");
+    DEFAULTS.put("entered-duelQueue", "prefix <green>You have entered the duel duelQueue");
     DEFAULTS.put("sent-request", "prefix <green>Request sent successfully!");
     DEFAULTS.put(
         "received-request",
@@ -75,25 +75,25 @@ public class Lang {
     DEFAULTS.put("looking-match", "prefix <yellow>Searching for opponent");
     DEFAULTS.put("not-looking-match", "prefix <yellow>Stopped searching for an opponent");
     DEFAULTS.put("match-found", "prefix <green>Opponent found!");
-    DEFAULTS.put("in-queue", "prefix <yellow>Player is already in a queue");
-    DEFAULTS.put("queue-already-exists", "prefix <yellow>Queue exists");
-    DEFAULTS.put("queue-being-created", "prefix <yellow>Queue creation in progress");
-    DEFAULTS.put("queue-invalid-item", "prefix <red>Invalid queue item");
-    DEFAULTS.put("queue-created", "prefix <green>Queue created");
-    DEFAULTS.put("queue-not-found", "prefix <red>Queue not found");
+    DEFAULTS.put("in-duelQueue", "prefix <yellow>Player is already in a duelQueue");
+    DEFAULTS.put("duelQueue-already-exists", "prefix <yellow>Queue exists");
+    DEFAULTS.put("duelQueue-being-created", "prefix <yellow>Queue creation in progress");
+    DEFAULTS.put("duelQueue-invalid-item", "prefix <red>Invalid duelQueue item");
+    DEFAULTS.put("duelQueue-created", "prefix <green>Queue created");
+    DEFAULTS.put("duelQueue-not-found", "prefix <red>Queue not found");
     DEFAULTS.put("you-have-request", "prefix <red>You already have a pending request");
     DEFAULTS.put(
         "already-has-request", "prefix <red>You already have a request pending to this player");
     DEFAULTS.put(
         "add-arena",
-        "prefix <yellow>Type the name of the arena you want to add arena to queue. Added %s so far");
+        "prefix <yellow>Type the name of the arena you want to add arena to duelQueue. Added %s so far");
     DEFAULTS.put("no-teleport", "prefix <red>Can't teleport during a duel");
     DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled during duel");
     DEFAULTS.put("duel-kit", "prefix <green>Duel kit set!");
     DEFAULTS.put("start-spectating", "prefix <yellow>Spectating! Do /duel spectate again to stop");
     DEFAULTS.put("stop-spectating", "prefix <yellow>Stopped spectating");
     DEFAULTS.put("no-last-duel", "prefix <red>No previous duel");
-    DEFAULTS.put("queue-menu", "<yellow><bold>Select Duel Type");
+    DEFAULTS.put("duelQueue-menu", "<yellow><bold>Select Duel Type");
     DEFAULTS.put("duel-kit-gui", "<yellow><bold>Select Duel Kit");
     DEFAULTS.put("next-page", "<yellow><bold>Next");
     DEFAULTS.put("previous-page", "<yellow><bold>Previous");
@@ -120,7 +120,7 @@ public class Lang {
 
             <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player
 
-            <blue><bold>/ranked or /unranked [name]: <reset><yellow>Joins a ranked or unranked queue, or the default one if no name is given
+            <blue><bold>/ranked or /unranked [name]: <reset><yellow>Joins a ranked or unranked duelQueue, or the default one if no name is given
 
             <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members
             """);

@@ -2,7 +2,7 @@ package club.aurorapvp.auroraduels.commands;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
@@ -25,7 +25,7 @@ public class PluginCommands extends BaseCommand {
     AuroraDuels.getInstance().reloadConfig();
     AuroraDuels.getInstance().getLang().reload();
     Arena.reloadAll();
-    Queue.reloadAll();
+    DuelQueue.reloadAll();
 
     player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("reloaded"));
 

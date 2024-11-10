@@ -5,7 +5,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.Winstracker;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -62,15 +62,15 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("in_queues")) {
-      return String.valueOf(Queue.inQueues());
+      return String.valueOf(DuelQueue.inQueues());
     }
 
     if (params.startsWith("in_queue_")) {
       String queueName = params.split("_")[2];
 
-      Queue queue = Queue.getQueue(queueName);
-      assert queue != null;
-      return String.valueOf(queue.inQueue());
+      DuelQueue duelQueue = DuelQueue.getQueue(queueName);
+      assert duelQueue != null;
+      return String.valueOf(duelQueue.inQueue());
     }
 
     if (!(offlinePlayer instanceof Player player)) {

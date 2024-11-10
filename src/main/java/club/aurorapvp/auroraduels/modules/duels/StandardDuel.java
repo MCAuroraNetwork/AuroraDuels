@@ -5,7 +5,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Collection;
 import java.util.HashMap;
@@ -46,12 +46,12 @@ public class StandardDuel extends Duel implements Listener {
   public StandardDuel(
       Player p1,
       Player p2,
-      Queue queue,
+      DuelQueue duelQueue,
       Kit kit,
       Location respawnLocation,
       boolean ranked,
       int rounds) {
-    super(Set.of(p1, p2), respawnLocation, queue, kit, ranked);
+    super(Set.of(p1, p2), respawnLocation, duelQueue, kit, ranked);
     this.playerOne = p1;
     this.playerTwo = p2;
     this.rounds = rounds;

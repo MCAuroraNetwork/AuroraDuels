@@ -19,41 +19,41 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-public class QueueGUI implements InventoryHolder, Listener {
+public class DuelQueueGUI implements InventoryHolder, Listener {
 
   private final String name;
   private final Inventory inventory =
       Bukkit.createInventory(
           this, 54, AuroraDuels.getInstance().getLang().getComponent("queue-menu"));
 
-  public QueueGUI(String name) {
+  public DuelQueueGUI(String name) {
     this.name = name;
 
-    ItemStack[] itemStacks = new ItemStack[Queue.getQueues().size()];
+    ItemStack[] itemStacks = new ItemStack[DuelQueue.getQueues().size()];
 
-    Arrays.sort(Queue.getQueues().toArray(new Queue[0]), Comparator.comparing(Queue::getName));
+    Arrays.sort(DuelQueue.getQueues().toArray(new DuelQueue[0]), Comparator.comparing(DuelQueue::getName));
 
-    Queue[] queues = Queue.getQueues().toArray(new Queue[0]);
+    DuelQueue[] duelQueues = DuelQueue.getQueues().toArray(new DuelQueue[0]);
 
-    Arrays.sort(queues, Comparator.comparing(Queue::getName));
+    Arrays.sort(duelQueues, Comparator.comparing(DuelQueue::getName));
 
     int i = 0;
-    for (Queue queue : queues) {
-      ItemStack displayItem = queue.getDisplayItem();
+    for (DuelQueue duelQueue : duelQueues) {
+      ItemStack displayItem = duelQueue.getDisplayItem();
       ItemMeta meta = displayItem.getItemMeta();
 
-      if (queue.getKit() != null) {
+      if (duelQueue.getKit() != null) {
         meta.lore(
             List.of(
                 MiniMessage.miniMessage()
-                    .deserialize("<gradient:#FFAA00:#FF55FF>Kit: " + queue.getKit().getName())));
+                    .deserialize("<gradient:#FFAA00:#FF55FF>Kit: " + duelQueue.getKit().getName())));
       }
 
       meta.lore(
           List.of(
               MiniMessage.miniMessage()
                   .deserialize(
-                      "<gradient:#FFAA00:#FF55FF>Queue: " + queue.inQueue())));
+                      "<gradient:#FFAA00:#FF55FF>Queue: " + duelQueue.inQueue())));
       displayItem.setItemMeta(meta);
 
       itemStacks[i] = displayItem;
@@ -92,14 +92,14 @@ public class QueueGUI implements InventoryHolder, Listener {
           PlainTextComponentSerializer.plainText().serialize(event.getCurrentItem().displayName());
       String queueName = itemName.substring(1, itemName.length() - 1);
 
-      Queue queue = Queue.getQueue(queueName.toLowerCase());
+      DuelQueue duelQueue = DuelQueue.getQueue(queueName.toLowerCase());
 
-      if (queue == null) {
+      if (duelQueue == null) {
         player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-not-found"));
         return;
       }
 
-      new QueueSelectEvent(player, name, queue).callEvent();
+      new QueueSelectEvent(player, name, duelQueue).callEvent();
     }
   }
 
@@ -134,14 +134,14 @@ public class QueueGUI implements InventoryHolder, Listener {
             PlainTextComponentSerializer.plainText().serialize(itemStack.displayName());
         String queueName = itemName.substring(1, itemName.length() - 1);
 
-        Queue queue = Queue.getQueue(queueName.toLowerCase());
+        DuelQueue duelQueue = DuelQueue.getQueue(queueName.toLowerCase());
         ItemMeta meta = itemStack.getItemMeta();
-        assert queue != null;
+        assert duelQueue != null;
 
         meta.lore(
             List.of(
                 MiniMessage.miniMessage()
-                    .deserialize("<yellow>Queue: " + queue.inQueue())));
+                    .deserialize("<yellow>Queue: " + duelQueue.inQueue())));
         itemStack.setItemMeta(meta);
       }
     }

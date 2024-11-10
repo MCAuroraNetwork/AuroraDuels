@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.commands;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -22,9 +22,9 @@ public class QueueCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onCreate(Player player, String name, @Optional String kitName) {
     if (kitName != null && AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      new Queue(name).create(player, kitName);
+      new DuelQueue(name).create(player, kitName);
     } else {
-      new Queue(name).create(player);
+      new DuelQueue(name).create(player);
     }
   }
 }

@@ -33,12 +33,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Queue {
+public class DuelQueue {
 
-  private static final Set<Queue> queues = new HashSet<>();
+  private static final Set<DuelQueue> DUEL_QUEUES = new HashSet<>();
   private static boolean arenasSet = true;
   private static Player currentCreator;
-  private static Queue unFinishedQueue;
+  private static DuelQueue unFinishedDuelQueue;
   private final Map<Boolean, Player> lookingForMatch = new HashMap<>();
   private final LinkedList<Duel> duelQueue = new LinkedList<>();
   private final String name;
@@ -47,7 +47,7 @@ public class Queue {
   private ItemStack displayItem;
   private Kit kit;
 
-  public Queue(String queueName) {
+  public DuelQueue(String queueName) {
     this.name = queueName;
 
     this.data = new QueueDataHandler(this);
@@ -61,7 +61,7 @@ public class Queue {
     }
   }
 
-  public Queue(String queueName, String ratingName) {
+  public DuelQueue(String queueName, String ratingName) {
     this.name = queueName;
 
     this.data = new QueueDataHandler(this);
@@ -79,19 +79,19 @@ public class Queue {
     File dir = new File(AuroraDuels.getInstance().getDataFolder(), "/queues/");
 
     if (AuroraDuels.getInstance().getConfig().getBoolean("queues.enable-random-queue")) {
-      Queue queue = new Queue("random", "overall");
-      queue.addArenas(Arena.getArenas());
+      DuelQueue duelQueue = new DuelQueue("random", "overall");
+      duelQueue.addArenas(Arena.getArenas());
 
-      queue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, queue.getName());
+      duelQueue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, duelQueue.getName());
 
-      queues.add(queue);
+      DUEL_QUEUES.add(duelQueue);
     }
 
     if (dir.exists()) {
       for (File file : Objects.requireNonNull(dir.listFiles())) {
-        Queue queue = new Queue(file.getName().replace(".yml", ""));
-        if (queue.exists()) {
-          queues.add(queue);
+        DuelQueue duelQueue = new DuelQueue(file.getName().replace(".yml", ""));
+        if (duelQueue.exists()) {
+          DUEL_QUEUES.add(duelQueue);
         }
       }
     }
@@ -103,25 +103,25 @@ public class Queue {
     return arenasSet;
   }
 
-  public static Queue getUnFinishedQueue() {
-    return unFinishedQueue;
+  public static DuelQueue getUnFinishedQueue() {
+    return unFinishedDuelQueue;
   }
 
   public static void reloadAll() {
-    queues.clear();
+    DUEL_QUEUES.clear();
 
     if (AuroraDuels.getInstance().getConfig().getBoolean("queues.enable-random-queue")) {
-      Queue queue = new Queue("random", "overall");
-      queue.addArenas(Arena.getArenas());
+      DuelQueue duelQueue = new DuelQueue("random", "overall");
+      duelQueue.addArenas(Arena.getArenas());
 
-      queue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, queue.getName());
+      duelQueue.displayItem = ItemStackUtil.createDisplayItem(Material.DIAMOND_SWORD, duelQueue.getName());
 
-      queues.add(queue);
+      DUEL_QUEUES.add(duelQueue);
     }
 
-    for (Queue queue : getQueues()) {
-      if (!Objects.equals(queue.getName(), "random")) {
-        queue.reload();
+    for (DuelQueue duelQueue : getQueues()) {
+      if (!Objects.equals(duelQueue.getName(), "random")) {
+        duelQueue.reload();
       }
     }
 
@@ -132,14 +132,14 @@ public class Queue {
     return player == currentCreator;
   }
 
-  public static Set<Queue> getQueues() {
-    return queues;
+  public static Set<DuelQueue> getQueues() {
+    return DUEL_QUEUES;
   }
 
-  public static Queue getQueue(String queueName) {
-    for (Queue queue : queues) {
-      if (Objects.equals(queue.name, queueName)) {
-        return queue;
+  public static DuelQueue getQueue(String queueName) {
+    for (DuelQueue duelQueue : DUEL_QUEUES) {
+      if (Objects.equals(duelQueue.name, queueName)) {
+        return duelQueue;
       }
     }
     return null;
@@ -155,7 +155,7 @@ public class Queue {
       lookingForMatch.clear();
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("not-looking-match"));
       return;
-    } else if (Queue.inQueue(player)) {
+    } else if (DuelQueue.inQueue(player)) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("in-queue"));
       return;
     }
@@ -266,14 +266,14 @@ public class Queue {
   public void create(Player player) {
     if (player.getInventory().getItemInMainHand().getItemMeta() == null) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-invalid-item"));
-      queues.remove(this);
+      DUEL_QUEUES.remove(this);
       return;
     }
 
     if (!this.exists() && arenasSet) {
       arenasSet = false;
       currentCreator = player;
-      unFinishedQueue = this;
+      unFinishedDuelQueue = this;
       displayItem =
           ItemStackUtil.createDisplayItem(
               player.getInventory().getItemInMainHand().getType(), this.getName());
@@ -305,7 +305,7 @@ public class Queue {
   public void createArenaList(Player player, String str) {
     if (str.equals("stop")) {
       arenasSet = true;
-      queues.add(this);
+      DUEL_QUEUES.add(this);
       data.create();
 
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-created"));
@@ -329,13 +329,13 @@ public class Queue {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("entered-queue"));
     }
 
-    Queue thisQueue = this;
+    DuelQueue thisDuelQueue = this;
 
     // TODO event oriented
     new BukkitRunnable() {
       @Override
       public void run() {
-        Set<Arena> arenasSet = thisQueue.getArenas();
+        Set<Arena> arenasSet = thisDuelQueue.getArenas();
         List<Arena> arenasList = new ArrayList<>(arenasSet);
         Collections.shuffle(arenasList);
         Iterator<Arena> arenaIterator = arenasList.iterator();
@@ -350,8 +350,8 @@ public class Queue {
 
             meta.lore(
                 List.of(
-                    Component.text("In Queue:" + thisQueue.inQueue()),
-                    Component.text("In Duel: " + Duel.inDuel(thisQueue.getName()))));
+                    Component.text("In Queue:" + thisDuelQueue.inQueue()),
+                    Component.text("In Duel: " + Duel.inDuel(thisDuelQueue.getName()))));
 
             displayItem.setItemMeta(meta);
           }
@@ -372,18 +372,18 @@ public class Queue {
   }
 
   public static void removeFromQueue(Player player) {
-    for (Queue queue : queues) {
-      for (Duel duel : queue.duelQueue) {
+    for (DuelQueue duelQueue : DUEL_QUEUES) {
+      for (Duel duel : duelQueue.duelQueue) {
         if (duel.contains(player)) {
-          queue.duelQueue.remove(duel);
+          duelQueue.duelQueue.remove(duel);
 
           duel.draw();
         }
       }
 
-      for (Player matchMaker : queue.lookingForMatch.values()) {
+      for (Player matchMaker : duelQueue.lookingForMatch.values()) {
         if (matchMaker == player) {
-          queue.lookingForMatch.clear();
+          duelQueue.lookingForMatch.clear();
         }
       }
     }
@@ -392,20 +392,20 @@ public class Queue {
   public static int inQueues() {
     int inQueues = 0;
 
-    for (Queue queue : Queue.getQueues()) {
-      inQueues = inQueues + queue.inQueue();
+    for (DuelQueue duelQueue : DuelQueue.getQueues()) {
+      inQueues = inQueues + duelQueue.inQueue();
     }
 
     return inQueues;
   }
 
   public static boolean inQueue(Player player) {
-    for (Queue queue : Queue.getQueues()) {
-      if (queue.lookingForMatch.containsValue(player)) {
+    for (DuelQueue duelQueue : DuelQueue.getQueues()) {
+      if (duelQueue.lookingForMatch.containsValue(player)) {
         return true;
       }
 
-      for (Player queuedPlayer : queue.getPlayers()) {
+      for (Player queuedPlayer : duelQueue.getPlayers()) {
         if (player == queuedPlayer) {
           return true;
         }

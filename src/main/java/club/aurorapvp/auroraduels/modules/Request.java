@@ -4,8 +4,8 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueueGUI;
 import club.aurorapvp.aurorakits.events.custom.KitSelectEvent;
 import club.aurorapvp.aurorakits.modules.kits.KitsGUI;
 import java.util.*;
@@ -27,7 +27,7 @@ public class Request {
     if (Request.hasPendingRequest(requester)) {
       requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("you-have-request"));
       return;
-    } else if (Queue.inQueue(requester)) {
+    } else if (DuelQueue.inQueue(requester)) {
       requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("in-queue"));
       return;
     }
@@ -40,14 +40,14 @@ public class Request {
       } else if (Duel.inDuel(player)) {
         requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("player-in-duel"));
         return;
-      } else if (Queue.inQueue(player)) {
+      } else if (DuelQueue.inQueue(player)) {
         requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("player-in-duel"));
         return;
       }
     }
 
-    if (Queue.getQueues().size() > 1 && duel.getQueue() == null) {
-      new QueueGUI("duel-request").open(requester);
+    if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
+      new DuelQueueGUI("duel-request").open(requester);
     } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
       requester.openInventory(KitsGUI.getGUI(requester).getCurrentPage());
     } else {
@@ -62,11 +62,11 @@ public class Request {
       return;
     }
 
-    if (!(event.getInventory().getHolder() instanceof QueueGUI queueGUI)) {
+    if (!(event.getInventory().getHolder() instanceof DuelQueueGUI duelQueueGUI)) {
       return;
     }
 
-    if (!Objects.equals(queueGUI.getName(), "duel-request")) {
+    if (!Objects.equals(duelQueueGUI.getName(), "duel-request")) {
       return;
     }
 

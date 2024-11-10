@@ -8,7 +8,7 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Placeholders;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -105,7 +105,7 @@ public final class AuroraDuels extends JavaPlugin {
     CommandManager.init();
     EventManager.init();
     Arena.init();
-    Queue.init();
+    DuelQueue.init();
     Wand.init();
 
     getLogger().info("AuroraDuels enabled in " + (System.currentTimeMillis() - startTime) + "ms");

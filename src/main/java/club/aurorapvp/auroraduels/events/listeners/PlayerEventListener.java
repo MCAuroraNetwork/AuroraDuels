@@ -6,7 +6,7 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.*;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.events.custom.KitRefillEvent;
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
@@ -53,8 +53,8 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerChat(AsyncChatEvent event) {
-    if (Queue.isCreator(event.getPlayer()) && !Queue.isArenasSet()) {
-      Queue.getUnFinishedQueue()
+    if (DuelQueue.isCreator(event.getPlayer()) && !DuelQueue.isArenasSet()) {
+      DuelQueue.getUnFinishedQueue()
           .createArenaList(
               event.getPlayer(), MiniMessage.miniMessage().serialize(event.originalMessage()));
       event.setCancelled(true);
@@ -174,8 +174,8 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
-    if (Queue.inQueue(event.getPlayer())) {
-      Queue.removeFromQueue(event.getPlayer());
+    if (DuelQueue.inQueue(event.getPlayer())) {
+      DuelQueue.removeFromQueue(event.getPlayer());
     }
 
     if (Request.hasPendingRequest(event.getPlayer())) {

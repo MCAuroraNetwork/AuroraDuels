@@ -2,7 +2,7 @@ package club.aurorapvp.auroraduels.events.listeners;
 
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.Request;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.events.custom.KitSelectEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +23,7 @@ public class GUIEventListener implements Listener {
       request.onQueueSelect(event);
     }
 
-    Queue.onQueueSelect(event);
+    DuelQueue.onQueueSelect(event);
   }
 
   @EventHandler

@@ -6,7 +6,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Collection;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class TeamDuel extends Duel {
   public TeamDuel(
       Collection<Player> teamOneMembers,
       Collection<Player> teamTwoMembers,
-      Queue queue,
+      DuelQueue duelQueue,
       Kit kit,
       Location respawnLocation,
       boolean ranked) {
@@ -77,7 +77,7 @@ public class TeamDuel extends Duel {
           }
         },
         respawnLocation,
-        queue,
+            duelQueue,
         kit,
         ranked);
 

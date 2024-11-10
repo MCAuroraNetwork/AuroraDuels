@@ -9,7 +9,7 @@ import club.aurorapvp.auroraduels.commands.duels.requests.FFADuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.StandardDuelCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.TeamDuelCommands;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
@@ -41,8 +41,8 @@ public class CommandManager {
         c -> {
           List<String> queueNames = new ArrayList<>();
 
-          for (Queue queue : Queue.getQueues()) {
-            queueNames.add(queue.getName());
+          for (DuelQueue duelQueue : DuelQueue.getQueues()) {
+            queueNames.add(duelQueue.getName());
           }
 
           return queueNames;

@@ -2,7 +2,7 @@ package club.aurorapvp.auroraduels.modules.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public abstract class Duel {
   protected Arena arena;
   protected int rounds = 1;
   protected int currentRound = 1;
-  private Queue queue;
+  private DuelQueue duelQueue;
   private boolean active = false;
   private boolean starting = false;
   private final Duel thisDuel = this;
@@ -99,11 +99,11 @@ public abstract class Duel {
     checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
   }
 
-  public Duel(Set<Player> players, Location respawnLocation, Queue queue, Kit kit, boolean ranked) {
+  public Duel(Set<Player> players, Location respawnLocation, DuelQueue duelQueue, Kit kit, boolean ranked) {
     this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;
-    this.queue = queue;
+    this.duelQueue = duelQueue;
     this.kit = kit;
     duels.add(this);
     checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
@@ -112,14 +112,14 @@ public abstract class Duel {
   public Duel(
       Set<Player> players,
       Location respawnLocation,
-      Queue queue,
+      DuelQueue duelQueue,
       Kit kit,
       boolean ranked,
       int rounds) {
     this.respawnLocation = respawnLocation;
     this.players.addAll(players);
     this.ranked = ranked;
-    this.queue = queue;
+    this.duelQueue = duelQueue;
     this.kit = kit;
     this.rounds = rounds;
     duels.add(this);
@@ -207,7 +207,7 @@ public abstract class Duel {
         .filter(
             duel ->
                 Optional.ofNullable(duel.getQueue())
-                    .map(Queue::getName)
+                    .map(DuelQueue::getName)
                     .filter(queueName::equals)
                     .isPresent())
         .mapToInt(Duel::inDuel)
@@ -258,12 +258,12 @@ public abstract class Duel {
 
   public abstract void draw();
 
-  public Queue getQueue() {
-    return queue;
+  public DuelQueue getQueue() {
+    return duelQueue;
   }
 
-  public void setQueue(Queue queue) {
-    this.queue = queue;
+  public void setQueue(DuelQueue duelQueue) {
+    this.duelQueue = duelQueue;
   }
 
   public Kit getKit() {

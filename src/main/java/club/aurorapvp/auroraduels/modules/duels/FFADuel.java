@@ -5,7 +5,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.auroraduels.util.LocationUtil;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import io.papermc.paper.entity.LookAnchor;
@@ -34,8 +34,8 @@ public class FFADuel extends Duel {
   }
 
   public FFADuel(
-      Set<Player> players, Queue queue, Kit kit, Location respawnLocation, boolean ranked) {
-    super(players, respawnLocation, queue, kit, ranked);
+          Set<Player> players, DuelQueue duelQueue, Kit kit, Location respawnLocation, boolean ranked) {
+    super(players, respawnLocation, duelQueue, kit, ranked);
   }
 
   public void setDead(Player player) {

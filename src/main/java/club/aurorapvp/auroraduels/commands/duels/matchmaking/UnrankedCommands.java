@@ -1,8 +1,8 @@
 package club.aurorapvp.auroraduels.commands.duels.matchmaking;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.modules.queues.Queue;
-import club.aurorapvp.auroraduels.modules.queues.QueueGUI;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
+import club.aurorapvp.auroraduels.modules.queues.DuelQueueGUI;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -24,17 +24,17 @@ public class UnrankedCommands extends BaseCommand {
   @SuppressWarnings("unused")
   public void onFindMatch(Player player, @Optional String name) {
     if (name == null) {
-      new QueueGUI("unranked-match").open(player);
+      new DuelQueueGUI("unranked-match").open(player);
       return;
     }
 
-    Queue queue = Queue.getQueue(name);
+    DuelQueue duelQueue = DuelQueue.getQueue(name);
 
-    if (queue == null) {
+    if (duelQueue == null) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("queue-not-found"));
       return;
     }
 
-    queue.findMatch(player, false);
+    duelQueue.findMatch(player, false);
   }
 }
