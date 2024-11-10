@@ -58,9 +58,9 @@ public class StandardDuel extends Duel implements Listener {
   }
 
   public Player getOpponent(Player player) {
-    if (player == playerOne) {
+    if (player.equals(playerOne)) {
       return playerTwo;
-    } else if (player == playerTwo) {
+    } else if (player.equals(playerTwo)) {
       return playerOne;
     } else {
       return null;

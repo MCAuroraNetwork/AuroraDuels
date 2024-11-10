@@ -40,7 +40,6 @@ public class LocationUtil {
     Material belowBlockType = location.clone().add(0, -1, 0).getBlock().getType();
     Material aboveBlockType = location.clone().add(0, 1, 0).getBlock().getType();
 
-    boolean isAir = blockType == Material.AIR;
     boolean isNotDangerous =
         !blockType.isOccluding()
             && !blockType.isSolid()
@@ -50,9 +49,8 @@ public class LocationUtil {
         belowBlockType.isSolid()
             && belowBlockType != Material.LAVA
             && belowBlockType != Material.MAGMA_BLOCK;
-    boolean hasEnoughHeadroom = aboveBlockType == Material.AIR;
 
-    if (!isAir && !(isNotDangerous && isOnSolidGround && hasEnoughHeadroom)) {
+    if (!blockType.isAir() && !(isNotDangerous && isOnSolidGround && aboveBlockType.isAir())) {
       int maxAdjustments = 5;
       int adjustments = 0;
 
@@ -62,7 +60,6 @@ public class LocationUtil {
         belowBlockType = location.clone().add(0, -1, 0).getBlock().getType();
         aboveBlockType = location.clone().add(0, 1, 0).getBlock().getType();
 
-        isAir = blockType == Material.AIR;
         isNotDangerous =
             !blockType.isOccluding()
                 && !blockType.isSolid()
@@ -72,9 +69,8 @@ public class LocationUtil {
             belowBlockType.isSolid()
                 && belowBlockType != Material.LAVA
                 && belowBlockType != Material.MAGMA_BLOCK;
-        hasEnoughHeadroom = aboveBlockType == Material.AIR;
 
-        if (isAir || (isNotDangerous && isOnSolidGround && hasEnoughHeadroom)) {
+        if (blockType.isAir() || (isNotDangerous && isOnSolidGround && aboveBlockType.isAir())) {
           return true;
         }
 
@@ -82,6 +78,6 @@ public class LocationUtil {
       }
     }
 
-    return isAir || (isNotDangerous && isOnSolidGround && hasEnoughHeadroom);
+    return blockType.isAir() || (isNotDangerous && isOnSolidGround && aboveBlockType.isAir());
   }
 }

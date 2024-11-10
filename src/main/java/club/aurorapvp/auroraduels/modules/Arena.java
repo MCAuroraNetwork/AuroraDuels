@@ -175,7 +175,7 @@ public class Arena {
   }
 
   public void startCreation(Player player) {
-    if (state == ArenaState.IDLE && !this.exists()) {
+    if (state.equals(ArenaState.IDLE) && !this.exists()) {
       state = ArenaState.SPAWN_1;
       Wand.setActive(Wand.WandActivity.LEFT);
       unfinishedArena = this;
@@ -193,7 +193,7 @@ public class Arena {
   }
 
   public void setSpawns(Player player, Action action, BlockVector3 vector) {
-    if (action.isLeftClick() && state == ArenaState.SPAWN_1) {
+    if (action.isLeftClick() && state.equals(ArenaState.SPAWN_1)) {
       spawn1 = vector.add(0, 1, 0);
 
       player.sendMessage(
@@ -213,7 +213,7 @@ public class Arena {
       Wand.setActive(Wand.WandActivity.RIGHT);
     }
 
-    if (action.isRightClick() && state == ArenaState.SPAWN_2) {
+    if (action.isRightClick() && state.equals(ArenaState.SPAWN_2)) {
       spawn2 = vector.add(0, 1, 0);
 
       player.sendMessage(
@@ -237,7 +237,7 @@ public class Arena {
   }
 
   public void setCorners(Player player, Action action, BlockVector3 vector) {
-    if (action.isLeftClick() && state == ArenaState.CORNER_1) {
+    if (action.isLeftClick() && state.equals(ArenaState.CORNER_1)) {
       pos1 = vector;
 
       corner1 = new Location(this.getWorld(), vector.x(), vector.y(), vector.z());
@@ -259,7 +259,7 @@ public class Arena {
       Wand.setActive(Wand.WandActivity.RIGHT);
     }
 
-    if (action.isRightClick() && state == ArenaState.CORNER_2) {
+    if (action.isRightClick() && state.equals(ArenaState.CORNER_2)) {
       pos2 = vector;
 
       corner2 = new Location(this.getWorld(), vector.x(), vector.y(), vector.z());

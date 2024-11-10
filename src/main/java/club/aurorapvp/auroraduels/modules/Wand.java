@@ -11,9 +11,9 @@ public class Wand {
   }
 
   public static boolean isActive(Action action) {
-    return ((activity == WandActivity.LEFT && action.isLeftClick())
-        || (activity == WandActivity.RIGHT && action.isRightClick())
-        || activity == WandActivity.BOTH);
+    return ((activity.equals(WandActivity.LEFT) && action.isLeftClick())
+        || (activity.equals(WandActivity.RIGHT) && action.isRightClick())
+        || activity.equals(WandActivity.BOTH));
   }
 
   public static void setActive(WandActivity value) {

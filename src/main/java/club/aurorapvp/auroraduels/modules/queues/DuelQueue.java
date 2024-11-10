@@ -129,7 +129,7 @@ public class DuelQueue {
   }
 
   public static boolean isCreator(Player player) {
-    return player == currentCreator;
+    return player.equals(currentCreator);
   }
 
   public static Set<DuelQueue> getQueues() {
@@ -359,7 +359,7 @@ public class DuelQueue {
       }
 
       for (Player matchMaker : duelQueue.lookingForMatch.values()) {
-        if (matchMaker == player) {
+        if (matchMaker.equals(player)) {
           duelQueue.lookingForMatch.clear();
         }
       }
@@ -383,7 +383,7 @@ public class DuelQueue {
       }
 
       for (Player queuedPlayer : duelQueue.getPlayers()) {
-        if (player == queuedPlayer) {
+        if (player.equals(queuedPlayer)) {
           return true;
         }
       }

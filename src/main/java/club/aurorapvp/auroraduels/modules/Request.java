@@ -114,7 +114,7 @@ public class Request {
 
   public static Request getRequest(Player player) {
     for (Request request : PENDING_REQUESTS) {
-      if (request.requester == player || request.requested.contains(player)) {
+      if (request.requester.equals(player) || request.requested.contains(player)) {
         return request;
       }
     }
@@ -123,7 +123,7 @@ public class Request {
 
   public static Request getRequest(Player requester, Player requested) {
     for (Request request : PENDING_REQUESTS) {
-      if (request.requester == requester && request.requested.contains(requested)) {
+      if (request.requester.equals(requester) && request.requested.contains(requested)) {
         return request;
       }
     }
@@ -134,7 +134,7 @@ public class Request {
     Set<Request> matchingRequests = new HashSet<>();
 
     for (Request request : PENDING_REQUESTS) {
-      if (request.requester == player || request.requested.contains(player)) {
+      if (request.requester.equals(player) || request.requested.contains(player)) {
         matchingRequests.add(request);
       }
     }
@@ -144,7 +144,7 @@ public class Request {
 
   public static boolean hasPendingRequest(Player requester, Player requested) {
     for (Request request : PENDING_REQUESTS) {
-      if (request.requester == requester && request.requested.contains(requested)) {
+      if (request.requester.equals(requester) && request.requested.contains(requested)) {
         return true;
       }
     }
@@ -153,7 +153,7 @@ public class Request {
 
   public static boolean hasPendingRequest(Player player) {
     for (Request request : PENDING_REQUESTS) {
-      if (request.requester == player || request.requested.contains(player)) {
+      if (request.requester.equals(player) || request.requested.contains(player)) {
         return true;
       }
     }
