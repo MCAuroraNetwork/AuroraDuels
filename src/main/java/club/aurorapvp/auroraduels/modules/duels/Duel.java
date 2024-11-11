@@ -29,7 +29,7 @@ public abstract class Duel {
   private static final NamespacedKey duelKitKey =
       new NamespacedKey(AuroraDuels.getInstance(), "duelkit");
   private static final Map<UUID, Duel> LAST_DUEL = new HashMap<>();
-  protected static Set<Duel> duels = new HashSet<>();
+  protected static final Set<Duel> duels = new HashSet<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   protected final Set<BossBar> spectatorBars = new HashSet<>();
@@ -83,30 +83,16 @@ public abstract class Duel {
       };
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked) {
-    this.respawnLocation = respawnLocation;
-    this.players.addAll(players);
-    this.ranked = ranked;
-    duels.add(this);
-    checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
+    this(players, respawnLocation, null, null, ranked, 0);
   }
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked, int rounds) {
-    this.respawnLocation = respawnLocation;
-    this.players.addAll(players);
-    this.ranked = ranked;
-    this.rounds = rounds;
-    duels.add(this);
-    checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
+    this(players, respawnLocation, null, null, ranked, rounds);
   }
 
-  public Duel(Set<Player> players, Location respawnLocation, DuelQueue duelQueue, Kit kit, boolean ranked) {
-    this.respawnLocation = respawnLocation;
-    this.players.addAll(players);
-    this.ranked = ranked;
-    this.duelQueue = duelQueue;
-    this.kit = kit;
-    duels.add(this);
-    checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
+  public Duel(
+      Set<Player> players, Location respawnLocation, DuelQueue duelQueue, Kit kit, boolean ranked) {
+    this(players, respawnLocation, duelQueue, kit, ranked, 0);
   }
 
   public Duel(
