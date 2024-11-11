@@ -43,6 +43,10 @@ public class DuelEndEvent extends DuelOverEvent {
             },
             3000);
 
+    for (Player player : duel.getPlayers()) {
+      duel.setHealthRemaining(player, player.getHealth() + player.getAbsorptionAmount());
+    }
+
     for (Player player : Set.copyOf(duel.getSpectators())) {
       duel.setSpectator(player, false);
     }

@@ -1,7 +1,9 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
+import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
+import club.aurorapvp.auroraduels.modules.DuelStats;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.io.File;
@@ -30,6 +32,7 @@ public abstract class Duel {
       new NamespacedKey(AuroraDuels.getInstance(), "duelkit");
   private static final Map<UUID, Duel> LAST_DUEL = new HashMap<>();
   protected static final Set<Duel> duels = new HashSet<>();
+  private final Map<UUID, DuelStats> stats = new HashMap<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   protected final Set<BossBar> spectatorBars = new HashSet<>();
@@ -110,6 +113,13 @@ public abstract class Duel {
     this.rounds = rounds;
     duels.add(this);
     checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
+
+    for (Player player : this.getPlayers()) {
+      stats.put(player.getUniqueId(), new DuelStats(
+          player,
+          this.getArena(),
+          Rating.getRating("overall_duels").getScore(player).getPoints()));
+    }
   }
 
   public static Kit getDuelKit(Player player) {
@@ -306,6 +316,22 @@ public abstract class Duel {
 
   public int inDuel() {
     return this.getPlayers().size();
+  }
+
+  public void addTotemPop(Player player) {
+    stats.get(player.getUniqueId()).addTotemPop();
+  }
+
+  public void addDamagedReceived(Player player, double damage) {
+    stats.get(player.getUniqueId()).addDamageReceived((int) damage);
+  }
+
+  public void addDamagedDealt(Player player, double damage) {
+    stats.get(player.getUniqueId()).addDamageDealt((int) damage);
+  }
+
+  public void setHealthRemaining(Player player, double healthRemaining) {
+    stats.get(player.getUniqueId()).setHealthRemaining((int) healthRemaining);
   }
 
   public void setSpectator(Player player, boolean spectator) {

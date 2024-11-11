@@ -116,7 +116,7 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onPlayerDamaged(PlayerDamagedByPlayerEvent event) {
-    if (event.getDamaged().equals(event.getAttacker())) {
+    if (event.getDamaged().equals(event.getDamager())) {
       return;
     }
 
@@ -131,7 +131,7 @@ public class PlayerEventListener implements Listener {
     }
 
     for (Player teamMate : teamDuel.getTeammates(event.getDamaged())) {
-      if (teamMate.equals(event.getAttacker())) {
+      if (teamMate.equals(event.getDamager())) {
         event.setCancelled(true);
       }
     }
