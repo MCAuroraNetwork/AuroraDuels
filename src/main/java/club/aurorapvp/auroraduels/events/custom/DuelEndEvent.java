@@ -52,6 +52,8 @@ public class DuelEndEvent extends DuelOverEvent {
 
       DuelStats stats = duel.getStats(player);
 
+      stats.save();
+
       if (AuroraDuels.getInstance().isAuroraCombatInstalled()) {
         summaries.add(
                 AuroraDuels.getInstance()

@@ -1,63 +1,79 @@
 package club.aurorapvp.auroraduels.modules;
 
-import org.bukkit.entity.Player;
+import club.aurorapvp.auroraduels.data.DuelStatsDataHandler;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.UUID;
 
-public class DuelStats {
-    private final Player player;
-    private final Arena arena;
-    private final int elo;
-    private int totemPops = 0;
-    private int damageReceived = 0;
-    private int damageDealt = 0;
-    private int healthRemaining;
+public class DuelStats implements Serializable {
+  @Serial private static final long serialVersionUID = 1L;
 
-    public DuelStats(Player player, Arena arena, int elo) {
-        this.player = player;
-        this.arena = arena;
-        this.elo = elo;
-    }
+  private final DuelStatsDataHandler data = new DuelStatsDataHandler(this);
+  private final UUID uuid;
+  private final String arenaName;
+  private final int elo;
+  private final long timeStarted;
+  private int totemPops = 0;
+  private int damageReceived = 0;
+  private int damageDealt = 0;
+  private int healthRemaining;
 
-    public Player getPlayer() {
-        return player;
-    }
+  public DuelStats(UUID uuid, String arenaName, int elo, long timeStarted) {
+    this.uuid = uuid;
+    this.arenaName = arenaName;
+    this.elo = elo;
+    this.timeStarted = timeStarted;
+  }
 
-    public Arena getArena() {
-        return arena;
-    }
+  public UUID getUuid() {
+    return uuid;
+  }
 
-    public int getElo() {
-        return elo;
-    }
+  public String getArenaName() {
+    return arenaName;
+  }
 
-    public int getTotemPops() {
-        return totemPops;
-    }
+  public int getElo() {
+    return elo;
+  }
 
-    public int getDamageReceived() {
-        return damageReceived;
-    }
+  public long getTimeStarted() {
+    return timeStarted;
+  }
 
-    public int getDamageDealt() {
-        return damageDealt;
-    }
+  public int getTotemPops() {
+    return totemPops;
+  }
 
-    public int getHealthRemaining() {
-        return healthRemaining;
-    }
+  public int getDamageReceived() {
+    return damageReceived;
+  }
 
-    public void addTotemPop() {
-        this.totemPops++;
-    }
+  public int getDamageDealt() {
+    return damageDealt;
+  }
 
-    public void addDamageReceived(int damage) {
-        this.damageReceived += damage;
-    }
+  public int getHealthRemaining() {
+    return healthRemaining;
+  }
 
-    public void addDamageDealt(int damage) {
-        this.damageDealt += damage;
-    }
+  public void addTotemPop() {
+    this.totemPops++;
+  }
 
-    public void setHealthRemaining(int health) {
-        this.healthRemaining = health;
-    }
+  public void addDamageReceived(int damage) {
+    this.damageReceived += damage;
+  }
+
+  public void addDamageDealt(int damage) {
+    this.damageDealt += damage;
+  }
+
+  public void setHealthRemaining(int health) {
+    this.healthRemaining = health;
+  }
+
+  public void save() {
+    data.save();
+  }
 }

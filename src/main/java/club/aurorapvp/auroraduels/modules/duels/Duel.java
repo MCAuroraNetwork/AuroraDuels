@@ -115,10 +115,13 @@ public abstract class Duel {
     checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
 
     for (Player player : this.getPlayers()) {
-      stats.put(player.getUniqueId(), new DuelStats(
-          player,
-          this.getArena(),
-          Rating.getRating("overall_duels").getScore(player).getPoints()));
+      stats.put(
+          player.getUniqueId(),
+          new DuelStats(
+              player.getUniqueId(),
+              this.getArena().getName(),
+              Rating.getRating("overall_duels").getScore(player).getPoints(),
+              System.currentTimeMillis()));
     }
   }
 
