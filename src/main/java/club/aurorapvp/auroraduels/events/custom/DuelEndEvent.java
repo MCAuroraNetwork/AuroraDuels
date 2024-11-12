@@ -78,6 +78,12 @@ public class DuelEndEvent extends DuelOverEvent {
       }
     }
 
+    for (Player player : duel.getPlayers()) {
+      for (Component message : summaries) {
+        player.sendMessage(message);
+      }
+    }
+
     for (Player player : Set.copyOf(duel.getSpectators())) {
       duel.setSpectator(player, false);
     }
