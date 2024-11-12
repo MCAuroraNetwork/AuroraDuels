@@ -6,6 +6,7 @@ import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
+import club.aurorapvp.auroraduels.modules.DuelStats;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.Winstracker;
 import github.scarsz.discordsrv.DiscordSRV;
@@ -13,6 +14,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import java.awt.Color;
 import java.util.*;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -43,8 +45,37 @@ public class DuelEndEvent extends DuelOverEvent {
             },
             3000);
 
+    Set<Component> summaries = new HashSet<>();
+
     for (Player player : duel.getPlayers()) {
       duel.setHealthRemaining(player, player.getHealth() + player.getAbsorptionAmount());
+
+      DuelStats stats = duel.getStats(player);
+
+      if (AuroraDuels.getInstance().isAuroraCombatInstalled()) {
+        summaries.add(
+                AuroraDuels.getInstance()
+                        .getLang()
+                        .formatComponent(
+                                "duel-summary-elo",
+                                player.getName(),
+                                stats.getElo(),
+                                stats.getTotemPops(),
+                                stats.getDamageDealt(),
+                                stats.getDamageReceived(),
+                                stats.getHealthRemaining()));
+      } else {
+        summaries.add(
+                AuroraDuels.getInstance()
+                        .getLang()
+                        .formatComponent(
+                                "duel-summary",
+                                player.getName(),
+                                stats.getTotemPops(),
+                                stats.getDamageDealt(),
+                                stats.getDamageReceived(),
+                                stats.getHealthRemaining()));
+      }
     }
 
     for (Player player : Set.copyOf(duel.getSpectators())) {

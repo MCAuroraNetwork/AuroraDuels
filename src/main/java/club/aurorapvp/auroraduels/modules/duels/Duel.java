@@ -318,6 +318,10 @@ public abstract class Duel {
     return this.getPlayers().size();
   }
 
+  public DuelStats getStats(Player player) {
+    return stats.get(player.getUniqueId());
+  }
+
   public void addTotemPop(Player player) {
     stats.get(player.getUniqueId()).addTotemPop();
   }

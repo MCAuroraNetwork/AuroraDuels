@@ -111,10 +111,28 @@ public class Lang {
     DEFAULTS.put(
             "discord-on-winstreak",
             "%1$s has a Winstreak of %2$s!");
-    DEFAULTS.put("reloaded", "prefix <green>Reloaded");
-    DEFAULTS.put(
-        "help-command",
-        """
+    DEFAULTS.put("duel-summary-elo",
+            """
+            Duel Summary: %1$s - %2$s ELO
+            
+            Totem Pops: %3$s
+            Damage Dealt: %4$s
+            Damage Received: %5$s
+            Health Remaining: %6$s
+            """);
+    DEFAULTS.put("duel-summary",
+            """
+            Duel Summary: %1$s
+            
+            Totem Pops: %2$s
+            Damage Dealt: %3$s
+            Damage Received: %4$s
+            Health Remaining: %5$s
+            """);
+        DEFAULTS.put("reloaded", "prefix <green>Reloaded");
+        DEFAULTS.put(
+            "help-command",
+            """
             prefix <yellow><bold>All Commands:
 
 
