@@ -34,6 +34,8 @@ public class Config {
     DEFAULTS.put("duels.max-duration", 600000);
     DEFAULTS.put("misc.min-winstreak-to-announce", 10);
     DEFAULTS.put("requests.expiry-time", 600000);
+    DEFAULTS.put("mongodb.database-name", "aurora_duels");
+    DEFAULTS.put("mongodb.address", "mongodb://localhost:27017");
 
     for (String path : DEFAULTS.keySet()) {
       if (!getYaml().isSet(path) || getYaml().getString(path) == null) {

@@ -2,47 +2,52 @@ package club.aurorapvp.auroraduels.data;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.duels.Winstracker;
-import org.bukkit.NamespacedKey;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
 
 public class WinsDataHandler {
 
-  private final PersistentDataContainer container;
-  private static final NamespacedKey winsKey =
-      new NamespacedKey(AuroraDuels.getInstance(), "duel-wins");
-  private static final NamespacedKey lossesKey =
-      new NamespacedKey(AuroraDuels.getInstance(), "duel-losses");
-  private static final NamespacedKey winStreakKey =
-      new NamespacedKey(AuroraDuels.getInstance(), "duel-winstreak");
+  private final MongoCollection<Document> collection;
   private final Winstracker tracker;
+  private final String playerId;
 
   public WinsDataHandler(Winstracker tracker) {
     this.tracker = tracker;
-    this.container = tracker.getPlayer().getPersistentDataContainer();
+    this.collection = AuroraDuels.getInstance().getDatabase().getCollection("wins_data");
+    this.playerId = tracker.getPlayer().getUniqueId().toString();
   }
 
   public int getWinstreak() {
-    return container.getOrDefault(winStreakKey, PersistentDataType.INTEGER, -1);
+    Document playerData = collection.find(Filters.eq("_id", playerId)).first();
+    return playerData != null ? playerData.getInteger("winstreak", -1) : -1;
   }
 
   public int getWins() {
-    return container.getOrDefault(winsKey, PersistentDataType.INTEGER, -1);
+    Document playerData = collection.find(Filters.eq("_id", playerId)).first();
+    return playerData != null ? playerData.getInteger("wins", -1) : -1;
   }
 
   public int getLosses() {
-    return container.getOrDefault(lossesKey, PersistentDataType.INTEGER, -1);
+    Document playerData = collection.find(Filters.eq("_id", playerId)).first();
+    return playerData != null ? playerData.getInteger("losses", -1) : -1;
   }
 
   public void save() {
-    container.set(winStreakKey, PersistentDataType.INTEGER, tracker.getWinstreak());
-    container.set(winsKey, PersistentDataType.INTEGER, tracker.getWins());
-    container.set(lossesKey, PersistentDataType.INTEGER, tracker.getLosses());
+    Document playerData = new Document()
+            .append("_id", playerId)
+            .append("winstreak", tracker.getWinstreak())
+            .append("wins", tracker.getWins())
+            .append("losses", tracker.getLosses());
+
+    collection.updateOne(
+            Filters.eq("_id", playerId),
+            new Document("$set", playerData),
+            new com.mongodb.client.model.UpdateOptions().upsert(true)
+    );
   }
 
   public boolean exists() {
-    return container.has(winStreakKey, PersistentDataType.INTEGER)
-        && container.has(winsKey, PersistentDataType.INTEGER)
-        && container.has(lossesKey, PersistentDataType.INTEGER);
+    return collection.find(Filters.eq("_id", playerId)).first() != null;
   }
 }

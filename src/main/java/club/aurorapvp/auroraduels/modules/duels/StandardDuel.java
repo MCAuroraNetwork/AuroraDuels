@@ -199,24 +199,21 @@ public class StandardDuel extends Duel implements Listener {
   }
 
   private BossBar createBossbar(Player opponent) {
-    BossBar bossbar = BossBar.bossBar(
-            opponent
-                    .displayName()
-                    .decorate(TextDecoration.BOLD)
-                    .color(NamedTextColor.YELLOW)
-                    .appendSpace()
-                    .append(
-                            Component.text(
-                                            (int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
-                                    .color(NamedTextColor.RED))
-                    .appendSpace()
-                    .append(Component.text(opponent.getPing() + "ms").color(NamedTextColor.AQUA)),
-            1.0f,
-            Color.RED,
-            Overlay.PROGRESS);
-
-
-    return bossbar;
+      return BossBar.bossBar(
+              opponent
+                      .displayName()
+                      .decorate(TextDecoration.BOLD)
+                      .color(NamedTextColor.YELLOW)
+                      .appendSpace()
+                      .append(
+                              Component.text(
+                                              (int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
+                                      .color(NamedTextColor.RED))
+                      .appendSpace()
+                      .append(Component.text(opponent.getPing() + "ms").color(NamedTextColor.AQUA)),
+              1.0f,
+              Color.RED,
+              Overlay.PROGRESS);
   }
 
   public void endDuel(Collection<Player> winners, Collection<Player> losers) {

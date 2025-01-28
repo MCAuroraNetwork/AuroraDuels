@@ -2,53 +2,63 @@ package club.aurorapvp.auroraduels.data;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.DuelStats;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
+
 import java.util.UUID;
-import java.util.logging.Level;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 public class DuelStatsDataHandler {
-  private static final File dir = new File(AuroraDuels.getInstance().getDataFolder(), "/stats/");
-  private static final Yaml yaml = new Yaml(new Constructor(DuelStats.class));
+  private final MongoCollection<Document> collection;
   private final DuelStats stats;
 
   public DuelStatsDataHandler(DuelStats stats) {
     this.stats = stats;
-  }
-
-  private static File getDir(UUID playerUuid) {
-    File folder = new File(dir, playerUuid.toString());
-    if (!folder.exists()) {
-      folder.mkdirs();
-    }
-    return folder;
+    this.collection = AuroraDuels.getInstance().getDatabase().getCollection("duel_stats");
   }
 
   public void save() {
-    File dir = getDir(stats.getUuid());
-    File statsFile = new File(dir, stats.getTimeStarted() + ".yml");
+    Document statsDocument = new Document()
+            .append("_id", stats.getUuid().toString() + "-" + stats.getTimeStarted())
+            .append("uuid", stats.getUuid().toString())
+            .append("arenaName", stats.getArenaName())
+            .append("elo", stats.getElo())
+            .append("timeStarted", stats.getTimeStarted())
+            .append("totemPops", stats.getTotemPops())
+            .append("damageReceived", stats.getDamageReceived())
+            .append("damageDealt", stats.getDamageDealt())
+            .append("healthRemaining", stats.getHealthRemaining());
 
-    try (FileWriter writer = new FileWriter(statsFile)) {
-      yaml.dump(stats, writer);
-    } catch (IOException e) {
-      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save duel stats", e);
-    }
+    collection.updateOne(
+            Filters.eq("_id", stats.getUuid().toString() + "-" + stats.getTimeStarted()),
+            new Document("$set", statsDocument),
+            new com.mongodb.client.model.UpdateOptions().upsert(true)
+    );
   }
 
   public static DuelStats deserializeDuelStats(UUID playerUuid, long timeStarted) {
-    File dir = getDir(playerUuid);
-    File statsFile = new File(dir, timeStarted + ".yml");
+    MongoCollection<Document> collection = AuroraDuels.getInstance().getDatabase().getCollection("duel_stats");
+    Document statsDocument = collection.find(Filters.eq("_id", playerUuid.toString() + "-" + timeStarted)).first();
 
-    try (FileReader reader = new FileReader(statsFile)) {
-      return yaml.load(reader);
-    } catch (IOException e) {
-      AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to read duel stats", e);
-
+    if (statsDocument == null) {
       return null;
     }
+
+    DuelStats stats = new DuelStats(
+            UUID.fromString(statsDocument.getString("uuid")),
+            statsDocument.getString("arenaName"),
+            statsDocument.getInteger("elo"),
+            statsDocument.getLong("timeStarted")
+    );
+
+    stats.setHealthRemaining(statsDocument.getInteger("healthRemaining"));
+    stats.addDamageReceived(statsDocument.getInteger("damageReceived"));
+    stats.addDamageDealt(statsDocument.getInteger("damageDealt"));
+
+    for (int i = 0; i < statsDocument.getInteger("totemPops"); i++) {
+      stats.addTotemPop();
+    }
+
+    return stats;
   }
 }
