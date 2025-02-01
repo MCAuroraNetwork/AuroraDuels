@@ -80,6 +80,22 @@ public final class AuroraDuels extends JavaPlugin {
     // Initialize configs
     config = new Config();
     lang = new Lang();
+    
+    String connectionString =
+            this.getConfig().getString("mongodb.address", "mongodb://localhost:27017");
+    String databaseName = this.getConfig().getString("mongodb.database-name", "aurora_combat");
+
+    mongoClient = MongoClients.create(connectionString);
+    mongoDatabase = mongoClient.getDatabase(databaseName);
+
+    getLogger().info("Connected to MongoDB database: " + databaseName);
+
+    // Initialize classes
+    CommandManager.init();
+    EventManager.init();
+    Arena.init();
+    DuelQueue.init();
+    Wand.init();
 
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -110,22 +126,6 @@ public final class AuroraDuels extends JavaPlugin {
         && this.getConfig().getBoolean("optional-plugins.discordsrv-compatibility")) {
       discordSrvInstalled = true;
     }
-
-    // Initialize classes
-    CommandManager.init();
-    EventManager.init();
-    Arena.init();
-    DuelQueue.init();
-    Wand.init();
-
-    String connectionString =
-            this.getConfig().getString("mongodb.address", "mongodb://localhost:27017");
-    String databaseName = this.getConfig().getString("mongodb.database-name", "aurora_combat");
-
-    mongoClient = MongoClients.create(connectionString);
-    mongoDatabase = mongoClient.getDatabase(databaseName);
-
-    getLogger().info("Connected to MongoDB database: " + databaseName);
 
     getLogger().info("AuroraDuels enabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }
