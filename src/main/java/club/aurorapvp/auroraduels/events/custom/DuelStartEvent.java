@@ -1,6 +1,8 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
+import club.aurorapvp.auroraduels.modules.DuelStats;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Timer;
@@ -90,6 +92,16 @@ public class DuelStartEvent extends Event {
             AuroraDuels.getInstance().getConfig().getInt("duels.max-duration"));
 
     duel.getArena().setOccupied(true);
+
+    for (Player player : duel.getPlayers()) {
+      duel.getStats().put(
+              player.getUniqueId(),
+              new DuelStats(
+                      player.getUniqueId(),
+                      duel.getArena().getName(),
+                      Rating.getRating("overall_duels").getScore(player).getPoints(),
+                      System.currentTimeMillis()));
+    }
   }
 
   @SuppressWarnings("unused")

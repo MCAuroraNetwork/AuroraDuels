@@ -113,16 +113,6 @@ public abstract class Duel {
     this.rounds = rounds;
     duels.add(this);
     checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
-
-    for (Player player : this.getPlayers()) {
-      stats.put(
-          player.getUniqueId(),
-          new DuelStats(
-              player.getUniqueId(),
-              this.getArena().getName(),
-              Rating.getRating("overall_duels").getScore(player).getPoints(),
-              System.currentTimeMillis()));
-    }
   }
 
   public static Kit getDuelKit(Player player) {
@@ -256,6 +246,10 @@ public abstract class Duel {
   public abstract void endDuel(Collection<Player> winners, Collection<Player> losers);
 
   public abstract void draw();
+
+  public Map<UUID, DuelStats> getStats() {
+    return stats;
+  }
 
   public DuelQueue getQueue() {
     return duelQueue;
