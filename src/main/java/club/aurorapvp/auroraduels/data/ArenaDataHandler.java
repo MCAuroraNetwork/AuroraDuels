@@ -2,111 +2,103 @@ package club.aurorapvp.auroraduels.data;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
-import org.bson.Document;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ArenaDataHandler {
 
-  private final MongoCollection<Document> collection;
   private static Arena arena;
-  private final String arenaName;
+  private final File FILE;
+  private final YamlConfiguration arenaData;
 
   public ArenaDataHandler(Arena arena) {
     ArenaDataHandler.arena = arena;
-    this.collection = AuroraDuels.getInstance().getDatabase().getCollection("arenas");
-    this.arenaName = arena.getName();
+
+    FILE =
+            new File(AuroraDuels.getInstance().getDataFolder(), "/arenas/" + arena.getName() + ".yml");
+    arenaData = YamlConfiguration.loadConfiguration(FILE);
   }
 
   public World getWorld() {
-    Document arenaData = collection.find(Filters.eq("_id", arenaName)).first();
-    if (arenaData == null || !arenaData.containsKey("world")) {
-      return null;
-    }
-    return Bukkit.getWorld(arenaData.getString("world"));
+    return Bukkit.getWorld(Objects.requireNonNull(arenaData.getString("arena.world")));
   }
 
   public BlockVector3 getFirstSpawn() {
-    Document arenaData = collection.find(Filters.eq("_id", arenaName)).first();
-    if (arenaData == null || !arenaData.containsKey("spawns.spawn1")) {
-      return null;
-    }
-    Document spawn = (Document) arenaData.get("spawns.spawn1");
-    return BlockVector3.at(spawn.getInteger("x"), spawn.getInteger("y"), spawn.getInteger("z"));
+    return BukkitAdapter.asBlockVector(
+            Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn1")));
   }
 
   public BlockVector3 getSecondSpawn() {
-    Document arenaData = collection.find(Filters.eq("_id", arenaName)).first();
-    if (arenaData == null || !arenaData.containsKey("spawns.spawn2")) {
-      return null;
-    }
-    Document spawn = (Document) arenaData.get("spawns.spawn2");
-    return BlockVector3.at(spawn.getInteger("x"), spawn.getInteger("y"), spawn.getInteger("z"));
+    return BukkitAdapter.asBlockVector(
+            Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn2")));
   }
 
   public Location getCornerOne() {
-    Document arenaData = collection.find(Filters.eq("_id", arenaName)).first();
-    if (arenaData == null || !arenaData.containsKey("corners.pos1")) {
-      return null;
-    }
-    Document corner = (Document) arenaData.get("corners.pos1");
-    World world = getWorld();
-    return new Location(world, corner.getDouble("x"), corner.getDouble("y"), corner.getDouble("z"));
+    return arenaData.getLocation("arena.corners.pos1");
   }
 
   public Location getCornerTwo() {
-    Document arenaData = collection.find(Filters.eq("_id", arenaName)).first();
-    if (arenaData == null || !arenaData.containsKey("corners.pos2")) {
-      return null;
-    }
-    Document corner = (Document) arenaData.get("corners.pos2");
-    World world = getWorld();
-    return new Location(world, corner.getDouble("x"), corner.getDouble("y"), corner.getDouble("z"));
+    return arenaData.getLocation("arena.corners.pos2");
   }
 
   public boolean exists() {
-    return collection.find(Filters.eq("_id", arenaName)).first() != null;
+    return FILE.exists();
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void delete() {
-    collection.deleteOne(Filters.eq("_id", arenaName));
+    FILE.delete();
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void create() {
-    Document spawns = new Document()
-            .append("spawn1", new Document()
-                    .append("x", arena.getFirstSpawn().x())
-                    .append("y", arena.getFirstSpawn().y())
-                    .append("z", arena.getFirstSpawn().z()))
-            .append("spawn2", new Document()
-                    .append("x", arena.getSecondSpawn().x())
-                    .append("y", arena.getSecondSpawn().y())
-                    .append("z", arena.getSecondSpawn().z()));
+    Location spawn1 =
+            new Location(
+                    arena.getWorld(),
+                    arena.getFirstSpawn().x(),
+                    arena.getFirstSpawn().y(),
+                    arena.getFirstSpawn().z());
+    Location spawn2 =
+            new Location(
+                    arena.getWorld(),
+                    arena.getSecondSpawn().x(),
+                    arena.getSecondSpawn().y(),
+                    arena.getSecondSpawn().z());
+    Location pos1 =
+            new Location(
+                    arena.getWorld(),
+                    arena.getFirstPosition().x(),
+                    arena.getFirstPosition().y(),
+                    arena.getFirstPosition().z());
+    Location pos2 =
+            new Location(
+                    arena.getWorld(),
+                    arena.getSecondPosition().x(),
+                    arena.getSecondPosition().y(),
+                    arena.getSecondPosition().z());
 
-    Document corners = new Document()
-            .append("pos1", new Document()
-                    .append("x", arena.getFirstPosition().x())
-                    .append("y", arena.getFirstPosition().y())
-                    .append("z", arena.getFirstPosition().z()))
-            .append("pos2", new Document()
-                    .append("x", arena.getSecondPosition().x())
-                    .append("y", arena.getSecondPosition().y())
-                    .append("z", arena.getSecondPosition().z()));
+    arenaData.set("arena.world", arena.getWorld().getName());
+    arenaData.set("arena.spawns.spawn1", spawn1);
+    arenaData.set("arena.spawns.spawn2", spawn2);
+    arenaData.set("arena.corners.pos1", pos1);
+    arenaData.set("arena.corners.pos2", pos2);
 
-    Document arenaData = new Document()
-            .append("_id", arenaName)
-            .append("world", arena.getWorld().getName())
-            .append("spawns", spawns)
-            .append("corners", corners);
-
-    collection.updateOne(
-            Filters.eq("_id", arenaName),
-            new Document("$set", arenaData),
-            new com.mongodb.client.model.UpdateOptions().upsert(true)
-    );
+    if (!FILE.exists()) {
+      try {
+        FILE.getParentFile().mkdirs();
+        FILE.createNewFile();
+        arenaData.save(FILE);
+      } catch (IOException e) {
+        AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to save arena data", e);
+      }
+    }
   }
 }
