@@ -158,6 +158,9 @@ public class StandardDuel extends Duel implements Listener {
               playerOneBar[0] = createBossbar(playerTwo);
               playerTwoBar[0] = createBossbar(playerOne);
 
+              playerOne.showBossBar(playerOneBar[0]);
+              playerTwo.showBossBar(playerTwoBar[0]);
+
               spectatorBars.add(playerOneBar[0]);
               spectatorBars.add(playerTwoBar[0]);
 
