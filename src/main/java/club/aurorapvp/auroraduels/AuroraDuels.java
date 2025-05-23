@@ -90,13 +90,6 @@ public final class AuroraDuels extends JavaPlugin {
 
     getLogger().info("Connected to MongoDB database: " + databaseName);
 
-    // Initialize classes
-    CommandManager.init();
-    EventManager.init();
-    Arena.init();
-    DuelQueue.init();
-    Wand.init();
-
     // Check if soft depends are installed
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
       new Placeholders().register();
@@ -126,6 +119,13 @@ public final class AuroraDuels extends JavaPlugin {
         && this.getConfig().getBoolean("optional-plugins.discordsrv-compatibility")) {
       discordSrvInstalled = true;
     }
+
+    // Initialize classes
+    CommandManager.init();
+    EventManager.init();
+    Arena.init();
+    DuelQueue.init();
+    Wand.init();
 
     getLogger().info("AuroraDuels enabled in " + (System.currentTimeMillis() - startTime) + "ms");
   }
