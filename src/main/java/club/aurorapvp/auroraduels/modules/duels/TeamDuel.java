@@ -17,6 +17,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
+import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -163,7 +165,7 @@ public class TeamDuel extends Duel {
       }
     }
 
-    Duel thisDuel = this;
+    TeamDuel thisDuel = this;
 
     Set<CompletableFuture<Boolean>> teleportFutures = new HashSet<>();
 
@@ -180,6 +182,14 @@ public class TeamDuel extends Duel {
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
         .thenRun(
             () -> {
+              for (Player player : thisDuel.getTeamOneMembers()) {
+                player.lookAt(spawn2, LookAnchor.EYES);
+              }
+
+              for (Player player : thisDuel.getTeamTwoMembers()) {
+                player.lookAt(spawn1, LookAnchor.EYES);
+              }
+
               this.setStarting(true);
 
               final int[] seconds = {3};

@@ -15,6 +15,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
+import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.bossbar.BossBar.Overlay;
@@ -93,6 +95,9 @@ public class StandardDuel extends Duel implements Listener {
     CompletableFuture.allOf(teleport1, teleport2)
         .thenRun(
             () -> {
+              playerOne.lookAt(spawn2, LookAnchor.EYES);
+              playerTwo.lookAt(spawn1, LookAnchor.EYES);
+
               this.setStarting(true);
 
               final int[] seconds = {3};
