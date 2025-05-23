@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.DuelStats;
@@ -101,6 +102,18 @@ public class DuelStartEvent extends Event {
                       duel.getArena().getName(),
                       Rating.getRating("overall_duels").getScore(player).getPoints(),
                       System.currentTimeMillis()));
+    }
+
+    if (!AuroraDuels.getInstance().isAuroraCombatInstalled()) {
+      return;
+    }
+
+    Rating rating = Rating.getRating("overall");
+
+    for (Player player : duel.getPlayers()) {
+      rating.setPlayerEnabled(player, false);
+
+      CombatTag.setTaggable(player, false);
     }
   }
 

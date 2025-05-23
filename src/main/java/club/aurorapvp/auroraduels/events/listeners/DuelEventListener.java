@@ -20,19 +20,4 @@ public class DuelEventListener implements Listener {
       }
     }
   }
-
-  @EventHandler
-  public void onDuelStart(DuelStartEvent event) {
-    if (!AuroraDuels.getInstance().isAuroraCombatInstalled()) {
-      return;
-    }
-
-    Rating rating = Rating.getRating("overall");
-
-    for (Player player : event.getDuel().getPlayers()) {
-      rating.setPlayerEnabled(player, false);
-
-      CombatTag.setTaggable(player, false);
-    }
-  }
 }
