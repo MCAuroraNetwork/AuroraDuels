@@ -1,6 +1,5 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
-import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.DuelStats;
@@ -20,16 +19,11 @@ import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class Duel {
 
-  private static final NamespacedKey duelKitKey =
-      new NamespacedKey(AuroraDuels.getInstance(), "duelkit");
   private static final Map<UUID, Duel> LAST_DUEL = new HashMap<>();
   protected static final Set<Duel> duels = new HashSet<>();
   private final Map<UUID, DuelStats> stats = new HashMap<>();
@@ -115,34 +109,12 @@ public abstract class Duel {
     checkBounds.runTaskTimer(AuroraDuels.getInstance(), 200L, 200L);
   }
 
-  public static Kit getDuelKit(Player player) {
-    PersistentDataContainer container = player.getPersistentDataContainer();
-
-    return Kit.getKit(player, container.get(duelKitKey, PersistentDataType.STRING));
-  }
-
   public static void setLastDuel(Player player, Duel duel) {
     LAST_DUEL.put(player.getUniqueId(), duel);
   }
 
   public static Duel getLastDuel(Player player) {
     return LAST_DUEL.get(player.getUniqueId());
-  }
-
-  public static void setDuelKit(Player player, String kitName) {
-    PersistentDataContainer container = player.getPersistentDataContainer();
-
-    container.set(duelKitKey, PersistentDataType.STRING, kitName);
-
-    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-kit"));
-  }
-
-  public static void unSetDuelKit(Player player) {
-    PersistentDataContainer container = player.getPersistentDataContainer();
-
-    container.remove(duelKitKey);
-
-    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-kit"));
   }
 
   public static Location getDuelLobby() {

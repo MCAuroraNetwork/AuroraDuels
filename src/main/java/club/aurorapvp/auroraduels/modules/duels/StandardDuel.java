@@ -243,18 +243,8 @@ public class StandardDuel extends Duel implements Listener {
           @Override
           public void run() {
             if (kit != null) {
+              kit.giveKit(playerOne);
               kit.giveKit(playerTwo);
-            } else {
-              Kit kit1 = Duel.getDuelKit(playerOne);
-              Kit kit2 = Duel.getDuelKit(playerTwo);
-
-              if (kit1 != null) {
-                Kit.giveKit(kit1, playerOne);
-              }
-
-              if (kit2 != null) {
-                Kit.giveKit(kit2, playerTwo);
-              }
             }
           }
         }.runTaskLater(AuroraDuels.getInstance(), 1);

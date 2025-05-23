@@ -134,28 +134,6 @@ public class DuelBaseCommands extends BaseCommand {
     }
   }
 
-  @Subcommand("kit")
-  @CommandPermission("auroraduels.command.duel.kit")
-  @CommandCompletion("@kits")
-  @Description("Sets the duel kit")
-  @SuppressWarnings("unused")
-  public void onKitSet(Player player, @Optional String kitName) {
-    if (kitName != null && Kit.getKit(player, kitName) != null) {
-      Duel.setDuelKit(player, kitName);
-    } else {
-      Duel.setDuelKit(player, Kit.getLastUsedKit(player).getName());
-    }
-  }
-
-  @Subcommand("kit unset")
-  @CommandPermission("auroraduels.command.duel.kit")
-  @CommandCompletion("@kits")
-  @Description("Sets the duel kit")
-  @SuppressWarnings("unused")
-  public void onKitSet(Player player) {
-    Duel.unSetDuelKit(player);
-  }
-
   @Subcommand("lobby")
   @CommandPermission("auroraduels.command.duel.lobby")
   @Description("Sets the duel lobby")
