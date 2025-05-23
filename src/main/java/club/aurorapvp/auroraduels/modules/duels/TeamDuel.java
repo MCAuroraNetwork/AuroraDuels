@@ -97,43 +97,11 @@ public class TeamDuel extends Duel {
   }
 
   public Collection<Player> getOpponents(Player player) {
-    for (Player teamMember : teamOneMembers) {
-      if (teamMember.equals(player)) {
-        return teamTwoMembers;
-      }
-    }
-    return teamOneMembers;
+    return teamOneMembers.contains(player) ? teamTwoMembers : teamOneMembers;
   }
 
   public Collection<Player> getTeammates(Player player) {
-    for (Player teamMember : teamOneMembers) {
-      if (teamMember.equals(player)) {
-        return teamOneMembers;
-      }
-    }
-    return teamTwoMembers;
-  }
-
-  @SuppressWarnings("unused")
-  public boolean isOnTeamOne(Player player) {
-    for (Player teamOneMember : teamOneMembers) {
-      if (teamOneMember.equals(player)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  @SuppressWarnings("unused")
-  public boolean isOnTeamTwo(Player player) {
-    for (Player teamOneMember : teamOneMembers) {
-      if (teamOneMember.equals(player)) {
-        return true;
-      }
-    }
-
-    return false;
+    return teamOneMembers.contains(player) ? teamOneMembers : teamTwoMembers;
   }
 
   public void setDead(Player player) {

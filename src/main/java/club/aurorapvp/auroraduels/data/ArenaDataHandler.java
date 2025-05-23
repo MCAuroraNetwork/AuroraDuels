@@ -23,7 +23,7 @@ public class ArenaDataHandler {
     ArenaDataHandler.arena = arena;
 
     FILE =
-            new File(AuroraDuels.getInstance().getDataFolder(), "/arenas/" + arena.getName() + ".yml");
+        new File(AuroraDuels.getInstance().getDataFolder(), "/arenas/" + arena.getName() + ".yml");
     arenaData = YamlConfiguration.loadConfiguration(FILE);
   }
 
@@ -33,12 +33,12 @@ public class ArenaDataHandler {
 
   public BlockVector3 getFirstSpawn() {
     return BukkitAdapter.asBlockVector(
-            Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn1")));
+        Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn1")));
   }
 
   public BlockVector3 getSecondSpawn() {
     return BukkitAdapter.asBlockVector(
-            Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn2")));
+        Objects.requireNonNull(arenaData.getLocation("arena.spawns.spawn2")));
   }
 
   public Location getCornerOne() {
@@ -61,29 +61,29 @@ public class ArenaDataHandler {
   @SuppressWarnings("ResultOfMethodCallIgnored")
   public void create() {
     Location spawn1 =
-            new Location(
-                    arena.getWorld(),
-                    arena.getFirstSpawn().x(),
-                    arena.getFirstSpawn().y(),
-                    arena.getFirstSpawn().z());
+        new Location(
+            arena.getWorld(),
+            arena.getFirstSpawn().x(),
+            arena.getFirstSpawn().y(),
+            arena.getFirstSpawn().z());
     Location spawn2 =
-            new Location(
-                    arena.getWorld(),
-                    arena.getSecondSpawn().x(),
-                    arena.getSecondSpawn().y(),
-                    arena.getSecondSpawn().z());
+        new Location(
+            arena.getWorld(),
+            arena.getSecondSpawn().x(),
+            arena.getSecondSpawn().y(),
+            arena.getSecondSpawn().z());
     Location pos1 =
-            new Location(
-                    arena.getWorld(),
-                    arena.getFirstPosition().x(),
-                    arena.getFirstPosition().y(),
-                    arena.getFirstPosition().z());
+        new Location(
+            arena.getWorld(),
+            arena.getFirstPosition().x(),
+            arena.getFirstPosition().y(),
+            arena.getFirstPosition().z());
     Location pos2 =
-            new Location(
-                    arena.getWorld(),
-                    arena.getSecondPosition().x(),
-                    arena.getSecondPosition().y(),
-                    arena.getSecondPosition().z());
+        new Location(
+            arena.getWorld(),
+            arena.getSecondPosition().x(),
+            arena.getSecondPosition().y(),
+            arena.getSecondPosition().z());
 
     arenaData.set("arena.world", arena.getWorld().getName());
     arenaData.set("arena.spawns.spawn1", spawn1);
