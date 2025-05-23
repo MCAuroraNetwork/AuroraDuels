@@ -22,6 +22,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerEventListener implements Listener {
 
@@ -186,7 +187,12 @@ public class PlayerEventListener implements Listener {
       checkIfDuelOver(event.getPlayer());
     }
 
-    Winstracker.unregister(event.getPlayer());
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        Winstracker.unregister(event.getPlayer());
+      }
+    }.runTaskLater(AuroraDuels.getInstance(), 1L);
   }
 
   public void checkIfDuelOver(Player player) {
