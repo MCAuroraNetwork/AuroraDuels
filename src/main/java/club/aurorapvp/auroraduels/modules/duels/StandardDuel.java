@@ -89,12 +89,17 @@ public class StandardDuel extends Duel implements Listener {
 
     StandardDuel thisDuel = this;
 
-    CompletableFuture<Boolean> teleport1 = playerOne.teleportAsync(spawn1);
-    CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(spawn2);
+    Location p1Target = spawn1.clone();
+    p1Target.setDirection(spawn2.toVector().subtract(spawn1.toVector()));
+
+    Location p2Target = spawn2.clone();
+    p2Target.setDirection(spawn1.toVector().subtract(spawn2.toVector()));
+
+    CompletableFuture<Boolean> teleport1 = playerOne.teleportAsync(p1Target);
+    CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(p2Target);
 
     CompletableFuture.allOf(teleport1, teleport2)
-        .thenRun(
-            () -> {
+            .thenRun(() -> {
               playerOne.lookAt(spawn2, LookAnchor.EYES);
               playerTwo.lookAt(spawn1, LookAnchor.EYES);
 
@@ -207,21 +212,20 @@ public class StandardDuel extends Duel implements Listener {
   }
 
   private BossBar createBossbar(Player opponent) {
-      return BossBar.bossBar(
-              opponent
-                      .displayName()
-                      .decorate(TextDecoration.BOLD)
-                      .color(NamedTextColor.YELLOW)
-                      .appendSpace()
-                      .append(
-                              Component.text(
-                                              (int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
-                                      .color(NamedTextColor.RED))
-                      .appendSpace()
-                      .append(Component.text(opponent.getPing() + "ms").color(NamedTextColor.AQUA)),
-              1.0f,
-              Color.RED,
-              Overlay.PROGRESS);
+    return BossBar.bossBar(
+        opponent
+            .displayName()
+            .decorate(TextDecoration.BOLD)
+            .color(NamedTextColor.YELLOW)
+            .appendSpace()
+            .append(
+                Component.text((int) (opponent.getHealth() + opponent.getAbsorptionAmount()) + "❤")
+                    .color(NamedTextColor.RED))
+            .appendSpace()
+            .append(Component.text(opponent.getPing() + "ms").color(NamedTextColor.AQUA)),
+        1.0f,
+        Color.RED,
+        Overlay.PROGRESS);
   }
 
   public void endDuel(Collection<Player> winners, Collection<Player> losers) {

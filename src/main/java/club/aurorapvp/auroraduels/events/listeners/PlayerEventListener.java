@@ -26,7 +26,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerEventListener implements Listener {
 
-  public final static Set<Player> DUEL_RESPAWN = new HashSet<>();
+  public static final Set<Player> DUEL_RESPAWN = new HashSet<>();
 
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
@@ -71,8 +71,8 @@ public class PlayerEventListener implements Listener {
     boolean commandMatched = false;
 
     if (!AuroraDuels.getInstance().getConfig().getBoolean("duels.commands.allow-commands")) {
-      for (String command : AuroraDuels.getInstance().getConfig()
-          .getStringList("duels.commands.whitelisted")) {
+      for (String command :
+          AuroraDuels.getInstance().getConfig().getStringList("duels.commands.whitelisted")) {
         if (event.getMessage().equals("/" + command)) {
           commandMatched = true;
           break;
@@ -88,7 +88,8 @@ public class PlayerEventListener implements Listener {
       return;
     }
 
-    event.getPlayer()
+    event
+        .getPlayer()
         .sendMessage(AuroraDuels.getInstance().getLang().getComponent("commands-disabled"));
 
     event.setCancelled(true);
@@ -141,8 +142,10 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onPlayerRespawn(PlayerPostRespawnEvent event) {
     if (DUEL_RESPAWN.remove(event.getPlayer())) {
-      event.getPlayer().teleportAsync(
-          Objects.requireNonNull(Duel.getLastDuel(event.getPlayer())).getRespawnLocation());
+      event
+          .getPlayer()
+          .teleportAsync(
+              Objects.requireNonNull(Duel.getLastDuel(event.getPlayer())).getRespawnLocation());
     }
 
     if (!Duel.inDuel(event.getPlayer())) {
@@ -226,6 +229,8 @@ public class PlayerEventListener implements Listener {
   public void onPlayerTeleport(PlayerTeleportEvent event) {
     if (Duel.inDuelCountdown(event.getPlayer())) {
       event.setCancelled(true);
+
+      return;
     }
 
     if (!Duel.inDuel(event.getPlayer())) {
