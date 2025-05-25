@@ -1,6 +1,8 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
+import club.aurorapvp.auroracombat.events.custom.CombatTagEvent;
 import club.aurorapvp.auroracombat.events.custom.EntityDamagedByEntityEvent;
+import club.aurorapvp.auroraduels.modules.Request;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import java.util.Objects;
 import org.bukkit.entity.Player;
@@ -20,6 +22,21 @@ public class CombatEventListener implements Listener {
     if (event.getDamager() instanceof Player player) {
       if (Duel.inDuel(player)) {
         Objects.requireNonNull(Duel.getDuel(player)).addDamagedDealt(player, event.getDamage());
+      }
+    }
+  }
+
+  @EventHandler
+  public void onCombatTag(CombatTagEvent event) {
+    if (Request.hasPendingRequest(event.getTagger())) {
+      for (Request request : Request.getRequests(event.getTagger())) {
+        request.deny();
+      }
+    }
+
+    if (Request.hasPendingRequest(event.getTagged())) {
+      for (Request request : Request.getRequests(event.getTagged())) {
+        request.deny();
       }
     }
   }
