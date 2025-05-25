@@ -97,7 +97,9 @@ public class PlayerEventListener implements Listener {
 
   @EventHandler
   public void onKitUse(KitGiveEvent event) {
-    if (Duel.inDuel(event.getPlayer())) {
+    Duel duel = Duel.getDuel(event.getPlayer());
+
+    if (duel != null && !duel.isStarting()) {
       event.setCancelled(true);
     }
   }
