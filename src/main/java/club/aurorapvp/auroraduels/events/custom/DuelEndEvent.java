@@ -17,6 +17,7 @@ import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 /* Event that is fired after a duel ends not in a draw */
 public class DuelEndEvent extends DuelOverEvent {
@@ -29,6 +30,20 @@ public class DuelEndEvent extends DuelOverEvent {
     super(duel, arena);
     this.winners = winners;
     this.losers = losers;
+
+    for (Player player : duel.getPlayers()) {
+      player.setHealth(20);
+      player.setFoodLevel(20);
+      player.setSaturation(5f);
+      player.setExhaustion(0f);
+      player.setAbsorptionAmount(0f);
+
+      player.setRemainingAir(player.getMaximumAir());
+
+      for (PotionEffect effect : player.getActivePotionEffects()) {
+        player.removePotionEffect(effect.getType());
+      }
+    }
 
     new Timer()
         .schedule(

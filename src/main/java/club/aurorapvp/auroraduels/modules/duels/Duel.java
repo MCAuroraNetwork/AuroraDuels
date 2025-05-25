@@ -35,7 +35,7 @@ public abstract class Duel {
   protected Long timeStarted;
   protected Kit kit;
   protected Arena arena;
-  protected int rounds = 1;
+  protected int rounds;
   protected int currentRound = 1;
   private DuelQueue duelQueue;
   private boolean active = false;
@@ -281,6 +281,10 @@ public abstract class Duel {
 
   public int getRounds() {
     return rounds;
+  }
+
+  public int getCurrentRound() {
+    return currentRound;
   }
 
   public int inDuel() {

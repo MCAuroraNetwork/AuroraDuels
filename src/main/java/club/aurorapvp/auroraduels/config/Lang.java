@@ -65,7 +65,7 @@ public class Lang {
         "duel-over",
         "<bold><yellow>%1$s<reset><yellow> won a duel against <bold>%2$s<reset><yellow>!");
     DEFAULTS.put("discord-duel-over", "%1$s won a duel against %2$s!");
-    DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s /n<red>%3$s<yellow - <blue>%4$s");
+    DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s | <red>%3$s<yellow> - <blue>%4$s");
     DEFAULTS.put("draw", "prefix <yellow>Draw!");
     DEFAULTS.put("rematch", "prefix <yellow>Want a rematch? Do /rematch!");
     DEFAULTS.put("no-leaving-arena", "prefix <red>Can't leave arena");

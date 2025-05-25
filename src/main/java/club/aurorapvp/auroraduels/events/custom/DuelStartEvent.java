@@ -13,6 +13,7 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired when a duel starts */
@@ -25,11 +26,33 @@ public class DuelStartEvent extends Event {
   public DuelStartEvent(Duel duel) {
     this.duel = duel;
 
+    for (Player player : duel.getPlayers()) {
+      player.setHealth(20);
+      player.setFoodLevel(20);
+      player.setSaturation(5f);
+      player.setExhaustion(0f);
+      player.setAbsorptionAmount(0f);
+
+      player.setRemainingAir(player.getMaximumAir());
+
+      for (PotionEffect effect : player.getActivePotionEffects()) {
+        player.removePotionEffect(effect.getType());
+      }
+    }
+
     Kit kit = duel.getKit();
 
     if (kit != null) {
       for (Player player : duel.getPlayers()) {
         kit.giveKit(player);
+      }
+    } else if (duel.getCurrentRound() != 1) {
+      for (Player player : duel.getPlayers()) {
+        Kit lastUsedKit = Kit.getLastUsedKit(player);
+
+        if (lastUsedKit != null) {
+          lastUsedKit.giveKit(player);
+        }
       }
     }
 

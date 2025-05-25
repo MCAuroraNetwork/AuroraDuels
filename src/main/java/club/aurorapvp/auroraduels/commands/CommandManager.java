@@ -64,7 +64,7 @@ public class CommandManager {
         "all-int", c -> List.of("1", "2", "3", "4", "5", "6", "7", "8", "9"));
 
     commandCompletions.registerCompletion(
-        "odd-int", c -> List.of("1", "2", "3", "4", "5", "6", "7", "8", "9"));
+        "odd-int", c -> List.of("1", "3", "5", "7", "9"));
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
       commandCompletions.registerCompletion(

@@ -74,6 +74,11 @@ public class StandardDuel extends Duel implements Listener {
 
     this.setActive(true);
 
+    if (currentRound == 1) {
+      wins.put(playerOne.getUniqueId(), 0);
+      wins.put(playerTwo.getUniqueId(), 0);
+    }
+
     Location spawn1 =
         new Location(
             arena.getWorld(),
@@ -99,7 +104,8 @@ public class StandardDuel extends Duel implements Listener {
     CompletableFuture<Boolean> teleport2 = playerTwo.teleportAsync(p2Target);
 
     CompletableFuture.allOf(teleport1, teleport2)
-            .thenRun(() -> {
+        .thenRun(
+            () -> {
               playerOne.lookAt(spawn2, LookAnchor.EYES);
               playerTwo.lookAt(spawn1, LookAnchor.EYES);
 
@@ -233,29 +239,20 @@ public class StandardDuel extends Duel implements Listener {
     Player loser = losers.iterator().next();
 
     if (rounds > 1 && loser.isOnline()) {
-      if (wins.containsKey(winner.getUniqueId())) {
-
-        wins.compute(winner.getUniqueId(), (k, currentWins) -> currentWins + 1);
-      } else {
-        wins.put(winner.getUniqueId(), 1);
-      }
+      wins.put(winner.getUniqueId(), wins.get(winner.getUniqueId()) + 1);
 
       if (!(wins.get(winner.getUniqueId()) >= ((rounds - 1) / 2 + 1))) {
         loser.spigot().respawn();
 
-        new BukkitRunnable() {
-          @Override
-          public void run() {
-            if (kit != null) {
-              kit.giveKit(playerOne);
-              kit.giveKit(playerTwo);
-            }
-          }
-        }.runTaskLater(AuroraDuels.getInstance(), 1);
-
         arena.reset();
 
+        playerOne.hideBossBar(playerOneBar[0]);
+        playerTwo.hideBossBar(playerTwoBar[0]);
+
+        currentRound++;
+
         this.startDuel(arena);
+
         return;
       }
     }
