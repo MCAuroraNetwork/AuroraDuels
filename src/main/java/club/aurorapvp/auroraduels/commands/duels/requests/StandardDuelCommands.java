@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 public class StandardDuelCommands extends BaseCommand {
 
   @Default
-  @CommandCompletion("@players @int")
+  @CommandCompletion("@players @odd-int")
   @Syntax("<player>")
   @Description("Sends a duel request to another player")
   @SuppressWarnings("unused")
