@@ -12,19 +12,19 @@ import java.util.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
-public class Request {
+public class DuelRequest {
 
-  protected static final LinkedList<Request> PENDING_REQUESTS = new LinkedList<>();
+  protected static final LinkedList<DuelRequest> PENDING_DUEL_REQUESTS = new LinkedList<>();
   private final HashMap<UUID, Boolean> playersAccepted = new HashMap<>();
   private final Player requester;
   private final Set<Player> requested = new HashSet<>();
   private final Duel duel;
 
-  public Request(Player requester, Duel duel) {
+  public DuelRequest(Player requester, Duel duel) {
     this.requester = requester;
     this.duel = duel;
 
-    if (Request.hasPendingRequest(requester)) {
+    if (DuelRequest.hasPendingRequest(requester)) {
       requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("you-have-request"));
       return;
     } else if (DuelQueue.inQueue(requester)) {
@@ -54,7 +54,7 @@ public class Request {
       this.sendRequest();
     }
 
-    PENDING_REQUESTS.add(this);
+    PENDING_DUEL_REQUESTS.add(this);
   }
 
   public void onInventoryClose(InventoryCloseEvent event) {
@@ -71,7 +71,7 @@ public class Request {
     }
 
     if (duel.getQueue() == null) {
-      PENDING_REQUESTS.remove(this);
+      PENDING_DUEL_REQUESTS.remove(this);
     }
   }
 
@@ -108,43 +108,43 @@ public class Request {
     this.sendRequest();
   }
 
-  public static LinkedList<Request> getPendingRequests() {
-    return PENDING_REQUESTS;
+  public static LinkedList<DuelRequest> getPendingRequests() {
+    return PENDING_DUEL_REQUESTS;
   }
 
-  public static Request getRequest(Player player) {
-    for (Request request : PENDING_REQUESTS) {
-      if (request.requester.equals(player) || request.requested.contains(player)) {
-        return request;
+  public static DuelRequest getRequest(Player player) {
+    for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
+      if (duelRequest.requester.equals(player) || duelRequest.requested.contains(player)) {
+        return duelRequest;
       }
     }
     return null;
   }
 
-  public static Request getRequest(Player requester, Player requested) {
-    for (Request request : PENDING_REQUESTS) {
-      if (request.requester.equals(requester) && request.requested.contains(requested)) {
-        return request;
+  public static DuelRequest getRequest(Player requester, Player requested) {
+    for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
+      if (duelRequest.requester.equals(requester) && duelRequest.requested.contains(requested)) {
+        return duelRequest;
       }
     }
     return null;
   }
 
-  public static Set<Request> getRequests(Player player) {
-    Set<Request> matchingRequests = new HashSet<>();
+  public static Set<DuelRequest> getRequests(Player player) {
+    Set<DuelRequest> matchingDuelRequests = new HashSet<>();
 
-    for (Request request : PENDING_REQUESTS) {
-      if (request.requester.equals(player) || request.requested.contains(player)) {
-        matchingRequests.add(request);
+    for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
+      if (duelRequest.requester.equals(player) || duelRequest.requested.contains(player)) {
+        matchingDuelRequests.add(duelRequest);
       }
     }
 
-    return matchingRequests;
+    return matchingDuelRequests;
   }
 
   public static boolean hasPendingRequest(Player requester, Player requested) {
-    for (Request request : PENDING_REQUESTS) {
-      if (request.requester.equals(requester) && request.requested.contains(requested)) {
+    for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
+      if (duelRequest.requester.equals(requester) && duelRequest.requested.contains(requested)) {
         return true;
       }
     }
@@ -152,8 +152,8 @@ public class Request {
   }
 
   public static boolean hasPendingRequest(Player player) {
-    for (Request request : PENDING_REQUESTS) {
-      if (request.requester.equals(player) || request.requested.contains(player)) {
+    for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
+      if (duelRequest.requester.equals(player) || duelRequest.requested.contains(player)) {
         return true;
       }
     }
@@ -167,7 +167,7 @@ public class Request {
 
     if (requested.isEmpty()) {
       requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-opponent"));
-      PENDING_REQUESTS.remove(this);
+      PENDING_DUEL_REQUESTS.remove(this);
       return;
     }
 
@@ -188,14 +188,14 @@ public class Request {
       playersAccepted.put(player.getUniqueId(), false);
     }
 
-    Request thisRequest = this;
+    DuelRequest thisDuelRequest = this;
 
     new Timer()
         .schedule(
             new TimerTask() {
               @Override
               public void run() {
-                if (PENDING_REQUESTS.contains(thisRequest)) {
+                if (PENDING_DUEL_REQUESTS.contains(thisDuelRequest)) {
                   requester.sendMessage(
                       AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
 
@@ -204,7 +204,7 @@ public class Request {
                         AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
                   }
 
-                  PENDING_REQUESTS.remove(thisRequest);
+                  PENDING_DUEL_REQUESTS.remove(thisDuelRequest);
                   this.cancel();
                 }
               }
@@ -217,7 +217,7 @@ public class Request {
     playersAccepted.put(player.getUniqueId(), true);
 
     if (!playersAccepted.containsValue(false)) {
-      PENDING_REQUESTS.remove(this);
+      PENDING_DUEL_REQUESTS.remove(this);
       requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-accepted"));
 
       duel.getQueue().enterDuelQueue(duel);
@@ -227,7 +227,7 @@ public class Request {
   }
 
   public void deny() {
-    PENDING_REQUESTS.remove(this);
+    PENDING_DUEL_REQUESTS.remove(this);
     Duel.getDuels().remove(duel);
     requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-denied"));
 

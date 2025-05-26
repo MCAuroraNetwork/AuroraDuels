@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
@@ -52,10 +52,10 @@ public class FFADuelCommands extends BaseCommand {
     Location loc = DuelQueue.findRespawnLocation(player);
 
     if (requested.length == 1) {
-      new Request(player, new StandardDuel(player, requested[0], loc, false, 1));
+      new DuelRequest(player, new StandardDuel(player, requested[0], loc, false, 1));
       return;
     }
 
-    new Request(player, new FFADuel(players, loc, false));
+    new DuelRequest(player, new FFADuel(players, loc, false));
   }
 }

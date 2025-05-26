@@ -7,7 +7,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueJoinEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.util.ItemStackUtil;
@@ -146,7 +146,7 @@ public class DuelQueue {
   }
 
   public void findMatch(Player player, boolean ranked) {
-    if (Request.hasPendingRequest(player)) {
+    if (DuelRequest.hasPendingRequest(player)) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("you-have-request"));
       return;
     }
@@ -164,8 +164,8 @@ public class DuelQueue {
     if (lookingForMatch.get(ranked) == null) {
       lookingForMatch.put(ranked, player);
 
-      for (Request pendingRequest : Request.getRequests(player)) {
-        pendingRequest.deny();
+      for (DuelRequest pendingDuelRequest : DuelRequest.getRequests(player)) {
+        pendingDuelRequest.deny();
       }
 
       ItemMeta meta = displayItem.getItemMeta();

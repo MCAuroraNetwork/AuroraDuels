@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.commands.duels;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
@@ -39,7 +39,7 @@ public class RematchCommand extends BaseCommand {
     if (lastDuel.getPlayers().size() == 2) {
       for (Player requested : lastDuel.getPlayers()) {
         if (!requested.equals(player)) {
-          new Request(
+          new DuelRequest(
               player,
               new StandardDuel(
                   player,
@@ -52,10 +52,10 @@ public class RematchCommand extends BaseCommand {
         }
       }
     } else if (lastDuel instanceof RandomTeamDuel) {
-      new Request(
+      new DuelRequest(
           player, new RandomTeamDuel(lastDuel.getPlayers(), lastDuel.getRespawnLocation(), false));
     } else if (lastDuel instanceof TeamDuel teamDuel) {
-      new Request(
+      new DuelRequest(
           player,
           new TeamDuel(
               teamDuel.getTeamOneMembers(),
@@ -65,7 +65,7 @@ public class RematchCommand extends BaseCommand {
               lastDuel.getRespawnLocation(),
               false));
     } else if (lastDuel instanceof FFADuel ffaDuel) {
-      new Request(
+      new DuelRequest(
           player,
           new FFADuel(
               ffaDuel.getPlayers(),

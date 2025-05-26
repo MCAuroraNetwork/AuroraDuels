@@ -49,14 +49,14 @@ public class Lang {
     DEFAULTS.put("duel-started", "<bold><green>Duel started!");
     DEFAULTS.put("even-rounds", "prefix <red>Odd rounds required for duel");
     DEFAULTS.put("entered-duelQueue", "prefix <green>You have entered the duel duelQueue");
-    DEFAULTS.put("sent-request", "prefix <green>Request sent successfully!");
+    DEFAULTS.put("sent-duelRequest", "prefix <green>Request sent successfully!");
     DEFAULTS.put(
-        "received-request",
+        "received-duelRequest",
         "prefix <yellow>Request from <bold>%s<reset><yellow>. Use <bold>/duel accept<reset><yellow> or <bold>/duel deny<reset><yellow>");
-    DEFAULTS.put("request-timed-out", "prefix <yellow>Request timed out");
+    DEFAULTS.put("duelRequest-timed-out", "prefix <yellow>Request timed out");
     DEFAULTS.put("no-requests", "prefix <yellow>No requests");
-    DEFAULTS.put("request-denied", "prefix <red>Request denied");
-    DEFAULTS.put("request-accepted", "prefix <green>Request accepted!");
+    DEFAULTS.put("duelRequest-denied", "prefix <red>Request denied");
+    DEFAULTS.put("duelRequest-accepted", "prefix <green>Request accepted!");
     DEFAULTS.put("you-won", "<green>You won!");
     DEFAULTS.put("you-lost", "<red>You lost");
     DEFAULTS.put("duel-won", "prefix <green>You won!%s");
@@ -81,9 +81,9 @@ public class Lang {
     DEFAULTS.put("duelQueue-invalid-item", "prefix <red>Invalid duelQueue item");
     DEFAULTS.put("duelQueue-created", "prefix <green>Queue created");
     DEFAULTS.put("duelQueue-not-found", "prefix <red>Queue not found");
-    DEFAULTS.put("you-have-request", "prefix <red>You already have a pending request");
+    DEFAULTS.put("you-have-duelRequest", "prefix <red>You already have a pending duelRequest");
     DEFAULTS.put(
-        "already-has-request", "prefix <red>You already have a request pending to this player");
+        "already-has-duelRequest", "prefix <red>You already have a duelRequest pending to this player");
     DEFAULTS.put(
         "add-arena",
         "prefix <yellow>Type the name of the arena you want to add arena to duelQueue. Added %s so far");
@@ -136,11 +136,11 @@ public class Lang {
             prefix <yellow><bold>All Commands:
 
 
-            <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player
+            <blue><bold>/duel [player]: <reset><yellow>Sends a duel duelRequest to a player
 
             <blue><bold>/ranked or /unranked [name]: <reset><yellow>Joins a ranked or unranked duelQueue, or the default one if no name is given
 
-            <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members
+            <blue><bold>/rematch: <reset><yellow>Sends a duel duelRequest identical to the last one sent to all previous duel members
             """);
 
     for (String path : DEFAULTS.keySet()) {

@@ -3,7 +3,7 @@ package club.aurorapvp.auroraduels.events.listeners;
 import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
-import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.*;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
@@ -184,8 +184,8 @@ public class PlayerEventListener implements Listener {
       DuelQueue.removeFromQueue(event.getPlayer());
     }
 
-    if (Request.hasPendingRequest(event.getPlayer())) {
-      Objects.requireNonNull(Request.getRequest(event.getPlayer())).deny();
+    if (DuelRequest.hasPendingRequest(event.getPlayer())) {
+      Objects.requireNonNull(DuelRequest.getRequest(event.getPlayer())).deny();
     }
 
     if (Duel.inDuel(event.getPlayer())) {

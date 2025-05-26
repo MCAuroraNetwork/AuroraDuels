@@ -2,11 +2,12 @@ package club.aurorapvp.auroraduels.events.listeners;
 
 import club.aurorapvp.auroracombat.events.custom.CombatTagEvent;
 import club.aurorapvp.auroracombat.events.custom.EntityDamagedByEntityEvent;
-import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import java.util.Objects;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityResurrectEvent;
 
@@ -26,17 +27,17 @@ public class CombatEventListener implements Listener {
     }
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.MONITOR)
   public void onCombatTag(CombatTagEvent event) {
-    if (Request.hasPendingRequest(event.getTagger())) {
-      for (Request request : Request.getRequests(event.getTagger())) {
-        request.deny();
+    if (DuelRequest.hasPendingRequest(event.getTagger())) {
+      for (DuelRequest duelRequest : DuelRequest.getRequests(event.getTagger())) {
+        duelRequest.deny();
       }
     }
 
-    if (Request.hasPendingRequest(event.getTagged())) {
-      for (Request request : Request.getRequests(event.getTagged())) {
-        request.deny();
+    if (DuelRequest.hasPendingRequest(event.getTagged())) {
+      for (DuelRequest duelRequest : DuelRequest.getRequests(event.getTagged())) {
+        duelRequest.deny();
       }
     }
   }

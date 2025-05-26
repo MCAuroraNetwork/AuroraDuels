@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
@@ -60,7 +60,7 @@ public class TeamDuelCommands extends BaseCommand {
 
     Location loc = DuelQueue.findRespawnLocation(player);
 
-    new Request(player, new TeamDuel(team1, team2, loc, false));
+    new DuelRequest(player, new TeamDuel(team1, team2, loc, false));
   }
 
   @Subcommand("random|rand")
@@ -94,10 +94,10 @@ public class TeamDuelCommands extends BaseCommand {
     Location loc = DuelQueue.findRespawnLocation(player);
 
     if (requested.length == 1) {
-      new Request(player, new StandardDuel(player, requested[0], loc, false, 1));
+      new DuelRequest(player, new StandardDuel(player, requested[0], loc, false, 1));
       return;
     }
 
-    new Request(player, new RandomTeamDuel(players, loc, false));
+    new DuelRequest(player, new RandomTeamDuel(players, loc, false));
   }
 }

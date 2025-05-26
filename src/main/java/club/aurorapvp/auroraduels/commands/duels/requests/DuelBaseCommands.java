@@ -1,9 +1,8 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
-import club.aurorapvp.aurorakits.modules.kits.Kit;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
@@ -27,7 +26,7 @@ public class DuelBaseCommands extends BaseCommand {
   @Description("Accepts the duel request")
   @SuppressWarnings("unused")
   public void onAccept(Player player, @Optional String requesterName) {
-    if (!Request.hasPendingRequest(player)) {
+    if (!DuelRequest.hasPendingRequest(player)) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-requests"));
       return;
     }
@@ -39,34 +38,34 @@ public class DuelBaseCommands extends BaseCommand {
     }
 
     if (requester == null) {
-      Request request = Request.getRequest(player);
+      DuelRequest duelRequest = DuelRequest.getRequest(player);
 
-      for (Request pendingRequest : Request.getRequests(player)) {
-        if (pendingRequest != request) {
-          pendingRequest.deny();
+      for (DuelRequest pendingDuelRequest : DuelRequest.getRequests(player)) {
+        if (pendingDuelRequest != duelRequest) {
+          pendingDuelRequest.deny();
         }
       }
 
-      assert request != null;
-      request.accept(player);
+      assert duelRequest != null;
+      duelRequest.accept(player);
       return;
     }
 
-    if (!Request.hasPendingRequest(requester, player)) {
+    if (!DuelRequest.hasPendingRequest(requester, player)) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-requests"));
       return;
     }
 
-    Request request = Request.getRequest(requester, player);
+    DuelRequest duelRequest = DuelRequest.getRequest(requester, player);
 
-    for (Request pendingRequest : Request.getRequests(player)) {
-      if (pendingRequest != request) {
-        pendingRequest.deny();
+    for (DuelRequest pendingDuelRequest : DuelRequest.getRequests(player)) {
+      if (pendingDuelRequest != duelRequest) {
+        pendingDuelRequest.deny();
       }
     }
 
-    assert request != null;
-    request.accept(player);
+    assert duelRequest != null;
+    duelRequest.accept(player);
   }
 
   @Subcommand("deny")
@@ -76,7 +75,7 @@ public class DuelBaseCommands extends BaseCommand {
   @Description("Denies the duel request")
   @SuppressWarnings("unused")
   public void onDeny(Player player, @Optional String requesterName) {
-    if (!Request.hasPendingRequest(player)) {
+    if (!DuelRequest.hasPendingRequest(player)) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-requests"));
       return;
     }
@@ -88,19 +87,19 @@ public class DuelBaseCommands extends BaseCommand {
     }
 
     if (requester == null) {
-      Request request = Request.getRequest(player);
+      DuelRequest duelRequest = DuelRequest.getRequest(player);
 
-      assert request != null;
-      request.deny();
+      assert duelRequest != null;
+      duelRequest.deny();
       return;
     }
 
-    if (!Request.hasPendingRequest(requester, player)) {
+    if (!DuelRequest.hasPendingRequest(requester, player)) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-requests"));
       return;
     }
 
-    Objects.requireNonNull(Request.getRequest(requester, player)).deny();
+    Objects.requireNonNull(DuelRequest.getRequest(requester, player)).deny();
   }
 
   @Subcommand("spectate")

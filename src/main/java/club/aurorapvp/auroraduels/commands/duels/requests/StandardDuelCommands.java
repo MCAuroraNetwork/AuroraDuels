@@ -1,7 +1,7 @@
 package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
-import club.aurorapvp.auroraduels.modules.Request;
+import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import co.aikar.commands.BaseCommand;
@@ -50,6 +50,6 @@ public class StandardDuelCommands extends BaseCommand {
       }
     }
 
-    new Request(player, new StandardDuel(player, requested, loc, false, rounds));
+    new DuelRequest(player, new StandardDuel(player, requested, loc, false, rounds));
   }
 }

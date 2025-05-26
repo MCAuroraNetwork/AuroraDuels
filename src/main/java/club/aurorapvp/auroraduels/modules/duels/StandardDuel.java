@@ -15,6 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 
 import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.bossbar.BossBar;
@@ -242,6 +243,8 @@ public class StandardDuel extends Duel implements Listener {
       wins.put(winner.getUniqueId(), wins.get(winner.getUniqueId()) + 1);
 
       if (!(wins.get(winner.getUniqueId()) >= ((rounds - 1) / 2 + 1))) {
+        AuroraDuels.getInstance().getLogger().log(Level.INFO, "joe");
+
         loser.spigot().respawn();
 
         arena.reset();
