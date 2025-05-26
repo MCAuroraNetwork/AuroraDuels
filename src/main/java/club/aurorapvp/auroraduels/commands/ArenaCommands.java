@@ -16,7 +16,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
 @CommandAlias("arena")
-@CommandPermission("auroaduels.command.arena")
+@CommandPermission("auroraduels.command.arena")
 public class ArenaCommands extends BaseCommand {
 
   @Subcommand("create")
