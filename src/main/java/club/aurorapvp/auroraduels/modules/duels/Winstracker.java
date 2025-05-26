@@ -17,6 +17,7 @@ public class Winstracker {
   private static final Map<UUID, Winstracker> TRACKERS = new HashMap<>();
   private final WinsDataHandler data;
   private final Player player;
+  private int highestWinstreak;
   private int winstreak;
   private int losses;
   private int wins;
@@ -25,13 +26,14 @@ public class Winstracker {
     this.player = player;
     data = new WinsDataHandler(this);
 
-    if (this.exists()) {
-      this.reload();
+    if (exists()) {
+      reload();
     } else {
+      highestWinstreak = 0;
       winstreak = 0;
       losses = 0;
       wins = 0;
-      this.save();
+      save();
     }
   }
 
@@ -48,7 +50,11 @@ public class Winstracker {
   }
 
   public int getWinstreak() {
-    return this.winstreak;
+    return winstreak;
+  }
+
+  public int getHighestWinstreak() {
+    return highestWinstreak;
   }
 
   public int getWinRatio() {
@@ -64,22 +70,27 @@ public class Winstracker {
   }
 
   public boolean exists() {
-    return this.data.exists();
+    return data.exists();
   }
 
   public void reload() {
+    highestWinstreak = data.getHighestWinstreak();
     winstreak = data.getWinstreak();
     losses = data.getLosses();
     wins = data.getWins();
   }
 
   public void save() {
-    this.data.save();
+    data.save();
   }
 
   public void addWin() {
-    this.wins++;
-    this.winstreak++;
+    wins++;
+    winstreak++;
+
+    if (winstreak > highestWinstreak) {
+      highestWinstreak++;
+    }
 
     if (winstreak % AuroraCombat.getInstance().getConfig().getInt("misc.min-killstreak-to-announce")
         == 0) {
@@ -106,11 +117,11 @@ public class Winstracker {
       }
     }
 
-    this.save();
+    save();
   }
 
   public void addLoss() {
-    this.losses++;
+    losses++;
 
     if (winstreak
         >= AuroraDuels.getInstance().getConfig().getInt("misc.min-winstreak-to-announce")) {
@@ -137,9 +148,9 @@ public class Winstracker {
       }
     }
 
-    this.winstreak = 0;
+    winstreak = 0;
 
-    this.save();
+    save();
   }
 
   public static Winstracker getTracker(Player player) {

@@ -18,6 +18,11 @@ public class WinsDataHandler {
     this.playerId = tracker.getPlayer().getUniqueId().toString();
   }
 
+  public int getHighestWinstreak() {
+    Document playerData = collection.find(Filters.eq("_id", playerId)).first();
+    return playerData != null ? playerData.getInteger("highestWinstreak", -1) : -1;
+  }
+
   public int getWinstreak() {
     Document playerData = collection.find(Filters.eq("_id", playerId)).first();
     return playerData != null ? playerData.getInteger("winstreak", -1) : -1;
@@ -36,6 +41,7 @@ public class WinsDataHandler {
   public void save() {
     Document playerData = new Document()
             .append("_id", playerId)
+            .append("highestWinstreak", tracker.getHighestWinstreak())
             .append("winstreak", tracker.getWinstreak())
             .append("wins", tracker.getWins())
             .append("losses", tracker.getLosses());

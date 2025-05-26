@@ -81,6 +81,10 @@ public class Placeholders extends PlaceholderExpansion {
       return String.valueOf(Winstracker.getTracker(player).getWinstreak());
     }
 
+    if (params.startsWith("highest_winstreak")) {
+      return String.valueOf(Winstracker.getTracker(player).getWinstreak());
+    }
+
     if (params.startsWith("win_ratio")) {
       return String.valueOf(Winstracker.getTracker(player).getWinRatio());
     }

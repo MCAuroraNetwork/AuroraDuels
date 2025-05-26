@@ -62,6 +62,10 @@ public class DuelRequest {
     PENDING_DUEL_REQUESTS.add(this);
   }
 
+  public Duel getDuel() {
+    return duel;
+  }
+
   public void onInventoryClose(InventoryCloseEvent event) {
     if (requester != event.getPlayer()) {
       return;
