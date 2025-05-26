@@ -2,6 +2,7 @@ package club.aurorapvp.auroraduels.modules;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
+import club.aurorapvp.auroraduels.events.custom.DuelRequestSendEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
@@ -44,6 +45,10 @@ public class DuelRequest {
         requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("player-in-duel"));
         return;
       }
+    }
+
+    if(!(new DuelRequestSendEvent(requester, this).callEvent())) {
+      return;
     }
 
     if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
