@@ -9,6 +9,7 @@ import club.aurorapvp.auroraduels.modules.duels.*;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.events.custom.KitRefillEvent;
+import club.aurorapvp.aurorawarps.events.custom.TpaRequestSendEvent;
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.HashSet;
@@ -86,6 +87,15 @@ public class PlayerEventListener implements Listener {
         .sendMessage(AuroraDuels.getInstance().getLang().getComponent("commands-disabled"));
 
     event.setCancelled(true);
+  }
+
+  @EventHandler
+  public void onTpaRequest(TpaRequestSendEvent event) {
+    if (!DuelQueue.inQueue(event.getPlayer())) {
+      event.getPlayer().sendMessage(AuroraDuels.getInstance().getLang().getComponent("in-queue"));
+
+      event.setCancelled(true);
+    }
   }
 
   @EventHandler

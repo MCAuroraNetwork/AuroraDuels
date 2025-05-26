@@ -1,6 +1,9 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.aurorawarps.modules.TeleportRequest;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +17,16 @@ public class QueueJoinEvent extends Event {
 
   public QueueJoinEvent(Duel duel) {
     this.duel = duel;
+
+    if (AuroraDuels.getInstance().isAuroraWarpsInstalled()) {
+      for (Player player : duel.getPlayers()) {
+        if (TeleportRequest.hasPendingRequest(player)) {
+          for (TeleportRequest teleportRequest : TeleportRequest.getRequests(player)) {
+            teleportRequest.deny();
+          }
+        }
+      }
+    }
   }
 
   @SuppressWarnings("unused")

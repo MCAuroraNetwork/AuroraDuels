@@ -94,6 +94,7 @@ public class Lang {
     DEFAULTS.put("stop-spectating", "prefix <yellow>Stopped spectating");
     DEFAULTS.put("no-last-duel", "prefix <red>No previous duel");
     DEFAULTS.put("duelQueue-menu", "<yellow><bold>Select Duel Type");
+    DEFAULTS.put("in-queue", "prefix <red>You are currently in a duel queue");
     DEFAULTS.put("duel-kit-gui", "<yellow><bold>Select Duel Kit");
     DEFAULTS.put("next-page", "<yellow><bold>Next");
     DEFAULTS.put("previous-page", "<yellow><bold>Previous");

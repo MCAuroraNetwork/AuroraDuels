@@ -121,6 +121,18 @@ public class DuelRequest {
     return PENDING_DUEL_REQUESTS;
   }
 
+  public static LinkedList<DuelRequest> getPendingRequests(Player player) {
+    LinkedList<DuelRequest> pendingRequests = new LinkedList<>();
+
+    for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
+      if (duelRequest.requester.equals(player) || duelRequest.requested.contains(player)) {
+        pendingRequests.add(duelRequest);
+      }
+    }
+
+    return pendingRequests;
+  }
+
   public static DuelRequest getRequest(Player player) {
     for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
       if (duelRequest.requester.equals(player) || duelRequest.requested.contains(player)) {
@@ -228,6 +240,10 @@ public class DuelRequest {
     if (!playersAccepted.containsValue(false)) {
       PENDING_DUEL_REQUESTS.remove(this);
       requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-accepted"));
+
+      for (DuelRequest duelRequest : DuelRequest.getPendingRequests(player)) {
+        duelRequest.deny();
+      }
 
       duel.getQueue().enterDuelQueue(duel);
     }
