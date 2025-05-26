@@ -82,7 +82,7 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     if (params.startsWith("highest_winstreak")) {
-      return String.valueOf(Winstracker.getTracker(player).getWinstreak());
+      return String.valueOf(Winstracker.getTracker(player).getHighestWinstreak());
     }
 
     if (params.startsWith("win_ratio")) {
