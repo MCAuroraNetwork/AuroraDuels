@@ -31,7 +31,8 @@ public class DuelQueueGUI implements InventoryHolder, Listener {
 
     ItemStack[] itemStacks = new ItemStack[DuelQueue.getQueues().size()];
 
-    Arrays.sort(DuelQueue.getQueues().toArray(new DuelQueue[0]), Comparator.comparing(DuelQueue::getName));
+    Arrays.sort(
+        DuelQueue.getQueues().toArray(new DuelQueue[0]), Comparator.comparing(DuelQueue::getName));
 
     DuelQueue[] duelQueues = DuelQueue.getQueues().toArray(new DuelQueue[0]);
 
@@ -46,14 +47,14 @@ public class DuelQueueGUI implements InventoryHolder, Listener {
         meta.lore(
             List.of(
                 MiniMessage.miniMessage()
-                    .deserialize("<gradient:#FFAA00:#FF55FF>Kit: " + duelQueue.getKit().getName())));
+                    .deserialize(
+                        "<gradient:#FFAA00:#FF55FF>Kit: " + duelQueue.getKit().getName())));
       }
 
       meta.lore(
           List.of(
               MiniMessage.miniMessage()
-                  .deserialize(
-                      "<gradient:#FFAA00:#FF55FF>Queue: " + duelQueue.inQueue())));
+                  .deserialize("<gradient:#FFAA00:#FF55FF>Queue: " + duelQueue.inQueue())));
       displayItem.setItemMeta(meta);
 
       itemStacks[i] = displayItem;
@@ -140,8 +141,7 @@ public class DuelQueueGUI implements InventoryHolder, Listener {
 
         meta.lore(
             List.of(
-                MiniMessage.miniMessage()
-                    .deserialize("<yellow>Queue: " + duelQueue.inQueue())));
+                MiniMessage.miniMessage().deserialize("<yellow>Queue: " + duelQueue.inQueue())));
         itemStack.setItemMeta(meta);
       }
     }
@@ -150,7 +150,13 @@ public class DuelQueueGUI implements InventoryHolder, Listener {
   public void open(Player player) {
     reload();
 
-    player.openInventory(inventory);
+    Bukkit.getScheduler()
+        .runTaskLater(
+            AuroraDuels.getInstance(),
+            () -> {
+              player.openInventory(inventory);
+            },
+            1L);
   }
 
   @Override

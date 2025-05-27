@@ -3,7 +3,7 @@ package club.aurorapvp.auroraduels.modules;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
-import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.auroraduels.modules.duels.teamduels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.Winstracker;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import java.util.HashSet;

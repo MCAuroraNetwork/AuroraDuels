@@ -4,7 +4,7 @@ import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
-import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.auroraduels.modules.duels.teamduels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -41,21 +41,26 @@ public class TeamDuelCommands extends BaseCommand {
 
     team1.add(player);
 
-    int i = 0;
     for (String playerName : team1Names) {
       if (playerName.equals(player.getName())) {
         player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-opponent"));
         return;
       }
-
-      team1.add(Bukkit.getPlayer(playerName));
-      i++;
+      Player teamPlayer = Bukkit.getPlayer(playerName);
+      if (teamPlayer == null) {
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-opponent"));
+        return;
+      }
+      team1.add(teamPlayer);
     }
 
-    i = 0;
     for (String playerName : team2Names) {
-      team2.add(Bukkit.getPlayer(playerName));
-      i++;
+      Player teamPlayer = Bukkit.getPlayer(playerName);
+      if (teamPlayer == null) {
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-opponent"));
+        return;
+      }
+      team2.add(teamPlayer);
     }
 
     Location loc = DuelQueue.findRespawnLocation(player);
@@ -83,8 +88,12 @@ public class TeamDuelCommands extends BaseCommand {
         player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-opponent"));
         return;
       }
-
-      requested[i] = Bukkit.getPlayer(playerName);
+      Player requestedPlayer = Bukkit.getPlayer(playerName);
+      if (requestedPlayer == null) {
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("unknown-opponent"));
+        return;
+      }
+      requested[i] = requestedPlayer;
       i++;
     }
 

@@ -83,7 +83,8 @@ public class Lang {
     DEFAULTS.put("duelQueue-not-found", "prefix <red>Queue not found");
     DEFAULTS.put("you-have-duelRequest", "prefix <red>You already have a pending duelRequest");
     DEFAULTS.put(
-        "already-has-duelRequest", "prefix <red>You already have a duelRequest pending to this player");
+        "already-has-duelRequest",
+        "prefix <red>You already have a duelRequest pending to this player");
     DEFAULTS.put(
         "add-arena",
         "prefix <yellow>Type the name of the arena you want to add arena to duelQueue. Added %s so far");
@@ -100,40 +101,41 @@ public class Lang {
     DEFAULTS.put("previous-page", "<yellow><bold>Previous");
     DEFAULTS.put("kit-invalid-name", "prefix <red>Invalid kit name");
     DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set");
+    DEFAULTS.put("friendly-fire-gui", "<yellow><bold>Choose Friendly Fire Setting");
+    DEFAULTS.put("enable-friendly-fire", "<red><bold>Enable Friendly Fire");
+    DEFAULTS.put("disable-friendly-fire", "<green><bold>Disable Friendly Fire");
     DEFAULTS.put(
-            "winstreak-lost",
-            "prefix <red><bold>%1$s<reset><red> lost a Winstreak of <red><bold>%2$s<reset><red>!");
+        "winstreak-lost",
+        "prefix <red><bold>%1$s<reset><red> lost a Winstreak of <red><bold>%2$s<reset><red>!");
     DEFAULTS.put(
-            "on-winstreak",
-            "prefix <green><bold>%1$s<reset><green> has a Winstreak of <green><bold>%2$s<reset><green>!");
+        "on-winstreak",
+        "prefix <green><bold>%1$s<reset><green> has a Winstreak of <green><bold>%2$s<reset><green>!");
+    DEFAULTS.put("discord-winstreak-lost", "%1$s lost a Winstreak of %2$s!");
+    DEFAULTS.put("discord-on-winstreak", "%1$s has a Winstreak of %2$s!");
     DEFAULTS.put(
-            "discord-winstreak-lost",
-            "%1$s lost a Winstreak of %2$s!");
-    DEFAULTS.put(
-            "discord-on-winstreak",
-            "%1$s has a Winstreak of %2$s!");
-    DEFAULTS.put("duel-summary-elo",
-            """
+        "duel-summary-elo",
+        """
             Duel Summary: %1$s - %2$s ELO
-            
+
             Totem Pops: %3$s
             Damage Dealt: %4$s
             Damage Received: %5$s
             Health Remaining: %6$s
             """);
-    DEFAULTS.put("duel-summary",
-            """
+    DEFAULTS.put(
+        "duel-summary",
+        """
             Duel Summary: %1$s
-            
+
             Totem Pops: %2$s
             Damage Dealt: %3$s
             Damage Received: %4$s
             Health Remaining: %5$s
             """);
-        DEFAULTS.put("reloaded", "prefix <green>Reloaded");
-        DEFAULTS.put(
-            "help-command",
-            """
+    DEFAULTS.put("reloaded", "prefix <green>Reloaded");
+    DEFAULTS.put(
+        "help-command",
+        """
             prefix <yellow><bold>All Commands:
 
 
@@ -203,7 +205,8 @@ public class Lang {
     return MiniMessage.miniMessage().deserialize(pathString);
   }
 
-  public Component getformattedComponentCommand(String message, String hover, String command, Object... args) {
+  public Component getformattedComponentCommand(
+      String message, String hover, String command, Object... args) {
     String pathString = getYaml().getString(message);
     assert pathString != null;
     for (String placeholder : PLACEHOLDERS.keySet()) {
@@ -217,8 +220,8 @@ public class Lang {
     Component component = MiniMessage.miniMessage().deserialize(pathString);
 
     return component
-            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, command))
-            .hoverEvent(HoverEvent.showText(Component.text(hover)));
+        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, command))
+        .hoverEvent(HoverEvent.showText(Component.text(hover)));
   }
 
   public Component getComponentCommand(String message, String hover, String command) {

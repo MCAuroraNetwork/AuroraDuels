@@ -243,8 +243,6 @@ public class StandardDuel extends Duel implements Listener {
       wins.put(winner.getUniqueId(), wins.get(winner.getUniqueId()) + 1);
 
       if (!(wins.get(winner.getUniqueId()) >= ((rounds - 1) / 2 + 1))) {
-        AuroraDuels.getInstance().getLogger().log(Level.INFO, "joe");
-
         loser.spigot().respawn();
 
         arena.reset();

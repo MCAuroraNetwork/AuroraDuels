@@ -6,7 +6,7 @@ import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.FFADuel;
 import club.aurorapvp.auroraduels.modules.duels.RandomTeamDuel;
 import club.aurorapvp.auroraduels.modules.duels.StandardDuel;
-import club.aurorapvp.auroraduels.modules.duels.TeamDuel;
+import club.aurorapvp.auroraduels.modules.duels.teamduels.TeamDuel;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;

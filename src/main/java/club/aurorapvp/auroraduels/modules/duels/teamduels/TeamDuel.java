@@ -1,4 +1,4 @@
-package club.aurorapvp.auroraduels.modules.duels;
+package club.aurorapvp.auroraduels.modules.duels.teamduels;
 
 import club.aurorapvp.aurorachat.modules.NameColor;
 import club.aurorapvp.auroraduels.AuroraDuels;
@@ -6,6 +6,7 @@ import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelStartEvent;
 import club.aurorapvp.auroraduels.modules.Arena;
+import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.modules.kits.Kit;
 import java.util.Collection;
@@ -17,7 +18,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
 import io.papermc.paper.entity.LookAnchor;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
@@ -41,6 +41,7 @@ public class TeamDuel extends Duel {
   private final BossBar[] teamTwoBar = new BossBar[1];
   private final double team1MaxHealth;
   private final double team2MaxHealth;
+  private boolean friendlyFire = false;
 
   public TeamDuel(
       Collection<Player> teamOneMembers,
@@ -56,10 +57,8 @@ public class TeamDuel extends Duel {
         },
         respawnLocation,
         ranked);
-
     this.teamOneMembers = teamOneMembers;
     this.teamTwoMembers = teamTwoMembers;
-
     team1MaxHealth = teamOneMembers.size() * 20;
     team2MaxHealth = teamTwoMembers.size() * 20;
   }
@@ -79,13 +78,11 @@ public class TeamDuel extends Duel {
           }
         },
         respawnLocation,
-            duelQueue,
+        duelQueue,
         kit,
         ranked);
-
     this.teamOneMembers = teamOneMembers;
     this.teamTwoMembers = teamTwoMembers;
-
     team1MaxHealth = teamOneMembers.size() * 20;
     team2MaxHealth = teamTwoMembers.size() * 20;
   }
@@ -104,6 +101,14 @@ public class TeamDuel extends Duel {
 
   public Collection<Player> getTeammates(Player player) {
     return teamOneMembers.contains(player) ? teamOneMembers : teamTwoMembers;
+  }
+
+  public boolean isFriendlyFireEnabled() {
+    return friendlyFire;
+  }
+
+  public void setFriendlyFire(boolean friendlyFire) {
+    this.friendlyFire = friendlyFire;
   }
 
   public void setDead(Player player) {
@@ -133,9 +138,7 @@ public class TeamDuel extends Duel {
 
   public void startDuel(Arena arena) {
     this.arena = arena;
-
     this.setActive(true);
-
     Location spawn1 =
         new Location(
             arena.getWorld(),
@@ -148,52 +151,39 @@ public class TeamDuel extends Duel {
             arena.getSecondSpawn().x(),
             arena.getSecondSpawn().y(),
             arena.getSecondSpawn().z());
-
     for (Player player : teamOneMembers) {
       teamOneDead.put(player.getUniqueId(), false);
-
       if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
         NameColor.getNameColor(player).setColor(NamedTextColor.BLUE);
       }
     }
-
     for (Player player : teamTwoMembers) {
       teamTwoDead.put(player.getUniqueId(), false);
-
       if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
         NameColor.getNameColor(player).setColor(NamedTextColor.RED);
       }
     }
-
     TeamDuel thisDuel = this;
-
     Set<CompletableFuture<Boolean>> teleportFutures = new HashSet<>();
-
     for (Player player : teamOneMembers) {
       CompletableFuture<Boolean> teleportFuture = player.teleportAsync(spawn1);
       teleportFutures.add(teleportFuture);
     }
-
     for (Player player : teamTwoMembers) {
       CompletableFuture<Boolean> teleportFuture = player.teleportAsync(spawn2);
       teleportFutures.add(teleportFuture);
     }
-
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
         .thenRun(
             () -> {
               for (Player player : thisDuel.getTeamOneMembers()) {
                 player.lookAt(spawn2, LookAnchor.EYES);
               }
-
               for (Player player : thisDuel.getTeamTwoMembers()) {
                 player.lookAt(spawn1, LookAnchor.EYES);
               }
-
               this.setStarting(true);
-
               final int[] seconds = {3};
-
               new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -203,21 +193,15 @@ public class TeamDuel extends Duel {
                             MiniMessage.miniMessage().deserialize("<yellow><bold>" + seconds[0]),
                             Component.text("")));
                   }
-                  
                   if (!((seconds[0]--) <= 0)) {
                     return;
                   }
-
                   thisDuel.setStarting(false);
-
                   sendOpponents(teamOneMembers, teamTwoMembers);
-
                   sendOpponents(teamTwoMembers, teamOneMembers);
-
                   this.cancel();
                 }
               }.runTaskTimer(AuroraDuels.getInstance(), 0L, 20L);
-
               teamOneBar[0] =
                   BossBar.bossBar(
                       Component.text("Red Team")
@@ -226,11 +210,9 @@ public class TeamDuel extends Duel {
                       1.0f,
                       Color.RED,
                       Overlay.PROGRESS);
-
               for (Player team1Member : teamOneMembers) {
                 team1Member.showBossBar(teamOneBar[0]);
               }
-
               teamTwoBar[0] =
                   BossBar.bossBar(
                       Component.text("Blue Team")
@@ -239,14 +221,11 @@ public class TeamDuel extends Duel {
                       1.0f,
                       Color.BLUE,
                       Overlay.PROGRESS);
-
               for (Player team2Member : teamTwoMembers) {
                 team2Member.showBossBar(teamTwoBar[0]);
               }
-
               spectatorBars.add(teamOneBar[0]);
               spectatorBars.add(teamTwoBar[0]);
-
               new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -254,15 +233,11 @@ public class TeamDuel extends Duel {
                     this.cancel();
                     return;
                   }
-                  
                   updateTeamBossbar(teamOneMembers, teamOneDead, teamTwoBar[0], team1MaxHealth);
-
                   updateTeamBossbar(teamTwoMembers, teamTwoDead, teamOneBar[0], team2MaxHealth);
                 }
               }.runTaskTimer(AuroraDuels.getInstance(), 0L, 1L);
-
               timeStarted = System.currentTimeMillis();
-
               new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -278,33 +253,27 @@ public class TeamDuel extends Duel {
       BossBar bossbar,
       double opponentsMaxHealth) {
     double opponentTeamHealth = 0;
-
     for (Player opponent : opponentTeam) {
       if (opponentsDead.get(opponent.getUniqueId()) || this.isSpectating(opponent)) {
         continue;
       }
-
       opponentTeamHealth =
           opponentTeamHealth + opponent.getHealth() + opponent.getAbsorptionAmount();
     }
-
     bossbar.progress((float) Math.min(opponentTeamHealth / opponentsMaxHealth, 1.0f));
   }
 
   private void sendOpponents(Collection<Player> team, Collection<Player> opponents) {
     StringBuilder sb = new StringBuilder();
-    for (Player teamTwoMember : opponents) {
-      sb.append(teamTwoMember.getName()).append(", ");
+    for (Player opponent : opponents) {
+      sb.append(opponent.getName()).append(", ");
     }
-
     sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
-
     for (Player player : team) {
       final Title title =
           Title.title(
               AuroraDuels.getInstance().getLang().getComponent("duel-started"),
               Component.text("Opponents: " + sb));
-
       player.showTitle(title);
     }
   }
@@ -312,7 +281,6 @@ public class TeamDuel extends Duel {
   public void hideBossbar(Collection<Player> team, BossBar bossbar) {
     for (Player player : team) {
       player.hideBossBar(bossbar);
-
       if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
         NameColor.getNameColor(player).reload();
       }
@@ -324,40 +292,29 @@ public class TeamDuel extends Duel {
     for (Player winner : winners) {
       sb.append(winner.getName()).append(", ");
     }
-
     sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
-
     String winnerNames = sb.toString();
-
     sb = new StringBuilder();
     for (Player loser : losers) {
       sb.append(loser.getName()).append(", ");
     }
-
     sb.delete(sb.lastIndexOf(", "), sb.length() - 1);
-
     String loserNames = sb.toString();
-
     for (Player player : winners) {
       player.showTitle(
           Title.title(
               AuroraDuels.getInstance().getLang().getComponent("you-won"),
               Component.text("Opponents: " + loserNames)));
     }
-
     for (Player player : losers) {
       player.showTitle(
           Title.title(
               AuroraDuels.getInstance().getLang().getComponent("you-lost"),
               Component.text("Opponents: " + winnerNames)));
     }
-
     hideBossbar(teamOneMembers, teamOneBar[0]);
-
     hideBossbar(teamTwoMembers, teamTwoBar[0]);
-
     Duel thisDuel = this;
-
     new BukkitRunnable() {
       @Override
       public void run() {
@@ -371,25 +328,19 @@ public class TeamDuel extends Duel {
     for (Player player : this.getPlayers()) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("draw"));
     }
-
     for (Player player : teamOneMembers) {
       player.hideBossBar(teamOneBar[0]);
-
       if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
         NameColor.getNameColor(player).reload();
       }
     }
-
     for (Player player : teamTwoMembers) {
       player.hideBossBar(teamTwoBar[0]);
-
       if (AuroraDuels.getInstance().isAuroraChatInstalled()) {
         NameColor.getNameColor(player).reload();
       }
     }
-
     Duel thisDuel = this;
-
     new Timer()
         .schedule(
             new TimerTask() {
@@ -404,7 +355,6 @@ public class TeamDuel extends Duel {
               }
             },
             3000);
-    
     new BukkitRunnable() {
       @Override
       public void run() {

@@ -1,7 +1,8 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
+import club.aurorapvp.auroraduels.modules.duels.teamduels.TeamDuel;
 import com.google.common.collect.Iterables;
-import java.util.Arrays;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;

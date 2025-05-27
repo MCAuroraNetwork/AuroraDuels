@@ -6,6 +6,7 @@ import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.Wand;
 import club.aurorapvp.auroraduels.modules.duels.*;
+import club.aurorapvp.auroraduels.modules.duels.teamduels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.aurorakits.events.custom.KitGiveEvent;
 import club.aurorapvp.aurorakits.events.custom.KitRefillEvent;
@@ -134,6 +135,10 @@ public class PlayerEventListener implements Listener {
     Duel duel = Duel.getDuel(event.getDamaged());
 
     if (!(duel instanceof TeamDuel teamDuel)) {
+      return;
+    }
+
+    if (teamDuel.isFriendlyFireEnabled()) {
       return;
     }
 

@@ -5,6 +5,8 @@ import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelRequestSendEvent;
 import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
+import club.aurorapvp.auroraduels.modules.duels.teamduels.FriendlyFireGUI;
+import club.aurorapvp.auroraduels.modules.duels.teamduels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueueGUI;
 import club.aurorapvp.aurorakits.events.custom.KitSelectEvent;
@@ -47,16 +49,20 @@ public class DuelRequest {
       }
     }
 
-    if(!(new DuelRequestSendEvent(requester, this).callEvent())) {
+    if (!(new DuelRequestSendEvent(requester, this).callEvent())) {
       return;
     }
 
-    if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
-      new DuelQueueGUI("duel-request").open(requester);
-    } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
-      requester.openInventory(KitsGUI.getGUI(requester).getCurrentPage());
+    if (duel instanceof TeamDuel teamDuel) {
+      new FriendlyFireGUI(requester, teamDuel).open();
     } else {
-      this.sendRequest();
+      if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
+        new DuelQueueGUI("duel-request").open(requester);
+      } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
+        requester.openInventory(KitsGUI.getGUI(requester).getCurrentPage());
+      } else {
+        this.sendRequest();
+      }
     }
 
     PENDING_DUEL_REQUESTS.add(this);
@@ -68,6 +74,19 @@ public class DuelRequest {
 
   public void onInventoryClose(InventoryCloseEvent event) {
     if (requester != event.getPlayer()) {
+      return;
+    }
+
+    if (event.getInventory().getHolder() instanceof FriendlyFireGUI) {
+      if (duel instanceof TeamDuel) {
+        if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
+          new DuelQueueGUI("duel-request").open(requester);
+        } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
+          requester.openInventory(KitsGUI.getGUI(requester).getCurrentPage());
+        } else {
+          this.sendRequest();
+        }
+      }
       return;
     }
 
@@ -183,7 +202,6 @@ public class DuelRequest {
 
   public void sendRequest() {
     this.requested.addAll(duel.getPlayers());
-
     requested.remove(requester);
 
     if (requested.isEmpty()) {
@@ -219,12 +237,10 @@ public class DuelRequest {
                 if (PENDING_DUEL_REQUESTS.contains(thisDuelRequest)) {
                   requester.sendMessage(
                       AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
-
                   for (Player player : requested) {
                     player.sendMessage(
                         AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
                   }
-
                   PENDING_DUEL_REQUESTS.remove(thisDuelRequest);
                   this.cancel();
                 }
@@ -240,11 +256,9 @@ public class DuelRequest {
     if (!playersAccepted.containsValue(false)) {
       PENDING_DUEL_REQUESTS.remove(this);
       requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-accepted"));
-
       for (DuelRequest duelRequest : DuelRequest.getPendingRequests(player)) {
         duelRequest.deny();
       }
-
       duel.getQueue().enterDuelQueue(duel);
     }
 
@@ -255,7 +269,6 @@ public class DuelRequest {
     PENDING_DUEL_REQUESTS.remove(this);
     Duel.getDuels().remove(duel);
     requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-denied"));
-
     for (Player player : requested) {
       player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-denied"));
     }
