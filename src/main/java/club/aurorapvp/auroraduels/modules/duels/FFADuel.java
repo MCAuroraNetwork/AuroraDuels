@@ -34,7 +34,7 @@ public class FFADuel extends Duel {
   }
 
   public FFADuel(
-          Set<Player> players, DuelQueue duelQueue, Kit kit, Location respawnLocation, boolean ranked) {
+      Set<Player> players, DuelQueue duelQueue, Kit kit, Location respawnLocation, boolean ranked) {
     super(players, respawnLocation, duelQueue, kit, ranked);
   }
 
@@ -104,11 +104,12 @@ public class FFADuel extends Duel {
       safeLocations.put(
           player.getUniqueId(), LocationUtil.findSafeSpawnLocation(spawn1, spawn2, center));
 
-      CompletableFuture<Boolean> teleportFuture =
-          player.teleportAsync(safeLocations.get(player.getUniqueId()));
-      teleportFutures.add(teleportFuture);
+      Location teleportTarget = safeLocations.get(player.getUniqueId()).clone();
+      teleportTarget.setDirection(
+          center.toVector().subtract(safeLocations.get(player.getUniqueId()).toVector()));
 
-      teleportFuture.thenRun(() -> player.lookAt(center, LookAnchor.EYES));
+      CompletableFuture<Boolean> teleportFuture = player.teleportAsync(teleportTarget);
+      teleportFutures.add(teleportFuture);
     }
 
     CompletableFuture.allOf(teleportFutures.toArray(new CompletableFuture[0]))
