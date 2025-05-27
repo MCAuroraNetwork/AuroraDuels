@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
@@ -122,6 +123,10 @@ public class DuelStartEvent extends Event {
 
     if (!AuroraDuels.getInstance().isAuroraCombatInstalled()) {
       return;
+    }
+
+    for (Player player : duel.getPlayers()) {
+      BlockFallDamage.setVulnerable(player);
     }
 
     Rating rating = Rating.getRating("overall");
