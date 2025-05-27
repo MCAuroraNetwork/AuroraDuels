@@ -59,7 +59,7 @@ public class DuelRequest {
       if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
         new DuelQueueGUI("duel-request").open(requester);
       } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
-        requester.openInventory(KitsGUI.getGUI(requester, true).getCurrentPage());
+        requester.openInventory(KitsGUI.getGUI(requester).getChoiceGUI(true));
       } else {
         this.sendRequest();
       }
@@ -82,7 +82,7 @@ public class DuelRequest {
         if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
           new DuelQueueGUI("duel-request").open(requester);
         } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
-          requester.openInventory(KitsGUI.getGUI(requester, true).getCurrentPage());
+          requester.openInventory(KitsGUI.getGUI(requester).getChoiceGUI(true));
         } else {
           this.sendRequest();
         }
@@ -115,7 +115,7 @@ public class DuelRequest {
     duel.setQueue(event.getQueue());
 
     if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      event.getPlayer().openInventory(KitsGUI.getGUI(event.getPlayer(), true).getCurrentPage());
+      event.getPlayer().openInventory(KitsGUI.getGUI(event.getPlayer()).getChoiceGUI(true));
       return;
     }
 
