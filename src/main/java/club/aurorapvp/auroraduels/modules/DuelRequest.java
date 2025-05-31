@@ -3,25 +3,32 @@ package club.aurorapvp.auroraduels.modules;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.DuelRequestAcceptEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelRequestSendEvent;
-import club.aurorapvp.auroraduels.events.custom.QueueSelectEvent;
+import club.aurorapvp.auroraduels.events.custom.QueueSelectionEvent;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import club.aurorapvp.auroraduels.modules.duels.teamduels.FriendlyFireGUI;
 import club.aurorapvp.auroraduels.modules.duels.teamduels.TeamDuel;
 import club.aurorapvp.auroraduels.modules.queues.DuelQueue;
-import club.aurorapvp.auroraduels.modules.queues.DuelQueueGUI;
+import club.aurorapvp.auroraduels.modules.queues.QueueSelectionGUI;
 import club.aurorapvp.aurorakits.events.custom.KitSelectEvent;
 import club.aurorapvp.aurorakits.modules.kits.KitsGUI;
-import java.util.*;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
-public class DuelRequest {
+import java.util.*;
 
+public class DuelRequest implements Listener {
   protected static final LinkedList<DuelRequest> PENDING_DUEL_REQUESTS = new LinkedList<>();
   private final HashMap<UUID, Boolean> playersAccepted = new HashMap<>();
   private final Player requester;
   private final Set<Player> requested = new HashSet<>();
   private final Duel duel;
+  private Set<DuelQueue> selectedQueues = new HashSet<>();
+  private boolean confirmed = false;
+  private boolean requestSent = false;
+  private boolean kitSelectionInProgress = false;
 
   public DuelRequest(Player requester, Duel duel) {
     this.requester = requester;
@@ -37,8 +44,7 @@ public class DuelRequest {
 
     for (Player player : duel.getPlayers()) {
       if (hasPendingRequest(requester, player)) {
-        requester.sendMessage(
-            AuroraDuels.getInstance().getLang().getComponent("already-has-request"));
+        requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("already-has-request"));
         return;
       } else if (Duel.inDuel(player)) {
         requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("player-in-duel"));
@@ -56,22 +62,18 @@ public class DuelRequest {
     if (duel instanceof TeamDuel teamDuel) {
       new FriendlyFireGUI(requester, teamDuel).open();
     } else {
-      if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
-        new DuelQueueGUI("duel-request").open(requester);
-      } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
-        requester.openInventory(KitsGUI.getGUI(requester).getChoiceGUI(true, false));
-      } else {
-        this.sendRequest();
-      }
+      new QueueSelectionGUI(requester, false, "duel-request").open();
     }
 
     PENDING_DUEL_REQUESTS.add(this);
+    Bukkit.getPluginManager().registerEvents(this, AuroraDuels.getInstance());
   }
 
   public Duel getDuel() {
     return duel;
   }
 
+  @EventHandler
   public void onInventoryClose(InventoryCloseEvent event) {
     if (requester != event.getPlayer()) {
       return;
@@ -79,61 +81,64 @@ public class DuelRequest {
 
     if (event.getInventory().getHolder() instanceof FriendlyFireGUI) {
       if (duel instanceof TeamDuel) {
-        if (DuelQueue.getQueues().size() > 1 && duel.getQueue() == null) {
-          new DuelQueueGUI("duel-request").open(requester);
-        } else if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
-          requester.openInventory(KitsGUI.getGUI(requester).getChoiceGUI(true, false));
-        } else {
-          this.sendRequest();
-        }
+        new QueueSelectionGUI(requester, false, "duel-request").open();
       }
       return;
     }
 
-    if (!(event.getInventory().getHolder() instanceof DuelQueueGUI duelQueueGUI)) {
+    if (!(event.getInventory().getHolder() instanceof QueueSelectionGUI queueGUI)) {
       return;
     }
 
-    if (!Objects.equals(duelQueueGUI.getName(), "duel-request")) {
+    if (!queueGUI.getContext().equals("duel-request")) {
       return;
     }
 
-    if (duel.getQueue() == null) {
+    if (!confirmed) {
       PENDING_DUEL_REQUESTS.remove(this);
     }
   }
 
-  public void onQueueSelect(QueueSelectEvent event) {
-    if (requester != event.getPlayer()) {
+  @EventHandler
+  public void onQueueSelect(QueueSelectionEvent event) {
+    if (event.isCancelled() || requester != event.getPlayer() || !event.getContext().equals("duel-request")) {
       return;
     }
 
-    if (!event.getName().equals("duel-request")) {
+    this.selectedQueues = event.getSelectedQueues();
+    confirmed = true;
+
+    if (selectedQueues.isEmpty()) {
+      requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("select-at-least-one"));
+      PENDING_DUEL_REQUESTS.remove(this);
       return;
     }
 
-    duel.setQueue(event.getQueue());
-
-    if (AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      event.getPlayer().openInventory(KitsGUI.getGUI(event.getPlayer()).getChoiceGUI(true, false));
-      return;
+    if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duel.getKit() == null) {
+      KitsGUI kitsGUI = KitsGUI.getGUI(requester);
+      if (kitsGUI == null) {
+        requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("error-opening-kits"));
+        PENDING_DUEL_REQUESTS.remove(this);
+        return;
+      }
+      kitSelectionInProgress = true;
+      Bukkit.getScheduler().runTaskLater(AuroraDuels.getInstance(), () -> requester.openInventory(kitsGUI.getChoiceGUI(true, false)), 1L);
+    } else {
+      sendRequest();
     }
-
-    event.getPlayer().closeInventory();
-    this.sendRequest();
   }
 
+  @EventHandler
   public void onKitSelect(KitSelectEvent event) {
-    if (requester != event.getPlayer()) {
+    if (requester != event.getPlayer() || !kitSelectionInProgress) {
       return;
     }
 
     event.setCancelled(true);
-
     duel.setKit(event.getKit());
-
     event.getPlayer().closeInventory();
-    this.sendRequest();
+    kitSelectionInProgress = false;
+    sendRequest();
   }
 
   public static LinkedList<DuelRequest> getPendingRequests() {
@@ -142,13 +147,11 @@ public class DuelRequest {
 
   public static LinkedList<DuelRequest> getPendingRequests(Player player) {
     LinkedList<DuelRequest> pendingRequests = new LinkedList<>();
-
     for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
       if (duelRequest.requester.equals(player) || duelRequest.requested.contains(player)) {
         pendingRequests.add(duelRequest);
       }
     }
-
     return pendingRequests;
   }
 
@@ -172,13 +175,11 @@ public class DuelRequest {
 
   public static Set<DuelRequest> getRequests(Player player) {
     Set<DuelRequest> matchingDuelRequests = new HashSet<>();
-
     for (DuelRequest duelRequest : PENDING_DUEL_REQUESTS) {
       if (duelRequest.requester.equals(player) || duelRequest.requested.contains(player)) {
         matchingDuelRequests.add(duelRequest);
       }
     }
-
     return matchingDuelRequests;
   }
 
@@ -201,6 +202,10 @@ public class DuelRequest {
   }
 
   public void sendRequest() {
+    if (requestSent) {
+      return;
+    }
+
     this.requested.addAll(duel.getPlayers());
     requested.remove(requester);
 
@@ -211,42 +216,42 @@ public class DuelRequest {
     }
 
     requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("sent-request"));
-
     for (Player player : requested) {
       player.sendMessage(
-          AuroraDuels.getInstance()
-              .getLang()
-              .getformattedComponentCommand(
-                  "received-request",
-                  "Click to Accept Request",
-                  "/duel accept " + requester.getName(),
-                  requester.getName()));
+              AuroraDuels.getInstance()
+                      .getLang()
+                      .getformattedComponentCommand(
+                              "received-request",
+                              "Click to Accept Request",
+                              "/duel accept " + requester.getName(),
+                              requester.getName()
+                      )
+      );
     }
 
     for (Player player : requested) {
       playersAccepted.put(player.getUniqueId(), false);
     }
 
-    DuelRequest thisDuelRequest = this;
+    requestSent = true;
 
-    new Timer()
-        .schedule(
+    DuelRequest thisDuelRequest = this;
+    new Timer().schedule(
             new TimerTask() {
               @Override
               public void run() {
                 if (PENDING_DUEL_REQUESTS.contains(thisDuelRequest)) {
-                  requester.sendMessage(
-                      AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
+                  requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
                   for (Player player : requested) {
-                    player.sendMessage(
-                        AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
+                    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-timed-out"));
                   }
                   PENDING_DUEL_REQUESTS.remove(thisDuelRequest);
                   this.cancel();
                 }
               }
             },
-            AuroraDuels.getInstance().getConfig().getInt("requests.expiry-time"));
+            AuroraDuels.getInstance().getConfig().getInt("requests.expiry-time")
+    );
   }
 
   public void accept(Player player) {
@@ -257,9 +262,13 @@ public class DuelRequest {
       PENDING_DUEL_REQUESTS.remove(this);
       requester.sendMessage(AuroraDuels.getInstance().getLang().getComponent("request-accepted"));
       for (DuelRequest duelRequest : DuelRequest.getPendingRequests(player)) {
-        duelRequest.deny();
+        if (duelRequest != this) {
+          duelRequest.deny();
+        }
       }
-      duel.getQueue().enterDuelQueue(duel);
+      DuelQueue selectedQueue = selectedQueues.iterator().next();
+      duel.setQueue(selectedQueue);
+      selectedQueue.enterDuelQueue(duel);
     }
 
     new DuelRequestAcceptEvent(player, duel).callEvent();

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'AuroraDuels'
-version = '1.14.9'
+version = '1.15.0'
 
 repositories {
     mavenCentral()
@@ -52,7 +52,7 @@ dependencies {
     compileOnly ':AuroraKits:1.8.4'
     compileOnly ':AuroraCombat:1.8.8'
     compileOnly ':AuroraWarps:1.3.2'
-    compileOnly ':AuroraChat:1.0.1'
+    compileOnly ':AuroraChat:1.1.0'
 }
 
 build {

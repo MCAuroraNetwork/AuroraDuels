@@ -54,10 +54,6 @@ public class QueueDataHandler {
   }
 
   public void create() {
-    if (AuroraDuels.getInstance().isAuroraKitsInstalled() && duelQueue.getKit() != null) {
-      queueData.set("kit", duelQueue.getKit().getName());
-    }
-
     List<String> arenaNames = new ArrayList<>();
 
     for (Arena arena : duelQueue.getArenas()) {

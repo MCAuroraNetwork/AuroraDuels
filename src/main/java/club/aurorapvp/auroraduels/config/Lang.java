@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.logging.Level;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -13,7 +14,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
-
   private final HashMap<String, String> PLACEHOLDERS = new HashMap<>();
   private final File FILE = new File(AuroraDuels.getInstance().getDataFolder(), "lang.yml");
   private YamlConfiguration lang;
@@ -25,96 +25,87 @@ public class Lang {
 
   public void generateDefaults() {
     final HashMap<String, String> DEFAULTS = new HashMap<>();
-
     DEFAULTS.put("prefix", "~<gradient:#FFAA00:#FF55FF><bold>AuroraDuels ><reset>~");
-    DEFAULTS.put("set-spawn1", "prefix <yellow>Set first spawn: Left click");
-    DEFAULTS.put("set-spawn2", "prefix <yellow>Set second spawn: Right click");
-    DEFAULTS.put("spawn1-set", "prefix <yellow>Spawn 1 set!");
-    DEFAULTS.put("spawn2-set", "prefix <yellow>Spawn 2 set!");
-    DEFAULTS.put("spawns-set", "prefix <yellow>Spawns set!");
+    DEFAULTS.put("set-spawn1", "prefix <yellow>Set first spawn: Left click ⚔");
+    DEFAULTS.put("set-spawn2", "prefix <yellow>Set second spawn: Right click ⚔");
+    DEFAULTS.put("spawn1-set", "prefix <yellow>Spawn 1 set! ✓");
+    DEFAULTS.put("spawn2-set", "prefix <yellow>Spawn 2 set! ✓");
+    DEFAULTS.put("spawns-set", "prefix <yellow>Spawns set! ✓");
+    DEFAULTS.put("error-opening-kits", "<red>Failed to open kits menu. Please try again.");
     DEFAULTS.put("set-pos1", "prefix <yellow>Set Pos 1: Left click");
     DEFAULTS.put("set-pos2", "prefix <yellow>Set Pos 2: Right click");
-    DEFAULTS.put("pos1-set", "prefix <yellow>Pos 1 set!");
-    DEFAULTS.put("pos2-set", "prefix <yellow>Pos 2 set!");
+    DEFAULTS.put("pos1-set", "prefix <yellow>Pos 1 set! ✓");
+    DEFAULTS.put("pos2-set", "prefix <yellow>Pos 2 set! ✓");
     DEFAULTS.put("arena-created", "prefix <green>Arena created!");
     DEFAULTS.put("arena-reset", "prefix <yellow>Arena reset!");
-    DEFAULTS.put("arena-deleted", "prefix <red>Arena deleted");
-    DEFAULTS.put("arena-does-not-exist", "prefix <red>No such arena");
-    DEFAULTS.put("arena-already-being-created", "prefix <yellow>Arena creation in progress");
-    DEFAULTS.put("arena-already-exists", "prefix <yellow>Arena exists");
-    DEFAULTS.put("unknown-opponent", "prefix <red>Opponent not found");
-    DEFAULTS.put("unknown-duel", "prefix <red>Duel not found");
-    DEFAULTS.put("unknown-player", "prefix <red>Player not found");
-    DEFAULTS.put("player-in-duel", "prefix <red>Player in duel");
-    DEFAULTS.put("duel-started", "<bold><green>Duel started!");
-    DEFAULTS.put("even-rounds", "prefix <red>Odd rounds required for duel");
-    DEFAULTS.put("entered-duelQueue", "prefix <green>You have entered the duel duelQueue");
-    DEFAULTS.put("sent-duelRequest", "prefix <green>Request sent successfully!");
-    DEFAULTS.put(
-        "received-duelRequest",
-        "prefix <yellow>Request from <bold>%s<reset><yellow>. Use <bold>/duel accept<reset><yellow> or <bold>/duel deny<reset><yellow>");
-    DEFAULTS.put("duelRequest-timed-out", "prefix <yellow>Request timed out");
-    DEFAULTS.put("no-requests", "prefix <yellow>No requests");
-    DEFAULTS.put("duelRequest-denied", "prefix <red>Request denied");
-    DEFAULTS.put("duelRequest-accepted", "prefix <green>Request accepted!");
-    DEFAULTS.put("you-won", "<green>You won!");
-    DEFAULTS.put("you-lost", "<red>You lost");
-    DEFAULTS.put("duel-won", "prefix <green>You won!%s");
-    DEFAULTS.put("duel-lost", "prefix <red>You lost%s");
-    DEFAULTS.put(
-        "duel-over",
-        "<bold><yellow>%1$s<reset><yellow> won a duel against <bold>%2$s<reset><yellow>!");
-    DEFAULTS.put("discord-duel-over", "%1$s won a duel against %2$s!");
+    DEFAULTS.put("arena-deleted", "prefix <red>Arena deleted ✗");
+    DEFAULTS.put("arena-does-not-exist", "prefix <red>No such arena ✗");
+    DEFAULTS.put("arena-already-being-created", "prefix <yellow>Arena creation in progress ⏳");
+    DEFAULTS.put("arena-already-exists", "prefix <yellow>Arena exists ❗");
+    DEFAULTS.put("unknown-opponent", "prefix <red>Opponent not found ✗");
+    DEFAULTS.put("unknown-duel", "prefix <red>Duel not found ✗");
+    DEFAULTS.put("unknown-player", "prefix <red>Player not found ✗");
+    DEFAULTS.put("player-in-duel", "prefix <red>Player in duel ⚔");
+    DEFAULTS.put("duel-started", "<bold><green>Duel started! ⚔");
+    DEFAULTS.put("even-rounds", "prefix <red>Odd rounds required for duel ✗");
+    DEFAULTS.put("entered-queue", "prefix <green>You have entered the duel queue");
+    DEFAULTS.put("sent-request", "prefix <green>Request sent successfully! ✉");
+    DEFAULTS.put("received-request", "prefix <yellow>Request from <bold>%s<reset><yellow>. ✉ Use <bold>/duel accept<reset><yellow> or <bold>/duel deny<reset><yellow>");
+    DEFAULTS.put("request-timed-out", "prefix <yellow>Request timed out ⏳");
+    DEFAULTS.put("no-requests", "prefix <yellow>No requests ❗");
+    DEFAULTS.put("request-denied", "prefix <red>Request denied ✗");
+    DEFAULTS.put("request-accepted", "prefix <green>Request accepted! ✓");
+    DEFAULTS.put("you-won", "<green>You won! 🏆");
+    DEFAULTS.put("you-lost", "<red>You lost ✗");
+    DEFAULTS.put("duel-won", "prefix <green>You won! 🏆 %s");
+    DEFAULTS.put("duel-lost", "prefix <red>You lost%s ✗");
+    DEFAULTS.put("duel-over", "<bold><yellow>%1$s<reset><yellow> won a duel against <bold>%2$s<reset><yellow>! 🏆");
+    DEFAULTS.put("discord-duel-over", "%1$s won a duel against %2$s! 🏆");
     DEFAULTS.put("rounds-remaining", "<yellow>Round %1$s of %2$s | <red>%3$s<yellow> - <blue>%4$s");
     DEFAULTS.put("draw", "prefix <yellow>Draw!");
-    DEFAULTS.put("rematch", "prefix <yellow>Want a rematch? Do /rematch!");
-    DEFAULTS.put("no-leaving-arena", "prefix <red>Can't leave arena");
+    DEFAULTS.put("rematch", "prefix <yellow>Want a rematch? ⚔ Do /rematch!");
+    DEFAULTS.put("no-leaving-arena", "prefix <red>Can't leave arena ✗");
     DEFAULTS.put("halfway", "prefix <yellow>Duel halfway over. All players now glowing");
-    DEFAULTS.put("one-minute-left", "prefix <yellow>One minute remaining");
-    DEFAULTS.put("duel-time-expired", "prefix <red>Duel time expired");
-    DEFAULTS.put("looking-match", "prefix <yellow>Searching for opponent");
-    DEFAULTS.put("not-looking-match", "prefix <yellow>Stopped searching for an opponent");
-    DEFAULTS.put("match-found", "prefix <green>Opponent found!");
-    DEFAULTS.put("in-duelQueue", "prefix <yellow>Player is already in a duelQueue");
-    DEFAULTS.put("duelQueue-already-exists", "prefix <yellow>Queue exists");
-    DEFAULTS.put("duelQueue-being-created", "prefix <yellow>Queue creation in progress");
-    DEFAULTS.put("duelQueue-invalid-item", "prefix <red>Invalid duelQueue item");
-    DEFAULTS.put("duelQueue-created", "prefix <green>Queue created");
-    DEFAULTS.put("duelQueue-not-found", "prefix <red>Queue not found");
-    DEFAULTS.put("you-have-duelRequest", "prefix <red>You already have a pending duelRequest");
-    DEFAULTS.put(
-        "already-has-duelRequest",
-        "prefix <red>You already have a duelRequest pending to this player");
-    DEFAULTS.put(
-        "add-arena",
-        "prefix <yellow>Type the name of the arena you want to add arena to duelQueue. Added %s so far");
-    DEFAULTS.put("no-teleport", "prefix <red>Can't teleport during a duel");
-    DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled during duel");
-    DEFAULTS.put("duel-kit", "prefix <green>Duel kit set!");
-    DEFAULTS.put("start-spectating", "prefix <yellow>Spectating! Do /duel spectate again to stop");
+    DEFAULTS.put("one-minute-left", "prefix <yellow>One minute remaining ⏳");
+    DEFAULTS.put("duel-time-expired", "prefix <red>Duel time expired ⏳");
+    DEFAULTS.put("looking-match", "prefix <yellow>Searching for opponent 🔍");
+    DEFAULTS.put("not-looking-match", "prefix <yellow>Stopped searching for an opponent ❗");
+    DEFAULTS.put("match-found", "prefix <green>Opponent found! ⚔");
+    DEFAULTS.put("in-queue", "prefix <red>You are currently in a duel queue ⏳");
+    DEFAULTS.put("queue-already-exists", "prefix <yellow>Queue exists ❗");
+    DEFAULTS.put("queue-being-created", "prefix <yellow>Queue creation in progress ⏳");
+    DEFAULTS.put("queue-invalid-item", "prefix <red>Invalid duel queue item ✗");
+    DEFAULTS.put("queue-created", "prefix <green>Queue created");
+    DEFAULTS.put("queue-not-found", "prefix <red>Queue not found ✗");
+    DEFAULTS.put("you-have-request", "prefix <red>You already have a pending duel request ✉");
+    DEFAULTS.put("already-has-request", "prefix <red>You already have a duel request pending to this player ✉");
+    DEFAULTS.put("add-arena", "prefix <yellow>Type the name of the arena you want to add to the duel queue. Added %s so far 🛠");
+    DEFAULTS.put("no-teleport", "prefix <red>Can't teleport during a duel ✗");
+    DEFAULTS.put("commands-disabled", "prefix <red>Commands disabled during duel ✗");
+    DEFAULTS.put("duel-kit", "prefix <green>Duel kit set! ✓");
+    DEFAULTS.put("start-spectating", "prefix <yellow>Spectating! 👀 Do /duel spectate again to stop");
     DEFAULTS.put("stop-spectating", "prefix <yellow>Stopped spectating");
-    DEFAULTS.put("no-last-duel", "prefix <red>No previous duel");
-    DEFAULTS.put("duelQueue-menu", "<yellow><bold>Select Duel Type");
-    DEFAULTS.put("in-queue", "prefix <red>You are currently in a duel queue");
-    DEFAULTS.put("duel-kit-gui", "<yellow><bold>Select Duel Kit");
-    DEFAULTS.put("next-page", "<yellow><bold>Next");
-    DEFAULTS.put("previous-page", "<yellow><bold>Previous");
-    DEFAULTS.put("kit-invalid-name", "prefix <red>Invalid kit name");
-    DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set");
+    DEFAULTS.put("no-last-duel", "prefix <red>No previous duel ✗");
+    DEFAULTS.put("queue-menu", "<yellow><bold>Select Duel Type <reset><yellow>⚔");
+    DEFAULTS.put("ranked-match", "<blue><bold>Ranked Match");
+    DEFAULTS.put("unranked-match", "<gray><bold>Unranked Match");
+    DEFAULTS.put("enabled", "<green>Enabled");
+    DEFAULTS.put("disabled", "<red>Disabled");
+    DEFAULTS.put("confirm-selection", "<green><bold>Confirm Selection");
+    DEFAULTS.put("select-at-least-one", "prefix <red>You must select at least one queue.");
+    DEFAULTS.put("duel-kit-gui", "<yellow><bold>Select Duel Kit <reset><yellow>⚔");
+    DEFAULTS.put("next-page", "<yellow><bold>➡ Next");
+    DEFAULTS.put("previous-page", "<yellow><bold>⬅ Previous");
+    DEFAULTS.put("kit-invalid-name", "prefix <red>Invalid kit name ✗");
+    DEFAULTS.put("duel-lobby-set", "prefix <green>Duel lobby set ✓");
     DEFAULTS.put("friendly-fire-gui", "<yellow><bold>Choose Friendly Fire Setting");
-    DEFAULTS.put("enable-friendly-fire", "<red><bold>Enable Friendly Fire");
-    DEFAULTS.put("disable-friendly-fire", "<green><bold>Disable Friendly Fire");
-    DEFAULTS.put(
-        "winstreak-lost",
-        "prefix <red><bold>%1$s<reset><red> lost a Winstreak of <red><bold>%2$s<reset><red>!");
-    DEFAULTS.put(
-        "on-winstreak",
-        "prefix <green><bold>%1$s<reset><green> has a Winstreak of <green><bold>%2$s<reset><green>!");
-    DEFAULTS.put("discord-winstreak-lost", "%1$s lost a Winstreak of %2$s!");
+    DEFAULTS.put("enable-friendly-fire", "<red>❌<bold> Enable Friendly Fire");
+    DEFAULTS.put("disable-friendly-fire", "<green>✓<bold> Disable Friendly Fire");
+    DEFAULTS.put("winstreak-lost", "prefix <red><bold>%1$s<reset><red> lost a Winstreak of <red><bold>%2$s<reset><red>! ✗");
+    DEFAULTS.put("on-winstreak", "prefix <green><bold>%1$s<reset><green> has a Winstreak of <green><bold>%2$s<reset><green>!");
+    DEFAULTS.put("discord-winstreak-lost", "%1$s lost a Winstreak of %2$s! ✗");
     DEFAULTS.put("discord-on-winstreak", "%1$s has a Winstreak of %2$s!");
-    DEFAULTS.put(
-        "duel-summary-elo",
-        """
+    DEFAULTS.put("duel-summary-elo", """
             Duel Summary: %1$s - %2$s ELO
 
             Totem Pops: %3$s
@@ -122,9 +113,7 @@ public class Lang {
             Damage Received: %5$s
             Health Remaining: %6$s
             """);
-    DEFAULTS.put(
-        "duel-summary",
-        """
+    DEFAULTS.put("duel-summary", """
             Duel Summary: %1$s
 
             Totem Pops: %2$s
@@ -134,17 +123,15 @@ public class Lang {
             """);
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
-        "help-command",
-        """
+            "help-command",
+            """
             prefix <yellow><bold>All Commands:
 
-
-            <blue><bold>/duel [player]: <reset><yellow>Sends a duel duelRequest to a player
-
-            <blue><bold>/ranked or /unranked [name]: <reset><yellow>Joins a ranked or unranked duelQueue, or the default one if no name is given
-
-            <blue><bold>/rematch: <reset><yellow>Sends a duel duelRequest identical to the last one sent to all previous duel members
-            """);
+            <blue><bold>/duel [player]: <reset><yellow>Sends a duel request to a player
+            <blue><bold>/ranked or /unranked [name]: <reset><yellow>Joins a ranked or unranked queue, or the default one if no name is given
+            <blue><bold>/rematch: <reset><yellow>Sends a duel request identical to the last one sent to all previous duel members
+            """
+    );
 
     for (String path : DEFAULTS.keySet()) {
       if (!getYaml().contains(path) || getYaml().getString(path) == null) {
@@ -160,10 +147,11 @@ public class Lang {
 
     for (var path : getYaml().getKeys(false).toArray()) {
       if (Objects.requireNonNull(getYaml().getString((String) path)).startsWith("~")
-          && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
+              && Objects.requireNonNull(getYaml().getString((String) path)).endsWith("~")) {
         PLACEHOLDERS.put(
-            (String) path,
-            Objects.requireNonNull(getYaml().getString((String) path)).replace("~", ""));
+                (String) path,
+                Objects.requireNonNull(getYaml().getString((String) path)).replace("~", "")
+        );
       }
     }
   }
@@ -187,16 +175,13 @@ public class Lang {
         pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
-
     pathString = String.format(pathString, args);
-
     return MiniMessage.miniMessage().deserialize(pathString);
   }
 
   public Component getComponent(String message) {
     String pathString = getYaml().getString(message);
     assert pathString != null;
-
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
         pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
@@ -205,8 +190,7 @@ public class Lang {
     return MiniMessage.miniMessage().deserialize(pathString);
   }
 
-  public Component getformattedComponentCommand(
-      String message, String hover, String command, Object... args) {
+  public Component getformattedComponentCommand(String message, String hover, String command, Object... args) {
     String pathString = getYaml().getString(message);
     assert pathString != null;
     for (String placeholder : PLACEHOLDERS.keySet()) {
@@ -214,31 +198,25 @@ public class Lang {
         pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
-
     pathString = String.format(pathString, args);
-
     Component component = MiniMessage.miniMessage().deserialize(pathString);
-
     return component
-        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, command))
-        .hoverEvent(HoverEvent.showText(Component.text(hover)));
+            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, command))
+            .hoverEvent(HoverEvent.showText(Component.text(hover)));
   }
 
   public Component getComponentCommand(String message, String hover, String command) {
     String pathString = getYaml().getString(message);
     assert pathString != null;
-
     for (String placeholder : PLACEHOLDERS.keySet()) {
       if (pathString.contains(placeholder)) {
         pathString = pathString.replace(placeholder, PLACEHOLDERS.get(placeholder));
       }
     }
-
     Component component = MiniMessage.miniMessage().deserialize(pathString);
-
     return component
-        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, command))
-        .hoverEvent(HoverEvent.showText(Component.text(hover)));
+            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, command))
+            .hoverEvent(HoverEvent.showText(Component.text(hover)));
   }
 
   public YamlConfiguration getYaml() {
@@ -251,9 +229,7 @@ public class Lang {
       try {
         FILE.getParentFile().mkdirs();
         FILE.createNewFile();
-
         lang = YamlConfiguration.loadConfiguration(FILE);
-
         this.generateDefaults();
       } catch (IOException e) {
         AuroraDuels.getInstance().getLogger().log(Level.SEVERE, "Failed to generate lang file", e);

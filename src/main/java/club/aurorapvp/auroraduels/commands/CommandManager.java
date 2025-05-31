@@ -2,6 +2,7 @@ package club.aurorapvp.auroraduels.commands;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.commands.duels.RematchCommand;
+import club.aurorapvp.auroraduels.commands.duels.matchmaking.DuelsCommand;
 import club.aurorapvp.auroraduels.commands.duels.matchmaking.RankedCommands;
 import club.aurorapvp.auroraduels.commands.duels.matchmaking.UnrankedCommands;
 import club.aurorapvp.auroraduels.commands.duels.requests.DuelBaseCommands;
@@ -32,6 +33,7 @@ public class CommandManager {
     MANAGER.registerCommand(new QueueCommands());
     MANAGER.registerCommand(new RematchCommand());
     MANAGER.registerCommand(new FFADuelCommands());
+    MANAGER.registerCommand(new DuelsCommand());
 
     CommandCompletions<BukkitCommandCompletionContext> commandCompletions =
         MANAGER.getCommandCompletions();

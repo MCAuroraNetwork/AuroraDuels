@@ -18,15 +18,6 @@ public class GUIEventListener implements Listener {
   }
 
   @EventHandler
-  public void onQueueSelect(QueueSelectEvent event) {
-    for (DuelRequest duelRequest : DuelRequest.getPendingRequests()) {
-      duelRequest.onQueueSelect(event);
-    }
-
-    DuelQueue.onQueueSelect(event);
-  }
-
-  @EventHandler
   public void onKitSelect(KitSelectEvent event) {
     for (DuelRequest duelRequest : DuelRequest.getPendingRequests()) {
       duelRequest.onKitSelect(event);

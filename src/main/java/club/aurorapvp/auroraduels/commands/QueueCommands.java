@@ -21,10 +21,6 @@ public class QueueCommands extends BaseCommand {
   @Description("Creates a queue")
   @SuppressWarnings("unused")
   public void onCreate(Player player, String name, @Optional String kitName) {
-    if (kitName != null && AuroraDuels.getInstance().isAuroraKitsInstalled()) {
-      new DuelQueue(name).create(player, kitName);
-    } else {
-      new DuelQueue(name).create(player);
-    }
+    new DuelQueue(name).create(player);
   }
 }
