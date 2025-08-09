@@ -105,10 +105,11 @@ public class Lang {
     DEFAULTS.put("on-winstreak", "prefix <green><bold>%1$s<reset><green> has a Winstreak of <green><bold>%2$s<reset><green>!");
     DEFAULTS.put("discord-winstreak-lost", "%1$s lost a Winstreak of %2$s! ✗");
     DEFAULTS.put("discord-on-winstreak", "%1$s has a Winstreak of %2$s!");
+    DEFAULTS.put("duel-stats", "prefix <yellow>run /duel stats to see your stats on this duel!");
     DEFAULTS.put("duel-summary-elo", """
       <bold><yellow>Duel Summary</bold><yellow>: <green><bold>%1$s</bold></green> - <aqua><bold>%2$s ELO</bold></aqua>
 
-      <yellow>❗ Totem Pops: <white>%3$s
+      <aqua>❗ Totem Pops: <white>%3$s
       <red>⚔ Damage Dealt: <white>%4$s
       <blue>🛡 Damage Received: <white>%5$s
       <green>❤ Health Remaining: <white>%6$s
@@ -117,7 +118,7 @@ public class Lang {
     DEFAULTS.put("duel-summary", """
       <bold><yellow>Duel Summary</bold><yellow>: <green><bold>%1$s</bold></green>
 
-      <yellow>❗ Totem Pops: <white>%2$s
+      <aqua>❗ Totem Pops: <white>%2$s
       <red>⚔ Damage Dealt: <white>%3$s
       <blue>🛡 Damage Received: <white>%4$s
       <green>❤ Health Remaining: <white>%5$s

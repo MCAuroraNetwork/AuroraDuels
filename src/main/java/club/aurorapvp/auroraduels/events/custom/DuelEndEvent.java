@@ -61,8 +61,6 @@ public class DuelEndEvent extends DuelOverEvent {
             },
             3000);
 
-    Set<Component> summaries = new HashSet<>();
-
     for (Player player : duel.getPlayers()) {
       duel.setHealthRemaining(player, player.getHealth() + player.getAbsorptionAmount());
 
@@ -70,36 +68,10 @@ public class DuelEndEvent extends DuelOverEvent {
 
       StatsDataHandler.save(stats);
 
-      if (AuroraDuels.getInstance().isAuroraCombatInstalled()) {
-        summaries.add(
-            AuroraDuels.getInstance()
-                .getLang()
-                .formatComponent(
-                    "duel-summary-elo",
-                    player.getName(),
-                    stats.getElo(),
-                    stats.getTotemPops(),
-                    stats.getDamageDealt(),
-                    stats.getDamageReceived(),
-                    stats.getHealthRemaining()));
-      } else {
-        summaries.add(
-            AuroraDuels.getInstance()
-                .getLang()
-                .formatComponent(
-                    "duel-summary",
-                    player.getName(),
-                    stats.getTotemPops(),
-                    stats.getDamageDealt(),
-                    stats.getDamageReceived(),
-                    stats.getHealthRemaining()));
-      }
-    }
-
-    for (Player player : duel.getPlayers()) {
-      for (Component message : summaries) {
-        player.sendMessage(message);
-      }
+      player.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .getComponentCommand("duel-stats", "Click to see duel stats!", "/duel stats"));
     }
 
     for (Player player : Set.copyOf(duel.getSpectators())) {
