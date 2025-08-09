@@ -33,7 +33,19 @@ public class DuelEndEvent extends DuelOverEvent {
     this.losers = losers;
 
     for (Player player : duel.getPlayers()) {
-      player.setHealth(20);
+      duel.setHealthRemaining(player, player.getHealth() + player.getAbsorptionAmount());
+
+      DuelStats.Stats stats = duel.getStats(player);
+
+      StatsDataHandler.save(stats);
+
+      player.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .getComponentCommand("duel-stats", "Click to see duel stats!", "/duel stats"));
+    }
+
+    for (Player player : duel.getPlayers()) {
       player.setFoodLevel(20);
       player.setSaturation(5f);
       player.setExhaustion(0f);
@@ -60,19 +72,6 @@ public class DuelEndEvent extends DuelOverEvent {
               }
             },
             3000);
-
-    for (Player player : duel.getPlayers()) {
-      duel.setHealthRemaining(player, player.getHealth() + player.getAbsorptionAmount());
-
-      DuelStats.Stats stats = duel.getStats(player);
-
-      StatsDataHandler.save(stats);
-
-      player.sendMessage(
-          AuroraDuels.getInstance()
-              .getLang()
-              .getComponentCommand("duel-stats", "Click to see duel stats!", "/duel stats"));
-    }
 
     for (Player player : Set.copyOf(duel.getSpectators())) {
       duel.setSpectator(player, false);
