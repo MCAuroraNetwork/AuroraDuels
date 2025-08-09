@@ -158,7 +158,7 @@ public class DuelEndEvent extends DuelOverEvent {
     updatedRatings.put(
         Rating.getRating("overall_duels"), updateRatings(winners, losers, "overall_duels"));
 
-    if (!ratingName.equals("random_duels")) {
+    if (!ratingName.equals("overall_duels")) {
       updatedRatings.put(Rating.getRating(ratingName), updateRatings(winners, losers, ratingName));
     }
 
