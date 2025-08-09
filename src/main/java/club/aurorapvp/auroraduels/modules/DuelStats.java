@@ -18,10 +18,7 @@ public class DuelStats {
 
   public DuelStats(UUID uuid) {
     this.uuid = uuid;
-    load();
-  }
 
-  private void load() {
     List<Stats> all = StatsDataHandler.loadAll(uuid);
     for (Stats s : all) {
       statsMap.put(s.getTimeStarted(), s);
@@ -45,7 +42,7 @@ public class DuelStats {
       return;
     }
     statsMap.put(stats.getTimeStarted(), stats);
-    sortedTimesDesc.add(0, stats.getTimeStarted());
+    sortedTimesDesc.addFirst(stats.getTimeStarted());
   }
 
   public static class Stats {
