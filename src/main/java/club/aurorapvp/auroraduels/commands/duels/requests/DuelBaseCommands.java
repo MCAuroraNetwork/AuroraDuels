@@ -2,6 +2,7 @@ package club.aurorapvp.auroraduels.commands.duels.requests;
 
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.DuelRequest;
+import club.aurorapvp.auroraduels.modules.DuelStats;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -140,5 +141,61 @@ public class DuelBaseCommands extends BaseCommand {
   public void onLobbySet(Player player) {
     Duel.setDuelLobby(player.getLocation());
     player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-lobby-set"));
+  }
+
+  @Subcommand("stats")
+  @CommandPermission("auroraduels.command.duel.stats")
+  @Syntax("[n]")
+  @Description("Views your duel stats")
+  @SuppressWarnings("unused")
+  public void onStats(Player player, @Optional String nStr) {
+    int index = 0;
+
+    if (nStr != null) {
+      try {
+        int n = Integer.parseInt(nStr);
+        if (n < 1) {
+          player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("invalid-number"));
+          return;
+        }
+        index = n - 1;
+      } catch (NumberFormatException e) {
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("invalid-number"));
+        return;
+      }
+    }
+
+    DuelStats duelStats = DuelStats.get(player);
+    DuelStats.Stats stats = duelStats.getStats(index);
+
+    if (stats == null) {
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("no-stats-available"));
+      return;
+    }
+
+    if (AuroraDuels.getInstance().isAuroraCombatInstalled()) {
+      player.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .formatComponent(
+                  "duel-summary-elo",
+                  player.getName(),
+                  stats.getElo(),
+                  stats.getTotemPops(),
+                  stats.getDamageDealt(),
+                  stats.getDamageReceived(),
+                  stats.getHealthRemaining()));
+    } else {
+      player.sendMessage(
+          AuroraDuels.getInstance()
+              .getLang()
+              .formatComponent(
+                  "duel-summary",
+                  player.getName(),
+                  stats.getTotemPops(),
+                  stats.getDamageDealt(),
+                  stats.getDamageReceived(),
+                  stats.getHealthRemaining()));
+    }
   }
 }
