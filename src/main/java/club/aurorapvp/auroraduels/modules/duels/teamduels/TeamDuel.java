@@ -1,6 +1,6 @@
 package club.aurorapvp.auroraduels.modules.duels.teamduels;
 
-import club.aurorapvp.aurorachat.modules.NameColor;
+import club.aurorapvp.aurorachat.modules.displayname.NameColor;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.events.custom.DuelDrawEvent;
 import club.aurorapvp.auroraduels.events.custom.DuelEndEvent;
