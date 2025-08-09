@@ -5,6 +5,7 @@ import static club.aurorapvp.auroraduels.events.listeners.PlayerEventListener.DU
 import club.aurorapvp.auroracombat.AuroraCombat;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
+import club.aurorapvp.auroraduels.data.StatsDataHandler;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.DuelStats;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
@@ -65,33 +66,33 @@ public class DuelEndEvent extends DuelOverEvent {
     for (Player player : duel.getPlayers()) {
       duel.setHealthRemaining(player, player.getHealth() + player.getAbsorptionAmount());
 
-      DuelStats stats = duel.getStats(player);
+      DuelStats.Stats stats = duel.getStats(player);
 
-      stats.save();
+      StatsDataHandler.save(stats);
 
       if (AuroraDuels.getInstance().isAuroraCombatInstalled()) {
         summaries.add(
-                AuroraDuels.getInstance()
-                        .getLang()
-                        .formatComponent(
-                                "duel-summary-elo",
-                                player.getName(),
-                                stats.getElo(),
-                                stats.getTotemPops(),
-                                stats.getDamageDealt(),
-                                stats.getDamageReceived(),
-                                stats.getHealthRemaining()));
+            AuroraDuels.getInstance()
+                .getLang()
+                .formatComponent(
+                    "duel-summary-elo",
+                    player.getName(),
+                    stats.getElo(),
+                    stats.getTotemPops(),
+                    stats.getDamageDealt(),
+                    stats.getDamageReceived(),
+                    stats.getHealthRemaining()));
       } else {
         summaries.add(
-                AuroraDuels.getInstance()
-                        .getLang()
-                        .formatComponent(
-                                "duel-summary",
-                                player.getName(),
-                                stats.getTotemPops(),
-                                stats.getDamageDealt(),
-                                stats.getDamageReceived(),
-                                stats.getHealthRemaining()));
+            AuroraDuels.getInstance()
+                .getLang()
+                .formatComponent(
+                    "duel-summary",
+                    player.getName(),
+                    stats.getTotemPops(),
+                    stats.getDamageDealt(),
+                    stats.getDamageReceived(),
+                    stats.getHealthRemaining()));
       }
     }
 

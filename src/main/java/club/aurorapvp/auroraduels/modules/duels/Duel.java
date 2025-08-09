@@ -26,7 +26,7 @@ public abstract class Duel {
 
   private static final Map<UUID, Duel> LAST_DUEL = new HashMap<>();
   protected static final Set<Duel> duels = new HashSet<>();
-  private final Map<UUID, DuelStats> stats = new HashMap<>();
+  private final Map<UUID, DuelStats.Stats> stats = new HashMap<>();
   protected final Set<Player> players = new HashSet<>();
   protected final Set<Player> spectators = new HashSet<>();
   protected final Set<BossBar> spectatorBars = new HashSet<>();
@@ -219,7 +219,7 @@ public abstract class Duel {
 
   public abstract void draw();
 
-  public Map<UUID, DuelStats> getStats() {
+  public Map<UUID, DuelStats.Stats> getStats() {
     return stats;
   }
 
@@ -291,7 +291,7 @@ public abstract class Duel {
     return this.getPlayers().size();
   }
 
-  public DuelStats getStats(Player player) {
+  public DuelStats.Stats getStats(Player player) {
     return stats.get(player.getUniqueId());
   }
 

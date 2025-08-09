@@ -18,7 +18,8 @@ import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
 /* Event that is fired when a duel starts */
-// TODO make this cancellable NOTE: some logic currently assumes this is the LAST step in the Duel start process (i.e. fall damage vuln)
+// TODO make this cancellable NOTE: some logic currently assumes this is the LAST step in the Duel
+// start process (i.e. fall damage vuln)
 public class DuelStartEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();
@@ -112,13 +113,15 @@ public class DuelStartEvent extends Event {
     duel.getArena().setOccupied(true);
 
     for (Player player : duel.getPlayers()) {
-      duel.getStats().put(
+      DuelStats.Stats stats =
+          new DuelStats.Stats(
               player.getUniqueId(),
-              new DuelStats(
-                      player.getUniqueId(),
-                      duel.getArena().getName(),
-                      Rating.getRating("overall_duels").getScore(player).getPoints(),
-                      System.currentTimeMillis()));
+              duel.getArena().getName(),
+              Rating.getRating("overall_duels").getScore(player).getPoints(),
+              System.currentTimeMillis());
+
+      duel.getStats().put(player.getUniqueId(), stats);
+      DuelStats.get(player).addStats(stats);
     }
 
     if (!AuroraDuels.getInstance().isAuroraCombatInstalled()) {

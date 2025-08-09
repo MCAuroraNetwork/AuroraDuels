@@ -1,79 +1,116 @@
 package club.aurorapvp.auroraduels.modules;
 
-import club.aurorapvp.auroraduels.data.DuelStatsDataHandler;
-import java.io.Serial;
-import java.io.Serializable;
+import club.aurorapvp.auroraduels.data.StatsDataHandler;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-public class DuelStats implements Serializable {
-  @Serial private static final long serialVersionUID = 1L;
+import org.bukkit.entity.Player;
 
-  private final DuelStatsDataHandler data = new DuelStatsDataHandler(this);
+public class DuelStats {
+
   private final UUID uuid;
-  private final String arenaName;
-  private final int elo;
-  private final long timeStarted;
-  private int totemPops = 0;
-  private int damageReceived = 0;
-  private int damageDealt = 0;
-  private int healthRemaining;
+  private final Map<Long, Stats> statsMap = new HashMap<>();
+  private final List<Long> sortedTimesDesc = new ArrayList<>();
 
-  public DuelStats(UUID uuid, String arenaName, int elo, long timeStarted) {
+  public DuelStats(UUID uuid) {
     this.uuid = uuid;
-    this.arenaName = arenaName;
-    this.elo = elo;
-    this.timeStarted = timeStarted;
+    load();
   }
 
-  public UUID getUuid() {
-    return uuid;
+  private void load() {
+    List<Stats> all = StatsDataHandler.loadAll(uuid);
+    for (Stats s : all) {
+      statsMap.put(s.getTimeStarted(), s);
+      sortedTimesDesc.add(s.getTimeStarted());
+    }
   }
 
-  public String getArenaName() {
-    return arenaName;
+  public Stats getStats(int index) {
+    if (index < 0 || index >= sortedTimesDesc.size()) {
+      return null;
+    }
+    return statsMap.get(sortedTimesDesc.get(index));
   }
 
-  public int getElo() {
-    return elo;
+  public static DuelStats get(Player player) {
+    return new DuelStats(player.getUniqueId());
   }
 
-  public long getTimeStarted() {
-    return timeStarted;
+  public void addStats(Stats stats) {
+    if (!stats.getUuid().equals(this.uuid)) {
+      return;
+    }
+    statsMap.put(stats.getTimeStarted(), stats);
+    sortedTimesDesc.add(0, stats.getTimeStarted());
   }
 
-  public int getTotemPops() {
-    return totemPops;
-  }
+  public static class Stats {
+    private final UUID uuid;
+    private final String arenaName;
+    private final int elo;
+    private final long timeStarted;
+    private int totemPops = 0;
+    private int damageReceived = 0;
+    private int damageDealt = 0;
+    private int healthRemaining;
 
-  public int getDamageReceived() {
-    return damageReceived;
-  }
+    public Stats(UUID uuid, String arenaName, int elo, long timeStarted) {
+      this.uuid = uuid;
+      this.arenaName = arenaName;
+      this.elo = elo;
+      this.timeStarted = timeStarted;
+    }
 
-  public int getDamageDealt() {
-    return damageDealt;
-  }
+    public UUID getUuid() {
+      return uuid;
+    }
 
-  public int getHealthRemaining() {
-    return healthRemaining;
-  }
+    public String getArenaName() {
+      return arenaName;
+    }
 
-  public void addTotemPop() {
-    this.totemPops++;
-  }
+    public int getElo() {
+      return elo;
+    }
 
-  public void addDamageReceived(int damage) {
-    this.damageReceived += damage;
-  }
+    public long getTimeStarted() {
+      return timeStarted;
+    }
 
-  public void addDamageDealt(int damage) {
-    this.damageDealt += damage;
-  }
+    public int getTotemPops() {
+      return totemPops;
+    }
 
-  public void setHealthRemaining(int health) {
-    this.healthRemaining = health;
-  }
+    public int getDamageReceived() {
+      return damageReceived;
+    }
 
-  public void save() {
-    data.save();
+    public int getDamageDealt() {
+      return damageDealt;
+    }
+
+    public int getHealthRemaining() {
+      return healthRemaining;
+    }
+
+    public void addTotemPop() {
+      this.totemPops++;
+    }
+
+    public void addDamageReceived(int damage) {
+      this.damageReceived += damage;
+    }
+
+    public void addDamageDealt(int damage) {
+      this.damageDealt += damage;
+    }
+
+    public void setHealthRemaining(int health) {
+      this.healthRemaining = health;
+    }
   }
 }
