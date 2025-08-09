@@ -93,10 +93,12 @@ public class PlayerEventListener implements Listener {
   @EventHandler
   public void onTpaRequest(TpaRequestSendEvent event) {
     if (!DuelQueue.inQueue(event.getPlayer())) {
-      event.getPlayer().sendMessage(AuroraDuels.getInstance().getLang().getComponent("in-queue"));
-
-      event.setCancelled(true);
+      return;
     }
+
+    event.getPlayer().sendMessage(AuroraDuels.getInstance().getLang().getComponent("in-queue"));
+
+    event.setCancelled(true);
   }
 
   @EventHandler
