@@ -12,8 +12,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.kyori.adventure.text.Component;
-
 public class RankedUnrankedGUI implements InventoryHolder, Listener {
     private final Inventory inventory;
     private final Player player;

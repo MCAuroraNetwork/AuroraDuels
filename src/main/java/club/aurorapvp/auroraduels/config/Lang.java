@@ -46,7 +46,7 @@ public class Lang {
     DEFAULTS.put("unknown-duel", "prefix <red>Duel not found ✗");
     DEFAULTS.put("unknown-player", "prefix <red>Player not found ✗");
     DEFAULTS.put("player-in-duel", "prefix <red>Player in duel ⚔");
-    DEFAULTS.put("duel-started", "<bold><green>Duel started! ⚔");
+    DEFAULTS.put("duel-started", "<bold><green>Duel started!<reset><green> ⚔");
     DEFAULTS.put("even-rounds", "prefix <red>Odd rounds required for duel ✗");
     DEFAULTS.put("entered-queue", "prefix <green>You have entered the duel queue");
     DEFAULTS.put("sent-request", "prefix <green>Request sent successfully! ✉");
@@ -89,9 +89,9 @@ public class Lang {
     DEFAULTS.put("queue-menu", "<yellow><bold>Select Duel Type <reset><yellow>⚔");
     DEFAULTS.put("ranked-match", "<blue><bold>Ranked Match");
     DEFAULTS.put("unranked-match", "<gray><bold>Unranked Match");
-    DEFAULTS.put("enabled", "<green>Enabled");
-    DEFAULTS.put("disabled", "<red>Disabled");
-    DEFAULTS.put("confirm-selection", "<green><bold>Confirm Selection");
+    DEFAULTS.put("enabled", "<reset><bold><green>Enabled");
+    DEFAULTS.put("disabled", "<reset><bold><red>Disabled");
+    DEFAULTS.put("confirm-selection", "<reset><green><bold>Confirm Selection");
     DEFAULTS.put("select-at-least-one", "prefix <red>You must select at least one queue.");
     DEFAULTS.put("duel-kit-gui", "<yellow><bold>Select Duel Kit <reset><yellow>⚔");
     DEFAULTS.put("next-page", "<yellow><bold>➡ Next");

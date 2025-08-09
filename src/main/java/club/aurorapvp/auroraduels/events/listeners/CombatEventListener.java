@@ -1,10 +1,11 @@
 package club.aurorapvp.auroraduels.events.listeners;
 
 import club.aurorapvp.auroracombat.events.custom.CombatTagEvent;
-import club.aurorapvp.auroracombat.events.custom.EntityDamagedByEntityEvent;
+import club.aurorapvp.auroracombat.events.custom.PlayerDamagedByPlayerEvent;
 import club.aurorapvp.auroraduels.modules.DuelRequest;
 import club.aurorapvp.auroraduels.modules.duels.Duel;
 import java.util.Objects;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,17 +14,21 @@ import org.bukkit.event.entity.EntityResurrectEvent;
 
 public class CombatEventListener implements Listener {
   @EventHandler
-  public void onDamage(EntityDamagedByEntityEvent event) {
-    if (event.getDamaged() instanceof Player player) {
-      if (Duel.inDuel(player)) {
-        Objects.requireNonNull(Duel.getDuel(player)).addDamagedReceived(player, event.getDamage());
-      }
+  public void onDamage(PlayerDamagedByPlayerEvent event) {
+
+    Player damaged = event.getDamaged();
+    Player damager = event.getDamager();
+
+    if (damaged.equals(damager)) {
+      return;
     }
 
-    if (event.getDamager() instanceof Player player) {
-      if (Duel.inDuel(player)) {
-        Objects.requireNonNull(Duel.getDuel(player)).addDamagedDealt(player, event.getDamage());
-      }
+    if (Duel.inDuel(damaged)) {
+      Objects.requireNonNull(Duel.getDuel(damaged)).addDamagedReceived(damaged, event.getDamage());
+    }
+
+    if (Duel.inDuel(damager)) {
+      Objects.requireNonNull(Duel.getDuel(damager)).addDamagedDealt(damager, event.getDamage());
     }
   }
 
