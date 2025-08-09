@@ -106,21 +106,23 @@ public class Lang {
     DEFAULTS.put("discord-winstreak-lost", "%1$s lost a Winstreak of %2$s! ✗");
     DEFAULTS.put("discord-on-winstreak", "%1$s has a Winstreak of %2$s!");
     DEFAULTS.put("duel-summary-elo", """
-            Duel Summary: %1$s - %2$s ELO
+      <bold><yellow>Duel Summary</bold><yellow>: <green><bold>%1$s</bold></green> - <aqua><bold>%2$s ELO</bold></aqua>
 
-            Totem Pops: %3$s
-            Damage Dealt: %4$s
-            Damage Received: %5$s
-            Health Remaining: %6$s
-            """);
+      <yellow>❗ Totem Pops: <white>%3$s
+      <red>⚔ Damage Dealt: <white>%4$s
+      <blue>🛡 Damage Received: <white>%5$s
+      <green>❤ Health Remaining: <white>%6$s
+    """);
+
     DEFAULTS.put("duel-summary", """
-            Duel Summary: %1$s
+      <bold><yellow>Duel Summary</bold><yellow>: <green><bold>%1$s</bold></green>
 
-            Totem Pops: %2$s
-            Damage Dealt: %3$s
-            Damage Received: %4$s
-            Health Remaining: %5$s
-            """);
+      <yellow>❗ Totem Pops: <white>%2$s
+      <red>⚔ Damage Dealt: <white>%3$s
+      <blue>🛡 Damage Received: <white>%4$s
+      <green>❤ Health Remaining: <white>%5$s
+    """);
+
     DEFAULTS.put("reloaded", "prefix <green>Reloaded");
     DEFAULTS.put(
             "help-command",
