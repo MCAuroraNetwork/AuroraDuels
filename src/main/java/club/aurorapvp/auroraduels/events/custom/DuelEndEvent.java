@@ -153,43 +153,49 @@ public class DuelEndEvent extends DuelOverEvent {
 
     String ratingName = duel.getQueue().getName() + "_duels";
 
-    Map<Rating, Integer> updatedRatings = new HashMap<>();
+    Set<Rating> ratingsToUpdate = new HashSet<>();
+    Rating overall = Rating.getRating("overall_duels");
+    ratingsToUpdate.add(overall);
 
-    updatedRatings.put(
-        Rating.getRating("overall_duels"), updateRatings(winners, losers, "overall_duels"));
-
+    Rating specific = null;
     if (!ratingName.equals("overall_duels")) {
-      updatedRatings.put(Rating.getRating(ratingName), updateRatings(winners, losers, ratingName));
+      specific = Rating.getRating(ratingName);
+      ratingsToUpdate.add(specific);
     }
 
-    StringBuilder killerMessage = new StringBuilder();
+    Map<Rating, Map<Player, Integer>> oldScores = new HashMap<>();
 
-    for (Rating rating : updatedRatings.keySet()) {
-      killerMessage
-          .append("\n")
-          .append(rating.getFriendlyName())
-          .append(": +")
-          .append(updatedRatings.get(rating));
+    for (Rating rating : ratingsToUpdate) {
+      Map<Player, Integer> playerOldScores = new HashMap<>();
+      for (Player player : duel.getPlayers()) {
+        playerOldScores.put(player, rating.getScore(player).getPoints());
+      }
+      oldScores.put(rating, playerOldScores);
     }
 
-    StringBuilder deadMessage = new StringBuilder();
+    updateRatings(winners, losers, "overall_duels");
 
-    for (Rating rating : updatedRatings.keySet()) {
-      deadMessage
-          .append("\n")
-          .append(rating.getFriendlyName())
-          .append(": -")
-          .append(updatedRatings.get(rating));
+    if (specific != null) {
+      updateRatings(winners, losers, ratingName);
     }
 
     for (Player loser : losers) {
+      StringBuilder deadMessage = new StringBuilder();
+      for (Rating rating : ratingsToUpdate) {
+        int delta = rating.getScore(loser).getPoints() - oldScores.get(rating).get(loser);
+        deadMessage.append("\n").append(rating.getFriendlyName()).append(": ").append(delta);
+      }
       loser.sendMessage(
           AuroraDuels.getInstance().getLang().formatComponent("duel-lost", deadMessage.toString()));
     }
 
     for (Player winner : winners) {
+      StringBuilder killerMessage = new StringBuilder();
+      for (Rating rating : ratingsToUpdate) {
+        int delta = rating.getScore(winner).getPoints() - oldScores.get(rating).get(winner);
+        killerMessage.append("\n").append(rating.getFriendlyName()).append(": ").append(delta);
+      }
       killerMessage.append("\nWinstreak: ").append(Winstracker.getTracker(winner).getWinstreak());
-
       winner.sendMessage(
           AuroraDuels.getInstance()
               .getLang()
@@ -197,32 +203,41 @@ public class DuelEndEvent extends DuelOverEvent {
     }
   }
 
-  public int updateRatings(
+  public void updateRatings(
       Collection<Player> winners, Collection<Player> losers, String ratingName) {
     Rating rating = Rating.getRating(ratingName);
 
-    int change = 0;
-
     if (winners.size() + losers.size() == 2) {
-      change = rating.updateElo(losers.iterator().next(), winners.iterator().next());
-    } else {
-      for (Player loser : losers) {
-        rating.updateElo(loser, (int) getAverageRating(winners, ratingName), false);
-      }
+      rating.updateElo(losers.iterator().next(), winners.iterator().next());
+      return;
+    }
 
-      for (Player winner : winners) {
-        change = rating.updateElo(winner, (int) getAverageRating(losers, ratingName), true);
+    double factor = 1.0 / losers.size();
+    int K = AuroraCombat.getInstance().getConfig().getInt("elo.max-change");
+
+    Map<Player, Integer> totalChanges = new HashMap<>();
+    for (Player player : winners) {
+      totalChanges.put(player, 0);
+    }
+    for (Player player : losers) {
+      totalChanges.put(player, 0);
+    }
+
+    for (Player winner : winners) {
+      for (Player loser : losers) {
+        int loserElo = rating.getScore(loser).getPoints();
+        int winnerElo = rating.getScore(winner).getPoints();
+        double eloChange = Rating.getELOChange(loserElo, winnerElo);
+        double changeD = K * -eloChange * factor;
+        int changePair = (int) Math.round(changeD);
+        totalChanges.put(winner, totalChanges.get(winner) + changePair);
+        totalChanges.put(loser, totalChanges.get(loser) - changePair);
       }
     }
 
-    return change;
-  }
-
-  public double getAverageRating(Collection<Player> players, String queueName) {
-    return players.stream()
-        .mapToDouble(player -> Rating.getRating(queueName).getScore(player).getPoints())
-        .average()
-        .orElse(AuroraCombat.getInstance().getConfig().getInt("elo.default-points"));
+    for (Map.Entry<Player, Integer> entry : totalChanges.entrySet()) {
+      rating.getScore(entry.getKey()).changePoints(entry.getValue());
+    }
   }
 
   public Collection<Player> getLosers() {
