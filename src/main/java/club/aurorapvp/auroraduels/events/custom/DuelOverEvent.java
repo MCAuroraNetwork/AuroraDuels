@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.aurorachat.modules.ChatGroup;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
 import club.aurorapvp.auroraduels.AuroraDuels;
@@ -25,19 +26,19 @@ public abstract class DuelOverEvent extends Event {
     this.arena = arena;
 
     new Timer()
-        .schedule(
-            new TimerTask() {
-              @Override
-              public void run() {
-                for (Player player : duel.getPlayers()) {
-                  player.teleportAsync(duel.getRespawnLocation());
-                }
-                arena.reset();
-                arena.setOccupied(false);
-                this.cancel();
-              }
-            },
-            3000);
+            .schedule(
+                    new TimerTask() {
+                      @Override
+                      public void run() {
+                        for (Player player : duel.getPlayers()) {
+                          player.teleportAsync(duel.getRespawnLocation());
+                        }
+                        arena.reset();
+                        arena.setOccupied(false);
+                        this.cancel();
+                      }
+                    },
+                    3000);
 
     for (Player player : duel.getPlayers()) {
       Duel.setLastDuel(player, duel);
@@ -64,6 +65,16 @@ public abstract class DuelOverEvent extends Event {
       Rating.getRating("overall").setPlayerEnabled(player, true);
 
       CombatTag.setTaggable(player, true);
+    }
+
+    for (Player player : duel.getPlayers()) {
+      ChatGroup group = ChatGroup.getChatGroup(player);
+      Duel.ChatState state = duel.getSavedChatStates().get(player);
+      if (state != null) {
+        group.setMode(state.mode());
+        group.setChatTarget(state.target());
+        player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-chat-reverted"));
+      }
     }
 
     duel.setActive(false);

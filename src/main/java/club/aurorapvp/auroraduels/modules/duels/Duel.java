@@ -1,5 +1,7 @@
 package club.aurorapvp.auroraduels.modules.duels;
 
+import club.aurorapvp.aurorachat.modules.ChatGroup;
+import club.aurorapvp.aurorachat.modules.ChatGroup.ChatMode;
 import club.aurorapvp.auroraduels.AuroraDuels;
 import club.aurorapvp.auroraduels.modules.Arena;
 import club.aurorapvp.auroraduels.modules.DuelStats;
@@ -22,7 +24,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public abstract class Duel {
+public abstract class Duel implements ChatGroup.ChatTarget {
 
   private static final Map<UUID, Duel> LAST_DUEL = new HashMap<>();
   protected static final Set<Duel> duels = new HashSet<>();
@@ -78,6 +80,7 @@ public abstract class Duel {
           }
         }
       };
+  private final Map<Player, ChatState> savedChatStates = new HashMap<>();
 
   public Duel(Set<Player> players, Location respawnLocation, boolean ranked) {
     this(players, respawnLocation, null, null, ranked, 0);
@@ -355,4 +358,15 @@ public abstract class Duel {
   public boolean isSpectating(Player player) {
     return spectators.contains(player);
   }
+
+  public Map<Player, ChatState> getSavedChatStates() {
+    return savedChatStates;
+  }
+
+  @Override
+  public Set<Player> getChatMembers() {
+    return getPlayers();
+  }
+
+  public record ChatState(ChatMode mode, ChatGroup.ChatTarget target) {}
 }

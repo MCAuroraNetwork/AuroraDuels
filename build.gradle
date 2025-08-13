@@ -52,7 +52,7 @@ dependencies {
     compileOnly ':AuroraKits:1.8.4'
     compileOnly ':AuroraCombat:1.8.8'
     compileOnly ':AuroraWarps:1.3.2'
-    compileOnly ':AuroraChat:1.2.0'
+    compileOnly ':AuroraChat:1.2.1'
 }
 
 build {

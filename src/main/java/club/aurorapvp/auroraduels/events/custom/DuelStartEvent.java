@@ -1,5 +1,6 @@
 package club.aurorapvp.auroraduels.events.custom;
 
+import club.aurorapvp.aurorachat.modules.ChatGroup;
 import club.aurorapvp.auroracombat.modules.BlockFallDamage;
 import club.aurorapvp.auroracombat.modules.CombatTag;
 import club.aurorapvp.auroracombat.modules.Rating;
@@ -17,9 +18,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
 
-/* Event that is fired when a duel starts */
-// TODO make this cancellable NOTE: some logic currently assumes this is the LAST step in the Duel
-// start process (i.e. fall damage vuln)
 public class DuelStartEvent extends Event {
 
   private static final HandlerList HANDLERS = new HandlerList();
@@ -59,66 +57,66 @@ public class DuelStartEvent extends Event {
     }
 
     new Timer()
-        .schedule(
-            new TimerTask() {
-              @Override
-              public void run() {
-                if (duel.isActive()) {
-                  for (Player player : duel.getPlayers()) {
-                    player.setGlowing(true);
+            .schedule(
+                    new TimerTask() {
+                      @Override
+                      public void run() {
+                        if (duel.isActive()) {
+                          for (Player player : duel.getPlayers()) {
+                            player.setGlowing(true);
 
-                    player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("halfway"));
-                  }
-                }
-                this.cancel();
-              }
-            },
-            AuroraDuels.getInstance().getConfig().getInt("duels.max-duration") / 2);
-
-    new Timer()
-        .schedule(
-            new TimerTask() {
-              @Override
-              public void run() {
-                if (duel.isActive()) {
-                  for (Player player : duel.getPlayers()) {
-                    player.showTitle(
-                        Title.title(
-                            AuroraDuels.getInstance().getLang().getComponent("one-minute-left"),
-                            Component.text("")));
-                  }
-                }
-                this.cancel();
-              }
-            },
-            AuroraDuels.getInstance().getConfig().getInt("duels.max-duration") - 60000);
+                            player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("halfway"));
+                          }
+                        }
+                        this.cancel();
+                      }
+                    },
+                    AuroraDuels.getInstance().getConfig().getInt("duels.max-duration") / 2);
 
     new Timer()
-        .schedule(
-            new TimerTask() {
-              @Override
-              public void run() {
-                if (duel.isActive()) {
-                  for (Player player : duel.getPlayers()) {
-                    player.sendMessage(
-                        AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
-                  }
-                  duel.draw();
-                }
-                this.cancel();
-              }
-            },
-            AuroraDuels.getInstance().getConfig().getInt("duels.max-duration"));
+            .schedule(
+                    new TimerTask() {
+                      @Override
+                      public void run() {
+                        if (duel.isActive()) {
+                          for (Player player : duel.getPlayers()) {
+                            player.showTitle(
+                                    Title.title(
+                                            AuroraDuels.getInstance().getLang().getComponent("one-minute-left"),
+                                            Component.text("")));
+                          }
+                        }
+                        this.cancel();
+                      }
+                    },
+                    AuroraDuels.getInstance().getConfig().getInt("duels.max-duration") - 60000);
+
+    new Timer()
+            .schedule(
+                    new TimerTask() {
+                      @Override
+                      public void run() {
+                        if (duel.isActive()) {
+                          for (Player player : duel.getPlayers()) {
+                            player.sendMessage(
+                                    AuroraDuels.getInstance().getLang().getComponent("duel-time-expired"));
+                          }
+                          duel.draw();
+                        }
+                        this.cancel();
+                      }
+                    },
+                    AuroraDuels.getInstance().getConfig().getInt("duels.max-duration"));
 
     duel.getArena().setOccupied(true);
 
     for (Player player : duel.getPlayers()) {
       DuelStats.Stats stats =
-          new DuelStats.Stats(
-              player.getUniqueId(),
-              duel.getArena().getName(),
-              Rating.getRating("overall_duels").getScore(player).getPoints(),
-              System.currentTimeMillis());
+              new DuelStats.Stats(
+                      player.getUniqueId(),
+                      duel.getArena().getName(),
+                      Rating.getRating("overall_duels").getScore(player).getPoints(),
+                      System.currentTimeMillis());
 
       duel.getStats().put(player.getUniqueId(), stats);
       DuelStats.get(player).addStats(stats);
@@ -138,6 +136,15 @@ public class DuelStartEvent extends Event {
       rating.setPlayerEnabled(player, false);
 
       CombatTag.setTaggable(player, false);
+    }
+
+    // Save current chat state and override with duel chat
+    for (Player player : duel.getPlayers()) {
+      ChatGroup group = ChatGroup.getChatGroup(player);
+      Duel.ChatState state = new Duel.ChatState(group.getMode(), group.getAllowedGroup());
+      duel.getSavedChatStates().put(player, state);
+      group.setChatTarget(duel);
+      player.sendMessage(AuroraDuels.getInstance().getLang().getComponent("duel-chat-enabled"));
     }
   }
 
